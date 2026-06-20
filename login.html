@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <div class="background" style="--background-image:url('');"></div>
+
+    <div class="login-box">
+      <div class="logo">
+        <i class="fas fa-ship"></i>
+        <h2>Asan Global</h2>
+      </div>
+
+      <h1>Sign in</h1>
+      <p class="subtitle">Access your shipping dashboard</p>
+
+      <form action="dashboard.html" method="get">
+        <!-- Email Input -->
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" name="email" placeholder="your@email.com" required />
+          </div>
+        </div>
+
+        <!-- Password Input with Show/Hide Toggle -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" name="password" placeholder="Enter password" required />
+            <button type="button" class="toggle-password" id="togglePassword">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-options">
+          <div class="remember-me">
+            <input type="checkbox" id="rememberMe" name="rememberMe" />
+            <label for="rememberMe">Remember me</label>
+          </div>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="login-btn">Sign in</button>
+      </form>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <!-- Social Login -->
+      <div class="social-login">
+        <a href="#" class="social google">
+          <i class="fab fa-google"></i> Sign in with Google
+        </a>
+        <a href="#" class="social facebook">
+          <i class="fab fa-facebook"></i> Sign in with Facebook
+        </a>
+      </div>
+
+      <!-- Sign Up Link -->
+      <p class="signup">
+        Don't have an account? <a href="#" onclick="showRegistration()">Sign up</a>
+      </p>
+      <p class="signup" style="margin-top:5px;">
+        <a href="index.html">&larr; Back to website</a>
+      </p>
+
+      <div class="after-login-links">
+        <p class="after-login-text">Or continue directly:</p>
+        <a id="afterLoginLink" href="dashboard.html">Continue as <span id="afterLoginName">User</span></a>
+      </div>
+
+      <!-- Registration Form (Hidden by default) -->
+      <div id="registrationForm" style="display:none;">
+        <h2 style="margin-bottom:20px;">Create Account</h2>
+        <form id="regForm">
+          <div class="form-group">
+            <label for="regName">Full Name</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user"></i>
+              <input type="text" id="regName" placeholder="John Doe" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Email Address</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope"></i>
+              <input type="email" id="regEmail" placeholder="your@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Password</label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="regPassword" placeholder="Create password" required />
+            </div>
+          </div>
+          <button type="submit" class="login-btn">Create Account</button>
+        </form>
+        <p class="signup" style="margin-top:15px;">
+          Already have an account? <a href="#" onclick="showLogin()">Sign in</a>
+        </p>
+      </div>
+    </div>
+
+    <script src="login.js"></script>
+  </body>
+</html>

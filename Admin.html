@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel | Asan Global</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:#f5f7fa;
+}
+
+.topbar{
+    background:#003366;
+    color:white;
+    padding:15px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.topbar h2{
+    margin:0;
+    font-size:24px;
+}
+
+.logout{
+    background:#dc3545;
+    color:white;
+    padding:10px 20px;
+    border:none;
+    cursor:pointer;
+    border-radius:8px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.logout:hover{
+    background:#c82333;
+}
+
+.container{
+    max-width:1400px;
+    margin:0 auto;
+    padding:25px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+}
+
+.card h3{
+    margin:0 0 10px 0;
+    color:#003366;
+    font-size:20px;
+}
+
+.card p{
+    color:#666;
+    margin-bottom:15px;
+}
+
+.card button{
+    margin-top:10px;
+    padding:12px 20px;
+    background:#007bff;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.3s;
+    width:100%;
+}
+
+.card button:hover{
+    background:#0056b3;
+}
+
+.card button.delete-btn{
+    background:#dc3545;
+}
+
+.card button.delete-btn:hover{
+    background:#c82333;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    z-index:1000;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    width:90%;
+    max-width:600px;
+    max-height:80vh;
+    overflow-y:auto;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-header h3{
+    margin:0;
+    color:#003366;
+}
+
+.close-btn{
+    background:none;
+    border:none;
+    font-size:24px;
+    cursor:pointer;
+    color:#666;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:600;
+    color:#333;
+}
+
+.form-group input, .form-group select, .form-group textarea{
+    width:100%;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:14px;
+}
+
+.form-group textarea{
+    resize:vertical;
+    min-height:80px;
+}
+
+.modal-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.modal-buttons button{
+    flex:1;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.save-btn{
+    background:#28a745;
+    color:white;
+}
+
+.save-btn:hover{
+    background:#218838;
+}
+
+.cancel-btn{
+    background:#6c757d;
+    color:white;
+}
+
+.cancel-btn:hover{
+    background:#5a6268;
+}
+
+.data-list{
+    margin-top:15px;
+    max-height:300px;
+    overflow-y:auto;
+}
+
+.data-item{
+    background:#f8f9fa;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:10px;
+    border-left:4px solid #007bff;
+}
+
+.data-item h4{
+    margin:0 0 5px 0;
+    color:#003366;
+}
+
+.data-item p{
+    margin:5px 0;
+    color:#666;
+    font-size:13px;
+}
+
+.data-item .actions{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+}
+
+.data-item .actions button{
+    padding:6px 12px;
+    font-size:12px;
+    width:auto;
+}
+
+.notification-badge{
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#dc3545;
+    color:white;
+    padding:15px 20px;
+    border-radius:10px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.2);
+    z-index:2000;
+    animation:slideIn 0.3s ease;
+}
+
+@keyframes slideIn{
+    from{
+        transform:translateX(100%);
+        opacity:0;
+    }
+    to{
+        transform:translateX(0);
+        opacity:1;
+    }
+}
+
+@media(max-width:900px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="adminPanel">
+
+<div class="topbar">
+    <h2>🖥️ Admin Control Panel</h2>
+    <div style="display:flex; gap:10px; align-items:center;">
+        <span id="adminName"></span>
+        <button class="logout" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="grid">
+        <div class="card">
+            <h3>🚢 Ships</h3>
+            <p>Manage fleet & routes</p>
+            <button onclick="openModal('ships')">Add Ship</button>
+            <button onclick="viewData('ships')" style="background:#17a2b8; margin-top:10px;">View Ships</button>
+        </div>
+
+        <div class="card">
+            <h3>📦 Shipments</h3>
+            <p>Update tracking info</p>
+            <button onclick="openModal('shipments')">Add Shipment</button>
+            <button onclick="viewData('shipments')" style="background:#17a2b8; margin-top:10px;">View Shipments</button>
+        </div>
+
+        <div class="card">
+            <h3>💰 Finance</h3>
+            <p>Invoices & payments</p>
+            <button onclick="openModal('finance')">Add Transaction</button>
+            <button onclick="viewData('finance')" style="background:#17a2b8; margin-top:10px;">View Finance</button>
+        </div>
+
+        <div class="card">
+            <h3>📅 Schedule</h3>
+            <p>Port timings</p>
+            <button onclick="openModal('schedule')">Add Schedule</button>
+            <button onclick="viewData('schedule')" style="background:#17a2b8; margin-top:10px;">View Schedule</button>
+        </div>
+
+        <div class="card">
+            <h3>👤 Users</h3>
+            <p>Staff control</p>
+            <button onclick="openModal('users')">Add User</button>
+            <button onclick="viewData('users')" style="background:#17a2b8; margin-top:10px;">View Users</button>
+        </div>
+
+        <div class="card">
+            <h3>📊 Reports</h3>
+            <p>System analytics</p>
+            <button onclick="viewData('reports')" style="background:#17a2b8;">View Reports</button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- Modal for adding/editing data -->
+<div id="dataModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle">Add Data</h3>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div id="modalBody"></div>
+        <div class="modal-buttons">
+            <button class="save-btn" onclick="saveData()">Save</button>
+            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- View Data Modal -->
+<div id="viewModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="viewModalTitle">View Data</h3>
+            <button class="close-btn" onclick="closeViewModal()">&times;</button>
+        </div>
+        <div id="viewModalBody"></div>
+    </div>
+</div>
+
+<script>
+// CHECK LOGIN
+const currentUser = JSON.parse(localStorage.getItem('asan_current_user'));
+if (!currentUser || currentUser.role !== 'admin') {
+    window.location.href = 'login.html';
+}
+
+// Display admin name
+document.getElementById('adminName').textContent = `Welcome, ${currentUser.name}`;
+
+// Initialize data
+function initData() {
+    if (!localStorage.getItem('asan_ships')) {
+        localStorage.setItem('asan_ships', JSON.stringify([
+            { id: 1, name: 'MV Pacific Star', capacity: '5000 TEU', route: 'Asia-Pacific', status: 'Active' },
+            { id: 2, name: 'MV Atlantic Voyager', capacity: '3500 TEU', route: 'Trans-Atlantic', status: 'Active' },
+            { id: 3, name: 'MV Indian Ocean', capacity: '4200 TEU', route: 'Middle East-Asia', status: 'Maintenance' }
+        ]));
+    }
+
+    if (!localStorage.getItem('asan_shipments')) {
+        localStorage.setItem('asan_shipments', JSON.stringify([
+            { id: 1, tracking: 'ASAN-001-2024', origin: 'Shanghai', destination: 'Los Angeles', status: 'In Transit', cargo: 'Electronics' },
+            { id: 2, tracking: 'ASAN-002-2024', origin: 'Singapore', destination: 'Rotterdam', status: 'Delivered', cargo: 'Machinery' },
+            { id: 3, tracking: 'ASAN-003-2024', origin: 'Dubai', destination: 'Mumbai', status: 'Pending', cargo: 'Textiles' }
+        ]));
+    }
+
+    if (!localStorage.getItem('asan_finance')) {
+        localStorage.setItem('asan_finance', JSON.stringify([
+            { id: 1, type: 'Invoice', amount: '$45,000', client: 'ABC Corp', status: 'Paid', date: '2024-01-15' },
+            { id: 2, type: 'Payment', amount: '$32,000', client: 'XYZ Ltd', status: 'Pending', date: '2024-01-20' },
+            { id: 3, type: 'Invoice', amount: '$28,500', client: 'Global Trade', status: 'Overdue', date: '2024-01-10' }
+        ]));
+    }
+
+    if (!localStorage.getItem('asan_schedule')) {
+        localStorage.setItem('asan_schedule', JSON.stringify([
+            { id: 1, ship: 'MV Pacific Star', port: 'Singapore', arrival: '2024-02-01', departure: '2024-02-03' },
+            { id: 2, ship: 'MV Atlantic Voyager', port: 'Rotterdam', arrival: '2024-02-05', departure: '2024-02-07' },
+            { id: 3, ship: 'MV Indian Ocean', port: 'Dubai', arrival: '2024-02-10', departure: '2024-02-12' }
+        ]));
+    }
+}
+
+initData();
+
+let currentDataType = '';
+let editingId = null;
+
+// Modal functions
+function openModal(type) {
+    currentDataType = type;
+    editingId = null;
+    document.getElementById('modalTitle').textContent = `Add ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+    document.getElementById('modalBody').innerHTML = getFormHTML(type);
+    document.getElementById('dataModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('dataModal').style.display = 'none';
+    currentDataType = '';
+    editingId = null;
+}
+
+function closeViewModal() {
+    document.getElementById('viewModal').style.display = 'none';
+}
+
+// Get form HTML based on data type
+function getFormHTML(type) {
+    const forms = {
+        ships: `
+            <div class="form-group">
+                <label>Ship Name</label>
+                <input type="text" id="shipName" placeholder="Enter ship name">
+            </div>
+            <div class="form-group">
+                <label>Capacity</label>
+                <input type="text" id="shipCapacity" placeholder="e.g., 5000 TEU">
+            </div>
+            <div class="form-group">
+                <label>Route</label>
+                <input type="text" id="shipRoute" placeholder="e.g., Asia-Pacific">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="shipStatus">
+                    <option value="Active">Active</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+        `,
+        shipments: `
+            <div class="form-group">
+                <label>Tracking Number</label>
+                <input type="text" id="shipmentTracking" placeholder="e.g., ASAN-001-2024">
+            </div>
+            <div class="form-group">
+                <label>Origin</label>
+                <input type="text" id="shipmentOrigin" placeholder="e.g., Shanghai">
+            </div>
+            <div class="form-group">
+                <label>Destination</label>
+                <input type="text" id="shipmentDestination" placeholder="e.g., Los Angeles">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="shipmentStatus">
+                    <option value="Pending">Pending</option>
+                    <option value="In Transit">In Transit</option>
+                    <option value="Delivered">Delivered</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cargo Type</label>
+                <input type="text" id="shipmentCargo" placeholder="e.g., Electronics">
+            </div>
+        `,
+        finance: `
+            <div class="form-group">
+                <label>Type</label>
+                <select id="financeType">
+                    <option value="Invoice">Invoice</option>
+                    <option value="Payment">Payment</option>
+                    <option value="Expense">Expense</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="text" id="financeAmount" placeholder="e.g., $45,000">
+            </div>
+            <div class="form-group">
+                <label>Client/Description</label>
+                <input type="text" id="financeClient" placeholder="e.g., ABC Corp">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="financeStatus">
+                    <option value="Paid">Paid</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Overdue">Overdue</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="financeDate">
+            </div>
+        `,
+        schedule: `
+            <div class="form-group">
+                <label>Ship</label>
+                <select id="scheduleShip">
+                    ${JSON.parse(localStorage.getItem('asan_ships')).map(s => `<option value="${s.name}">${s.name}</option>`).join('')}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Port</label>
+                <input type="text" id="schedulePort" placeholder="e.g., Singapore">
+            </div>
+            <div class="form-group">
+                <label>Arrival Date</label>
+                <input type="date" id="scheduleArrival">
+            </div>
+            <div class="form-group">
+                <label>Departure Date</label>
+                <input type="date" id="scheduleDeparture">
+            </div>
+        `,
+        users: `
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="userName" placeholder="Enter user name">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="userEmail" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="userPassword" placeholder="Enter password">
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select id="userRole">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+        `
+    };
+    return forms[type] || '<p>No form available</p>';
+}
+
+// Save data
+function saveData() {
+    const storageKey = `asan_${currentDataType}`;
+    let data = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    
+    const newItem = { id: Date.now() };
+    
+    switch(currentDataType) {
+        case 'ships':
+            newItem.name = document.getElementById('shipName').value;
+            newItem.capacity = document.getElementById('shipCapacity').value;
+            newItem.route = document.getElementById('shipRoute').value;
+            newItem.status = document.getElementById('shipStatus').value;
+            break;
+        case 'shipments':
+            newItem.tracking = document.getElementById('shipmentTracking').value;
+            newItem.origin = document.getElementById('shipmentOrigin').value;
+            newItem.destination = document.getElementById('shipmentDestination').value;
+            newItem.status = document.getElementById('shipmentStatus').value;
+            newItem.cargo = document.getElementById('shipmentCargo').value;
+            break;
+        case 'finance':
+            newItem.type = document.getElementById('financeType').value;
+            newItem.amount = document.getElementById('financeAmount').value;
+            newItem.client = document.getElementById('financeClient').value;
+            newItem.status = document.getElementById('financeStatus').value;
+            newItem.date = document.getElementById('financeDate').value;
+            break;
+        case 'schedule':
+            newItem.ship = document.getElementById('scheduleShip').value;
+            newItem.port = document.getElementById('schedulePort').value;
+            newItem.arrival = document.getElementById('scheduleArrival').value;
+            newItem.departure = document.getElementById('scheduleDeparture').value;
+            break;
+        case 'users':
+            newItem.name = document.getElementById('userName').value;
+            newItem.email = document.getElementById('userEmail').value;
+            newItem.password = document.getElementById('userPassword').value;
+            newItem.role = document.getElementById('userRole').value;
+            // Add to users database
+            const users = JSON.parse(localStorage.getItem('asan_users') || '[]');
+            users.push(newItem);
+            localStorage.setItem('asan_users', JSON.stringify(users));
+            showNotification('User added successfully!');
+            closeModal();
+            return;
+    }
+    
+    data.push(newItem);
+    localStorage.setItem(storageKey, JSON.stringify(data));
+    showNotification(`${currentDataType.charAt(0).toUpperCase() + currentDataType.slice(1)} added successfully!`);
+    closeModal();
+}
+
+// View data
+function viewData(type) {
+    const storageKey = type === 'reports' ? 'asan_shipments' : `asan_${type}`;
+    const data = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    
+    document.getElementById('viewModalTitle').textContent = `View ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+    
+    if (type === 'reports') {
+        const shipments = data;
+        const totalShipments = shipments.length;
+        const inTransit = shipments.filter(s => s.status === 'In Transit').length;
+        const delivered = shipments.filter(s => s.status === 'Delivered').length;
+        
+        document.getElementById('viewModalBody').innerHTML = `
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin-bottom:20px;">
+                <div style="background:#007bff; color:white; padding:20px; border-radius:10px; text-align:center;">
+                    <h3 style="margin:0; font-size:32px;">${totalShipments}</h3>
+                    <p style="margin:5px 0 0 0;">Total Shipments</p>
+                </div>
+                <div style="background:#28a745; color:white; padding:20px; border-radius:10px; text-align:center;">
+                    <h3 style="margin:0; font-size:32px;">${delivered}</h3>
+                    <p style="margin:5px 0 0 0;">Delivered</p>
+                </div>
+                <div style="background:#ffc107; color:white; padding:20px; border-radius:10px; text-align:center;">
+                    <h3 style="margin:0; font-size:32px;">${inTransit}</h3>
+                    <p style="margin:5px 0 0 0;">In Transit</p>
+                </div>
+            </div>
+            <div class="data-list">
+                ${shipments.map(s => `
+                    <div class="data-item">
+                        <h4>${s.tracking}</h4>
+                        <p><strong>Route:</strong> ${s.origin} → ${s.destination}</p>
+                        <p><strong>Status:</strong> ${s.status}</p>
+                        <p><strong>Cargo:</strong> ${s.cargo}</p>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    } else {
+        document.getElementById('viewModalBody').innerHTML = `
+            <div class="data-list">
+                ${data.map(item => `
+                    <div class="data-item">
+                        <h4>${item.name || item.tracking || item.type || item.ship || item.email}</h4>
+                        ${Object.entries(item).filter(([k]) => k !== 'id' && k !== 'name' && k !== 'tracking' && k !== 'type' && k !== 'ship' && k !== 'email').map(([k, v]) => `<p><strong>${k.charAt(0).toUpperCase() + k.slice(1)}:</strong> ${v}</p>`).join('')}
+                        <div class="actions">
+                            <button onclick="editItem('${type}', ${item.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteItem('${type}', ${item.id})">Delete</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+    
+    document.getElementById('viewModal').style.display = 'flex';
+}
+
+// Edit item
+function editItem(type, id) {
+    closeViewModal();
+    currentDataType = type;
+    editingId = id;
+    
+    const storageKey = `asan_${type}`;
+    const data = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    const item = data.find(i => i.id === id);
+    
+    document.getElementById('modalTitle').textContent = `Edit ${type.charAt(0).toUpperCase() + type.slice(1)}`;
+    document.getElementById('modalBody').innerHTML = getFormHTML(type);
+    document.getElementById('dataModal').style.display = 'flex';
+    
+    // Populate form
+    setTimeout(() => {
+        switch(type) {
+            case 'ships':
+                document.getElementById('shipName').value = item.name;
+                document.getElementById('shipCapacity').value = item.capacity;
+                document.getElementById('shipRoute').value = item.route;
+                document.getElementById('shipStatus').value = item.status;
+                break;
+            case 'shipments':
+                document.getElementById('shipmentTracking').value = item.tracking;
+                document.getElementById('shipmentOrigin').value = item.origin;
+                document.getElementById('shipmentDestination').value = item.destination;
+                document.getElementById('shipmentStatus').value = item.status;
+                document.getElementById('shipmentCargo').value = item.cargo;
+                break;
+            case 'finance':
+                document.getElementById('financeType').value = item.type;
+                document.getElementById('financeAmount').value = item.amount;
+                document.getElementById('financeClient').value = item.client;
+                document.getElementById('financeStatus').value = item.status;
+                document.getElementById('financeDate').value = item.date;
+                break;
+            case 'schedule':
+                document.getElementById('scheduleShip').value = item.ship;
+                document.getElementById('schedulePort').value = item.port;
+                document.getElementById('scheduleArrival').value = item.arrival;
+                document.getElementById('scheduleDeparture').value = item.departure;
+                break;
+        }
+    }, 100);
+}
+
+// Delete item
+function deleteItem(type, id) {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+    
+    const storageKey = `asan_${type}`;
+    let data = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    data = data.filter(i => i.id !== id);
+    localStorage.setItem(storageKey, JSON.stringify(data));
+    
+    showNotification('Item deleted successfully!');
+    viewData(type);
+}
+
+// Override save for edit
+const originalSave = saveData;
+saveData = function() {
+    if (editingId) {
+        const storageKey = `asan_${currentDataType}`;
+        let data = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        const index = data.findIndex(i => i.id === editingId);
+        
+        if (index !== -1) {
+            switch(currentDataType) {
+                case 'ships':
+                    data[index].name = document.getElementById('shipName').value;
+                    data[index].capacity = document.getElementById('shipCapacity').value;
+                    data[index].route = document.getElementById('shipRoute').value;
+                    data[index].status = document.getElementById('shipStatus').value;
+                    break;
+                case 'shipments':
+                    data[index].tracking = document.getElementById('shipmentTracking').value;
+                    data[index].origin = document.getElementById('shipmentOrigin').value;
+                    data[index].destination = document.getElementById('shipmentDestination').value;
+                    data[index].status = document.getElementById('shipmentStatus').value;
+                    data[index].cargo = document.getElementById('shipmentCargo').value;
+                    break;
+                case 'finance':
+                    data[index].type = document.getElementById('financeType').value;
+                    data[index].amount = document.getElementById('financeAmount').value;
+                    data[index].client = document.getElementById('financeClient').value;
+                    data[index].status = document.getElementById('financeStatus').value;
+                    data[index].date = document.getElementById('financeDate').value;
+                    break;
+                case 'schedule':
+                    data[index].ship = document.getElementById('scheduleShip').value;
+                    data[index].port = document.getElementById('schedulePort').value;
+                    data[index].arrival = document.getElementById('scheduleArrival').value;
+                    data[index].departure = document.getElementById('scheduleDeparture').value;
+                    break;
+            }
+            
+            localStorage.setItem(storageKey, JSON.stringify(data));
+            showNotification('Item updated successfully!');
+            closeModal();
+            return;
+        }
+    }
+    
+    originalSave();
+};
+
+// Show notification
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification-badge';
+    notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// Live notifications simulation
+setInterval(() => {
+    const notifications = [
+        'New shipment received from Tokyo',
+        'MV Pacific Star arrived at Singapore',
+        'Payment received from ABC Corp',
+        'Schedule updated for MV Atlantic Voyager',
+        'User login detected: admin@asan.com'
+    ];
+    
+    if (Math.random() > 0.7) {
+        const randomNotification = notifications[Math.floor(Math.random() * notifications.length)];
+        showNotification(randomNotification);
+    }
+}, 30000);
+
+// LOGOUT
+function logout(){
+    localStorage.removeItem('asan_current_user');
+    localStorage.removeItem('asan_user_name');
+    localStorage.removeItem('asan_user_email');
+    localStorage.removeItem('asan_user_role');
+    window.location.href = 'login.html';
+}
+</script>
+
+</body>
+</html>

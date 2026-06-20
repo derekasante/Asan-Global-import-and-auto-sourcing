@@ -1,0 +1,80 @@
+.import-search{
+
+display:flex;
+
+gap:15px;
+
+margin:30px 0;
+
+}
+
+.import-search input,
+.import-search select{
+
+padding:15px;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+font-size:15px;
+
+flex:1;
+
+}
+
+.import-search button{
+
+padding:15px 30px;
+
+background:#0057d8;
+
+color:white;
+
+border:none;
+
+border-radius:12px;
+
+cursor:pointer;
+
+}
+
+.import-table{
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.import-table table{
+
+width:100%;
+
+margin-top:20px;
+
+border-collapse:collapse;
+
+}
+
+.import-table th{
+
+background:#0057d8;
+
+color:white;
+
+padding:15px;
+
+}
+
+.import-table td{
+
+padding:15px;
+
+border-bottom:1px solid #ddd;
+
+}

@@ -1,0 +1,41 @@
+<div class="login-container">
+
+    <div class="logo">
+        <h2>🚢 Asan Global</h2>
+        <p>Shipping Management System</p>
+    </div>
+
+    <!-- Normal Login -->
+    <form id="loginForm">
+
+        <input type="text" id="username" placeholder="Username" required>
+
+        <input type="password" id="password" placeholder="Password" required>
+
+        <button type="submit">Login</button>
+
+    </form>
+
+    <div class="divider">
+        <span>OR</span>
+    </div>
+
+    <!-- Google Sign In -->
+    <div id="g_id_onload"
+         data-client_id="YOUR_CLIENT_ID"
+         data-callback="handleCredentialResponse">
+    </div>
+
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="filled_blue"
+         data-text="signin_with"
+         data-shape="pill"
+         data-logo_alignment="left">
+    </div>
+
+</div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="script.js"></script>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asan Global | Payments</title>
+    <link rel="stylesheet" href="finance.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <h2>ASAN GLOBAL</h2>
+        <nav>
+            <a href="index.html"><i class="fa fa-home"></i> Home</a>
+            <a href="tracking.html"><i class="fa fa-ship"></i> Tracking</a>
+            <a href="finance.html"><i class="fa fa-wallet"></i> Finance</a>
+            <a href="payment.html" class="active"><i class="fa fa-credit-card"></i> Payments</a>
+            <a href="schudule.html"><i class="fa fa-calendar"></i> Schedule</a>
+            <a href="import.html"><i class="fa fa-file-import"></i> Import</a>
+            <a href="dashboard.html"><i class="fa fa-gauge"></i> Dashboard</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <h1 class="page-title">Payments Dashboard</h1>
+                <p class="page-subtitle">Manage invoices, payouts, subscriptions, and account activity from one modern payments center.</p>
+            </div>
+            <button class="btn">New Payment</button>
+        </div>
+
+        <div class="status-row">
+            <div class="card">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <h3>Total Payments</h3>
+                <p>$1,280,500</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-clock"></i>
+                <h3>Pending</h3>
+                <p>$54,800</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-calendar-days"></i>
+                <h3>Due This Week</h3>
+                <p>$16,720</p>
+            </div>
+            <div class="card">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <h3>Invoices</h3>
+                <p>182</p>
+            </div>
+        </div>
+
+        <div class="section payments-grid">
+            <div>
+                <div class="section">
+                    <h2>Recent Transactions</h2>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Vendor</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Global Freight</td>
+                                    <td>Port Fees</td>
+                                    <td>$4,120</td>
+                                    <td><span class="status-pill status-paid">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Ocean Cargo</td>
+                                    <td>Fuel</td>
+                                    <td>$7,840</td>
+                                    <td><span class="status-pill status-pending">Pending</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Customs Plus</td>
+                                    <td>Clearance</td>
+                                    <td>$2,900</td>
+                                    <td><span class="status-pill status-paid">Paid</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Marine Insurance</td>
+                                    <td>Insurance</td>
+                                    <td>$1,540</td>
+                                    <td><span class="status-pill status-overdue">Overdue</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="section-footer">
+                        <span class="summary-badge"><i class="fa-solid fa-check-circle"></i> 94% on time</span>
+                        <button class="btn secondary">View Full Ledger</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-card">
+                <h3>Payment Summary</h3>
+                <p><strong>Available Balance:</strong> $98,420</p>
+                <p><strong>Next Payout:</strong> 26 June 2026</p>
+                <p><strong>Open Invoices:</strong> 8</p>
+                <p><strong>Last payout:</strong> $42,600</p>
+                <ul>
+                    <li>Automatic reconciliation enabled</li>
+                    <li>Bank transfer processing in 2 days</li>
+                    <li>Top payment method: Business Visa</li>
+                </ul>
+                <button class="btn">Export Payments</button>
+            </div>
+        </div>
+
+        <div class="section" id="paymentFormSection">
+            <h2>💸 Make a Payment</h2>
+            <form id="realPaymentForm">
+                <div class="form-row">
+                    <div>
+                        <label for="payerName">Payer Name</label>
+                        <input type="text" id="payerName" name="payerName" placeholder="Enter payer name" required>
+                    </div>
+                    <div>
+                        <label for="paymentMethod">Payment Method</label>
+                        <select id="paymentMethod" name="paymentMethod" required>
+                            <option value="Visa">Visa</option>
+                            <option value="Mastercard">Mastercard</option>
+                            <option value="Mobile Money">Mobile Money</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                            <option value="PayPal">PayPal</option>
+                        </select>
+                        <p class="small-note">For Mobile Money payments, send the funds to <strong>0245357611</strong> and confirm with your PIN/OTP.</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="amount">Amount</label>
+                        <input type="number" id="amount" name="amount" placeholder="Enter amount" min="1" required>
+                    </div>
+                    <div>
+                        <label for="transactionType">Transaction Type</label>
+                        <select id="transactionType" name="transactionType" required>
+                            <option value="deposit">Deposit</option>
+                            <option value="withdraw">Withdraw</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="authCode">PIN / MoMo Code</label>
+                        <input type="password" id="authCode" name="authCode" placeholder="Enter secure code" minlength="4" maxlength="8" required>
+                    </div>
+                    <div>
+                        <label for="reference">Reference</label>
+                        <input type="text" id="reference" name="reference" placeholder="e.g. Port Fee Payment" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="otp">OTP (One-time passcode)</label>
+                        <input type="text" id="otp" name="otp" placeholder="Enter OTP" pattern="\d{6}" required>
+                    </div>
+                    <div>
+                        <label for="remarks">Remarks</label>
+                        <input type="text" id="remarks" name="remarks" placeholder="Optional notes">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn" type="submit">Submit Payment</button>
+                    <button class="btn secondary" type="reset">Clear</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Upcoming Charges</h2>
+            <div class="payment-row">
+                <div class="payment-card">
+                    <h3>Port & Terminal Fees</h3>
+                    <p>$12,200</p>
+                </div>
+                <div class="payment-card">
+                    <h3>Cargo Insurance</h3>
+                    <p>$3,100</p>
+                </div>
+            </div>
+            <div class="payment-row">
+                <div class="payment-card">
+                    <h3>Fuel Advance</h3>
+                    <p>$6,800</p>
+                </div>
+                <div class="payment-card">
+                    <h3>Customs Deposit</h3>
+                    <p>$4,220</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="payment.js"></script>
+</body>
+
+</html>

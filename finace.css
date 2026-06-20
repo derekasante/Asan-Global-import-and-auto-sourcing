@@ -1,0 +1,10 @@
+.main{
+    margin-left:240px;
+    padding:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}

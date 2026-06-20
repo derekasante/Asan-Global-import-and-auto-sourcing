@@ -1,0 +1,65 @@
+.tracking-search{
+
+display:flex;
+
+gap:15px;
+
+margin:30px 0;
+
+}
+
+.tracking-search input{
+
+flex:1;
+
+padding:15px;
+
+border:none;
+
+border-radius:12px;
+
+font-size:16px;
+
+}
+
+.tracking-search button{
+
+background:#0057d8;
+
+color:white;
+
+padding:15px 30px;
+
+border:none;
+
+border-radius:12px;
+
+cursor:pointer;
+
+}
+
+.tracking-card{
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+margin-bottom:30px;
+
+}
+
+.track-grid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:25px;
+
+margin-top:20px;
+
+}

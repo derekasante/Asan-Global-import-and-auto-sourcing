@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Admin Login | Asan Global</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="login.css">
+
+<style>
+body{
+    background:linear-gradient(135deg,#003366,#007bff);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="background" style="--background-image:url('https://images.unsplash.com/photo-1494412574642-65878244971?w=1920&q=80');"></div>
+
+<div class="login-box">
+  <div class="logo">
+    <i class="fas fa-ship"></i>
+    <h2>Asan Global</h2>
+  </div>
+
+  <h1>Admin Login</h1>
+  <p class="subtitle">Access admin control panel</p>
+
+  <form id="adminLoginForm">
+    <div class="form-group">
+      <label for="adminEmail">Email Address</label>
+      <div class="input-wrapper">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="adminEmail" name="email" placeholder="admin@asan.com" required />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="adminPassword">Password</label>
+      <div class="input-wrapper">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="adminPassword" name="password" placeholder="Enter password" required />
+        <button type="button" class="toggle-password" id="toggleAdminPassword">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+    </div>
+
+    <button type="submit" class="login-btn">Admin Login</button>
+  </form>
+
+  <div class="divider">
+    <span>OR</span>
+  </div>
+
+  <p class="signup">
+    <a href="login.html">&larr; Back to regular login</a>
+  </p>
+
+  <p class="signup" style="margin-top:10px; font-size:12px; color:#aaa;">
+    Default admin: admin@asan.com / admin123
+  </p>
+</div>
+
+<script>
+// Toggle password visibility
+const toggleAdminPassword = document.getElementById('toggleAdminPassword');
+const adminPasswordInput = document.getElementById('adminPassword');
+
+if (toggleAdminPassword && adminPasswordInput) {
+  toggleAdminPassword.addEventListener('click', (e) => {
+    e.preventDefault();
+    const isPassword = adminPasswordInput.type === 'password';
+    adminPasswordInput.type = isPassword ? 'text' : 'password';
+    
+    const icon = toggleAdminPassword.querySelector('i');
+    if (isPassword) {
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
+    } else {
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
+    }
+  });
+}
+
+// Initialize admin user if not exists
+function initAdminUser() {
+  const users = JSON.parse(localStorage.getItem('asan_users') || '[]');
+  if (!users.find(u => u.email === 'admin@asan.com')) {
+    users.push({
+      email: 'admin@asan.com',
+      password: 'admin123',
+      name: 'Admin',
+      role: 'admin'
+    });
+    localStorage.setItem('asan_users', JSON.stringify(users));
+  }
+}
+
+initAdminUser();
+
+// Handle admin login
+document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById('adminEmail').value.trim();
+  const password = document.getElementById('adminPassword').value.trim();
+
+  const users = JSON.parse(localStorage.getItem('asan_users') || '[]');
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if (!user) {
+    alert('Invalid email or password');
+    return;
+  }
+
+  if (user.role !== 'admin') {
+    alert('Access denied. Admin privileges required.');
+    return;
+  }
+
+  // Save session
+  localStorage.setItem('asan_current_user', JSON.stringify(user));
+  localStorage.setItem('asan_user_name', user.name);
+  localStorage.setItem('asan_user_email', user.email);
+  localStorage.setItem('asan_user_role', user.role);
+
+  window.location.href = 'Admin.html';
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asan Global Shipping | Tracking Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="tracking.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Leaflet Map -->
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <i class="fa-solid fa-ship"></i>
+            <h2>ASAN GLOBAL</h2>
+        </div>
+
+        <ul>
+
+            <li>
+                <a href="index.html">
+                    <i class="fa-solid fa-house"></i>
+                    Home
+                </a>
+            </li>
+
+            <li class="active">
+                <a href="#">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    Tracking
+                </a>
+            </li>
+
+            <li>
+                <a href="schudule.html">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Schedule
+                </a>
+            </li>
+
+            <li>
+                <a href="finance.html">
+                    <i class="fa-solid fa-wallet"></i>
+                    Finance
+                </a>
+            </li>
+
+            <li>
+                <a href="import.html">
+                    <i class="fa-solid fa-file-import"></i>
+                    Import
+                </a>
+            </li>
+
+            <li>
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-gauge"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="login.html">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- Main Content -->
+
+    <main class="main-content">
+
+        <!-- Top Bar -->
+
+        <header class="topbar">
+
+            <div class="search-box">
+
+                <input type="text" id="trackingInput"
+                    placeholder="Enter Tracking Number">
+
+                <button>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Track
+                </button>
+
+            </div>
+
+            <div class="top-icons">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+        </header>
+
+        <!-- Statistics -->
+
+        <section class="stats">
+
+            <div class="card">
+
+                <i class="fa-solid fa-ship"></i>
+
+                <h3>Current Vessel</h3>
+
+                <p>ASAN OCEAN STAR</p>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <h3>Current Port</h3>
+
+                <p>Tema Port</p>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-clock"></i>
+
+                <h3>ETA</h3>
+
+                <p id="etaCountdown">25 June 2026</p>
+
+            </div>
+
+            <div class="card">
+
+                <i class="fa-solid fa-satellite"></i>
+
+                <h3>GPS Status</h3>
+
+                <span class="online">ONLINE</span>
+
+            </div>
+
+        </section>
+
+        <!-- Map & Ship -->
+
+        <section class="middle">
+
+            <!-- Map -->
+
+            <div class="map-section">
+
+                <div class="section-title">
+
+                    <h2>
+                        Live Tracking Map
+                    </h2>
+
+                </div>
+
+                <div id="map"></div>
+
+            </div>
+
+            <!-- Ship Information -->
+
+            <div class="ship-card">
+
+                <h2>Ship Information</h2>
+
+                <div class="info">
+
+                    <p><strong>Ship:</strong> ASAN OCEAN STAR</p>
+
+                    <p><strong>Captain:</strong> James Anderson</p>
+
+                    <p><strong>Container:</strong> ASGU2948492</p>
+
+                    <p><strong>Status:</strong> <span id="shipStatus">In Transit</span></p>
+
+                    <p><strong>Speed:</strong> 18 Knots</p>
+
+                    <p><strong>Weather:</strong> Sunny</p>
+
+                    <p><strong>Coordinates:</strong> 
+                     <span id="coordinates">
+                        5.6037° N, 0.1870° W
+                     </span>   
+                        </p>
+
+                    <p><strong>Fuel:</strong> 84%</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Progress -->
+
+        <section class="progress-area">
+
+            <h2>Shipment Progress</h2>
+
+            <div class="timeline">
+
+                <div class="step complete">
+
+                    <span></span>
+
+                    Order Received
+
+                </div>
+
+                <div class="step complete">
+
+                    <span></span>
+
+                    Warehouse
+
+                </div>
+
+                <div class="step complete">
+
+                    <span></span>
+
+                    Customs
+
+                </div>
+
+                <div class="step active">
+
+                    <span></span>
+
+                    In Transit
+
+                </div>
+
+                <div class="step">
+
+                    <span></span>
+
+                    Destination Port
+
+                </div>
+
+                <div class="step">
+
+                    <span></span>
+
+                    Delivered
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Lower Section -->
+
+        <section class="bottom">
+
+            <!-- Updates -->
+
+            <div class="updates">
+
+                <h2>Recent Updates</h2>
+
+                <ul>
+
+                    <li>
+                        🚢 Vessel departed Tema Port
+                        <span>08:30 AM</span>
+                    </li>
+
+                    <li>
+                        🌊 Passing Gulf of Guinea
+                        <span>11:15 AM</span>
+                    </li>
+
+                    <li>
+                        ☀ Weather Clear
+                        <span>02:00 PM</span>
+                    </li>
+
+                    <li>
+                        📍 GPS Updated
+                        <span>04:45 PM</span>
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- Container -->
+
+            <div class="container-card">
+
+                <h2>Container Details</h2>
+
+                <table>
+
+                    <tr>
+
+                        <td>Container No.</td>
+
+                        <td>ASGU2948492</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Weight</td>
+
+                        <td>20 Tons</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Cargo</td>
+
+                        <td>Electronics</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Seal Number</td>
+
+                        <td>SN847383</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Destination</td>
+
+                        <td>Rotterdam</td>
+
+                    </tr>
+
+                </table>
+
+                <button class="download">
+
+                    <i class="fa-solid fa-download"></i>
+
+                    Download Report
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Leaflet -->
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- JavaScript -->
+
+    <script src="tracking.js"></script>
+
+</body>
+
+</html>
