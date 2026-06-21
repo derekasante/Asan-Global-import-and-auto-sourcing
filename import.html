@@ -3,127 +3,524 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Import &amp; Auto Sourcing | Asan Global Shipping</title>
-<meta name="description" content="Vehicle and goods import services from USA, UK, Japan, UAE and more. Sourcing, shipping, and customs clearance through Tema Port.">
-
-<link rel="stylesheet" href="style.css">
+<title>New Import Request | Asan Global</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+display:flex;
+background:#f0f4f8;
+min-height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:280px;
+height:100vh;
+background:linear-gradient(180deg, #1a365d 0%, #2d5a87 100%);
+color:white;
+position:fixed;
+padding:30px 25px;
+box-shadow:4px 0 15px rgba(0,0,0,0.1);
+z-index:1000;
+}
+
+.sidebar .logo{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:50px;
+padding-bottom:20px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar .logo i{
+font-size:32px;
+color:#ffd54f;
+}
+
+.sidebar .logo h2{
+font-size:22px;
+font-weight:600;
+}
+
+.sidebar .logo span{
+font-size:12px;
+color:#ffd54f;
+}
+
+.sidebar a{
+color:rgba(255,255,255,0.8);
+text-decoration:none;
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px 16px;
+border-radius:12px;
+margin:8px 0;
+transition:.3s;
+font-size:15px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+background:rgba(255,255,255,0.15);
+color:white;
+transform:translateX(5px);
+}
+
+/* Main */
+
+.main{
+margin-left:280px;
+width:calc(100% - 280px);
+}
+
+/* Header */
+
+.topbar{
+background:white;
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 15px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.topbar h1{
+font-size:24px;
+color:#1a365d;
+font-weight:600;
+}
+
+.topbar .user-info{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.topbar .user-avatar{
+width:45px;
+height:45px;
+border-radius:50%;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-weight:600;
+font-size:18px;
+}
+
+/* Content */
+
+.content{
+padding:40px;
+}
+
+/* Form Section */
+
+.form-section{
+background:white;
+padding:40px;
+border-radius:24px;
+box-shadow:0 5px 25px rgba(0,0,0,0.08);
+max-width:900px;
+margin:0 auto;
+}
+
+.form-section h2{
+font-size:28px;
+color:#1a365d;
+margin-bottom:10px;
+font-weight:600;
+}
+
+.form-section p{
+color:#666;
+margin-bottom:30px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-bottom:25px;
+}
+
+.form-group label{
+display:block;
+font-size:14px;
+color:#333;
+font-weight:500;
+margin-bottom:10px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+width:100%;
+padding:14px 16px;
+border:2px solid #e0e0e0;
+border-radius:12px;
+font-size:15px;
+transition:.3s;
+font-family:'Poppins',sans-serif;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+outline:none;
+border-color:#667eea;
+}
+
+.form-group textarea{
+resize:vertical;
+min-height:120px;
+}
+
+.form-actions{
+margin-top:30px;
+display:flex;
+gap:15px;
+}
+
+.btn{
+padding:14px 32px;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color:white;
+border:none;
+border-radius:12px;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+transition:.3s;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 25px rgba(102,126,234,0.4);
+}
+
+.btn.secondary{
+background:#f0f4f8;
+color:#1a365d;
+}
+
+.btn.secondary:hover{
+background:#e0e4e8;
+}
+
+/* Info Cards */
+
+.info-cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+margin-top:40px;
+}
+
+.info-card{
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+padding:30px;
+border-radius:20px;
+color:white;
+text-align:center;
+}
+
+.info-card i{
+font-size:40px;
+margin-bottom:15px;
+}
+
+.info-card h3{
+font-size:20px;
+margin-bottom:10px;
+font-weight:600;
+}
+
+.info-card p{
+font-size:14px;
+opacity:0.9;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+.sidebar{
+width:220px;
+}
+
+.main{
+margin-left:220px;
+width:calc(100% - 220px);
+}
+
+}
+
+@media(max-width:768px){
+
+.sidebar{
+display:none;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+.content{
+padding:20px;
+}
+
+.form-section{
+padding:25px;
+}
+
+.form-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <i class="fas fa-ship"></i>
-    <div>
-      <h2>Asan Global</h2>
-      <h4 style="color:#ffd54f;font-size:13px;font-weight:500;">Import &amp; Auto Sourcing</h4>
+<div class="sidebar">
+    <div class="logo">
+        <i class="fas fa-car"></i>
+        <div>
+            <h2>Asan Global</h2>
+            <span>Import Services</span>
+        </div>
     </div>
-  </div>
-  <button class="menu-toggle" type="button" aria-label="Open menu"><i class="fas fa-bars"></i></button>
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="index.html#services">Services</a></li>
-      <li><a href="index.html#quote">Get Quote</a></li>
-      <li><a href="tracking.html">Track</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
-    </ul>
-  </nav>
-  <a href="login.html" class="login-btn">Login</a>
-</header>
-
-<section class="page-hero">
-  <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
-  <h1>Import &amp; Auto Sourcing</h1>
-  <p>We source vehicles and goods internationally, ship them to Ghana through Tema Port, and handle customs clearance and delivery — end to end.</p>
-  <a href="index.html#quote" class="hero-btn">Request Import Quote</a>
-</section>
-
-<div class="import-content">
-  <div class="import-grid">
-    <div class="import-card">
-      <i class="fas fa-car"></i>
-      <h3>Vehicle Import</h3>
-      <p>Cars, SUVs, trucks, and motorcycles from USA, UK, Japan, and UAE. Inspection, shipping, and DVLA registration support.</p>
-    </div>
-    <div class="import-card">
-      <i class="fas fa-laptop"></i>
-      <h3>Electronics &amp; Machinery</h3>
-      <p>Import phones, computers, industrial equipment, and spare parts with proper documentation and insurance.</p>
-    </div>
-    <div class="import-card">
-      <i class="fas fa-shopping-cart"></i>
-      <h3>Personal &amp; Business Goods</h3>
-      <p>Household items, retail stock, and wholesale cargo — consolidated shipping to save you money.</p>
-    </div>
-    <div class="import-card">
-      <i class="fas fa-search-location"></i>
-      <h3>Sourcing Service</h3>
-      <p>Don't know where to buy? We find suppliers, verify quality, negotiate price, and arrange shipment for you.</p>
-    </div>
-    <div class="import-card">
-      <i class="fas fa-file-contract"></i>
-      <h3>Customs &amp; Clearance</h3>
-      <p>Full customs brokerage at Tema Port — duties calculation, declarations, and release coordination.</p>
-    </div>
-    <div class="import-card">
-      <i class="fas fa-truck-loading"></i>
-      <h3>Door Delivery</h3>
-      <p>After clearance, we deliver to Accra, Kumasi, Takoradi, or anywhere in Ghana by road.</p>
-    </div>
-  </div>
-
-  <div class="doc-list">
-    <h3><i class="fas fa-folder-open"></i> Documents You May Need</h3>
-    <ul>
-      <li><i class="fas fa-check-circle"></i> Valid Ghana Card / Passport</li>
-      <li><i class="fas fa-check-circle"></i> Purchase invoice or receipt</li>
-      <li><i class="fas fa-check-circle"></i> Bill of lading (we provide)</li>
-      <li><i class="fas fa-check-circle"></i> Import permit (if required)</li>
-      <li><i class="fas fa-check-circle"></i> Customs declaration form</li>
-      <li><i class="fas fa-check-circle"></i> Proof of payment / deposit</li>
-    </ul>
-  </div>
-
-  <div class="process-steps">
-    <div class="step">
-      <span class="step-num">1</span>
-      <i class="fas fa-comments"></i>
-      <h3>Tell Us What You Need</h3>
-      <p>Share vehicle specs or product details and your budget.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">2</span>
-      <i class="fas fa-handshake"></i>
-      <h3>We Source &amp; Quote</h3>
-      <p>We find the best option and send a full cost breakdown.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">3</span>
-      <i class="fas fa-anchor"></i>
-      <h3>Ship to Tema Port</h3>
-      <p>Ocean or air freight with live tracking throughout.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">4</span>
-      <i class="fas fa-key"></i>
-      <h3>Clear &amp; Deliver</h3>
-      <p>Customs done, keys or goods handed to you.</p>
-    </div>
-  </div>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Track Import</a>
+    <a href="import.html" class="active"><i class="fas fa-file-import"></i> New Import</a>
+    <a href="finance.html"><i class="fas fa-wallet"></i> Finance</a>
+    <a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a>
+    <a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a>
+    <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+    <a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
 </div>
 
-<a href="https://wa.me/233245357611?text=Hi%20Asan%20Global%2C%20I%20want%20to%20import%20a%20vehicle." class="float-whatsapp" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-  <i class="fab fa-whatsapp"></i>
-</a>
+<div class="main">
+    <div class="topbar">
+        <h1>New Import Request</h1>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">U</div>
+        </div>
+    </div>
 
-<footer>
-  <div class="footer-bottom">
-    <p>&copy; 2026 Asan Global · <a href="index.html" style="color:#00d4ff;">Home</a> · <a href="tel:+233245357611" style="color:#00d4ff;">+233 245 357 611</a></p>
-  </div>
-</footer>
+    <div class="content">
+        <div class="form-section">
+            <h2>Submit Vehicle Import Request</h2>
+            <p>Fill in the details below to start your vehicle import process. Our team will review and assign staff to handle your import.</p>
+            
+            <form id="importForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Vehicle Make</label>
+                        <select id="make" required>
+                            <option value="">Select Make</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Honda">Honda</option>
+                            <option value="Nissan">Nissan</option>
+                            <option value="BMW">BMW</option>
+                            <option value="Mercedes">Mercedes</option>
+                            <option value="Audi">Audi</option>
+                            <option value="Ford">Ford</option>
+                            <option value="Chevrolet">Chevrolet</option>
+                            <option value="Volkswagen">Volkswagen</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Model</label>
+                        <input type="text" id="model" placeholder="e.g. Land Cruiser, Camry, Civic" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Year</label>
+                        <input type="number" id="year" placeholder="e.g. 2024" min="1990" max="2026" required>
+                    </div>
+                    <div class="form-group">
+                        <label>VIN Number</label>
+                        <input type="text" id="vin" placeholder="Vehicle Identification Number" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Origin Country</label>
+                        <select id="origin" required>
+                            <option value="">Select Origin</option>
+                            <option value="Japan">Japan</option>
+                            <option value="USA">USA</option>
+                            <option value="UK">UK</option>
+                            <option value="Germany">Germany</option>
+                            <option value="UAE">UAE</option>
+                            <option value="South Korea">South Korea</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Destination Country</label>
+                        <select id="destination" required>
+                            <option value="">Select Destination</option>
+                            <option value="Ghana">Ghana</option>
+                            <option value="Nigeria">Nigeria</option>
+                            <option value="Kenya">Kenya</option>
+                            <option value="South Africa">South Africa</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Value ($)</label>
+                        <input type="number" id="value" placeholder="e.g. 85000" min="1000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Vehicle Type</label>
+                        <select id="vehicleType" required>
+                            <option value="">Select Type</option>
+                            <option value="Sedan">Sedan</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Truck">Truck</option>
+                            <option value="Motorcycle">Motorcycle</option>
+                            <option value="Van">Van</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
 
-<script src="index.js"></script>
+                <div class="form-group">
+                    <label>Additional Notes</label>
+                    <textarea id="notes" placeholder="Any special requirements or additional information..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn">Submit Import Request</button>
+                    <button type="reset" class="btn secondary">Clear Form</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="info-cards">
+            <div class="info-card">
+                <i class="fas fa-clock"></i>
+                <h3>Fast Processing</h3>
+                <p>Your request will be processed within 24 hours</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-user-tie"></i>
+                <h3>Expert Staff</h3>
+                <p>Professional team assigned to handle your import</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure & Insured</h3>
+                <p>Your vehicle is fully insured during transit</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Check authentication
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('asan_current_user'));
+    if (!user) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    return user;
+}
+
+// Generate tracking number
+function generateTrackingNumber() {
+    const timestamp = Date.now().toString().slice(-6);
+    const random = Math.floor(Math.random() * 9000) + 1000;
+    return `ASAN-IMP-${timestamp}-${random}`;
+}
+
+// Handle form submission
+document.getElementById('importForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const user = checkAuth();
+    if (!user) return;
+
+    // Load existing imports
+    const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+    
+    // Load staff for assignment
+    const staff = JSON.parse(localStorage.getItem('asan_staff') || '[]');
+    const availableStaff = staff.filter(s => s.role === 'staff' || s.role === 'agent');
+    const assignedStaff = availableStaff.length > 0 ? availableStaff[0].name : 'Unassigned';
+
+    // Calculate fees
+    const vehicleValue = parseFloat(document.getElementById('value').value);
+    const importFee = Math.round(vehicleValue * 0.05); // 5% import fee
+    const customsFee = Math.round(vehicleValue * 0.03); // 3% customs fee
+
+    // Create new import
+    const newImport = {
+        id: Date.now(),
+        tracking: generateTrackingNumber(),
+        make: document.getElementById('make').value,
+        model: document.getElementById('model').value,
+        year: document.getElementById('year').value,
+        vin: document.getElementById('vin').value,
+        origin: document.getElementById('origin').value,
+        destination: document.getElementById('destination').value,
+        value: vehicleValue,
+        vehicleType: document.getElementById('vehicleType').value,
+        notes: document.getElementById('notes').value,
+        customer: user.name,
+        assignedStaff: assignedStaff,
+        importFee: importFee,
+        customsFee: customsFee,
+        status: 'Pending',
+        createdAt: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    imports.push(newImport);
+    localStorage.setItem('asan_imports', JSON.stringify(imports));
+    
+    alert(`Import request submitted successfully!\n\nTracking Number: ${newImport.tracking}\nImport Fee: $${importFee}\nCustoms Fee: $${customsFee}\nTotal: $${importFee + customsFee}\n\nYou can track your import on the dashboard.`);
+    
+    this.reset();
+    
+    // Redirect to dashboard
+    window.location.href = 'dashboard.html';
+});
+
+// Logout function
+function logout() {
+    localStorage.removeItem('asan_current_user');
+    window.location.href = 'login.html';
+}
+
+// Load user info on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const user = checkAuth();
+    if (user) {
+        document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+    }
+});
+</script>
+
 </body>
 </html>

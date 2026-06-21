@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asan Global Shipping | Tracking Dashboard</title>
+    <title>Asan Global | Vehicle Import Tracking Dashboard</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="tracking.css">
@@ -29,7 +29,7 @@
     <aside class="sidebar">
 
         <div class="logo">
-            <i class="fa-solid fa-ship"></i>
+            <i class="fa-solid fa-car"></i>
             <h2>ASAN GLOBAL</h2>
         </div>
 
@@ -124,11 +124,11 @@
 
             <div class="card">
 
-                <i class="fa-solid fa-ship"></i>
+                <i class="fa-solid fa-car"></i>
 
-                <h3>Current Vessel</h3>
+                <h3>Vehicle</h3>
 
-                <p>ASAN OCEAN STAR</p>
+                <p>Toyota Land Cruiser 2024</p>
 
             </div>
 
@@ -136,9 +136,9 @@
 
                 <i class="fa-solid fa-location-dot"></i>
 
-                <h3>Current Port</h3>
+                <h3>Current Location</h3>
 
-                <p>Tema Port</p>
+                <p>Customs Clearance</p>
 
             </div>
 
@@ -148,17 +148,17 @@
 
                 <h3>ETA</h3>
 
-                <p id="etaCountdown">25 June 2026</p>
+                <p id="etaCountdown">Feb 5, 2024</p>
 
             </div>
 
             <div class="card">
 
-                <i class="fa-solid fa-satellite"></i>
+                <i class="fa-solid fa-user-tie"></i>
 
-                <h3>GPS Status</h3>
+                <h3>Assigned Staff</h3>
 
-                <span class="online">ONLINE</span>
+                <span class="online">Maria Garcia</span>
 
             </div>
 
@@ -184,33 +184,31 @@
 
             </div>
 
-            <!-- Ship Information -->
+            <!-- Vehicle Information -->
 
             <div class="ship-card">
 
-                <h2>Ship Information</h2>
+                <h2>Vehicle Information</h2>
 
                 <div class="info">
 
-                    <p><strong>Ship:</strong> ASAN OCEAN STAR</p>
+                    <p><strong>Tracking:</strong> ASAN-IMP-001-2024</p>
 
-                    <p><strong>Captain:</strong> James Anderson</p>
+                    <p><strong>Make/Model:</strong> Toyota Land Cruiser</p>
 
-                    <p><strong>Container:</strong> ASGU2948492</p>
+                    <p><strong>Year:</strong> 2024</p>
 
-                    <p><strong>Status:</strong> <span id="shipStatus">In Transit</span></p>
+                    <p><strong>VIN:</strong> JTDKN3DU5A0123456</p>
 
-                    <p><strong>Speed:</strong> 18 Knots</p>
+                    <p><strong>Status:</strong> <span id="shipStatus">Customs Clearance</span></p>
 
-                    <p><strong>Weather:</strong> Sunny</p>
+                    <p><strong>Customer:</strong> John Smith</p>
 
-                    <p><strong>Coordinates:</strong> 
-                     <span id="coordinates">
-                        5.6037° N, 0.1870° W
-                     </span>   
-                        </p>
+                    <p><strong>Origin:</strong> Tokyo, Japan</p>
 
-                    <p><strong>Fuel:</strong> 84%</p>
+                    <p><strong>Destination:</strong> Los Angeles, USA</p>
+
+                    <p><strong>Value:</strong> $85,000</p>
 
                 </div>
 
@@ -222,7 +220,7 @@
 
         <section class="progress-area">
 
-            <h2>Shipment Progress</h2>
+            <h2>Import Progress</h2>
 
             <div class="timeline">
 
@@ -230,7 +228,7 @@
 
                     <span></span>
 
-                    Order Received
+                    Import Request
 
                 </div>
 
@@ -238,7 +236,7 @@
 
                     <span></span>
 
-                    Warehouse
+                    Vehicle Sourced
 
                 </div>
 
@@ -246,7 +244,7 @@
 
                     <span></span>
 
-                    Customs
+                    Documentation
 
                 </div>
 
@@ -254,7 +252,7 @@
 
                     <span></span>
 
-                    In Transit
+                    Customs Clearance
 
                 </div>
 
@@ -262,7 +260,7 @@
 
                     <span></span>
 
-                    Destination Port
+                    Final Delivery
 
                 </div>
 
@@ -270,7 +268,7 @@
 
                     <span></span>
 
-                    Delivered
+                    Completed
 
                 </div>
 
@@ -291,22 +289,22 @@
                 <ul>
 
                     <li>
-                        🚢 Vessel departed Tema Port
+                        � Documentation completed
                         <span>08:30 AM</span>
                     </li>
 
                     <li>
-                        🌊 Passing Gulf of Guinea
+                        🚢 Vehicle loaded on carrier
                         <span>11:15 AM</span>
                     </li>
 
                     <li>
-                        ☀ Weather Clear
+                        ✅ Customs inspection passed
                         <span>02:00 PM</span>
                     </li>
 
                     <li>
-                        📍 GPS Updated
+                        � Staff assigned: Maria Garcia
                         <span>04:45 PM</span>
                     </li>
 
@@ -314,51 +312,51 @@
 
             </div>
 
-            <!-- Container -->
+            <!-- Import Details -->
 
             <div class="container-card">
 
-                <h2>Container Details</h2>
+                <h2>Import Details</h2>
 
                 <table>
 
                     <tr>
 
-                        <td>Container No.</td>
+                        <td>Tracking Number</td>
 
-                        <td>ASGU2948492</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Weight</td>
-
-                        <td>20 Tons</td>
+                        <td>ASAN-IMP-001-2024</td>
 
                     </tr>
 
                     <tr>
 
-                        <td>Cargo</td>
+                        <td>Import Fee</td>
 
-                        <td>Electronics</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Seal Number</td>
-
-                        <td>SN847383</td>
+                        <td>$3,500</td>
 
                     </tr>
 
                     <tr>
 
-                        <td>Destination</td>
+                        <td>Customs Fee</td>
 
-                        <td>Rotterdam</td>
+                        <td>$2,800</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Total Cost</td>
+
+                        <td>$6,300</td>
+
+                    </tr>
+
+                    <tr>
+
+                        <td>Payment Status</td>
+
+                        <td>Paid</td>
 
                     </tr>
 
@@ -385,6 +383,205 @@
     <!-- JavaScript -->
 
     <script src="tracking.js"></script>
+
+    <!-- Real-time Data Script -->
+    <script>
+        // Real country coordinates for realistic map tracking
+        const countryCoordinates = {
+            'Japan': { lat: 36.2048, lng: 138.2529, city: 'Tokyo' },
+            'USA': { lat: 37.0902, lng: -95.7129, city: 'Los Angeles' },
+            'UK': { lat: 55.3781, lng: -3.4360, city: 'London' },
+            'Germany': { lat: 51.1657, lng: 10.4515, city: 'Hamburg' },
+            'UAE': { lat: 23.4241, lng: 53.8478, city: 'Dubai' },
+            'South Korea': { lat: 35.9078, lng: 127.7669, city: 'Seoul' },
+            'Ghana': { lat: 7.9465, lng: -1.0232, city: 'Tema' },
+            'Nigeria': { lat: 9.0820, lng: 8.6753, city: 'Lagos' },
+            'Kenya': { lat: -0.0236, lng: 37.9062, city: 'Mombasa' },
+            'South Africa': { lat: -30.5595, lng: 22.9375, city: 'Durban' },
+            'Other': { lat: 0, lng: 0, city: 'Unknown' }
+        };
+
+        // Get tracking number from URL
+        function getTrackingNumber() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('tracking') || 'ASAN-IMP-001-2024';
+        }
+
+        // Initialize map with real coordinates
+        function initMap(origin, destination) {
+            const originCoords = countryCoordinates[origin] || countryCoordinates['Other'];
+            const destCoords = countryCoordinates[destination] || countryCoordinates['Other'];
+
+            // Create map centered between origin and destination
+            const centerLat = (originCoords.lat + destCoords.lat) / 2;
+            const centerLng = (originCoords.lng + destCoords.lng) / 2;
+
+            const map = L.map('map').setView([centerLat, centerLng], 3);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add origin marker
+            const originIcon = L.divIcon({
+                className: 'custom-marker',
+                html: '<div style="background: #667eea; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            L.marker([originCoords.lat, originCoords.lng], { icon: originIcon })
+                .addTo(map)
+                .bindPopup(`<b>Origin: ${origin}</b><br>${originCoords.city}`);
+
+            // Add destination marker
+            const destIcon = L.divIcon({
+                className: 'custom-marker',
+                html: '<div style="background: #11998e; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            L.marker([destCoords.lat, destCoords.lng], { icon: destIcon })
+                .addTo(map)
+                .bindPopup(`<b>Destination: ${destination}</b><br>${destCoords.city}`);
+
+            // Draw route line
+            const routeLine = L.polyline([
+                [originCoords.lat, originCoords.lng],
+                [destCoords.lat, destCoords.lng]
+            ], {
+                color: '#667eea',
+                weight: 3,
+                opacity: 0.7,
+                dashArray: '10, 10'
+            }).addTo(map);
+
+            // Fit bounds to show both markers
+            const bounds = L.latLngBounds([
+                [originCoords.lat, originCoords.lng],
+                [destCoords.lat, destCoords.lng]
+            ]);
+            map.fitBounds(bounds, { padding: [50, 50] });
+        }
+
+        // Load real import data from admin panel
+        function loadImportData() {
+            const trackingNumber = getTrackingNumber();
+            const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+            const importData = imports.find(imp => imp.tracking === trackingNumber);
+
+            if (!importData) {
+                // Show demo data if no real data found
+                loadDemoData(trackingNumber);
+                return;
+            }
+
+            // Update statistics cards
+            document.querySelector('.stats .card:nth-child(1) p').textContent = `${importData.make} ${importData.model} ${importData.year}`;
+            document.querySelector('.stats .card:nth-child(2) p').textContent = importData.status;
+            document.querySelector('.stats .card:nth-child(3) p').textContent = 'Feb 5, 2024';
+            document.querySelector('.stats .card:nth-child(4) span').textContent = importData.assignedStaff || 'Unassigned';
+
+            // Update vehicle information
+            const infoSection = document.querySelector('.ship-card .info');
+            infoSection.innerHTML = `
+                <p><strong>Tracking:</strong> ${importData.tracking}</p>
+                <p><strong>Make/Model:</strong> ${importData.make} ${importData.model}</p>
+                <p><strong>Year:</strong> ${importData.year}</p>
+                <p><strong>VIN:</strong> ${importData.vin}</p>
+                <p><strong>Status:</strong> <span id="shipStatus">${importData.status}</span></p>
+                <p><strong>Customer:</strong> ${importData.customer}</p>
+                <p><strong>Origin:</strong> ${importData.origin}</p>
+                <p><strong>Destination:</strong> ${importData.destination}</p>
+                <p><strong>Value:</strong> $${importData.value}</p>
+            `;
+
+            // Update import details
+            const importDetails = document.querySelector('.container-card table');
+            importDetails.innerHTML = `
+                <tr>
+                    <td>Tracking Number</td>
+                    <td>${importData.tracking}</td>
+                </tr>
+                <tr>
+                    <td>Import Fee</td>
+                    <td>$${importData.importFee}</td>
+                </tr>
+                <tr>
+                    <td>Customs Fee</td>
+                    <td>$${importData.customsFee}</td>
+                </tr>
+                <tr>
+                    <td>Total Cost</td>
+                    <td>$${parseFloat(importData.importFee) + parseFloat(importData.customsFee)}</td>
+                </tr>
+                <tr>
+                    <td>Payment Status</td>
+                    <td>Paid</td>
+                </tr>
+            `;
+
+            // Update tracking input
+            document.getElementById('trackingInput').value = trackingNumber;
+
+            // Initialize map with real coordinates
+            initMap(importData.origin, importData.destination);
+
+            // Update progress timeline based on status
+            updateProgressTimeline(importData.status);
+        }
+
+        // Load demo data if no real data found
+        function loadDemoData(trackingNumber) {
+            document.querySelector('.stats .card:nth-child(1) p').textContent = 'Toyota Land Cruiser 2024';
+            document.querySelector('.stats .card:nth-child(2) p').textContent = 'Customs Clearance';
+            document.querySelector('.stats .card:nth-child(3) p').textContent = 'Feb 5, 2024';
+            document.querySelector('.stats .card:nth-child(4) span').textContent = 'Maria Garcia';
+
+            document.getElementById('trackingInput').value = trackingNumber;
+
+            // Initialize demo map
+            initMap('Japan', 'Ghana');
+        }
+
+        // Update progress timeline based on status
+        function updateProgressTimeline(status) {
+            const timeline = document.querySelector('.timeline');
+            const steps = timeline.querySelectorAll('.step');
+            
+            const statusOrder = ['Pending', 'Documentation', 'Processing', 'In Transit', 'Customs Clearance', 'Delivered'];
+            const currentIndex = statusOrder.indexOf(status);
+            
+            steps.forEach((step, index) => {
+                step.classList.remove('complete', 'active');
+                if (index < currentIndex) {
+                    step.classList.add('complete');
+                } else if (index === currentIndex) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // Listen for localStorage changes from admin panel
+        function listenForAdminUpdates() {
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'asan_imports') {
+                    loadImportData();
+                }
+            });
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadImportData();
+            listenForAdminUpdates();
+        });
+
+        // Refresh data every 30 seconds
+        setInterval(loadImportData, 30000);
+    </script>
 
 </body>
 

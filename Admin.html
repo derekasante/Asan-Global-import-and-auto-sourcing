@@ -292,44 +292,63 @@ body{
 <div class="container">
     <div class="grid">
         <div class="card">
-            <h3>🚢 Ships</h3>
-            <p>Manage fleet & routes</p>
-            <button onclick="openModal('ships')">Add Ship</button>
-            <button onclick="viewData('ships')" style="background:#17a2b8; margin-top:10px;">View Ships</button>
+            <h3>� Vehicle Imports</h3>
+            <p>Manage vehicle import requests</p>
+            <button onclick="openModal('imports')">Add Import</button>
+            <button onclick="viewData('imports')" style="background:#17a2b8; margin-top:10px;">View Imports</button>
         </div>
 
         <div class="card">
-            <h3>📦 Shipments</h3>
-            <p>Update tracking info</p>
-            <button onclick="openModal('shipments')">Add Shipment</button>
-            <button onclick="viewData('shipments')" style="background:#17a2b8; margin-top:10px;">View Shipments</button>
+            <h3>👥 Staff Management</h3>
+            <p>Manage import specialists</p>
+            <button onclick="openModal('staff')">Add Staff</button>
+            <button onclick="viewData('staff')" style="background:#17a2b8; margin-top:10px;">View Staff</button>
+        </div>
+
+        <div class="card">
+            <h3>🚙 Vehicle Inventory</h3>
+            <p>Manage vehicle database</p>
+            <button onclick="openModal('vehicles')">Add Vehicle</button>
+            <button onclick="viewData('vehicles')" style="background:#17a2b8; margin-top:10px;">View Inventory</button>
         </div>
 
         <div class="card">
             <h3>💰 Finance</h3>
-            <p>Invoices & payments</p>
+            <p>Import fees & payments</p>
             <button onclick="openModal('finance')">Add Transaction</button>
             <button onclick="viewData('finance')" style="background:#17a2b8; margin-top:10px;">View Finance</button>
         </div>
 
         <div class="card">
-            <h3>📅 Schedule</h3>
-            <p>Port timings</p>
-            <button onclick="openModal('schedule')">Add Schedule</button>
-            <button onclick="viewData('schedule')" style="background:#17a2b8; margin-top:10px;">View Schedule</button>
+            <h3>🤝 Partners</h3>
+            <p>Shipping & customs partners</p>
+            <button onclick="openModal('partners')">Add Partner</button>
+            <button onclick="viewData('partners')" style="background:#17a2b8; margin-top:10px;">View Partners</button>
         </div>
 
         <div class="card">
             <h3>👤 Users</h3>
-            <p>Staff control</p>
+            <p>Customer & staff access</p>
             <button onclick="openModal('users')">Add User</button>
             <button onclick="viewData('users')" style="background:#17a2b8; margin-top:10px;">View Users</button>
         </div>
 
         <div class="card">
             <h3>📊 Reports</h3>
-            <p>System analytics</p>
+            <p>Import analytics</p>
             <button onclick="viewData('reports')" style="background:#17a2b8;">View Reports</button>
+        </div>
+
+        <div class="card">
+            <h3>🗺️ Import Tracking</h3>
+            <p>Real-time import status</p>
+            <button onclick="window.location.href='tracking.html'" style="background:#28a745;">Open Tracking</button>
+        </div>
+
+        <div class="card">
+            <h3>⚙️ System Settings</h3>
+            <p>Configure platform</p>
+            <button onclick="viewData('settings')" style="background:#6c757d;">Settings</button>
         </div>
     </div>
 </div>
@@ -374,35 +393,51 @@ document.getElementById('adminName').textContent = `Welcome, ${currentUser.name}
 
 // Initialize data
 function initData() {
-    if (!localStorage.getItem('asan_ships')) {
-        localStorage.setItem('asan_ships', JSON.stringify([
-            { id: 1, name: 'MV Pacific Star', capacity: '5000 TEU', route: 'Asia-Pacific', status: 'Active' },
-            { id: 2, name: 'MV Atlantic Voyager', capacity: '3500 TEU', route: 'Trans-Atlantic', status: 'Active' },
-            { id: 3, name: 'MV Indian Ocean', capacity: '4200 TEU', route: 'Middle East-Asia', status: 'Maintenance' }
+    if (!localStorage.getItem('asan_imports')) {
+        localStorage.setItem('asan_imports', JSON.stringify([
+            { id: 1, tracking: 'ASAN-IMP-001-2024', origin: 'Tokyo, Japan', destination: 'Los Angeles, USA', status: 'Customs Clearance', vehicleType: 'SUV', make: 'Toyota', model: 'Land Cruiser', year: 2024, vin: 'JTDKN3DU5A0123456', customer: 'John Smith', value: '$85,000', assignedStaff: 'Maria Garcia', importFee: '$3,500', customsFee: '$2,800' },
+            { id: 2, tracking: 'ASAN-IMP-002-2024', origin: 'Stuttgart, Germany', destination: 'New York, USA', status: 'Delivered', vehicleType: 'Sedan', make: 'Mercedes-Benz', model: 'S-Class', year: 2024, vin: 'WDD2228651A0987654', customer: 'Sarah Johnson', value: '$115,000', assignedStaff: 'James Wilson', importFee: '$5,200', customsFee: '$4,100' },
+            { id: 3, tracking: 'ASAN-IMP-003-2024', origin: 'Seoul, South Korea', destination: 'Sydney, Australia', status: 'Documentation', vehicleType: 'Electric', make: 'Hyundai', model: 'Ioniq 5', year: 2024, vin: 'KMHLC8AE4RA123456', customer: 'Mike Chen', value: '$52,000', assignedStaff: 'Emily Brown', importFee: '$2,800', customsFee: '$1,900' },
+            { id: 4, tracking: 'ASAN-IMP-004-2024', origin: 'Detroit, USA', destination: 'Dubai, UAE', status: 'In Transit', vehicleType: 'Truck', make: 'Ford', model: 'F-150', year: 2024, vin: '1FTEW1EP4KF123456', customer: 'Ahmed Al-Rashid', value: '$65,000', assignedStaff: 'David Lee', importFee: '$3,200', customsFee: '$2,500' },
+            { id: 5, tracking: 'ASAN-IMP-005-2024', origin: 'London, UK', destination: 'Toronto, Canada', status: 'Processing', vehicleType: 'Luxury', make: 'Rolls-Royce', model: 'Phantom', year: 2024, vin: 'SCA668S55HU123456', customer: 'William Thompson', value: '$450,000', assignedStaff: 'Sophie Martin', importFee: '$12,500', customsFee: '$8,900' }
         ]));
     }
 
-    if (!localStorage.getItem('asan_shipments')) {
-        localStorage.setItem('asan_shipments', JSON.stringify([
-            { id: 1, tracking: 'ASAN-001-2024', origin: 'Shanghai', destination: 'Los Angeles', status: 'In Transit', cargo: 'Electronics' },
-            { id: 2, tracking: 'ASAN-002-2024', origin: 'Singapore', destination: 'Rotterdam', status: 'Delivered', cargo: 'Machinery' },
-            { id: 3, tracking: 'ASAN-003-2024', origin: 'Dubai', destination: 'Mumbai', status: 'Pending', cargo: 'Textiles' }
+    if (!localStorage.getItem('asan_staff')) {
+        localStorage.setItem('asan_staff', JSON.stringify([
+            { id: 1, name: 'Maria Garcia', email: 'maria@asan.com', role: 'Import Specialist', department: 'Customer Service', phone: '+1-555-0101', activeImports: 3, status: 'Active' },
+            { id: 2, name: 'James Wilson', email: 'james@asan.com', role: 'Customs Broker', department: 'Compliance', phone: '+1-555-0102', activeImports: 5, status: 'Active' },
+            { id: 3, name: 'Emily Brown', email: 'emily@asan.com', role: 'Documentation Officer', department: 'Documentation', phone: '+1-555-0103', activeImports: 2, status: 'Active' },
+            { id: 4, name: 'David Lee', email: 'david@asan.com', role: 'Logistics Coordinator', department: 'Operations', phone: '+1-555-0104', activeImports: 4, status: 'Active' },
+            { id: 5, name: 'Sophie Martin', email: 'sophie@asan.com', role: 'Senior Import Manager', department: 'Management', phone: '+1-555-0105', activeImports: 6, status: 'Active' }
         ]));
     }
 
     if (!localStorage.getItem('asan_finance')) {
         localStorage.setItem('asan_finance', JSON.stringify([
-            { id: 1, type: 'Invoice', amount: '$45,000', client: 'ABC Corp', status: 'Paid', date: '2024-01-15' },
-            { id: 2, type: 'Payment', amount: '$32,000', client: 'XYZ Ltd', status: 'Pending', date: '2024-01-20' },
-            { id: 3, type: 'Invoice', amount: '$28,500', client: 'Global Trade', status: 'Overdue', date: '2024-01-10' }
+            { id: 1, type: 'Import Service Fee', amount: '$3,500', client: 'John Smith', tracking: 'ASAN-IMP-001-2024', status: 'Paid', date: '2024-01-15' },
+            { id: 2, type: 'Import Service Fee', amount: '$5,200', client: 'Sarah Johnson', tracking: 'ASAN-IMP-002-2024', status: 'Paid', date: '2024-01-18' },
+            { id: 3, type: 'Customs Fee', amount: '$2,800', client: 'John Smith', tracking: 'ASAN-IMP-001-2024', status: 'Pending', date: '2024-01-20' },
+            { id: 4, type: 'Documentation Fee', amount: '$1,200', client: 'William Thompson', tracking: 'ASAN-IMP-005-2024', status: 'Paid', date: '2024-01-22' }
         ]));
     }
 
-    if (!localStorage.getItem('asan_schedule')) {
-        localStorage.setItem('asan_schedule', JSON.stringify([
-            { id: 1, ship: 'MV Pacific Star', port: 'Singapore', arrival: '2024-02-01', departure: '2024-02-03' },
-            { id: 2, ship: 'MV Atlantic Voyager', port: 'Rotterdam', arrival: '2024-02-05', departure: '2024-02-07' },
-            { id: 3, ship: 'MV Indian Ocean', port: 'Dubai', arrival: '2024-02-10', departure: '2024-02-12' }
+    if (!localStorage.getItem('asan_vehicles')) {
+        localStorage.setItem('asan_vehicles', JSON.stringify([
+            { id: 1, make: 'Toyota', model: 'Land Cruiser', year: 2024, type: 'SUV', price: '$85,000', status: 'Customs Clearance', tracking: 'ASAN-IMP-001-2024', origin: 'Tokyo', destination: 'Los Angeles' },
+            { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2024, type: 'Sedan', price: '$115,000', status: 'Delivered', tracking: 'ASAN-IMP-002-2024', origin: 'Stuttgart', destination: 'New York' },
+            { id: 3, make: 'BMW', model: 'X5', year: 2024, type: 'SUV', price: '$72,000', status: 'Documentation', tracking: 'ASAN-IMP-006-2024', origin: 'Munich', destination: 'Chicago' },
+            { id: 4, make: 'Tesla', model: 'Model S', year: 2024, type: 'Electric', price: '$89,000', status: 'In Transit', tracking: 'ASAN-IMP-007-2024', origin: 'Fremont', destination: 'Shanghai' },
+            { id: 5, make: 'Porsche', model: '911', year: 2024, type: 'Sports', price: '$125,000', status: 'Processing', tracking: 'ASAN-IMP-008-2024', origin: 'Stuttgart', destination: 'Miami' }
+        ]));
+    }
+
+    if (!localStorage.getItem('asan_partners')) {
+        localStorage.setItem('asan_partners', JSON.stringify([
+            { id: 1, name: 'Maersk Line', type: 'Shipping Partner', contact: 'info@maersk.com', routes: ['Asia-Pacific', 'Trans-Atlantic'], rating: 4.8 },
+            { id: 2, name: 'Hapag-Lloyd', type: 'Shipping Partner', contact: 'sales@hapag-lloyd.com', routes: ['Europe-Middle East', 'Asia-Europe'], rating: 4.7 },
+            { id: 3, name: 'Customs Solutions Inc', type: 'Customs Broker', contact: 'support@customssolutions.com', regions: ['North America', 'Europe'], rating: 4.9 },
+            { id: 4, name: 'Global Insurance Partners', type: 'Insurance Provider', contact: 'claims@globalins.com', coverage: ['Marine', 'Cargo', 'Liability'], rating: 4.6 }
         ]));
     }
 }
@@ -434,70 +469,200 @@ function closeViewModal() {
 // Get form HTML based on data type
 function getFormHTML(type) {
     const forms = {
-        ships: `
+        imports: `
             <div class="form-group">
-                <label>Ship Name</label>
-                <input type="text" id="shipName" placeholder="Enter ship name">
+                <label>Tracking Number</label>
+                <input type="text" id="importTracking" placeholder="e.g., ASAN-IMP-001-2024">
             </div>
             <div class="form-group">
-                <label>Capacity</label>
-                <input type="text" id="shipCapacity" placeholder="e.g., 5000 TEU">
+                <label>Origin</label>
+                <input type="text" id="importOrigin" placeholder="e.g., Tokyo, Japan">
             </div>
             <div class="form-group">
-                <label>Route</label>
-                <input type="text" id="shipRoute" placeholder="e.g., Asia-Pacific">
+                <label>Destination</label>
+                <input type="text" id="importDestination" placeholder="e.g., Los Angeles, USA">
+            </div>
+            <div class="form-group">
+                <label>Vehicle Type</label>
+                <select id="importVehicleType">
+                    <option value="SUV">SUV</option>
+                    <option value="Sedan">Sedan</option>
+                    <option value="Truck">Truck</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Luxury">Luxury</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Motorcycle">Motorcycle</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Make</label>
+                <input type="text" id="importMake" placeholder="e.g., Toyota">
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <input type="text" id="importModel" placeholder="e.g., Land Cruiser">
+            </div>
+            <div class="form-group">
+                <label>Year</label>
+                <input type="number" id="importYear" placeholder="e.g., 2024" min="2000" max="2025">
+            </div>
+            <div class="form-group">
+                <label>VIN Number</label>
+                <input type="text" id="importVin" placeholder="e.g., JTDKN3DU5A0123456" maxlength="17">
+            </div>
+            <div class="form-group">
+                <label>Customer Name</label>
+                <input type="text" id="importCustomer" placeholder="e.g., John Smith">
+            </div>
+            <div class="form-group">
+                <label>Vehicle Value</label>
+                <input type="text" id="importValue" placeholder="e.g., $85,000">
+            </div>
+            <div class="form-group">
+                <label>Assigned Staff</label>
+                <select id="importStaff">
+                    ${JSON.parse(localStorage.getItem('asan_staff')).map(s => `<option value="${s.name}">${s.name} - ${s.role}</option>`).join('')}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Import Fee</label>
+                <input type="text" id="importFee" placeholder="e.g., $3,500">
+            </div>
+            <div class="form-group">
+                <label>Customs Fee</label>
+                <input type="text" id="importCustomsFee" placeholder="e.g., $2,800">
             </div>
             <div class="form-group">
                 <label>Status</label>
-                <select id="shipStatus">
+                <select id="importStatus">
+                    <option value="Pending">Pending</option>
+                    <option value="Documentation">Documentation</option>
+                    <option value="Processing">Processing</option>
+                    <option value="In Transit">In Transit</option>
+                    <option value="Customs Clearance">Customs Clearance</option>
+                    <option value="Delivered">Delivered</option>
+                </select>
+            </div>
+        `,
+        staff: `
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="staffName" placeholder="e.g., Maria Garcia">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="staffEmail" placeholder="e.g., maria@asan.com">
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select id="staffRole">
+                    <option value="Import Specialist">Import Specialist</option>
+                    <option value="Customs Broker">Customs Broker</option>
+                    <option value="Documentation Officer">Documentation Officer</option>
+                    <option value="Logistics Coordinator">Logistics Coordinator</option>
+                    <option value="Senior Import Manager">Senior Import Manager</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Department</label>
+                <select id="staffDepartment">
+                    <option value="Customer Service">Customer Service</option>
+                    <option value="Compliance">Compliance</option>
+                    <option value="Documentation">Documentation</option>
+                    <option value="Operations">Operations</option>
+                    <option value="Management">Management</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" id="staffPhone" placeholder="e.g., +1-555-0101">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="staffStatus">
                     <option value="Active">Active</option>
-                    <option value="Maintenance">Maintenance</option>
+                    <option value="On Leave">On Leave</option>
                     <option value="Inactive">Inactive</option>
                 </select>
             </div>
         `,
-        shipments: `
+        vehicles: `
             <div class="form-group">
-                <label>Tracking Number</label>
-                <input type="text" id="shipmentTracking" placeholder="e.g., ASAN-001-2024">
+                <label>Make</label>
+                <input type="text" id="vehicleMake" placeholder="e.g., Toyota">
             </div>
             <div class="form-group">
-                <label>Origin</label>
-                <input type="text" id="shipmentOrigin" placeholder="e.g., Shanghai">
+                <label>Model</label>
+                <input type="text" id="vehicleModel" placeholder="e.g., Land Cruiser">
             </div>
             <div class="form-group">
-                <label>Destination</label>
-                <input type="text" id="shipmentDestination" placeholder="e.g., Los Angeles">
+                <label>Year</label>
+                <input type="number" id="vehicleYear" placeholder="e.g., 2024" min="2000" max="2025">
             </div>
             <div class="form-group">
-                <label>Status</label>
-                <select id="shipmentStatus">
-                    <option value="Pending">Pending</option>
-                    <option value="In Transit">In Transit</option>
-                    <option value="Delivered">Delivered</option>
+                <label>Vehicle Type</label>
+                <select id="vehicleType">
+                    <option value="SUV">SUV</option>
+                    <option value="Sedan">Sedan</option>
+                    <option value="Truck">Truck</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Luxury">Luxury</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Motorcycle">Motorcycle</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Cargo Type</label>
-                <input type="text" id="shipmentCargo" placeholder="e.g., Electronics">
+                <label>Price</label>
+                <input type="text" id="vehiclePrice" placeholder="e.g., $85,000">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <select id="vehicleStatus">
+                    <option value="Pending">Pending</option>
+                    <option value="Documentation">Documentation</option>
+                    <option value="Processing">Processing</option>
+                    <option value="In Transit">In Transit</option>
+                    <option value="Customs Clearance">Customs Clearance</option>
+                    <option value="Available">Available</option>
+                    <option value="Sold">Sold</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tracking Number</label>
+                <input type="text" id="vehicleTracking" placeholder="e.g., ASAN-IMP-001-2024">
+            </div>
+            <div class="form-group">
+                <label>Origin</label>
+                <input type="text" id="vehicleOrigin" placeholder="e.g., Tokyo">
+            </div>
+            <div class="form-group">
+                <label>Destination</label>
+                <input type="text" id="vehicleDestination" placeholder="e.g., Los Angeles">
             </div>
         `,
         finance: `
             <div class="form-group">
                 <label>Type</label>
                 <select id="financeType">
-                    <option value="Invoice">Invoice</option>
+                    <option value="Import Service Fee">Import Service Fee</option>
+                    <option value="Customs Fee">Customs Fee</option>
+                    <option value="Documentation Fee">Documentation Fee</option>
+                    <option value="Insurance Payment">Insurance Payment</option>
+                    <option value="Storage Fee">Storage Fee</option>
                     <option value="Payment">Payment</option>
-                    <option value="Expense">Expense</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Amount</label>
-                <input type="text" id="financeAmount" placeholder="e.g., $45,000">
+                <input type="text" id="financeAmount" placeholder="e.g., $3,500">
             </div>
             <div class="form-group">
-                <label>Client/Description</label>
-                <input type="text" id="financeClient" placeholder="e.g., ABC Corp">
+                <label>Client Name</label>
+                <input type="text" id="financeClient" placeholder="e.g., John Smith">
+            </div>
+            <div class="form-group">
+                <label>Tracking Number</label>
+                <input type="text" id="financeTracking" placeholder="e.g., ASAN-IMP-001-2024">
             </div>
             <div class="form-group">
                 <label>Status</label>
@@ -512,24 +677,38 @@ function getFormHTML(type) {
                 <input type="date" id="financeDate">
             </div>
         `,
-        schedule: `
+        partners: `
             <div class="form-group">
-                <label>Ship</label>
-                <select id="scheduleShip">
-                    ${JSON.parse(localStorage.getItem('asan_ships')).map(s => `<option value="${s.name}">${s.name}</option>`).join('')}
+                <label>Partner Name</label>
+                <input type="text" id="partnerName" placeholder="e.g., Maersk Line">
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                <select id="partnerType">
+                    <option value="Shipping Partner">Shipping Partner</option>
+                    <option value="Customs Broker">Customs Broker</option>
+                    <option value="Insurance Provider">Insurance Provider</option>
+                    <option value="Warehouse Partner">Warehouse Partner</option>
+                    <option value="Transport Partner">Transport Partner</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>Port</label>
-                <input type="text" id="schedulePort" placeholder="e.g., Singapore">
+                <label>Contact Email</label>
+                <input type="email" id="partnerContact" placeholder="e.g., info@maersk.com">
             </div>
             <div class="form-group">
-                <label>Arrival Date</label>
-                <input type="date" id="scheduleArrival">
+                <label>Routes/Regions</label>
+                <input type="text" id="partnerRoutes" placeholder="e.g., Asia-Pacific, Trans-Atlantic">
             </div>
             <div class="form-group">
-                <label>Departure Date</label>
-                <input type="date" id="scheduleDeparture">
+                <label>Rating</label>
+                <select id="partnerRating">
+                    <option value="5.0">5.0 - Excellent</option>
+                    <option value="4.5">4.5 - Very Good</option>
+                    <option value="4.0">4.0 - Good</option>
+                    <option value="3.5">3.5 - Average</option>
+                    <option value="3.0">3.0 - Fair</option>
+                </select>
             </div>
         `,
         users: `
@@ -548,7 +727,8 @@ function getFormHTML(type) {
             <div class="form-group">
                 <label>Role</label>
                 <select id="userRole">
-                    <option value="user">User</option>
+                    <option value="customer">Customer</option>
+                    <option value="staff">Staff</option>
                     <option value="admin">Admin</option>
                 </select>
             </div>
@@ -565,31 +745,56 @@ function saveData() {
     const newItem = { id: Date.now() };
     
     switch(currentDataType) {
-        case 'ships':
-            newItem.name = document.getElementById('shipName').value;
-            newItem.capacity = document.getElementById('shipCapacity').value;
-            newItem.route = document.getElementById('shipRoute').value;
-            newItem.status = document.getElementById('shipStatus').value;
+        case 'imports':
+            newItem.tracking = document.getElementById('importTracking').value;
+            newItem.origin = document.getElementById('importOrigin').value;
+            newItem.destination = document.getElementById('importDestination').value;
+            newItem.vehicleType = document.getElementById('importVehicleType').value;
+            newItem.make = document.getElementById('importMake').value;
+            newItem.model = document.getElementById('importModel').value;
+            newItem.year = document.getElementById('importYear').value;
+            newItem.vin = document.getElementById('importVin').value;
+            newItem.customer = document.getElementById('importCustomer').value;
+            newItem.value = document.getElementById('importValue').value;
+            newItem.assignedStaff = document.getElementById('importStaff').value;
+            newItem.importFee = document.getElementById('importFee').value;
+            newItem.customsFee = document.getElementById('importCustomsFee').value;
+            newItem.status = document.getElementById('importStatus').value;
             break;
-        case 'shipments':
-            newItem.tracking = document.getElementById('shipmentTracking').value;
-            newItem.origin = document.getElementById('shipmentOrigin').value;
-            newItem.destination = document.getElementById('shipmentDestination').value;
-            newItem.status = document.getElementById('shipmentStatus').value;
-            newItem.cargo = document.getElementById('shipmentCargo').value;
+        case 'staff':
+            newItem.name = document.getElementById('staffName').value;
+            newItem.email = document.getElementById('staffEmail').value;
+            newItem.role = document.getElementById('staffRole').value;
+            newItem.department = document.getElementById('staffDepartment').value;
+            newItem.phone = document.getElementById('staffPhone').value;
+            newItem.activeImports = 0;
+            newItem.status = document.getElementById('staffStatus').value;
+            break;
+        case 'vehicles':
+            newItem.make = document.getElementById('vehicleMake').value;
+            newItem.model = document.getElementById('vehicleModel').value;
+            newItem.year = document.getElementById('vehicleYear').value;
+            newItem.type = document.getElementById('vehicleType').value;
+            newItem.price = document.getElementById('vehiclePrice').value;
+            newItem.status = document.getElementById('vehicleStatus').value;
+            newItem.tracking = document.getElementById('vehicleTracking').value;
+            newItem.origin = document.getElementById('vehicleOrigin').value;
+            newItem.destination = document.getElementById('vehicleDestination').value;
             break;
         case 'finance':
             newItem.type = document.getElementById('financeType').value;
             newItem.amount = document.getElementById('financeAmount').value;
             newItem.client = document.getElementById('financeClient').value;
+            newItem.tracking = document.getElementById('financeTracking').value;
             newItem.status = document.getElementById('financeStatus').value;
             newItem.date = document.getElementById('financeDate').value;
             break;
-        case 'schedule':
-            newItem.ship = document.getElementById('scheduleShip').value;
-            newItem.port = document.getElementById('schedulePort').value;
-            newItem.arrival = document.getElementById('scheduleArrival').value;
-            newItem.departure = document.getElementById('scheduleDeparture').value;
+        case 'partners':
+            newItem.name = document.getElementById('partnerName').value;
+            newItem.type = document.getElementById('partnerType').value;
+            newItem.contact = document.getElementById('partnerContact').value;
+            newItem.routes = document.getElementById('partnerRoutes').value.split(',').map(r => r.trim());
+            newItem.rating = document.getElementById('partnerRating').value;
             break;
         case 'users':
             newItem.name = document.getElementById('userName').value;
@@ -613,22 +818,23 @@ function saveData() {
 
 // View data
 function viewData(type) {
-    const storageKey = type === 'reports' ? 'asan_shipments' : `asan_${type}`;
+    const storageKey = type === 'reports' ? 'asan_imports' : `asan_${type}`;
     const data = JSON.parse(localStorage.getItem(storageKey) || '[]');
     
     document.getElementById('viewModalTitle').textContent = `View ${type.charAt(0).toUpperCase() + type.slice(1)}`;
     
     if (type === 'reports') {
-        const shipments = data;
-        const totalShipments = shipments.length;
-        const inTransit = shipments.filter(s => s.status === 'In Transit').length;
-        const delivered = shipments.filter(s => s.status === 'Delivered').length;
+        const imports = data;
+        const totalImports = imports.length;
+        const inTransit = imports.filter(s => s.status === 'In Transit').length;
+        const delivered = imports.filter(s => s.status === 'Delivered').length;
+        const customs = imports.filter(s => s.status === 'Customs Clearance').length;
         
         document.getElementById('viewModalBody').innerHTML = `
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px; margin-bottom:20px;">
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:20px;">
                 <div style="background:#007bff; color:white; padding:20px; border-radius:10px; text-align:center;">
-                    <h3 style="margin:0; font-size:32px;">${totalShipments}</h3>
-                    <p style="margin:5px 0 0 0;">Total Shipments</p>
+                    <h3 style="margin:0; font-size:32px;">${totalImports}</h3>
+                    <p style="margin:5px 0 0 0;">Total Imports</p>
                 </div>
                 <div style="background:#28a745; color:white; padding:20px; border-radius:10px; text-align:center;">
                     <h3 style="margin:0; font-size:32px;">${delivered}</h3>
@@ -638,14 +844,20 @@ function viewData(type) {
                     <h3 style="margin:0; font-size:32px;">${inTransit}</h3>
                     <p style="margin:5px 0 0 0;">In Transit</p>
                 </div>
+                <div style="background:#17a2b8; color:white; padding:20px; border-radius:10px; text-align:center;">
+                    <h3 style="margin:0; font-size:32px;">${customs}</h3>
+                    <p style="margin:5px 0 0 0;">Customs</p>
+                </div>
             </div>
             <div class="data-list">
-                ${shipments.map(s => `
+                ${imports.map(s => `
                     <div class="data-item">
                         <h4>${s.tracking}</h4>
                         <p><strong>Route:</strong> ${s.origin} → ${s.destination}</p>
                         <p><strong>Status:</strong> ${s.status}</p>
-                        <p><strong>Cargo:</strong> ${s.cargo}</p>
+                        <p><strong>Vehicle:</strong> ${s.make} ${s.model} ${s.year}</p>
+                        <p><strong>Customer:</strong> ${s.customer}</p>
+                        <p><strong>Assigned Staff:</strong> ${s.assignedStaff}</p>
                     </div>
                 `).join('')}
             </div>
@@ -655,8 +867,13 @@ function viewData(type) {
             <div class="data-list">
                 ${data.map(item => `
                     <div class="data-item">
-                        <h4>${item.name || item.tracking || item.type || item.ship || item.email}</h4>
-                        ${Object.entries(item).filter(([k]) => k !== 'id' && k !== 'name' && k !== 'tracking' && k !== 'type' && k !== 'ship' && k !== 'email').map(([k, v]) => `<p><strong>${k.charAt(0).toUpperCase() + k.slice(1)}:</strong> ${v}</p>`).join('')}
+                        <h4>${item.name || item.tracking || item.type || item.make || item.email}</h4>
+                        ${Object.entries(item).filter(([k]) => k !== 'id' && k !== 'name' && k !== 'tracking' && k !== 'type' && k !== 'make' && k !== 'email').map(([k, v]) => {
+                            if (Array.isArray(v)) {
+                                return `<p><strong>${k.charAt(0).toUpperCase() + k.slice(1)}:</strong> ${v.join(', ')}</p>`;
+                            }
+                            return `<p><strong>${k.charAt(0).toUpperCase() + k.slice(1)}:</strong> ${v}</p>`;
+                        }).join('')}
                         <div class="actions">
                             <button onclick="editItem('${type}', ${item.id})">Edit</button>
                             <button class="delete-btn" onclick="deleteItem('${type}', ${item.id})">Delete</button>
@@ -687,31 +904,55 @@ function editItem(type, id) {
     // Populate form
     setTimeout(() => {
         switch(type) {
-            case 'ships':
-                document.getElementById('shipName').value = item.name;
-                document.getElementById('shipCapacity').value = item.capacity;
-                document.getElementById('shipRoute').value = item.route;
-                document.getElementById('shipStatus').value = item.status;
+            case 'imports':
+                document.getElementById('importTracking').value = item.tracking;
+                document.getElementById('importOrigin').value = item.origin;
+                document.getElementById('importDestination').value = item.destination;
+                document.getElementById('importVehicleType').value = item.vehicleType;
+                document.getElementById('importMake').value = item.make;
+                document.getElementById('importModel').value = item.model;
+                document.getElementById('importYear').value = item.year;
+                document.getElementById('importVin').value = item.vin;
+                document.getElementById('importCustomer').value = item.customer;
+                document.getElementById('importValue').value = item.value;
+                document.getElementById('importStaff').value = item.assignedStaff;
+                document.getElementById('importFee').value = item.importFee;
+                document.getElementById('importCustomsFee').value = item.customsFee;
+                document.getElementById('importStatus').value = item.status;
                 break;
-            case 'shipments':
-                document.getElementById('shipmentTracking').value = item.tracking;
-                document.getElementById('shipmentOrigin').value = item.origin;
-                document.getElementById('shipmentDestination').value = item.destination;
-                document.getElementById('shipmentStatus').value = item.status;
-                document.getElementById('shipmentCargo').value = item.cargo;
+            case 'staff':
+                document.getElementById('staffName').value = item.name;
+                document.getElementById('staffEmail').value = item.email;
+                document.getElementById('staffRole').value = item.role;
+                document.getElementById('staffDepartment').value = item.department;
+                document.getElementById('staffPhone').value = item.phone;
+                document.getElementById('staffStatus').value = item.status;
+                break;
+            case 'vehicles':
+                document.getElementById('vehicleMake').value = item.make;
+                document.getElementById('vehicleModel').value = item.model;
+                document.getElementById('vehicleYear').value = item.year;
+                document.getElementById('vehicleType').value = item.type;
+                document.getElementById('vehiclePrice').value = item.price;
+                document.getElementById('vehicleStatus').value = item.status;
+                document.getElementById('vehicleTracking').value = item.tracking;
+                document.getElementById('vehicleOrigin').value = item.origin;
+                document.getElementById('vehicleDestination').value = item.destination;
                 break;
             case 'finance':
                 document.getElementById('financeType').value = item.type;
                 document.getElementById('financeAmount').value = item.amount;
                 document.getElementById('financeClient').value = item.client;
+                document.getElementById('financeTracking').value = item.tracking || '';
                 document.getElementById('financeStatus').value = item.status;
                 document.getElementById('financeDate').value = item.date;
                 break;
-            case 'schedule':
-                document.getElementById('scheduleShip').value = item.ship;
-                document.getElementById('schedulePort').value = item.port;
-                document.getElementById('scheduleArrival').value = item.arrival;
-                document.getElementById('scheduleDeparture').value = item.departure;
+            case 'partners':
+                document.getElementById('partnerName').value = item.name;
+                document.getElementById('partnerType').value = item.type;
+                document.getElementById('partnerContact').value = item.contact;
+                document.getElementById('partnerRoutes').value = Array.isArray(item.routes) ? item.routes.join(', ') : item.routes;
+                document.getElementById('partnerRating').value = item.rating;
                 break;
         }
     }, 100);
@@ -740,31 +981,55 @@ saveData = function() {
         
         if (index !== -1) {
             switch(currentDataType) {
-                case 'ships':
-                    data[index].name = document.getElementById('shipName').value;
-                    data[index].capacity = document.getElementById('shipCapacity').value;
-                    data[index].route = document.getElementById('shipRoute').value;
-                    data[index].status = document.getElementById('shipStatus').value;
+                case 'imports':
+                    data[index].tracking = document.getElementById('importTracking').value;
+                    data[index].origin = document.getElementById('importOrigin').value;
+                    data[index].destination = document.getElementById('importDestination').value;
+                    data[index].vehicleType = document.getElementById('importVehicleType').value;
+                    data[index].make = document.getElementById('importMake').value;
+                    data[index].model = document.getElementById('importModel').value;
+                    data[index].year = document.getElementById('importYear').value;
+                    data[index].vin = document.getElementById('importVin').value;
+                    data[index].customer = document.getElementById('importCustomer').value;
+                    data[index].value = document.getElementById('importValue').value;
+                    data[index].assignedStaff = document.getElementById('importStaff').value;
+                    data[index].importFee = document.getElementById('importFee').value;
+                    data[index].customsFee = document.getElementById('importCustomsFee').value;
+                    data[index].status = document.getElementById('importStatus').value;
                     break;
-                case 'shipments':
-                    data[index].tracking = document.getElementById('shipmentTracking').value;
-                    data[index].origin = document.getElementById('shipmentOrigin').value;
-                    data[index].destination = document.getElementById('shipmentDestination').value;
-                    data[index].status = document.getElementById('shipmentStatus').value;
-                    data[index].cargo = document.getElementById('shipmentCargo').value;
+                case 'staff':
+                    data[index].name = document.getElementById('staffName').value;
+                    data[index].email = document.getElementById('staffEmail').value;
+                    data[index].role = document.getElementById('staffRole').value;
+                    data[index].department = document.getElementById('staffDepartment').value;
+                    data[index].phone = document.getElementById('staffPhone').value;
+                    data[index].status = document.getElementById('staffStatus').value;
+                    break;
+                case 'vehicles':
+                    data[index].make = document.getElementById('vehicleMake').value;
+                    data[index].model = document.getElementById('vehicleModel').value;
+                    data[index].year = document.getElementById('vehicleYear').value;
+                    data[index].type = document.getElementById('vehicleType').value;
+                    data[index].price = document.getElementById('vehiclePrice').value;
+                    data[index].status = document.getElementById('vehicleStatus').value;
+                    data[index].tracking = document.getElementById('vehicleTracking').value;
+                    data[index].origin = document.getElementById('vehicleOrigin').value;
+                    data[index].destination = document.getElementById('vehicleDestination').value;
                     break;
                 case 'finance':
                     data[index].type = document.getElementById('financeType').value;
                     data[index].amount = document.getElementById('financeAmount').value;
                     data[index].client = document.getElementById('financeClient').value;
+                    data[index].tracking = document.getElementById('financeTracking').value;
                     data[index].status = document.getElementById('financeStatus').value;
                     data[index].date = document.getElementById('financeDate').value;
                     break;
-                case 'schedule':
-                    data[index].ship = document.getElementById('scheduleShip').value;
-                    data[index].port = document.getElementById('schedulePort').value;
-                    data[index].arrival = document.getElementById('scheduleArrival').value;
-                    data[index].departure = document.getElementById('scheduleDeparture').value;
+                case 'partners':
+                    data[index].name = document.getElementById('partnerName').value;
+                    data[index].type = document.getElementById('partnerType').value;
+                    data[index].contact = document.getElementById('partnerContact').value;
+                    data[index].routes = document.getElementById('partnerRoutes').value.split(',').map(r => r.trim());
+                    data[index].rating = document.getElementById('partnerRating').value;
                     break;
             }
             
@@ -793,11 +1058,14 @@ function showNotification(message) {
 // Live notifications simulation
 setInterval(() => {
     const notifications = [
-        'New shipment received from Tokyo',
-        'MV Pacific Star arrived at Singapore',
-        'Payment received from ABC Corp',
-        'Schedule updated for MV Atlantic Voyager',
-        'User login detected: admin@asan.com'
+        'New import request received from Tokyo',
+        'Customs clearance approved for ASAN-IMP-001-2024',
+        'Import fee payment received from John Smith',
+        'Staff assignment updated for ASAN-IMP-003-2024',
+        'Vehicle documentation completed for ASAN-IMP-002-2024',
+        'Partner Maersk Line confirmed shipping schedule',
+        'Import status updated: Customs Clearance',
+        'New staff member added to documentation team'
     ];
     
     if (Math.random() > 0.7) {

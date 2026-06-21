@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Asan Global Dashboard</title>
+<title>Asan Global | Vehicle Import Dashboard</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -21,22 +21,45 @@ font-family:'Poppins',sans-serif;
 
 body{
 display:flex;
-background:#eef4fb;
+background:#f0f4f8;
+min-height:100vh;
 }
 
 /* Sidebar */
 
 .sidebar{
-width:250px;
+width:280px;
 height:100vh;
-background:#003b73;
+background:linear-gradient(180deg, #1a365d 0%, #2d5a87 100%);
 color:white;
 position:fixed;
-padding:25px;
+padding:30px 25px;
+box-shadow:4px 0 15px rgba(0,0,0,0.1);
+z-index:1000;
 }
 
-.sidebar h2{
-margin-bottom:40px;
+.sidebar .logo{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:50px;
+padding-bottom:20px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar .logo i{
+font-size:32px;
+color:#ffd54f;
+}
+
+.sidebar .logo h2{
+font-size:22px;
+font-weight:600;
+}
+
+.sidebar .logo span{
+font-size:12px;
+color:#ffd54f;
 }
 
 .sidebar ul{
@@ -44,27 +67,38 @@ list-style:none;
 }
 
 .sidebar ul li{
-margin:20px 0;
+margin:8px 0;
 }
 
 .sidebar ul li a{
-color:white;
+color:rgba(255,255,255,0.8);
 text-decoration:none;
-display:block;
-padding:12px;
-border-radius:8px;
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px 16px;
+border-radius:12px;
 transition:.3s;
+font-size:15px;
 }
 
-.sidebar ul li a:hover{
-background:#00bfff;
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+background:rgba(255,255,255,0.15);
+color:white;
+transform:translateX(5px);
+}
+
+.sidebar ul li a i{
+width:20px;
+text-align:center;
 }
 
 /* Main */
 
 .main{
-margin-left:250px;
-width:100%;
+margin-left:280px;
+width:calc(100% - 280px);
 }
 
 /* Header */
@@ -75,129 +109,353 @@ padding:20px 40px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
+box-shadow:0 2px 15px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:100;
 }
 
-.user{
+.topbar .user-info{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.topbar .user-avatar{
+width:45px;
+height:45px;
+border-radius:50%;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
 font-weight:600;
+font-size:18px;
+}
+
+.topbar .user-details h4{
+font-size:16px;
+color:#1a365d;
+}
+
+.topbar .user-details p{
+font-size:12px;
+color:#666;
+}
+
+.topbar .notifications{
+position:relative;
+cursor:pointer;
+padding:10px;
+}
+
+.topbar .notifications i{
+font-size:20px;
+color:#666;
+transition:.3s;
+}
+
+.topbar .notifications:hover i{
+color:#1a365d;
+}
+
+.topbar .notification-badge{
+position:absolute;
+top:5px;
+right:5px;
+width:8px;
+height:8px;
+background:#ff4757;
+border-radius:50%;
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.2);}
+}
+
+/* Banner */
+
+.banner{
+margin:30px 40px;
+padding:50px;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+border-radius:24px;
+color:white;
+box-shadow:0 10px 40px rgba(102,126,234,0.3);
+position:relative;
+overflow:hidden;
+}
+
+.banner::before{
+content:'';
+position:absolute;
+top:-50%;
+right:-10%;
+width:300px;
+height:300px;
+background:rgba(255,255,255,0.1);
+border-radius:50%;
+}
+
+.banner h1{
+font-size:42px;
+margin-bottom:10px;
+font-weight:700;
+}
+
+.banner h4{
+font-size:16px;
+color:rgba(255,255,255,0.9);
+margin-bottom:20px;
+font-weight:400;
+}
+
+.banner p{
+font-size:18px;
+margin-bottom:25px;
+opacity:0.95;
+}
+
+.banner .cta-button{
+display:inline-block;
+padding:14px 32px;
+background:white;
+color:#667eea;
+text-decoration:none;
+border-radius:30px;
+font-weight:600;
+transition:.3s;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+.banner .cta-button:hover{
+transform:translateY(-3px);
+box-shadow:0 8px 25px rgba(0,0,0,0.3);
 }
 
 /* Cards */
 
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:25px;
-padding:40px;
+padding:0 40px 40px;
 }
 
 .card{
 background:white;
-padding:30px;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,.1);
-transition:.3s;
+padding:35px 30px;
+border-radius:20px;
+box-shadow:0 5px 25px rgba(0,0,0,0.08);
+transition:.4s;
+position:relative;
+overflow:hidden;
+}
+
+.card::before{
+content:'';
+position:absolute;
+top:0;
+left:0;
+width:4px;
+height:100%;
+background:linear-gradient(180deg, #667eea 0%, #764ba2 100%);
 }
 
 .card:hover{
-transform:translateY(-8px);
+transform:translateY(-10px);
+box-shadow:0 15px 40px rgba(0,0,0,0.15);
 }
 
-.card i{
-font-size:45px;
-color:#0099ff;
-margin-bottom:15px;
+.card .icon-wrapper{
+width:60px;
+height:60px;
+border-radius:16px;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-bottom:20px;
+}
+
+.card .icon-wrapper i{
+font-size:28px;
+color:white;
+}
+
+.card.blue .icon-wrapper{
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card.green .icon-wrapper{
+background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.card.orange .icon-wrapper{
+background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.card.purple .icon-wrapper{
+background:linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
 .card h2{
-margin-bottom:10px;
+font-size:36px;
+margin-bottom:8px;
+color:#1a365d;
+font-weight:700;
 }
 
-/* Shipment Table */
+.card p{
+color:#666;
+font-size:15px;
+}
+
+/* Import Table */
 
 .section{
 padding:0 40px 40px;
+}
+
+.section-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.section-header h2{
+font-size:24px;
+color:#1a365d;
+font-weight:600;
+}
+
+.section-header .add-button{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:12px 24px;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color:white;
+text-decoration:none;
+border-radius:12px;
+font-weight:500;
+transition:.3s;
+}
+
+.section-header .add-button:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 25px rgba(102,126,234,0.4);
 }
 
 table{
 width:100%;
 border-collapse:collapse;
 background:white;
-border-radius:12px;
+border-radius:16px;
 overflow:hidden;
-box-shadow:0 5px 20px rgba(0,0,0,.1);
+box-shadow:0 5px 25px rgba(0,0,0,0.08);
 }
 
 th{
-background:#0059b3;
+background:linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
 color:white;
-padding:15px;
+padding:18px 20px;
+font-weight:500;
+font-size:14px;
+text-transform:uppercase;
+letter-spacing:0.5px;
 }
 
 td{
-padding:15px;
+padding:20px;
 text-align:center;
-border-bottom:1px solid #ddd;
+border-bottom:1px solid #f0f0f0;
+color:#333;
+font-size:14px;
+}
+
+tr:hover td{
+background:#f8f9fa;
 }
 
 .status{
-padding:6px 15px;
-border-radius:20px;
+padding:8px 20px;
+border-radius:25px;
 color:white;
+font-size:12px;
+font-weight:500;
+text-transform:uppercase;
+letter-spacing:0.5px;
 }
 
-.transit{
-background:orange;
+.status.pending{
+background:linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
 }
 
-.delivered{
-background:green;
+.status.documentation{
+background:linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
 }
 
-.pending{
-background:red;
+.status.processing{
+background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
 
-/* Banner */
-
-.banner{
-margin:40px;
-padding:40px;
-background:linear-gradient(120deg,#0077ff,#00bfff);
-border-radius:20px;
-color:white;
+.status.transit{
+background:linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
-.banner h1{
-margin-bottom:15px;
-font-size:40px;
+.status.customs{
+background:linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
 }
 
-.banner p{
-font-size:18px;
+.status.delivered{
+background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.tracking-link{
+color:#667eea;
+font-weight:600;
+text-decoration:none;
+transition:.3s;
+}
+
+.tracking-link:hover{
+color:#764ba2;
+text-decoration:underline;
 }
 
 /* Footer */
 
 footer{
 text-align:center;
-padding:30px;
-color:#777;
+padding:30px 40px;
+color:#999;
+font-size:14px;
 }
+
+/* Responsive */
 
 @media(max-width:900px){
 
 .sidebar{
-width:200px;
+width:220px;
 }
 
 .main{
-margin-left:200px;
+margin-left:220px;
+width:calc(100% - 220px);
+}
+
+.banner h1{
+font-size:32px;
 }
 
 }
 
-@media(max-width:700px){
+@media(max-width:768px){
 
 .sidebar{
 display:none;
@@ -205,6 +463,20 @@ display:none;
 
 .main{
 margin-left:0;
+width:100%;
+}
+
+.cards{
+grid-template-columns:1fr;
+}
+
+.banner{
+margin:20px;
+padding:30px;
+}
+
+.section{
+padding:0 20px 20px;
 }
 
 }
@@ -217,21 +489,26 @@ margin-left:0;
 
 <div class="sidebar">
 
-<h2><i class="fas fa-ship"></i> Asan Global</h2>
+<div class="logo">
+<i class="fas fa-car"></i>
+<div>
+<h2>Asan Global</h2>
+<span>Import Services</span>
+</div>
+</div>
 
 <ul>
 
-<li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+<li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
 
-<li><a href="tracking.html"><i class="fas fa-box"></i> Shipments</a></li>
+<li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Track Import</a></li>
 
-<li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
+<li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
 <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
 <li><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
 <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
-<li><a href="import.html"><i class="fas fa-file-import"></i> Import</a></li>
 
-<li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+<li><a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
 
 </ul>
 
@@ -241,134 +518,92 @@ margin-left:0;
 
 <div class="topbar">
 
-<h2>Shipping Dashboard</h2>
+<div class="user-info">
+<div class="user-avatar" id="userAvatar">U</div>
+<div class="user-details">
+<h4 id="userName">Welcome</h4>
+<p id="userRole">Customer</p>
+</div>
+</div>
 
-<div class="user">
-Welcome, Customer
+<div class="notifications">
+<i class="fas fa-bell"></i>
+<div class="notification-badge"></div>
 </div>
 
 </div>
 
 <div class="banner">
 
-<h1>Welcome to Asan Global</h1><h4>import & auto sourcing</h4>
+<h1>Vehicle Import Dashboard</h1>
+<h4>Professional Import Management</h4>
 
 <p>
-
-Track all your international shipments from one dashboard.
-<a href="index.html#quote" style="color:#fff;text-decoration:underline;margin-left:6px;">Request a new quote</a>
-
+Track all your vehicle imports in real-time with our professional import service.
 </p>
+
+<a href="import.html" class="cta-button"><i class="fas fa-plus"></i> Start New Import</a>
 
 </div>
 
 <div class="cards">
 
-<div class="card">
-
-<i class="fas fa-box"></i>
-
-<h2>25</h2>
-
-<p>Total Shipments</p>
-
+<div class="card blue">
+<div class="icon-wrapper">
+<i class="fas fa-car"></i>
+</div>
+<h2 id="totalImports">0</h2>
+<p>Total Imports</p>
 </div>
 
-<div class="card">
-
-<i class="fas fa-ship"></i>
-
-<h2>12</h2>
-
-<p>In Transit</p>
-
+<div class="card orange">
+<div class="icon-wrapper">
+<i class="fas fa-clock"></i>
+</div>
+<h2 id="inProgress">0</h2>
+<p>In Progress</p>
 </div>
 
-<div class="card">
-
+<div class="card green">
+<div class="icon-wrapper">
 <i class="fas fa-check-circle"></i>
-
-<h2>13</h2>
-
-<p>Delivered</p>
-
+</div>
+<h2 id="completed">0</h2>
+<p>Completed</p>
 </div>
 
-<div class="card">
-
-<i class="fas fa-globe"></i>
-
-<h2>56</h2>
-
-<p>Countries Served</p>
-
+<div class="card purple">
+<div class="icon-wrapper">
+<i class="fas fa-user-tie"></i>
+</div>
+<h2 id="assignedStaff">0</h2>
+<p>Staff Assigned</p>
 </div>
 
 </div>
 
 <div class="section">
 
-<h2 style="margin-bottom:20px;">Recent Shipments</h2>
+<div class="section-header">
+<h2>Recent Vehicle Imports</h2>
+<a href="import.html" class="add-button"><i class="fas fa-plus"></i> New Import</a>
+</div>
 
-<table>
+<table id="importsTable">
 
 <tr>
 
 <th>Tracking ID</th>
 
+<th>Vehicle</th>
+
+<th>Origin</th>
+
 <th>Destination</th>
 
 <th>Status</th>
 
-<th>Estimated Arrival</th>
-
-</tr>
-
-<tr>
-
-<td><a href="tracking.html?ref=AG12045" style="color:#0073ff;font-weight:600;">AG12045</a></td>
-
-<td>London</td>
-
-<td><span class="status transit">In Transit</span></td>
-
-<td>22 Jun 2026</td>
-
-</tr>
-
-<tr>
-
-<td>AG12046</td>
-
-<td>Dubai</td>
-
-<td><span class="status delivered">Delivered</span></td>
-
-<td>Delivered</td>
-
-</tr>
-
-<tr>
-
-<td>AG12047</td>
-
-<td>New York</td>
-
-<td><span class="status pending">Pending</span></td>
-
-<td>25 Jun 2026</td>
-
-</tr>
-
-<tr>
-
-<td><a href="tracking.html?ref=ASGU2948492" style="color:#0073ff;font-weight:600;">ASGU2948492</a></td>
-
-<td>Tokyo</td>
-
-<td><span class="status transit">In Transit</span></td>
-
-<td>29 Jun 2026</td>
+<th>Staff</th>
 
 </tr>
 
@@ -378,11 +613,112 @@ Track all your international shipments from one dashboard.
 
 <footer>
 
-© 2026 Asan Global Shipping Services
+© 2026 Asan Global Vehicle Import Services
 
 </footer>
 
 </div>
+
+<script>
+// Check authentication
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('asan_current_user'));
+    if (!user) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    return user;
+}
+
+// Load dashboard data
+function loadDashboardData() {
+    const user = checkAuth();
+    if (!user) return;
+
+    // Update user info
+    document.getElementById('userName').textContent = user.name || 'Welcome';
+    document.getElementById('userRole').textContent = user.role || 'Customer';
+    document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+    // Load imports from admin panel
+    const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+    
+    // Filter imports for current user (if customer)
+    const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
+    
+    // Update stats
+    document.getElementById('totalImports').textContent = userImports.length;
+    document.getElementById('inProgress').textContent = userImports.filter(imp => imp.status !== 'Delivered').length;
+    document.getElementById('completed').textContent = userImports.filter(imp => imp.status === 'Delivered').length;
+    
+    // Count unique staff
+    const uniqueStaff = [...new Set(userImports.map(imp => imp.assignedStaff).filter(s => s))];
+    document.getElementById('assignedStaff').textContent = uniqueStaff.length;
+
+    // Populate table
+    const table = document.getElementById('importsTable');
+    const tbody = table.querySelector('tbody') || table;
+    
+    // Clear existing rows except header
+    while (tbody.rows.length > 1) {
+        tbody.deleteRow(1);
+    }
+
+    if (userImports.length === 0) {
+        const row = tbody.insertRow();
+        row.innerHTML = `
+            <td colspan="6" style="padding:40px;text-align:center;color:#999;">
+                <i class="fas fa-inbox" style="font-size:48px;margin-bottom:15px;display:block;"></i>
+                No imports yet. <a href="import.html" style="color:#667eea;text-decoration:none;font-weight:600;">Start your first import</a>
+            </td>
+        `;
+    } else {
+        userImports.slice(0, 10).forEach(imp => {
+            const row = tbody.insertRow();
+            const statusClass = getStatusClass(imp.status);
+            row.innerHTML = `
+                <td><a href="tracking.html?tracking=${imp.tracking}" class="tracking-link">${imp.tracking}</a></td>
+                <td>${imp.make} ${imp.model} ${imp.year}</td>
+                <td>${imp.origin}</td>
+                <td>${imp.destination}</td>
+                <td><span class="status ${statusClass}">${imp.status}</span></td>
+                <td>${imp.assignedStaff || 'Unassigned'}</td>
+            `;
+        });
+    }
+}
+
+function getStatusClass(status) {
+    const statusMap = {
+        'Pending': 'pending',
+        'Documentation': 'documentation',
+        'Processing': 'processing',
+        'In Transit': 'transit',
+        'Customs Clearance': 'customs',
+        'Delivered': 'delivered'
+    };
+    return statusMap[status] || 'pending';
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+}
+
+// Listen for admin updates
+window.addEventListener('storage', function(e) {
+    if (e.key === 'asan_imports') {
+        loadDashboardData();
+    }
+});
+
+// Load data on page load
+document.addEventListener('DOMContentLoaded', loadDashboardData);
+
+// Refresh data every 30 seconds
+setInterval(loadDashboardData, 30000);
+</script>
 
 </body>
 </html>

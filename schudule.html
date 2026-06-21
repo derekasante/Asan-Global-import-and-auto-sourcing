@@ -3,124 +3,539 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Asan Global | Schedule</title>
+    <title>Asan Global | Import Schedule</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
 
-    <!-- Global CSS -->
-    <link rel="stylesheet" href="schudele.css">
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+body{
+display:flex;
+background:#f0f4f8;
+min-height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:280px;
+height:100vh;
+background:linear-gradient(180deg, #1a365d 0%, #2d5a87 100%);
+color:white;
+position:fixed;
+padding:30px 25px;
+box-shadow:4px 0 15px rgba(0,0,0,0.1);
+z-index:1000;
+}
+
+.sidebar .logo{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:50px;
+padding-bottom:20px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar .logo i{
+font-size:32px;
+color:#ffd54f;
+}
+
+.sidebar .logo h2{
+font-size:22px;
+font-weight:600;
+}
+
+.sidebar .logo span{
+font-size:12px;
+color:#ffd54f;
+}
+
+.sidebar a{
+color:rgba(255,255,255,0.8);
+text-decoration:none;
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px 16px;
+border-radius:12px;
+margin:8px 0;
+transition:.3s;
+font-size:15px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+background:rgba(255,255,255,0.15);
+color:white;
+transform:translateX(5px);
+}
+
+/* Main */
+
+.main{
+margin-left:280px;
+width:calc(100% - 280px);
+}
+
+/* Header */
+
+.topbar{
+background:white;
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 15px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.topbar h1{
+font-size:24px;
+color:#1a365d;
+font-weight:600;
+}
+
+.topbar .user-info{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.topbar .user-avatar{
+width:45px;
+height:45px;
+border-radius:50%;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-weight:600;
+font-size:18px;
+}
+
+/* Content */
+
+.content{
+padding:40px;
+}
+
+/* Schedule Cards */
+
+.schedule-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+margin-bottom:40px;
+}
+
+.schedule-card{
+background:white;
+padding:35px;
+border-radius:20px;
+box-shadow:0 5px 25px rgba(0,0,0,0.08);
+transition:.3s;
+border-left:4px solid #667eea;
+}
+
+.schedule-card:hover{
+transform:translateY(-5px);
+box-shadow:0 10px 35px rgba(0,0,0,0.12);
+}
+
+.schedule-card .date-badge{
+display:inline-block;
+padding:8px 16px;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color:white;
+border-radius:20px;
+font-size:13px;
+font-weight:500;
+margin-bottom:15px;
+}
+
+.schedule-card h3{
+font-size:20px;
+color:#1a365d;
+margin-bottom:15px;
+font-weight:600;
+}
+
+.schedule-card .vehicle-info{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:15px;
+}
+
+.schedule-card .vehicle-info i{
+color:#667eea;
+font-size:20px;
+}
+
+.schedule-card .route{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:15px;
+color:#666;
+font-size:14px;
+}
+
+.schedule-card .status{
+display:inline-block;
+padding:6px 16px;
+border-radius:20px;
+font-size:12px;
+font-weight:500;
+text-transform:uppercase;
+letter-spacing:0.5px;
+}
+
+.status.pending{
+background:linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+color:white;
+}
+
+.status.inprogress{
+background:linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+color:white;
+}
+
+.status.completed{
+background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+color:white;
+}
+
+/* Timeline Section */
+
+.timeline-section{
+background:white;
+padding:40px;
+border-radius:24px;
+box-shadow:0 5px 25px rgba(0,0,0,0.08);
+margin-bottom:40px;
+}
+
+.timeline-section h2{
+font-size:24px;
+color:#1a365d;
+margin-bottom:30px;
+font-weight:600;
+}
+
+.timeline-item{
+display:flex;
+gap:20px;
+padding:25px;
+border-bottom:1px solid #f0f0f0;
+transition:.3s;
+}
+
+.timeline-item:hover{
+background:#f8f9fa;
+}
+
+.timeline-item:last-child{
+border-bottom:none;
+}
+
+.timeline-item .time{
+width:120px;
+font-weight:600;
+color:#667eea;
+font-size:14px;
+}
+
+.timeline-item .content{
+flex:1;
+}
+
+.timeline-item .content h4{
+font-size:16px;
+color:#1a365d;
+margin-bottom:8px;
+font-weight:600;
+}
+
+.timeline-item .content p{
+font-size:14px;
+color:#666;
+}
+
+.timeline-item .status-badge{
+padding:6px 16px;
+border-radius:20px;
+font-size:12px;
+font-weight:500;
+text-transform:uppercase;
+}
+
+/* Stats */
+
+.stats-row{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-bottom:40px;
+}
+
+.stat-item{
+background:white;
+padding:25px;
+border-radius:16px;
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+.stat-item h3{
+font-size:32px;
+color:#1a365d;
+font-weight:700;
+margin-bottom:8px;
+}
+
+.stat-item p{
+font-size:14px;
+color:#666;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+.sidebar{
+width:220px;
+}
+
+.main{
+margin-left:220px;
+width:calc(100% - 220px);
+}
+
+}
+
+@media(max-width:768px){
+
+.sidebar{
+display:none;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+.content{
+padding:20px;
+}
+
+.schedule-grid{
+grid-template-columns:1fr;
+}
+
+.timeline-section{
+padding:25px;
+}
+
+}
+
+    </style>
 </head>
 
 <body>
 
-    <!-- SIDEBAR -->
     <div class="sidebar">
-
-        <h2>ASAN GLOBAL</h2>
-
-        <a href="index.html"><i class="fa fa-home"></i> Home</a>
-        <a href="tracking.html"><i class="fa fa-ship"></i> Tracking</a>
-        <a href="finance.html"><i class="fa fa-wallet"></i> Finance</a>
-        <a href="payment.html"><i class="fa fa-credit-card"></i> Payments</a>
-        <a href="import.html"><i class="fa fa-file-import"></i> Import</a>
-        <a href="schudule.html"><i class="fa fa-calendar"></i> Schedule</a>
-
+        <div class="logo">
+            <i class="fas fa-car"></i>
+            <div>
+                <h2>Asan Global</h2>
+                <span>Import Services</span>
+            </div>
+        </div>
+        <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Track Import</a>
+        <a href="import.html"><i class="fas fa-file-import"></i> New Import</a>
+        <a href="finance.html"><i class="fas fa-wallet"></i> Finance</a>
+        <a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a>
+        <a href="schudule.html" class="active"><i class="fas fa-calendar"></i> Schedule</a>
+        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+        <a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
-    <!-- MAIN -->
     <div class="main">
-
-        <h1>📅 Shipping Schedule</h1>
-
-        <!-- WEEK OVERVIEW -->
-        <div class="section">
-
-            <h2>📊 Weekly Overview</h2>
-
-            <p>Monday - Cargo Loading</p>
-            <p>Tuesday - Ship Departure</p>
-            <p>Wednesday - Sea Transit</p>
-            <p>Thursday - Port Operations</p>
-            <p>Friday - Arrival & Unloading</p>
-
+        <div class="topbar">
+            <h1>Import Schedule</h1>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+            </div>
         </div>
 
-        <!-- SHIP DEPARTURES -->
-        <div class="section">
+        <div class="content">
+            <div class="stats-row">
+                <div class="stat-item">
+                    <h3 id="totalImports">0</h3>
+                    <p>Total Imports</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="inProgress">0</h3>
+                    <p>In Progress</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="completed">0</h3>
+                    <p>Completed</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="thisWeek">0</h3>
+                    <p>This Week</p>
+                </div>
+            </div>
 
-            <h2>🚢 Upcoming Ship Departures</h2>
+            <div class="schedule-grid" id="scheduleGrid">
+            </div>
 
-            <p><b>ASAN OCEAN STAR</b> - 22 June 2026</p>
-            <p>Route: Tema → Rotterdam</p>
-            <p>Status: Ready to Sail</p>
-
-            <hr>
-
-            <p><b>ASAN PACIFIC WAVE</b> - 24 June 2026</p>
-            <p>Route: Accra → Dubai</p>
-            <p>Status: Loading Cargo</p>
-
-            <hr>
-
-            <p><b>ASAN ATLANTIC QUEEN</b> - 27 June 2026</p>
-            <p>Route: Lagos → London</p>
-            <p>Status: Scheduled</p>
-
+            <div class="timeline-section">
+                <h2>Import Timeline</h2>
+                <div id="timelineContainer">
+                </div>
+            </div>
         </div>
-
-        <!-- PORT STATUS -->
-        <div class="section">
-
-            <h2>⚓ Port Status Board</h2>
-
-            <p>📍 Tema Port - 🟢 Active</p>
-            <p>📍 Lagos Port - 🟡 Busy</p>
-            <p>📍 Rotterdam Port - 🟢 Active</p>
-            <p>📍 Dubai Port - 🟡 Busy</p>
-
-        </div>
-
-        <!-- CARGO SCHEDULE -->
-        <div class="section">
-
-            <h2>📦 Cargo Loading Schedule</h2>
-
-            <p>22 June - Electronics - Container ASGU2948492</p>
-            <p>23 June - Vehicles - Container ASGU2948881</p>
-            <p>24 June - Food Items - Container ASGU2949002</p>
-            <p>25 June - Machinery - Container ASGU2949110</p>
-
-        </div>
-
-        <!-- ETA SECTION -->
-        <div class="section">
-
-            <h2>⏱ Shipment Timing</h2>
-
-            <p><b>ASAN OCEAN STAR</b></p>
-            <p>Departure: 22 June 2026</p>
-            <p>Arrival: 25 June 2026</p>
-            <p>Duration: 3 Days</p>
-            <p>Distance: 8,300 km</p>
-
-        </div>
-
-        <!-- ALERTS -->
-        <div class="section">
-
-            <h2>🔔 Schedule Alerts</h2>
-
-            <p>⚠ Weather update may affect Atlantic route</p>
-            <p>✔ Cargo loading completed for ASAN OCEAN STAR</p>
-            <p>🟡 Port congestion at Lagos Port</p>
-            <p>✔ Customs cleared in Tema Port</p>
-
-        </div>
-
     </div>
 
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('asan_current_user'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            return user;
+        }
+
+        // Load schedule data
+        function loadScheduleData() {
+            const user = checkAuth();
+            if (!user) return;
+
+            // Update user avatar
+            document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+            // Load imports from admin panel
+            const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+            
+            // Filter for current user
+            const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
+
+            // Update stats
+            document.getElementById('totalImports').textContent = userImports.length;
+            document.getElementById('inProgress').textContent = userImports.filter(imp => imp.status !== 'Delivered').length;
+            document.getElementById('completed').textContent = userImports.filter(imp => imp.status === 'Delivered').length;
+            
+            // Calculate this week's imports (simplified)
+            const thisWeekCount = userImports.length;
+            document.getElementById('thisWeek').textContent = thisWeekCount;
+
+            // Populate schedule grid
+            const grid = document.getElementById('scheduleGrid');
+            if (userImports.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:60px;color:#999;">
+                        <i class="fas fa-calendar-times" style="font-size:64px;margin-bottom:20px;display:block;"></i>
+                        <h3>No Scheduled Imports</h3>
+                        <p>Start your first import to see it here</p>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = userImports.slice(0, 6).map(imp => {
+                    const statusClass = imp.status === 'Delivered' ? 'completed' : (imp.status === 'Pending' ? 'pending' : 'inprogress');
+                    return `
+                        <div class="schedule-card">
+                            <span class="date-badge">${new Date().toLocaleDateString()}</span>
+                            <h3>${imp.make} ${imp.model}</h3>
+                            <div class="vehicle-info">
+                                <i class="fas fa-car"></i>
+                                <span>${imp.year} • ${imp.vin}</span>
+                            </div>
+                            <div class="route">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${imp.origin} → ${imp.destination}</span>
+                            </div>
+                            <span class="status ${statusClass}">${imp.status}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Populate timeline
+            const timeline = document.getElementById('timelineContainer');
+            if (userImports.length === 0) {
+                timeline.innerHTML = `
+                    <div style="text-align:center;padding:40px;color:#999;">
+                        <i class="fas fa-clock" style="font-size:48px;margin-bottom:15px;display:block;"></i>
+                        No timeline events
+                    </div>
+                `;
+            } else {
+                const statusOrder = ['Pending', 'Documentation', 'Processing', 'In Transit', 'Customs Clearance', 'Delivered'];
+                timeline.innerHTML = userImports.slice(0, 5).map(imp => {
+                    const currentIndex = statusOrder.indexOf(imp.status);
+                    return `
+                        <div class="timeline-item">
+                            <div class="time">Today</div>
+                            <div class="content">
+                                <h4>${imp.tracking} - ${imp.make} ${imp.model}</h4>
+                                <p>${imp.origin} to ${imp.destination}</p>
+                            </div>
+                            <span class="status-badge ${statusClass(imp.status)}">${imp.status}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function statusClass(status) {
+            const statusMap = {
+                'Pending': 'pending',
+                'Documentation': 'pending',
+                'Processing': 'inprogress',
+                'In Transit': 'inprogress',
+                'Customs Clearance': 'inprogress',
+                'Delivered': 'completed'
+            };
+            return statusMap[status] || 'pending';
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('asan_current_user');
+            window.location.href = 'login.html';
+        }
+
+        // Listen for admin updates
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'asan_imports') {
+                loadScheduleData();
+            }
+        });
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', loadScheduleData);
+
+        // Refresh data every 30 seconds
+        setInterval(loadScheduleData, 30000);
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asan Global | User Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+display:flex;
+background:#f0f4f8;
+min-height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:280px;
+height:100vh;
+background:linear-gradient(180deg, #1a365d 0%, #2d5a87 100%);
+color:white;
+position:fixed;
+padding:30px 25px;
+box-shadow:4px 0 15px rgba(0,0,0,0.1);
+z-index:1000;
+}
+
+.sidebar .logo{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:50px;
+padding-bottom:20px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar .logo i{
+font-size:32px;
+color:#ffd54f;
+}
+
+.sidebar .logo h2{
+font-size:22px;
+font-weight:600;
+}
+
+.sidebar .logo span{
+font-size:12px;
+color:#ffd54f;
+}
+
+.sidebar ul{
+list-style:none;
+}
+
+.sidebar ul li{
+margin:8px 0;
+}
+
+.sidebar ul li a{
+color:rgba(255,255,255,0.8);
+text-decoration:none;
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px 16px;
+border-radius:12px;
+transition:.3s;
+font-size:15px;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active{
+background:rgba(255,255,255,0.15);
+color:white;
+transform:translateX(5px);
+}
+
+.sidebar ul li a i{
+width:20px;
+text-align:center;
+}
+
+/* Main */
+
+.main{
+margin-left:280px;
+width:calc(100% - 280px);
+}
+
+/* Header */
+
+.topbar{
+background:white;
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 15px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.topbar .page-title h2{
+font-size:24px;
+color:#1a365d;
+font-weight:600;
+}
+
+/* Profile Section */
+
+.profile-section{
+padding:40px;
+}
+
+.profile-header{
+background:white;
+padding:40px;
+border-radius:24px;
+box-shadow:0 5px 25px rgba(0,0,0,0.08);
+margin-bottom:30px;
+display:flex;
+align-items:center;
+gap:40px;
+}
+
+.profile-avatar{
+width:120px;
+height:120px;
+border-radius:50%;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-weight:700;
+font-size:48px;
+box-shadow:0 10px 30px rgba(102,126,234,0.3);
+}
+
+.profile-info h1{
+font-size:32px;
+color:#1a365d;
+margin-bottom:10px;
+}
+
+.profile-info .role-badge{
+display:inline-block;
+padding:8px 20px;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color:white;
+border-radius:20px;
+font-size:14px;
+font-weight:500;
+margin-bottom:20px;
+}
+
+.profile-info .stats{
+display:flex;
+gap:30px;
+margin-top:20px;
+}
+
+.profile-info .stat-item h3{
+font-size:28px;
+color:#1a365d;
+font-weight:700;
+}
+
+.profile-info .stat-item p{
+font-size:14px;
+color:#666;
+}
+
+/* Import History */
+
+.history-section{
+background:white;
+padding:40px;
+border-radius:24px;
+box-shadow:0 5px 25px rgba(0,0,0,0.08);
+}
+
+.history-section h2{
+font-size:24px;
+color:#1a365d;
+margin-bottom:30px;
+font-weight:600;
+}
+
+.import-card{
+background:#f8f9fa;
+padding:25px;
+border-radius:16px;
+margin-bottom:20px;
+border-left:4px solid #667eea;
+transition:.3s;
+}
+
+.import-card:hover{
+background:#f0f4f8;
+transform:translateX(5px);
+}
+
+.import-card-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.import-card-header .tracking-id{
+font-size:18px;
+font-weight:600;
+color:#667eea;
+}
+
+.import-card-header .status{
+padding:6px 16px;
+border-radius:20px;
+font-size:12px;
+font-weight:500;
+text-transform:uppercase;
+color:white;
+}
+
+.status.pending{
+background:linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+}
+
+.status.documentation{
+background:linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+}
+
+.status.processing{
+background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.status.transit{
+background:linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.status.customs{
+background:linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.status.delivered{
+background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.import-card-details{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+gap:20px;
+}
+
+.import-card-details .detail-item label{
+display:block;
+font-size:12px;
+color:#999;
+margin-bottom:5px;
+}
+
+.import-card-details .detail-item span{
+font-size:15px;
+color:#333;
+font-weight:500;
+}
+
+.import-card-actions{
+margin-top:20px;
+padding-top:20px;
+border-top:1px solid #e0e0e0;
+display:flex;
+gap:15px;
+}
+
+.import-card-actions a{
+padding:10px 24px;
+border-radius:12px;
+text-decoration:none;
+font-size:14px;
+font-weight:500;
+transition:.3s;
+}
+
+.track-btn{
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color:white;
+}
+
+.track-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 5px 20px rgba(102,126,234,0.4);
+}
+
+.no-imports{
+text-align:center;
+padding:60px;
+color:#999;
+}
+
+.no-imports i{
+font-size:64px;
+margin-bottom:20px;
+display:block;
+}
+
+.no-imports a{
+color:#667eea;
+text-decoration:none;
+font-weight:600;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+.sidebar{
+width:220px;
+}
+
+.main{
+margin-left:220px;
+width:calc(100% - 220px);
+}
+
+.profile-header{
+flex-direction:column;
+text-align:center;
+}
+
+.profile-info .stats{
+justify-content:center;
+}
+
+}
+
+@media(max-width:768px){
+
+.sidebar{
+display:none;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+.profile-section{
+padding:20px;
+}
+
+.profile-header{
+padding:25px;
+gap:20px;
+}
+
+.profile-avatar{
+width:80px;
+height:80px;
+font-size:32px;
+}
+
+.history-section{
+padding:25px;
+}
+
+.import-card-details{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+<i class="fas fa-car"></i>
+<div>
+<h2>Asan Global</h2>
+<span>Import Services</span>
+</div>
+</div>
+
+<ul>
+
+<li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+
+<li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Track Import</a></li>
+
+<li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
+<li><a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a></li>
+<li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
+
+<li><a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+
+</ul>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+
+<div class="page-title">
+<h2>My Profile</h2>
+</div>
+
+</div>
+
+<div class="profile-section">
+
+<div class="profile-header">
+
+<div class="profile-avatar" id="profileAvatar">U</div>
+
+<div class="profile-info">
+<h1 id="profileName">User Name</h1>
+<span class="role-badge" id="profileRole">Customer</span>
+<div class="stats">
+<div class="stat-item">
+<h3 id="totalImports">0</h3>
+<p>Total Imports</p>
+</div>
+<div class="stat-item">
+<h3 id="completedImports">0</h3>
+<p>Completed</p>
+</div>
+<div class="stat-item">
+<h3 id="inProgressImports">0</h3>
+<p>In Progress</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="history-section">
+
+<h2>Import History</h2>
+
+<div id="importHistory">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+// Check authentication
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('asan_current_user'));
+    if (!user) {
+        window.location.href = 'login.html';
+        return false;
+    }
+    return user;
+}
+
+// Load profile data
+function loadProfileData() {
+    const user = checkAuth();
+    if (!user) return;
+
+    // Update profile info
+    document.getElementById('profileName').textContent = user.name || 'User Name';
+    document.getElementById('profileRole').textContent = user.role || 'Customer';
+    document.getElementById('profileAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+    // Load imports from admin panel
+    const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+    
+    // Filter imports for current user
+    const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
+    
+    // Update stats
+    document.getElementById('totalImports').textContent = userImports.length;
+    document.getElementById('completedImports').textContent = userImports.filter(imp => imp.status === 'Delivered').length;
+    document.getElementById('inProgressImports').textContent = userImports.filter(imp => imp.status !== 'Delivered').length;
+
+    // Populate import history
+    const historyContainer = document.getElementById('importHistory');
+    
+    if (userImports.length === 0) {
+        historyContainer.innerHTML = `
+            <div class="no-imports">
+                <i class="fas fa-inbox"></i>
+                <h3>No Import History</h3>
+                <p>You haven't started any vehicle imports yet.</p>
+                <a href="import.html">Start Your First Import</a>
+            </div>
+        `;
+    } else {
+        historyContainer.innerHTML = userImports.map(imp => {
+            const statusClass = getStatusClass(imp.status);
+            return `
+                <div class="import-card">
+                    <div class="import-card-header">
+                        <span class="tracking-id">${imp.tracking}</span>
+                        <span class="status ${statusClass}">${imp.status}</span>
+                    </div>
+                    <div class="import-card-details">
+                        <div class="detail-item">
+                            <label>Vehicle</label>
+                            <span>${imp.make} ${imp.model} ${imp.year}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Origin</label>
+                            <span>${imp.origin}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Destination</label>
+                            <span>${imp.destination}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Assigned Staff</label>
+                            <span>${imp.assignedStaff || 'Unassigned'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Value</label>
+                            <span>$${imp.value}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Total Cost</label>
+                            <span>$${parseFloat(imp.importFee) + parseFloat(imp.customsFee)}</span>
+                        </div>
+                    </div>
+                    <div class="import-card-actions">
+                        <a href="tracking.html?tracking=${imp.tracking}" class="track-btn"><i class="fas fa-map-marker-alt"></i> Track Import</a>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+function getStatusClass(status) {
+    const statusMap = {
+        'Pending': 'pending',
+        'Documentation': 'documentation',
+        'Processing': 'processing',
+        'In Transit': 'transit',
+        'Customs Clearance': 'customs',
+        'Delivered': 'delivered'
+    };
+    return statusMap[status] || 'pending';
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+}
+
+// Listen for admin updates
+window.addEventListener('storage', function(e) {
+    if (e.key === 'asan_imports') {
+        loadProfileData();
+    }
+});
+
+// Load data on page load
+document.addEventListener('DOMContentLoaded', loadProfileData);
+
+// Refresh data every 30 seconds
+setInterval(loadProfileData, 30000);
+</script>
+
+</body>
+</html>
