@@ -581,6 +581,82 @@
 
         // Refresh data every 30 seconds
         setInterval(loadImportData, 30000);
+
+        // Simulate real-time status updates
+        function simulateLiveUpdates() {
+            const statusOrder = ['Pending', 'Documentation', 'Processing', 'In Transit', 'Customs Clearance', 'Delivered'];
+            const currentStatus = document.getElementById('shipStatus')?.textContent;
+            
+            if (currentStatus && currentStatus !== 'Delivered') {
+                const currentIndex = statusOrder.indexOf(currentStatus);
+                if (currentIndex !== -1 && currentIndex < statusOrder.length - 1) {
+                    // 10% chance to advance status every 60 seconds
+                    if (Math.random() < 0.1) {
+                        const nextStatus = statusOrder[currentIndex + 1];
+                        updateImportStatus(nextStatus);
+                    }
+                }
+            }
+        }
+
+        // Update import status in localStorage
+        function updateImportStatus(newStatus) {
+            const trackingNumber = getTrackingNumber();
+            const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+            const importIndex = imports.findIndex(imp => imp.tracking === trackingNumber);
+            
+            if (importIndex !== -1) {
+                imports[importIndex].status = newStatus;
+                localStorage.setItem('asan_imports', JSON.stringify(imports));
+                loadImportData();
+                addRecentUpdate(`Status updated to: ${newStatus}`);
+            }
+        }
+
+        // Add recent update
+        function addRecentUpdate(message) {
+            const updatesSection = document.querySelector('.recent-updates');
+            if (updatesSection) {
+                const timestamp = new Date().toLocaleTimeString();
+                const updateHTML = `
+                    <div class="update-item">
+                        <span class="update-time">${timestamp}</span>
+                        <span class="update-message">${message}</span>
+                    </div>
+                `;
+                updatesSection.innerHTML = updateHTML + updatesSection.innerHTML;
+            }
+        }
+
+        // Simulate location updates
+        function simulateLocationUpdates() {
+            const locations = [
+                'Port of Tokyo, Japan',
+                'Pacific Ocean - In Transit',
+                'Panama Canal',
+                'Atlantic Ocean - In Transit',
+                'Port of Tema, Ghana',
+                'Customs Clearance - Tema',
+                'Final Delivery Location'
+            ];
+            
+            const currentLocation = document.querySelector('.stats .card:nth-child(2) p')?.textContent;
+            if (currentLocation) {
+                const currentIndex = locations.findIndex(loc => currentLocation.includes(loc.split(',')[0]));
+                if (currentIndex !== -1 && currentIndex < locations.length - 1) {
+                    // 5% chance to update location every 45 seconds
+                    if (Math.random() < 0.05) {
+                        const nextLocation = locations[currentIndex + 1];
+                        document.querySelector('.stats .card:nth-child(2) p').textContent = nextLocation;
+                        addRecentUpdate(`Location updated: ${nextLocation}`);
+                    }
+                }
+            }
+        }
+
+        // Start live update simulations
+        setInterval(simulateLiveUpdates, 60000); // Check for status updates every 60 seconds
+        setInterval(simulateLocationUpdates, 45000); // Check for location updates every 45 seconds
     </script>
 
 </body>

@@ -365,6 +365,399 @@
   </div>
 </footer>
 
+<!-- AI Assistant Chat Widget -->
+<div id="aiAssistant" class="ai-assistant">
+    <div class="ai-chat-button" onclick="toggleAIChat()">
+        <i class="fas fa-robot"></i>
+        <span>AI Assistant</span>
+    </div>
+    <div class="ai-chat-window" id="aiChatWindow">
+        <div class="ai-chat-header">
+            <div class="ai-header-content">
+                <i class="fas fa-robot"></i>
+                <div>
+                    <h3>Asan AI Assistant</h3>
+                    <p>Online • Ready to help</p>
+                </div>
+            </div>
+            <button onclick="toggleAIChat()" class="ai-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-message ai-bot">
+                <div class="ai-avatar"><i class="fas fa-robot"></i></div>
+                <div class="ai-message-content">
+                    <p>Hello! I'm your AI assistant for Asan Global Vehicle Import Services. I can help you with:</p>
+                    <ul>
+                        <li>Vehicle import processes</li>
+                        <li>Tracking your imports</li>
+                        <li>Payment information</li>
+                        <li>Website navigation</li>
+                        <li>General import questions</li>
+                    </ul>
+                    <p>How can I assist you today?</p>
+                </div>
+            </div>
+        </div>
+        <div class="ai-chat-input">
+            <input type="text" id="aiInput" placeholder="Type your question..." onkeypress="handleAIKeyPress(event)">
+            <button onclick="sendAIMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* AI Assistant Styles */
+.ai-assistant {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 9999;
+}
+
+.ai-chat-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.ai-chat-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5);
+}
+
+.ai-chat-button i {
+    font-size: 20px;
+}
+
+.ai-chat-window {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    width: 400px;
+    height: 550px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ai-chat-window.active {
+    display: flex;
+}
+
+.ai-chat-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ai-header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ai-header-content i {
+    font-size: 24px;
+}
+
+.ai-header-content h3 {
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.ai-header-content p {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.ai-close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.ai-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.ai-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+.ai-message {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.ai-message.ai-bot {
+    flex-direction: row;
+}
+
+.ai-message.ai-user {
+    flex-direction: row-reverse;
+}
+
+.ai-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.ai-message.ai-user .ai-avatar {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.ai-message-content {
+    background: white;
+    padding: 14px 18px;
+    border-radius: 18px;
+    max-width: 280px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.ai-message.ai-bot .ai-message-content {
+    border-top-left-radius: 4px;
+}
+
+.ai-message.ai-user .ai-message-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-top-right-radius: 4px;
+}
+
+.ai-message-content p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.ai-message-content p:last-child {
+    margin-bottom: 0;
+}
+
+.ai-message-content ul {
+    margin: 8px 0;
+    padding-left: 20px;
+    font-size: 13px;
+}
+
+.ai-message-content li {
+    margin-bottom: 4px;
+}
+
+.ai-chat-input {
+    padding: 16px;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 12px;
+}
+
+.ai-chat-input input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.ai-chat-input input:focus {
+    border-color: #667eea;
+}
+
+.ai-chat-input button {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.ai-chat-input button:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .ai-chat-window {
+        width: 350px;
+        height: 500px;
+        left: -10px;
+    }
+}
+</style>
+
+<script>
+// AI Assistant Functions
+function toggleAIChat() {
+    const chatWindow = document.getElementById('aiChatWindow');
+    chatWindow.classList.toggle('active');
+}
+
+function handleAIKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendAIMessage();
+    }
+}
+
+function sendAIMessage() {
+    const input = document.getElementById('aiInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    // Add user message to chat
+    addChatMessage(message, 'user');
+    input.value = '';
+    
+    // Simulate AI thinking delay
+    setTimeout(() => {
+        const response = getAIResponse(message);
+        addChatMessage(response, 'bot');
+    }, 500);
+}
+
+function addChatMessage(message, sender) {
+    const messagesContainer = document.getElementById('aiChatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `ai-message ai-${sender}`;
+    
+    const avatar = sender === 'bot' ? 'fa-robot' : 'fa-user';
+    
+    messageDiv.innerHTML = `
+        <div class="ai-avatar"><i class="fas ${avatar}"></i></div>
+        <div class="ai-message-content">
+            <p>${message}</p>
+        </div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function getAIResponse(message) {
+    const lowerMessage = message.toLowerCase();
+    
+    // Import Process Questions
+    if (lowerMessage.includes('import') && (lowerMessage.includes('process') || lowerMessage.includes('how') || lowerMessage.includes('start'))) {
+        return "To start importing a vehicle with Asan Global: 1) Submit an import request through the Import page with vehicle details, 2) Our team sources and quotes you, 3) We handle shipping to your destination port, 4) We manage customs clearance, 5) We deliver to your location. The entire process typically takes 4-6 weeks depending on origin.";
+    }
+    
+    if (lowerMessage.includes('import') && lowerMessage.includes('cost') || lowerMessage.includes('fee') || lowerMessage.includes('price')) {
+        return "Import costs include: Import fee (5% of vehicle value), Customs fee (3% of vehicle value), Shipping fee (varies by route), Insurance (optional), and Documentation fees. For a $50,000 vehicle, expect approximately $4,000-$6,000 in total fees excluding the vehicle price.";
+    }
+    
+    if (lowerMessage.includes('document') || lowerMessage.includes('paperwork')) {
+        return "Required documents include: Valid ID/Passport, Purchase invoice, Bill of lading (we provide), Import permit (if required), Customs declaration form, and Proof of payment. Our team assists with all documentation.";
+    }
+    
+    // Tracking Questions
+    if (lowerMessage.includes('track') || lowerMessage.includes('tracking') || lowerMessage.includes('where is')) {
+        return "To track your import: 1) Go to the Tracking page, 2) Enter your tracking number (format: ASAN-IMP-XXXX-XXXX), 3) View real-time status, location, and progress. You can also track from your dashboard where all your imports are listed.";
+    }
+    
+    if (lowerMessage.includes('status') || lowerMessage.includes('progress')) {
+        return "Import statuses are: Pending → Documentation → Processing → In Transit → Customs Clearance → Delivered. Each step is updated in real-time. You can check your current status on the Tracking page or Dashboard.";
+    }
+    
+    // Payment Questions
+    if (lowerMessage.includes('pay') || lowerMessage.includes('payment') || lowerMessage.includes('money')) {
+        return "We accept multiple payment methods: Visa, Mastercard, PayPal, Stripe, Mobile Money (MTN, Vodafone), and Bank Transfer. You can make payments through the Payment page. All transactions are secure and encrypted.";
+    }
+    
+    if (lowerMessage.includes('refund') || lowerMessage.includes('return')) {
+        return "Refunds are processed within 5-7 business days. Contact our support team with your tracking number and reason for refund. Partial refunds may apply depending on the stage of import.";
+    }
+    
+    // Website Navigation
+    if (lowerMessage.includes('dashboard') || lowerMessage.includes('home') || lowerMessage.includes('navigate')) {
+        return "The Dashboard shows your import statistics, recent imports, and quick access to all features. From there you can: Track imports, Submit new requests, View payments, Check schedule, and Manage your profile.";
+    }
+    
+    if (lowerMessage.includes('help') || lowerMessage.includes('support') || lowerMessage.includes('contact')) {
+        return "For support: Call +233 245 357 611, Email support@asanglobal.com, or use WhatsApp for instant assistance. Our team is available Monday-Friday 8AM-6PM GMT.";
+    }
+    
+    // Vehicle Information
+    if (lowerMessage.includes('vehicle') || lowerMessage.includes('car') || lowerMessage.includes('type')) {
+        return "We import all vehicle types: Sedans, SUVs, Trucks, Motorcycles, Vans, and specialty vehicles. We source from Japan, USA, UK, Germany, UAE, and South Korea. Popular imports include Toyota Land Cruiser, Honda Accord, BMW X5, and Mercedes G-Class.";
+    }
+    
+    if (lowerMessage.includes('country') || lowerMessage.includes('origin') || lowerMessage.includes('from')) {
+        return "We import vehicles from: Japan (Tokyo), USA (Los Angeles), UK (London), Germany (Hamburg), UAE (Dubai), and South Korea (Seoul). We deliver to Ghana, Nigeria, Kenya, South Africa, and other African countries.";
+    }
+    
+    // Time and Duration
+    if (lowerMessage.includes('long') || lowerMessage.includes('time') || lowerMessage.includes('duration') || lowerMessage.includes('how long')) {
+        return "Import duration varies by origin: Japan (4-5 weeks), USA (3-4 weeks), Europe (3-4 weeks), UAE (2-3 weeks). This includes sourcing, shipping, customs clearance, and delivery.";
+    }
+    
+    // Company Information
+    if (lowerMessage.includes('asan') || lowerMessage.includes('company') || lowerMessage.includes('about')) {
+        return "Asan Global is a premier vehicle import service provider specializing in end-to-end vehicle sourcing, shipping, customs clearance, and delivery across Africa. We have over 10 years of experience and have successfully imported 5,000+ vehicles.";
+    }
+    
+    if (lowerMessage.includes('staff') || lowerMessage.includes('team') || lowerMessage.includes('agent')) {
+        return "Our team includes expert import agents, customs brokers, logistics coordinators, and customer support specialists. Each import is assigned a dedicated staff member who handles your case from start to finish.";
+    }
+    
+    // General Questions
+    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+        return "Hello! Welcome to Asan Global. How can I help you with your vehicle import needs today?";
+    }
+    
+    if (lowerMessage.includes('thank')) {
+        return "You're welcome! If you need any further assistance, I'm here to help. Have a great day!";
+    }
+    
+    if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye')) {
+        return "Goodbye! Feel free to return anytime you need assistance with your imports. Safe travels!";
+    }
+    
+    // Default response
+    return "I understand you're asking about: \"" + message + "\". I can help you with vehicle imports, tracking, payments, documentation, or general questions about our services. Could you please provide more specific details so I can assist you better?";
+}
+</script>
+
 <script src="index.js"></script>
 </body>
 </html>
