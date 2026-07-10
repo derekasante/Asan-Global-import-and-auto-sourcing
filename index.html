@@ -5,20 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Asan Global Shipping | Import & Auto Sourcing</title>
 <meta name="description" content="Asan Global Shipping — reliable ocean, air, and road freight with live tracking across 150+ countries.">
+<meta name="theme-color" content="#0051a8">
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="ai-assistant.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 
 <body>
+<div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
 
 <header>
   <div class="logo">
     <i class="fas fa-car"></i>
     <div>
       <h2>Asan Global</h2>
-      <h4 style="color:#ffd54f;font-size:13px;font-weight:500;">Import &amp; Auto Sourcing</h4>
+      <h4 class="logo-tag">Import &amp; Auto Sourcing</h4>
     </div>
   </div>
 
@@ -27,6 +30,9 @@
   </button>
 
   <nav>
+    <button class="menu-close" type="button" aria-label="Close menu">
+      <i class="fas fa-times"></i>
+    </button>
     <ul>
       <li><a href="#">Home</a></li>
       <li><a href="#about">About</a></li>
@@ -45,44 +51,147 @@
 <section class="hero">
   <div class="overlay"></div>
   <div class="hero-content">
-    <div class="kicker"><span class="dot"></span> Professional Vehicle Import Services</div>
-    <h1>Your Trusted Partner for Vehicle Imports Worldwide</h1>
-    <p>Expert import assistance &bull; Staff-managed process &bull; End-to-end vehicle sourcing and clearance</p>
+    <div class="hero-pill"><span class="dot"></span> Global vehicle import • customs + delivery</div>
+    <h1>Your trusted gateway for import logistics worldwide.</h1>
+    <p>From sourcing and documentation to shipment coordination and final clearance, our team handles every step with transparency and precision.</p>
+
+    <div class="hero-note" data-asan-reveal="up">
+      <b>Important:</b> Before you submit your import request, please sign the <a href="client-agreement-form.html">Client Agreement Form</a> to continue.
+    </div>
+
     <div class="hero-cta">
       <a href="#quote" class="hero-btn">Get Free Quote</a>
       <a href="#track" class="hero-link"><i class="fas fa-location-dot"></i> Track Import</a>
     </div>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>150+</strong>
+        <span>Countries Served</span>
+      </div>
+      <div class="hero-stat">
+        <strong>24/7</strong>
+        <span>Support</span>
+      </div>
+      <div class="hero-stat">
+        <strong>98%</strong>
+        <span>On-Time Delivery</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-panel" aria-hidden="true">
+    <div class="hero-panel-card">
+      <div class="panel-heading">
+        <p class="panel-kicker">Why clients choose us</p>
+        <h3>End-to-end logistics without the usual friction.</h3>
+      </div>
+      <ul class="panel-list">
+        <li><i class="fas fa-check-circle"></i> Dedicated import specialists</li>
+        <li><i class="fas fa-check-circle"></i> Transparent pricing and updates</li>
+        <li><i class="fas fa-check-circle"></i> Strong partner network across key markets</li>
+      </ul>
+      <div class="panel-footer">
+        <span><i class="fas fa-shield-alt"></i> Insured handling</span>
+        <span><i class="fas fa-globe"></i> Global reach</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-bg" id="heroBackground" style="background-image:url('https://admin.asiashipping.co/upload/blog/05-importacao-automoveis-banner_e414e4c7-a6f0-4b32-963a-d061d614721c.jpg');"></div>
+  <div class="hero-slider-dots" id="heroSliderDots" aria-label="Hero slideshow controls"></div>
+</section>
+
+<section class="highlight-strip">
+  <div class="highlight-item">
+    <i class="fas fa-globe-americas"></i>
+    <div><strong>Worldwide routes</strong><span>Ocean, air, and road coordination</span></div>
+  </div>
+  <div class="highlight-item">
+    <i class="fas fa-file-signature"></i>
+    <div><strong>Clear documentation</strong><span>Import paperwork handled with care</span></div>
+  </div>
+  <div class="highlight-item">
+    <i class="fas fa-ship"></i>
+    <div><strong>Reliable partners</strong><span>Trusted carriers and customs networks</span></div>
   </div>
 </section>
 
 <section id="about" class="about">
-  <h2>About Asan Global</h2>
-  <p>
-    Asan Global is your professional vehicle import service provider. We specialize in helping individuals and businesses import vehicles from Korea, Dubai, China, USA, Europe, and Japan. Our expert staff manages every aspect of the import process - from sourcing and documentation to customs clearance and final delivery. We don't ship vehicles ourselves; we coordinate with trusted shipping partners to ensure your vehicle import is handled professionally and efficiently.
+  <div class="section-heading">
+    <p class="section-kicker">About Asan Global</p>
+    <h2>Professional import support for individuals and businesses.</h2>
+    <p>Asan Global connects clients with reliable vehicle sourcing, shipping partners, and customs expertise across major global markets. We focus on clarity, speed, and dependable communication from the first inquiry to the final delivery.</p>
+  </div>
 
-  </p>
+  <div class="about-grid">
+    <div class="about-card about-story">
+      <h3>Built for smooth international vehicle imports</h3>
+      <p>We coordinate with trusted logistics partners and customs professionals so your import journey stays organized, transparent, and stress-free.</p>
+      <div class="about-points">
+        <div><i class="fas fa-users-cog"></i><span>Expert staff support</span></div>
+        <div><i class="fas fa-file-contract"></i><span>Clear documentation</span></div>
+        <div><i class="fas fa-handshake"></i><span>Reliable partnership network</span></div>
+      </div>
+    </div>
 
-  <div class="about-boxes">
-    <div class="box">
-      <i class="fas fa-users-cog"></i>
-      <h3>Expert Staff</h3>
-      <p>Dedicated import specialists manage your vehicle import from start to finish.</p>
+    <div class="about-boxes">
+      <div class="box">
+        <i class="fas fa-users-cog"></i>
+        <h3>Expert Staff</h3>
+        <p>Dedicated import specialists manage your vehicle import from start to finish.</p>
+      </div>
+      <div class="box">
+        <i class="fas fa-file-contract"></i>
+        <h3>Full Documentation</h3>
+        <p>We handle all paperwork, customs forms, and import documentation for you.</p>
+      </div>
+      <div class="box">
+        <i class="fas fa-handshake"></i>
+        <h3>Trusted Partners</h3>
+        <p>We work with reliable shipping partners and customs brokers worldwide.</p>
+      </div>
     </div>
-    <div class="box">
-      <i class="fas fa-file-contract"></i>
-      <h3>Full Documentation</h3>
-      <p>We handle all paperwork, customs forms, and import documentation for you.</p>
+  </div>
+</section>
+
+<section class="capabilities">
+  <div class="capability-card">
+    <p class="section-kicker">Premium logistics</p>
+    <h2>Global freight, customs, and vehicle sourcing under one trusted partner.</h2>
+    <p>We combine responsive account support, secure shipment coordination, and rapid customs handling to keep every import moving with confidence.</p>
+    <a href="#quote" class="hero-btn small-btn">Book a consultation</a>
+  </div>
+  <div class="capability-grid">
+    <div class="capability-item">
+      <i class="fas fa-ship"></i>
+      <h3>Ocean &amp; Air Freight</h3>
+      <p>Flexible shipping options tailored for speed, cost, and cargo safety.</p>
     </div>
-    <div class="box">
-      <i class="fas fa-handshake"></i>
-      <h3>Trusted Partners</h3>
-      <p>We work with reliable shipping partners and customs brokers worldwide.</p>
+    <div class="capability-item">
+      <i class="fas fa-map-marked-alt"></i>
+      <h3>Global Network</h3>
+      <p>Coverage across ports, air hubs, and regional transit partners worldwide.</p>
+    </div>
+    <div class="capability-item">
+      <i class="fas fa-lock"></i>
+      <h3>Secure Handling</h3>
+      <p>Protected transport and documentation support from pickup to delivery.</p>
     </div>
   </div>
 </section>
 
 <section id="services" class="services">
-  <h2>Our Import Services</h2>
+  <div class="section-heading">
+    <p class="section-kicker">Our services</p>
+    <h2>Search our import services and logistics support</h2>
+    <p>Use the search bar below to quickly find the service or route that fits your shipment needs.</p>
+  </div>
+  <div class="service-search">
+    <i class="fas fa-search"></i>
+    <input type="search" id="siteSearch" placeholder="Search services, routes, or import topics" autocomplete="off">
+  </div>
+  <div class="search-results" id="searchResults" aria-live="polite"></div>
   <div class="service-container">
     <div class="service-card">
       <i class="fas fa-car"></i>
@@ -180,11 +289,11 @@
   <p class="routes-note"><a href="schudule.html">View all import routes &rarr;</a></p>
 </section>
 
-<section class="stats">
-  <div class="stat"><h1>20K+</h1><p>Happy Clients</p></div>
-  <div class="stat"><h1>150+</h1><p>Countries Served</p></div>
-  <div class="stat"><h1>98%</h1><p>Successful Deliveries</p></div>
-  <div class="stat"><h1>24/7</h1><p>Customer Support</p></div>
+<section class="stats" aria-label="Company performance statistics">
+  <div class="stat"><h1 data-count="20" data-suffix="K+">0</h1><p>Happy Clients</p></div>
+  <div class="stat"><h1 data-count="150" data-suffix="+">0</h1><p>Countries Served</p></div>
+  <div class="stat"><h1 data-count="98" data-suffix="%">0</h1><p>Successful Deliveries</p></div>
+  <div class="stat"><h1 data-count="24" data-suffix="/7">0</h1><p>Customer Support</p></div>
 </section>
 
 <section id="track" class="track-section">
@@ -315,9 +424,20 @@
 
 <a href="#top" class="back-top" id="backTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></a>
 
-<a href="https://wa.me/233245357611?text=Hi%20Asan%20Global%2C%20I%20need%20help%20with%20vehicle%20import." class="float-whatsapp" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-  <i class="fab fa-whatsapp"></i>
+<!-- Floating WhatsApp (prefilled message) -->
+<a class="whatsapp-float float-whatsapp" id="whatsappFloat" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp" aria-hidden="true"></i>
 </a>
+<script>
+  (function () {
+    var btn = document.getElementById('whatsappFloat');
+    if (!btn) return;
+
+    var base = 'https://wa.me/233245357611';
+    var text = 'Hello Asan Global, I would like help with vehicle import. Please contact me.';
+    btn.setAttribute('href', base + '?text=' + encodeURIComponent(text));
+  })();
+</script>
 
 <footer id="top">
   <div class="footer-grid">
@@ -366,27 +486,30 @@
 </footer>
 
 <!-- AI Assistant Chat Widget -->
-<div id="aiAssistant" class="ai-assistant">
-    <div class="ai-chat-button" onclick="toggleAIChat()">
-        <i class="fas fa-robot"></i>
+<div id="aiAssistant" class="ai-assistant" aria-live="polite">
+
+    <div class="ai-chat-button" id="aiChatToggle" role="button" tabindex="0" aria-label="Open AI assistant">
+        <i class="fas fa-robot" aria-hidden="true"></i>
         <span>AI Assistant</span>
     </div>
-    <div class="ai-chat-window" id="aiChatWindow">
+
+    <div class="ai-chat-window" id="aiChatWindow" aria-label="AI assistant chat window">
         <div class="ai-chat-header">
             <div class="ai-header-content">
-                <i class="fas fa-robot"></i>
+                <i class="fas fa-robot" aria-hidden="true"></i>
                 <div>
                     <h3>Asan AI Assistant</h3>
                     <p>Online • Ready to help</p>
                 </div>
             </div>
-            <button onclick="toggleAIChat()" class="ai-close-btn"><i class="fas fa-times"></i></button>
+            <button class="ai-close-btn" id="aiChatClose" aria-label="Close AI assistant"><i class="fas fa-times" aria-hidden="true"></i></button>
         </div>
+
         <div class="ai-chat-messages" id="aiChatMessages">
             <div class="ai-message ai-bot">
-                <div class="ai-avatar"><i class="fas fa-robot"></i></div>
+                <div class="ai-avatar"><i class="fas fa-robot" aria-hidden="true"></i></div>
                 <div class="ai-message-content">
-                    <p>Hello! I'm your AI assistant for Asan Global Vehicle Import Services. I can help you with:</p>
+                    <p>Hi! I’m your Asan Global AI assistant — real help, no stress. I can help you with:</p>
                     <ul>
                         <li>Vehicle import processes</li>
                         <li>Tracking your imports</li>
@@ -394,369 +517,20 @@
                         <li>Website navigation</li>
                         <li>General import questions</li>
                     </ul>
-                    <p>How can I assist you today?</p>
+                    <p>Tell me what you need — tracking, import steps, payments, or documents.</p>
                 </div>
             </div>
         </div>
+
         <div class="ai-chat-input">
-            <input type="text" id="aiInput" placeholder="Type your question..." onkeypress="handleAIKeyPress(event)">
-            <button onclick="sendAIMessage()"><i class="fas fa-paper-plane"></i></button>
+            <input type="text" id="aiInput" placeholder="Type your question..." autocomplete="off" aria-label="Type your question" />
+            <button id="aiSend" aria-label="Send message" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
         </div>
     </div>
 </div>
 
-<style>
-/* AI Assistant Styles */
-.ai-assistant {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    z-index: 9999;
-}
+<script src="ai-assistant.js"></script>
 
-.ai-chat-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 16px 24px;
-    border-radius: 50px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.ai-chat-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5);
-}
-
-.ai-chat-button i {
-    font-size: 20px;
-}
-
-.ai-chat-window {
-    position: absolute;
-    bottom: 80px;
-    left: 0;
-    width: 400px;
-    height: 550px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.ai-chat-window.active {
-    display: flex;
-}
-
-.ai-chat-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.ai-header-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.ai-header-content i {
-    font-size: 24px;
-}
-
-.ai-header-content h3 {
-    font-size: 16px;
-    margin-bottom: 2px;
-}
-
-.ai-header-content p {
-    font-size: 12px;
-    opacity: 0.9;
-}
-
-.ai-close-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.ai-close-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.ai-chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    background: #f8f9fa;
-}
-
-.ai-message {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.ai-message.ai-bot {
-    flex-direction: row;
-}
-
-.ai-message.ai-user {
-    flex-direction: row-reverse;
-}
-
-.ai-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    flex-shrink: 0;
-}
-
-.ai-message.ai-user .ai-avatar {
-    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-}
-
-.ai-message-content {
-    background: white;
-    padding: 14px 18px;
-    border-radius: 18px;
-    max-width: 280px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.ai-message.ai-bot .ai-message-content {
-    border-top-left-radius: 4px;
-}
-
-.ai-message.ai-user .ai-message-content {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-top-right-radius: 4px;
-}
-
-.ai-message-content p {
-    font-size: 14px;
-    line-height: 1.5;
-    margin-bottom: 8px;
-}
-
-.ai-message-content p:last-child {
-    margin-bottom: 0;
-}
-
-.ai-message-content ul {
-    margin: 8px 0;
-    padding-left: 20px;
-    font-size: 13px;
-}
-
-.ai-message-content li {
-    margin-bottom: 4px;
-}
-
-.ai-chat-input {
-    padding: 16px;
-    background: white;
-    border-top: 1px solid #e0e0e0;
-    display: flex;
-    gap: 12px;
-}
-
-.ai-chat-input input {
-    flex: 1;
-    padding: 12px 16px;
-    border: 2px solid #e0e0e0;
-    border-radius: 25px;
-    font-size: 14px;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-.ai-chat-input input:focus {
-    border-color: #667eea;
-}
-
-.ai-chat-input button {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.ai-chat-input button:hover {
-    transform: scale(1.05);
-}
-
-@media (max-width: 768px) {
-    .ai-chat-window {
-        width: 350px;
-        height: 500px;
-        left: -10px;
-    }
-}
-</style>
-
-<script>
-// AI Assistant Functions
-function toggleAIChat() {
-    const chatWindow = document.getElementById('aiChatWindow');
-    chatWindow.classList.toggle('active');
-}
-
-function handleAIKeyPress(event) {
-    if (event.key === 'Enter') {
-        sendAIMessage();
-    }
-}
-
-function sendAIMessage() {
-    const input = document.getElementById('aiInput');
-    const message = input.value.trim();
-    
-    if (!message) return;
-    
-    // Add user message to chat
-    addChatMessage(message, 'user');
-    input.value = '';
-    
-    // Simulate AI thinking delay
-    setTimeout(() => {
-        const response = getAIResponse(message);
-        addChatMessage(response, 'bot');
-    }, 500);
-}
-
-function addChatMessage(message, sender) {
-    const messagesContainer = document.getElementById('aiChatMessages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `ai-message ai-${sender}`;
-    
-    const avatar = sender === 'bot' ? 'fa-robot' : 'fa-user';
-    
-    messageDiv.innerHTML = `
-        <div class="ai-avatar"><i class="fas ${avatar}"></i></div>
-        <div class="ai-message-content">
-            <p>${message}</p>
-        </div>
-    `;
-    
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function getAIResponse(message) {
-    const lowerMessage = message.toLowerCase();
-    
-    // Import Process Questions
-    if (lowerMessage.includes('import') && (lowerMessage.includes('process') || lowerMessage.includes('how') || lowerMessage.includes('start'))) {
-        return "To start importing a vehicle with Asan Global: 1) Submit an import request through the Import page with vehicle details, 2) Our team sources and quotes you, 3) We handle shipping to your destination port, 4) We manage customs clearance, 5) We deliver to your location. The entire process typically takes 4-6 weeks depending on origin.";
-    }
-    
-    if (lowerMessage.includes('import') && lowerMessage.includes('cost') || lowerMessage.includes('fee') || lowerMessage.includes('price')) {
-        return "Import costs include: Import fee (5% of vehicle value), Customs fee (3% of vehicle value), Shipping fee (varies by route), Insurance (optional), and Documentation fees. For a $50,000 vehicle, expect approximately $4,000-$6,000 in total fees excluding the vehicle price.";
-    }
-    
-    if (lowerMessage.includes('document') || lowerMessage.includes('paperwork')) {
-        return "Required documents include: Valid ID/Passport, Purchase invoice, Bill of lading (we provide), Import permit (if required), Customs declaration form, and Proof of payment. Our team assists with all documentation.";
-    }
-    
-    // Tracking Questions
-    if (lowerMessage.includes('track') || lowerMessage.includes('tracking') || lowerMessage.includes('where is')) {
-        return "To track your import: 1) Go to the Tracking page, 2) Enter your tracking number (format: ASAN-IMP-XXXX-XXXX), 3) View real-time status, location, and progress. You can also track from your dashboard where all your imports are listed.";
-    }
-    
-    if (lowerMessage.includes('status') || lowerMessage.includes('progress')) {
-        return "Import statuses are: Pending → Documentation → Processing → In Transit → Customs Clearance → Delivered. Each step is updated in real-time. You can check your current status on the Tracking page or Dashboard.";
-    }
-    
-    // Payment Questions
-    if (lowerMessage.includes('pay') || lowerMessage.includes('payment') || lowerMessage.includes('money')) {
-        return "We accept multiple payment methods: Visa, Mastercard, PayPal, Stripe, Mobile Money (MTN, Vodafone), and Bank Transfer. You can make payments through the Payment page. All transactions are secure and encrypted.";
-    }
-    
-    if (lowerMessage.includes('refund') || lowerMessage.includes('return')) {
-        return "Refunds are processed within 5-7 business days. Contact our support team with your tracking number and reason for refund. Partial refunds may apply depending on the stage of import.";
-    }
-    
-    // Website Navigation
-    if (lowerMessage.includes('dashboard') || lowerMessage.includes('home') || lowerMessage.includes('navigate')) {
-        return "The Dashboard shows your import statistics, recent imports, and quick access to all features. From there you can: Track imports, Submit new requests, View payments, Check schedule, and Manage your profile.";
-    }
-    
-    if (lowerMessage.includes('help') || lowerMessage.includes('support') || lowerMessage.includes('contact')) {
-        return "For support: Call +233 245 357 611, Email support@asanglobal.com, or use WhatsApp for instant assistance. Our team is available Monday-Friday 8AM-6PM GMT.";
-    }
-    
-    // Vehicle Information
-    if (lowerMessage.includes('vehicle') || lowerMessage.includes('car') || lowerMessage.includes('type')) {
-        return "We import all vehicle types: Sedans, SUVs, Trucks, Motorcycles, Vans, and specialty vehicles. We source from Japan, USA, UK, Germany, UAE, and South Korea. Popular imports include Toyota Land Cruiser, Honda Accord, BMW X5, and Mercedes G-Class.";
-    }
-    
-    if (lowerMessage.includes('country') || lowerMessage.includes('origin') || lowerMessage.includes('from')) {
-        return "We import vehicles from: Japan (Tokyo), USA (Los Angeles), UK (London), Germany (Hamburg), UAE (Dubai), and South Korea (Seoul). We deliver to Ghana, Nigeria, Kenya, South Africa, and other African countries.";
-    }
-    
-    // Time and Duration
-    if (lowerMessage.includes('long') || lowerMessage.includes('time') || lowerMessage.includes('duration') || lowerMessage.includes('how long')) {
-        return "Import duration varies by origin: Japan (4-5 weeks), USA (3-4 weeks), Europe (3-4 weeks), UAE (2-3 weeks). This includes sourcing, shipping, customs clearance, and delivery.";
-    }
-    
-    // Company Information
-    if (lowerMessage.includes('asan') || lowerMessage.includes('company') || lowerMessage.includes('about')) {
-        return "Asan Global is a premier vehicle import service provider specializing in end-to-end vehicle sourcing, shipping, customs clearance, and delivery across Africa. We have over 10 years of experience and have successfully imported 5,000+ vehicles.";
-    }
-    
-    if (lowerMessage.includes('staff') || lowerMessage.includes('team') || lowerMessage.includes('agent')) {
-        return "Our team includes expert import agents, customs brokers, logistics coordinators, and customer support specialists. Each import is assigned a dedicated staff member who handles your case from start to finish.";
-    }
-    
-    // General Questions
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-        return "Hello! Welcome to Asan Global. How can I help you with your vehicle import needs today?";
-    }
-    
-    if (lowerMessage.includes('thank')) {
-        return "You're welcome! If you need any further assistance, I'm here to help. Have a great day!";
-    }
-    
-    if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye')) {
-        return "Goodbye! Feel free to return anytime you need assistance with your imports. Safe travels!";
-    }
-    
-    // Default response
-    return "I understand you're asking about: \"" + message + "\". I can help you with vehicle imports, tracking, payments, documentation, or general questions about our services. Could you please provide more specific details so I can assist you better?";
-}
-</script>
 
 <script src="index.js"></script>
 </body>

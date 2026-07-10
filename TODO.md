@@ -1,19 +1,33 @@
-# BlackboxAI Upgrade TODO
+# TODO — Asan Global Website Modernization
 
-## Phase 1 — Core design system + main pages
-- [x] Inspect `dashboard2.html` fully (style references + structure)
+## Step 1 — Homepage polish (index + style)
+- [ ] Move inline hero styles from `index.html` into `style.css` where practical.
+- [ ] Add scroll-reveal animations (IntersectionObserver) with `prefers-reduced-motion` support.
+- [ ] Upgrade forms UX (quote + contact + track redirect) without changing behavior.
+- [ ] Replace `alert()` success messages with a reusable toast system.
 
-- [x] Create/upgrade global design system in `style.css` (tokens, base styles, components)
-- [x] Refactor `index.html` to remove absolute image paths (replace with relative placeholders)
+## Step 2 — Code quality (index.js)
+- [ ] Refactor `index.js` into small functions, remove dead code, keep same feature set.
 
-- [x] Upgrade login styling to match design system: `login.css`
+## Step 3 — Tracking page conflict resolution
+- [ ] Decide source of truth: either use inline script in `tracking.html` or move it fully into `tracking.js`.
+- [ ] Remove duplicated intervals/simulation and guard against missing globals/elements.
+- [ ] Ensure the map + timeline update correctly using one code path.
 
-- [x] Fix `dashboard2.html` stylesheet link (use root `style.css` or correct path) and align dashboard layout styling
-- [x] Quick visual sanity check by opening `index.html`, `login.html`, `dashboard2.html`
+## Step 4 — Tracking UX improvements
+- [ ] Improve timeline step updates (animate only changed steps).
+- [ ] Reduce notification DOM thrash; avoid repeatedly injecting styles.
+- [ ] Ensure chat UI works without polluting localStorage keys.
 
-## Phase 2 — Apply to remaining pages
-- [ ] Identify which `index*.html` pages are used/important
-- [ ] For each selected page: update HTML classes/structure + link the design system CSS
-- [ ] Remove references to missing/incorrect CSS files
-- [ ] Sanity check responsiveness on mobile widths
+## Step 5 — Finance page consistency
+- [ ] Align finance HTML IDs/classes with `finance.js` logic (or remove unused script).
+
+## Step 6 — Accessibility + visual consistency
+- [ ] Add `:focus-visible` styles across pages.
+- [ ] Standardize button/card shadows and border radii.
+
+## Step 7 — Final QA
+- [ ] Smoke test: homepage navigation, quote/contact/track flows.
+- [ ] Smoke test: tracking page with a demo ref.
+- [ ] Check console for errors and remove duplicates.
 

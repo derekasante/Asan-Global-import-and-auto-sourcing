@@ -7,6 +7,7 @@
     <title>Asan Global | Payment Center</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="dashboard-shell.css">
     <style>
 
 *{
@@ -18,7 +19,7 @@ font-family:'Poppins',sans-serif;
 
 body{
 display:flex;
-background:#f0f4f8;
+background:#0a1929;
 min-height:100vh;
 }
 
@@ -27,20 +28,23 @@ min-height:100vh;
 .sidebar{
 width:280px;
 height:100vh;
-background:linear-gradient(180deg, #1a365d 0%, #2d5a87 100%);
+background:linear-gradient(180deg, #1a365d 0%, #2d4a6f 100%);
 color:white;
 position:fixed;
-padding:30px 25px;
-box-shadow:4px 0 15px rgba(0,0,0,0.1);
+padding:0;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
 z-index:1000;
+display:flex;
+flex-direction:column;
+overflow:auto;
 }
 
 .sidebar .logo{
+padding:30px 25px;
+margin-bottom:10px;
 display:flex;
 align-items:center;
 gap:15px;
-margin-bottom:50px;
-padding-bottom:20px;
 border-bottom:1px solid rgba(255,255,255,0.1);
 }
 
@@ -50,33 +54,83 @@ color:#ffd54f;
 }
 
 .sidebar .logo h2{
-font-size:22px;
-font-weight:600;
+font-size:20px;
+font-weight:700;
+margin:0;
+letter-spacing:1px;
 }
 
 .sidebar .logo span{
 font-size:12px;
-color:#ffd54f;
+color:rgba(255,255,255,0.7);
+font-weight:400;
 }
 
-.sidebar nav a{
-color:rgba(255,255,255,0.8);
+.sidebar nav{
+flex:1;
+padding:20px 15px;
+}
+
+.sidebar nav ul{
+list-style:none;
+padding:0;
+margin:0;
+}
+
+.sidebar nav ul li{
+margin-bottom:5px;
+}
+
+.sidebar nav ul li a{
+color:rgba(255,255,255,0.85);
 text-decoration:none;
 display:flex;
 align-items:center;
-gap:12px;
-padding:14px 16px;
+gap:15px;
+padding:14px 18px;
 border-radius:12px;
-margin:8px 0;
-transition:.3s;
-font-size:15px;
+transition:.35s;
+font-size:14px;
+font-weight:500;
 }
 
-.sidebar nav a:hover,
-.sidebar nav a.active{
-background:rgba(255,255,255,0.15);
-color:white;
+.sidebar nav ul li a:hover{
+background:rgba(255,255,255,.12);
 transform:translateX(5px);
+color:#fff;
+}
+
+.sidebar nav ul li.active a{
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color:#fff;
+font-weight:600;
+box-shadow:0 4px 15px rgba(102,126,234,0.4);
+}
+
+.sidebar nav ul li a i{
+font-size:16px;
+width:20px;
+text-align:center;
+}
+
+.sidebar-footer{
+padding:25px;
+border-top:1px solid rgba(255,255,255,0.1);
+background:rgba(0,0,0,0.1);
+}
+
+.sidebar-footer strong{
+font-size:14px;
+color:#ffd54f;
+display:block;
+margin-bottom:5px;
+}
+
+.sidebar-footer p{
+font-size:12px;
+color:rgba(255,255,255,0.6);
+line-height:1.5;
+margin:0;
 }
 
 /* Main */
@@ -89,20 +143,21 @@ width:calc(100% - 280px);
 /* Header */
 
 .topbar{
-background:white;
+background:linear-gradient(180deg, #1a365d 0%, #0a1929 100%);
 padding:20px 40px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0 2px 15px rgba(0,0,0,0.08);
+box-shadow:0 2px 15px rgba(0,0,0,0.3);
 position:sticky;
 top:0;
 z-index:100;
+border-bottom:1px solid rgba(255,255,255,0.1);
 }
 
 .topbar h1{
 font-size:24px;
-color:#1a365d;
+color:#fff;
 font-weight:600;
 }
 
@@ -129,6 +184,7 @@ font-size:18px;
 
 .content{
 padding:40px;
+background:#0a1929;
 }
 
 /* Stats Cards */
@@ -141,11 +197,12 @@ margin-bottom:40px;
 }
 
 .stat-card{
-background:white;
+background:rgba(26,54,93,0.5);
 padding:30px;
 border-radius:20px;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
+box-shadow:0 5px 25px rgba(0,0,0,0.3);
 transition:.3s;
+border:1px solid rgba(102,126,234,0.3);
 }
 
 .stat-card:hover{
@@ -186,29 +243,30 @@ background:linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 
 .stat-card h3{
 font-size:36px;
-color:#1a365d;
+color:#fff;
 font-weight:700;
 margin-bottom:8px;
 }
 
 .stat-card p{
-color:#666;
+color:rgba(255,255,255,0.7);
 font-size:15px;
 }
 
 /* Payment Methods */
 
 .payment-methods{
-background:white;
+background:rgba(26,54,93,0.5);
 padding:40px;
 border-radius:24px;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
+box-shadow:0 5px 25px rgba(0,0,0,0.3);
 margin-bottom:40px;
+border:1px solid rgba(102,126,234,0.3);
 }
 
 .payment-methods h2{
 font-size:24px;
-color:#1a365d;
+color:#fff;
 margin-bottom:30px;
 font-weight:600;
 }
@@ -220,19 +278,20 @@ gap:20px;
 }
 
 .payment-logo{
-background:#f8f9fa;
+background:rgba(102,126,234,0.1);
 padding:30px 20px;
 border-radius:16px;
 text-align:center;
 transition:.3s;
-border:2px solid transparent;
+border:2px solid rgba(102,126,234,0.3);
 cursor:pointer;
 }
 
 .payment-logo:hover{
 border-color:#667eea;
 transform:translateY(-5px);
-box-shadow:0 10px 30px rgba(102,126,234,0.2);
+box-shadow:0 10px 30px rgba(102,126,234,0.4);
+background:rgba(102,126,234,0.2);
 }
 
 .payment-logo img{
@@ -242,29 +301,30 @@ margin-bottom:15px;
 
 .payment-logo h4{
 font-size:16px;
-color:#1a365d;
+color:#fff;
 font-weight:600;
 margin-bottom:5px;
 }
 
 .payment-logo p{
 font-size:12px;
-color:#999;
+color:rgba(255,255,255,0.6);
 }
 
 /* Payment Form */
 
 .payment-form-section{
-background:white;
+background:rgba(26,54,93,0.5);
 padding:40px;
 border-radius:24px;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
+box-shadow:0 5px 25px rgba(0,0,0,0.3);
 margin-bottom:40px;
+border:1px solid rgba(102,126,234,0.3);
 }
 
 .payment-form-section h2{
 font-size:24px;
-color:#1a365d;
+color:#fff;
 margin-bottom:30px;
 font-weight:600;
 }
@@ -278,7 +338,7 @@ gap:25px;
 .form-group label{
 display:block;
 font-size:14px;
-color:#333;
+color:rgba(255,255,255,0.9);
 font-weight:500;
 margin-bottom:10px;
 }
@@ -287,16 +347,19 @@ margin-bottom:10px;
 .form-group select{
 width:100%;
 padding:14px 16px;
-border:2px solid #e0e0e0;
+border:2px solid rgba(102,126,234,0.3);
 border-radius:12px;
 font-size:15px;
 transition:.3s;
+background:rgba(10,25,41,0.5);
+color:#fff;
 }
 
 .form-group input:focus,
 .form-group select:focus{
 outline:none;
 border-color:#667eea;
+background:rgba(10,25,41,0.7);
 }
 
 .form-actions{
@@ -323,26 +386,28 @@ box-shadow:0 8px 25px rgba(102,126,234,0.4);
 }
 
 .btn.secondary{
-background:#f0f4f8;
-color:#1a365d;
+background:rgba(102,126,234,0.2);
+color:#fff;
+border:1px solid rgba(102,126,234,0.4);
 }
 
 .btn.secondary:hover{
-background:#e0e4e8;
+background:rgba(102,126,234,0.3);
 }
 
 /* Transactions Table */
 
 .transactions-section{
-background:white;
+background:rgba(26,54,93,0.5);
 padding:40px;
 border-radius:24px;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
+box-shadow:0 5px 25px rgba(0,0,0,0.3);
+border:1px solid rgba(102,126,234,0.3);
 }
 
 .transactions-section h2{
 font-size:24px;
-color:#1a365d;
+color:#fff;
 margin-bottom:30px;
 font-weight:600;
 }
@@ -353,7 +418,7 @@ border-collapse:collapse;
 }
 
 th{
-background:linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 color:white;
 padding:18px 20px;
 font-weight:500;
@@ -364,13 +429,13 @@ letter-spacing:0.5px;
 
 td{
 padding:20px;
-border-bottom:1px solid #f0f0f0;
-color:#333;
+border-bottom:1px solid rgba(102,126,234,0.2);
+color:rgba(255,255,255,0.9);
 font-size:14px;
 }
 
 tr:hover td{
-background:#f8f9fa;
+background:rgba(102,126,234,0.1);
 }
 
 .status{
@@ -445,19 +510,27 @@ padding:25px;
             <i class="fas fa-car"></i>
             <div>
                 <h2>Asan Global</h2>
-                <span>Import Services</span>
+                <span>Vehicle Import Services</span>
             </div>
         </div>
         <nav>
-            <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-            <a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Track Import</a>
-            <a href="import.html"><i class="fas fa-file-import"></i> New Import</a>
-            <a href="finance.html"><i class="fas fa-wallet"></i> Finance</a>
-            <a href="payment.html" class="active"><i class="fas fa-credit-card"></i> Payments</a>
-            <a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a>
-            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
-            <a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
+                <li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
+                <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
+                <li class="active"><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
+                <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
+                <li><a href="price.html"><i class="fas fa-tag"></i> Pricing</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
         </nav>
+        <div class="sidebar-footer">
+            <strong>24/7 Support</strong>
+            <p>Live tracking and dedicated support for your imports.</p>
+        </div>
     </aside>
 
     <main class="main">

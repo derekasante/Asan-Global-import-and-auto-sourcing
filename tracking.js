@@ -4,80 +4,11 @@
    PART 3A
 ========================================== */
 
-// =========================
-// Create Map
-// =========================
+// NOTE: tracking.html already builds the Leaflet map inside its inline script (initMap())
+// tracking.js previously created another “fake GPS” map + movement.
+// To avoid conflicts, we disable the fake map animation and only keep the helper logic.
 
-const map = L.map("map").setView([5.6037, -0.1870], 6);
-
-// =========================
-// OpenStreetMap
-// =========================
-
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: "&copy; OpenStreetMap Contributors"
-}).addTo(map);
-
-// =========================
-// Ship Icon
-// =========================
-
-const shipIcon = L.icon({
-
-    iconUrl:
-        "https://cdn-icons-png.flaticon.com/512/2942/2942076.png",
-
-    iconSize: [45, 45],
-
-    iconAnchor: [22, 22]
-
-});
-
-// =========================
-// Ship Marker
-// =========================
-
-let shipMarker = L.marker(
-    [5.6037, -0.1870],
-    { icon: shipIcon }
-).addTo(map);
-
-// =========================
-// Popup
-// =========================
-
-shipMarker.bindPopup(`
-<b>ASAN OCEAN STAR</b><br>
-Current Status: In Transit<br>
-Tema Port
-`).openPopup();
-
-// =========================
-// Ship Route
-// =========================
-
-let route = [
-
-    [5.6037, -0.1870],
-
-    [5.40, -0.60],
-
-    [5.20, -1.20],
-
-    [4.90, -2.10],
-
-    [4.50, -3.50],
-
-    [4.00, -5.00],
-
-    [3.60, -6.20],
-
-    [3.20, -8.00]
-
-];
-
-let currentPoint = 0;
+// (Intentionally no-op map initialization here.)
 
 // =========================
 // Search Button
@@ -95,8 +26,20 @@ function applyTrackingSearch(value) {
         alert("Please enter a tracking number.");
         return;
     }
-    trackingInput.value = value.trim().toUpperCase();
-    alert("Tracking Number " + trackingInput.value + " found successfully!");
+
+    const tracking = value.trim().toUpperCase();
+    trackingInput.value = tracking;
+
+    // Connect tracking number to the real-time dashboard page state (no backend)
+    // This keeps the UI consistent and allows tracking.js to reload correct data.
+    const url = new URL(window.location.href);
+    url.searchParams.set('tracking', tracking);
+    window.history.replaceState({}, '', url.toString());
+
+    // Trigger data refresh if the page listens for it.
+    // Many functions in tracking.html use DOMContentLoaded + localStorage polling.
+    // Force a reload for perfect consistency.
+    window.location.reload();
 }
 
 trackButton.addEventListener("click", () => {
@@ -202,28 +145,39 @@ let coordinateIndex=0;
 // Live Ship Movement
 // =========================
 
-setInterval(() => {
+// Live Ship Movement (guarded so tracking pages don't crash)
+try {
+    if (typeof window.currentPoint === 'undefined') window.currentPoint = 0;
 
-    currentPoint++;
+    const hasRoute = typeof window.route !== 'undefined' && Array.isArray(window.route) && window.route.length > 1;
+    const hasMap = typeof window.map !== 'undefined' && window.map && typeof window.map.panTo === 'function';
+    const hasMarker = typeof window.shipMarker !== 'undefined' && window.shipMarker && typeof window.shipMarker.setLatLng === 'function';
 
-    if (currentPoint >= route.length) {
-        currentPoint = 0;
+    if (hasRoute && hasMap && hasMarker) {
+        setInterval(() => {
+            window.currentPoint++;
+
+            if (window.currentPoint >= window.route.length) {
+                window.currentPoint = 0;
+            }
+
+            window.shipMarker.setLatLng(window.route[window.currentPoint]);
+
+            window.map.panTo(window.route[window.currentPoint], {
+                animate: true,
+                duration: 2
+            });
+
+            window.shipMarker.setPopupContent(`
+                <b>ASAN OCEAN STAR</b><br>
+                Status: In Transit<br>
+                Point ${window.currentPoint + 1}
+            `);
+        }, 5000);
     }
-
-    shipMarker.setLatLng(route[currentPoint]);
-
-    map.panTo(route[currentPoint], {
-        animate: true,
-        duration: 2
-    });
-
-    shipMarker.setPopupContent(`
-        <b>ASAN OCEAN STAR</b><br>
-        Status: In Transit<br>
-        Point ${currentPoint + 1}
-    `);
-
-}, 5000);
+} catch (e) {
+    // do nothing - prevent JS errors from stopping other parts of the page
+}
 
 // =========================
 // Live Coordinates

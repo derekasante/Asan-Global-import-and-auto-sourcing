@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Client Agreement Form - Asan Global Import & Auto Sourcing</title>
+  <style>
+    :root{
+      --ink:#0f172a;
+      --muted:#475569;
+      --line:#cbd5e1;
+      --brand:#007bff;
+      --bg:#ffffff;
+      --paper:#ffffff;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      color:var(--ink);
+      background:#f8fafc;
+    }
+
+    .page{
+      width: 210mm;            /* A4 */
+      min-height: 297mm;
+      margin: 0 auto;
+      background: var(--paper);
+      padding: 18mm 14mm;
+    }
+
+    .header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .brand .title{
+      font-weight:800;
+      font-size: 18px;
+      letter-spacing: .2px;
+    }
+
+    .brand .subtitle{
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .meta{
+      text-align:right;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      white-space:nowrap;
+    }
+
+    h2{
+      margin: 0 0 10px;
+      font-size: 15px;
+      letter-spacing:.2px;
+    }
+
+    .section{
+      margin-top: 14px;
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .grid3{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .field{
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 56px;
+    }
+
+    .label{
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 700;
+      letter-spacing:.2px;
+      text-transform: uppercase;
+    }
+
+    .value{
+      font-size: 14px;
+      font-weight: 600;
+      min-height: 18px;
+    }
+
+    .line{
+      border-top: 1px solid var(--line);
+      margin: 12px 0;
+    }
+
+    .terms{
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .terms strong{ color: var(--ink); }
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    td{
+      border: 1px solid var(--line);
+      padding: 10px;
+      vertical-align: top;
+    }
+
+    .signRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .signBox{
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 160px;
+    }
+
+    .signBox h3{
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .signGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .sigLine{
+      border-top: 1px solid var(--line);
+      margin-top: 18px;
+      padding-top: 8px;
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      align-items:flex-end;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.2;
+    }
+
+    @media print{
+      body{ background: #fff; }
+      .page{ box-shadow:none; margin:0; padding: 18mm 14mm; }
+      .no-print{ display:none !important; }
+    }
+
+    /* Quick on-screen convenience */
+    .no-print{
+      padding: 12px 14px;
+      max-width: 900px;
+      margin: 0 auto;
+      color: #334155;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .no-print button{
+      margin-top: 8px;
+      background: var(--brand);
+      color:#fff;
+      border:none;
+      padding:10px 14px;
+      border-radius: 10px;
+      font-weight:700;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <div><strong>CLIENT AGREEMENT FORM</strong> (printable)</div>
+    <div style="margin-top:6px;">Use your browser print dialog to download as PDF (works on phone + desktop).</div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+    <button type="button" onclick="window.print()">Print / Save as PDF</button>
+    <!-- Download as PDF: opens a print dialog (best available without a backend). -->
+    <button type="button" style="background:#111827;" onclick="window.print()">Download as PDF</button>
+    </div>
+  </div>
+
+  <div class="page" role="document" aria-label="Client Agreement Form">
+    <div class="header">
+      <div class="brand">
+        <div class="title">Asan Global Import &amp; Auto Sourcing</div>
+        <div class="subtitle">Client Agreement Form (Service Provider Document)</div>
+      </div>
+      <div class="meta">
+        <div><strong>Document:</strong> Asan/CA/01</div>
+        <div><strong>Date:</strong> ____________</div>
+        <div><strong>Tracking Ref:</strong> ____________</div>
+      </div>
+    </div>
+
+    <section class="section">
+      <h2>1) Client Information</h2>
+
+      <div class="grid2">
+        <div class="field">
+          <div class="label">FULL NAME</div>
+          <div class="value">______________________________</div>
+        </div>
+        <div class="field">
+          <div class="label">Company Name (If applicable)</div>
+          <div class="value">______________________________</div>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <div class="grid2">
+        <div class="field">
+          <div class="label">Phone number</div>
+          <div class="value">______________________________</div>
+        </div>
+        <div class="field">
+          <div class="label">National ID / Passport No.</div>
+          <div class="value">______________________________</div>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <div class="grid2">
+        <div class="field">
+          <div class="label">Email address</div>
+          <div class="value">______________________________</div>
+        </div>
+        <div class="field">
+          <div class="label">Residential / Business Address</div>
+          <div class="value">______________________________</div>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <div class="grid2">
+        <div class="field">
+          <div class="label">Country</div>
+          <div class="value">______________________________</div>
+        </div>
+        <div class="field">
+          <div class="label">SERVICE TYPE (Import / Sourcing / Documentation)</div>
+          <div class="value">______________________________</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="line"></div>
+
+    <section class="section">
+      <h2>2) Authorized Representative (for Asan Global Import &amp; Auto Sourcing)</h2>
+      <div class="grid3">
+        <div class="field">
+          <div class="label">Name</div>
+          <div class="value">______________________________</div>
+        </div>
+        <div class="field">
+          <div class="label">Position</div>
+          <div class="value">______________________________</div>
+        </div>
+        <div class="field">
+          <div class="label">Date</div>
+          <div class="value">______________________________</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="line"></div>
+
+    <section class="section">
+      <h2>3) Service Provider Acceptance &amp; Agreement</h2>
+      <div class="terms">
+        <strong>Agreement Summary:</strong> By signing this form, the client agrees to appoint <strong>Asan Global Import &amp; Auto Sourcing</strong>
+        as the service provider for the vehicle import/sourcing process.
+        <br/><br/>
+        The service provider will coordinate sourcing, documentation, and shipping arrangements (through trusted partners where applicable).
+        The client agrees to provide accurate information and necessary documents.
+        <br/><br/>
+        <strong>Important:</strong> Timelines depend on origin conditions, shipping schedules, customs clearance, and documentation processing.
+        <br/><br/>
+        Any agreed fees, responsibilities, and timelines will be confirmed by the service provider before processing.
+      </div>
+    </section>
+
+    <div class="signRow">
+      <div class="signBox">
+        <h3>4) Client Signature</h3>
+        <div class="label">Client name</div>
+        <div class="value" style="margin-bottom:8px;">______________________________</div>
+        <div class="label">Signature</div>
+        <div class="sigLine">
+          <div>______________________________</div>
+          <div>Date: __________________________</div>
+        </div>
+      </div>
+
+      <div class="signBox">
+        <h3>5) Authorized Asan Global Representative Signature</h3>
+        <div class="label">Name</div>
+        <div class="value" style="margin-bottom:8px;">______________________________</div>
+        <div class="label">Position</div>
+        <div class="value" style="margin-bottom:8px;">______________________________</div>
+        <div class="label">Signature</div>
+        <div class="sigLine">
+          <div>______________________________</div>
+          <div>Date: __________________________</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px; font-size:11px; color:var(--muted); line-height:1.5;">
+      Client agreement acceptance is required before processing. Keep a copy for your records.
+    </div>
+  </div>
+</body>
+</html>
+

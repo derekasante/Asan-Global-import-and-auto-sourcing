@@ -291,6 +291,32 @@ body{
 
 <div class="container">
     <div class="grid">
+
+        <div class="card" style="grid-column:1 / -1; padding:0; overflow:hidden;">
+            <div style="padding:22px 25px; border-bottom:1px solid rgba(0,0,0,.08); display:flex; justify-content:space-between; align-items:center; gap:14px;">
+                <div>
+                    <h3 style="margin:0 0 6px 0;">💬 Client Messages</h3>
+                    <p style="margin:0; color:#666;">Send and receive client prompts in real-time (demo uses localStorage).</p>
+                </div>
+            </div>
+
+            <div style="padding:22px 25px; display:grid; grid-template-columns:1.3fr .7fr; gap:18px; align-items:start;">
+                <div class="chat-card" style="box-shadow:none; border-radius:0;">
+                    <div class="chat-messages" id="adminChatMessages"></div>
+                </div>
+
+                <div>
+                    <form id="adminChatForm" style="display:flex; flex-direction:column; gap:10px;">
+                        <input id="adminChatInput" type="text" placeholder="Type message to the client..." style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid #e0e0e0; font-family:'Segoe UI',sans-serif;" />
+                        <button id="adminChatSendBtn" type="submit" style="padding:12px 18px; border:none; border-radius:12px; cursor:pointer; background:#007bff; color:white; font-weight:700; transition:.2s;">Send Message</button>
+                        <div style="font-size:12px; color:#999; line-height:1.4;">
+                            Tip: Use this area to reply to client requests like tracking, payment status, and next steps.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="card">
             <h3>� Vehicle Imports</h3>
             <p>Manage vehicle import requests</p>
@@ -381,7 +407,15 @@ body{
     </div>
 </div>
 
+<script src="security-utils.js"></script>
 <script>
+const escapeHtml = (value) => {
+    if (window.securityUtils?.escapeHtml) {
+        return window.securityUtils.escapeHtml(value);
+    }
+    return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+};
+
 // CHECK LOGIN
 const currentUser = JSON.parse(localStorage.getItem('asan_current_user'));
 if (!currentUser || currentUser.role !== 'admin') {
@@ -852,12 +886,12 @@ function viewData(type) {
             <div class="data-list">
                 ${imports.map(s => `
                     <div class="data-item">
-                        <h4>${s.tracking}</h4>
-                        <p><strong>Route:</strong> ${s.origin} → ${s.destination}</p>
-                        <p><strong>Status:</strong> ${s.status}</p>
-                        <p><strong>Vehicle:</strong> ${s.make} ${s.model} ${s.year}</p>
-                        <p><strong>Customer:</strong> ${s.customer}</p>
-                        <p><strong>Assigned Staff:</strong> ${s.assignedStaff}</p>
+                        <h4>${escapeHtml(s.tracking)}</h4>
+                        <p><strong>Route:</strong> ${escapeHtml(s.origin)} → ${escapeHtml(s.destination)}</p>
+                        <p><strong>Status:</strong> ${escapeHtml(s.status)}</p>
+                        <p><strong>Vehicle:</strong> ${escapeHtml(s.make)} ${escapeHtml(s.model)} ${escapeHtml(s.year)}</p>
+                        <p><strong>Customer:</strong> ${escapeHtml(s.customer)}</p>
+                        <p><strong>Assigned Staff:</strong> ${escapeHtml(s.assignedStaff)}</p>
                     </div>
                 `).join('')}
             </div>
@@ -867,12 +901,10 @@ function viewData(type) {
             <div class="data-list">
                 ${data.map(item => `
                     <div class="data-item">
-                        <h4>${item.name || item.tracking || item.type || item.make || item.email}</h4>
+                        <h4>${escapeHtml(item.name || item.tracking || item.type || item.make || item.email)}</h4>
                         ${Object.entries(item).filter(([k]) => k !== 'id' && k !== 'name' && k !== 'tracking' && k !== 'type' && k !== 'make' && k !== 'email').map(([k, v]) => {
-                            if (Array.isArray(v)) {
-                                return `<p><strong>${k.charAt(0).toUpperCase() + k.slice(1)}:</strong> ${v.join(', ')}</p>`;
-                            }
-                            return `<p><strong>${k.charAt(0).toUpperCase() + k.slice(1)}:</strong> ${v}</p>`;
+                            const safeValue = Array.isArray(v) ? v.join(', ') : v;
+                            return `<p><strong>${escapeHtml(k.charAt(0).toUpperCase() + k.slice(1))}:</strong> ${escapeHtml(safeValue)}</p>`;
                         }).join('')}
                         <div class="actions">
                             <button onclick="editItem('${type}', ${item.id})">Edit</button>
@@ -1047,7 +1079,12 @@ saveData = function() {
 function showNotification(message) {
     const notification = document.createElement('div');
     notification.className = 'notification-badge';
-    notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-check-circle';
+    const text = document.createElement('span');
+    text.textContent = message;
+    notification.appendChild(icon);
+    notification.appendChild(text);
     document.body.appendChild(notification);
     
     setTimeout(() => {
@@ -1082,6 +1119,13 @@ function logout(){
     localStorage.removeItem('asan_user_role');
     window.location.href = 'login.html';
 }
+</script>
+
+<script src="admin-chat.js"></script>
+<script>
+  try {
+    window.AdminChat?.init?.();
+  } catch (e) {}
 </script>
 
 </body>

@@ -8,6 +8,8 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="tracking.css">
+    <link rel="stylesheet" href="tracking-chat.css">
+    <link rel="stylesheet" href="dashboard-shell.css">
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
@@ -27,65 +29,31 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-
         <div class="logo">
-            <i class="fa-solid fa-car"></i>
-            <h2>ASAN GLOBAL</h2>
+            <i class="fas fa-car"></i>
+            <div>
+                <h2>Asan Global</h2>
+                <span>Vehicle Import Services</span>
+            </div>
         </div>
-
-        <ul>
-
-            <li>
-                <a href="index.html">
-                    <i class="fa-solid fa-house"></i>
-                    Home
-                </a>
-            </li>
-
-            <li class="active">
-                <a href="#">
-                    <i class="fa-solid fa-location-crosshairs"></i>
-                    Tracking
-                </a>
-            </li>
-
-            <li>
-                <a href="schudule.html">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    Schedule
-                </a>
-            </li>
-
-            <li>
-                <a href="finance.html">
-                    <i class="fa-solid fa-wallet"></i>
-                    Finance
-                </a>
-            </li>
-
-            <li>
-                <a href="import.html">
-                    <i class="fa-solid fa-file-import"></i>
-                    Import
-                </a>
-            </li>
-
-            <li>
-                <a href="dashboard.html">
-                    <i class="fa-solid fa-gauge"></i>
-                    Dashboard
-                </a>
-            </li>
-
-            <li>
-                <a href="login.html">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Logout
-                </a>
-            </li>
-
-        </ul>
-
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li class="active"><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
+                <li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
+                <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
+                <li><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
+                <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
+                <li><a href="price.html"><i class="fas fa-tag"></i> Pricing</a></li>
+                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <strong>24/7 Support</strong>
+            <p>Live tracking and dedicated support for your imports.</p>
+        </div>
     </aside>
 
     <!-- Main Content -->
@@ -110,7 +78,9 @@
 
             <div class="top-icons">
 
-                <i class="fa-solid fa-bell"></i>
+                <i class="fa-solid fa-bell" onclick="showNotifications()" style="position:relative;cursor:pointer;">
+                    <span class="notification-badge" id="notificationBadge" style="position:absolute;top:-5px;right:-5px;width:8px;height:8px;background:#ff4757;border-radius:50%;display:none;"></span>
+                </i>
 
                 <i class="fa-solid fa-user"></i>
 
@@ -277,44 +247,65 @@
         </section>
 
         <!-- Lower Section -->
-
         <section class="bottom">
 
             <!-- Updates -->
-
             <div class="updates">
 
-                <h2>Recent Updates</h2>
+                <div class="updates__header">
+                    <h2>Recent Updates</h2>
+                    <span class="updates__live" aria-label="updates live">Live</span>
+                </div>
 
                 <ul>
-
                     <li>
-                        � Documentation completed
-                        <span>08:30 AM</span>
+                        <span class="updates__label">📄 Documentation completed</span>
+                        <span class="updates__time">08:30 AM</span>
                     </li>
-
                     <li>
-                        🚢 Vehicle loaded on carrier
-                        <span>11:15 AM</span>
+                        <span class="updates__label">🚢 Vehicle loaded on carrier</span>
+                        <span class="updates__time">11:15 AM</span>
                     </li>
-
                     <li>
-                        ✅ Customs inspection passed
-                        <span>02:00 PM</span>
+                        <span class="updates__label">✅ Customs inspection passed</span>
+                        <span class="updates__time">02:00 PM</span>
                     </li>
-
                     <li>
-                        � Staff assigned: Maria Garcia
-                        <span>04:45 PM</span>
+                        <span class="updates__label">👤 Staff assigned: Maria Garcia</span>
+                        <span class="updates__time">04:45 PM</span>
                     </li>
-
                 </ul>
 
             </div>
 
-            <!-- Import Details -->
+            <!-- Chat / Message Area -->
+            <div class="chat-card">
+                <h2>Messages</h2>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="chat-bubble bot">Hi! Ask me about your import progress.</div>
+                </div>
+                <form id="chatForm" class="chat-input">
+                    <input id="chatInput" type="text" placeholder="Type a message..." autocomplete="off" required />
+                    <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
 
+            <!-- Download client agreement form -->
             <div class="container-card">
+                <h2>Download Client Agreement Form</h2>
+                <p style="color:#666; margin-top:-10px; line-height:1.6;">
+                    Print and sign the agreement before processing.
+                </p>
+                <a class="download" href="client-agreement-form.html" target="_blank" style="text-align:center; display:inline-flex; justify-content:center; align-items:center; gap:10px; text-decoration:none;">
+                    <i class="fa-solid fa-file-download"></i>
+                    Download / Print Form
+                </a>
+            </div>
+
+
+            <!-- Import Details -->
+            <div class="container-card">
+
 
                 <h2>Import Details</h2>
 
@@ -386,6 +377,74 @@
 
     <!-- Real-time Data Script -->
     <script>
+        // Messaging state (local, no backend)
+        (function initChat(){
+            const chatForm = document.getElementById('chatForm');
+            const chatInput = document.getElementById('chatInput');
+            const chatMessages = document.getElementById('chatMessages');
+            if(!chatForm || !chatInput || !chatMessages) return;
+
+            function addBubble(text, sender){
+                const bubble = document.createElement('div');
+                bubble.className = `chat-bubble ${sender === 'bot' ? 'bot' : 'user'}`;
+                bubble.textContent = text;
+                chatMessages.appendChild(bubble);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function getBotReply(msg){
+                const lower = msg.toLowerCase();
+                if(lower.includes('track') || lower.includes('tracking')){
+                    return 'To track your shipment: open Tracking, enter your tracking number (ASAN-IMP-...), and the map + timeline update automatically.';
+                }
+                if(lower.includes('status') || lower.includes('progress')){
+                    return 'Current progress updates are shown in the timeline and Current Status card. If your tracking number exists in the dashboard data, it will reflect the latest status.';
+                }
+                if(lower.includes('payment') || lower.includes('pay')){
+                    return 'Payments are shown in the Finance/Payment pages. For a specific tracking number, you can make a payment from Payment → select the import.';
+                }
+                if(lower.includes('hello') || lower.includes('hi') || lower.includes('sup')){
+                    return 'What’s good bro 😄 Ask me about tracking, status, or payments.';
+                }
+                if(lower.includes('help') || lower.includes('support') || lower.includes('message')){
+                    return 'Tell me your tracking number (ASAN-IMP-...) and what you want to know.';
+                }
+                return 'I got you. Ask me: “track my shipment”, “what is my status?”, or “how to pay?”';
+            }
+
+            // Load history
+            const stored = JSON.parse(localStorage.getItem('asan_chat_messages') || '[]');
+            chatMessages.innerHTML = '';
+            stored.forEach(m => addBubble(m.text, m.sender));
+
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const text = (chatInput.value || '').trim();
+                if(!text) return;
+
+                addBubble(text, 'user');
+
+                const history = JSON.parse(localStorage.getItem('asan_chat_messages') || '[]');
+                history.push({ text, sender: 'user' });
+                localStorage.setItem('asan_chat_messages', JSON.stringify(history));
+
+                chatInput.value = '';
+
+                setTimeout(() => {
+                    const reply = getBotReply(text);
+                    addBubble(reply, 'bot');
+                    const history2 = JSON.parse(localStorage.getItem('asan_chat_messages') || '[]');
+                    history2.push({ text: reply, sender: 'bot' });
+                    localStorage.setItem('asan_chat_messages', JSON.stringify(history2));
+                }, 400);
+            });
+
+            if(chatMessages.children.length === 0){
+                addBubble('Hi! Ask me about your import progress.', 'bot');
+                localStorage.setItem('asan_chat_messages', JSON.stringify([{ text: 'Hi! Ask me about your import progress.', sender: 'bot' }]));
+            }
+        })();
+
         // Real country coordinates for realistic map tracking
         const countryCoordinates = {
             'Japan': { lat: 36.2048, lng: 138.2529, city: 'Tokyo' },
@@ -404,7 +463,12 @@
         // Get tracking number from URL
         function getTrackingNumber() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('tracking') || 'ASAN-IMP-001-2024';
+            // Accept both ?tracking= and ?ref= for robustness
+            return (
+                urlParams.get('tracking') ||
+                urlParams.get('ref') ||
+                'ASAN-IMP-001-2024'
+            );
         }
 
         // Initialize map with real coordinates
@@ -590,8 +654,8 @@
             if (currentStatus && currentStatus !== 'Delivered') {
                 const currentIndex = statusOrder.indexOf(currentStatus);
                 if (currentIndex !== -1 && currentIndex < statusOrder.length - 1) {
-                    // 10% chance to advance status every 60 seconds
-                    if (Math.random() < 0.1) {
+                    // 15% chance to advance status every 30 seconds for demo purposes
+                    if (Math.random() < 0.15) {
                         const nextStatus = statusOrder[currentIndex + 1];
                         updateImportStatus(nextStatus);
                     }
@@ -607,56 +671,552 @@
             
             if (importIndex !== -1) {
                 imports[importIndex].status = newStatus;
+                imports[importIndex].lastUpdated = new Date().toISOString();
                 localStorage.setItem('asan_imports', JSON.stringify(imports));
                 loadImportData();
-                addRecentUpdate(`Status updated to: ${newStatus}`);
+                
+                // Add detailed update based on status
+                const statusMessages = {
+                    'Documentation': 'Documentation review completed. Vehicle verified and approved.',
+                    'Processing': 'Vehicle processing started. Loading preparation in progress.',
+                    'In Transit': 'Vehicle departed origin port. Currently en route to destination.',
+                    'Customs Clearance': 'Arrived at destination port. Customs clearance initiated.',
+                    'Delivered': 'Vehicle delivered successfully to customer address.'
+                };
+                
+                addRecentUpdate(statusMessages[newStatus] || `Status updated to: ${newStatus}`);
             }
         }
 
-        // Add recent update
-        function addRecentUpdate(message) {
-            const updatesSection = document.querySelector('.recent-updates');
+        // Add recent update with more details
+        function addRecentUpdate(message, type = 'status') {
+            const updatesSection = document.querySelector('.updates ul');
             if (updatesSection) {
-                const timestamp = new Date().toLocaleTimeString();
-                const updateHTML = `
-                    <div class="update-item">
-                        <span class="update-time">${timestamp}</span>
-                        <span class="update-message">${message}</span>
-                    </div>
+                const now = new Date();
+                const timestamp = now.toLocaleTimeString();
+                const date = now.toLocaleDateString();
+                const li = document.createElement('li');
+                li.className = 'update-item';
+                li.setAttribute('data-type', type);
+                li.style.animation = 'slideIn 0.3s ease';
+                li.innerHTML = `
+                    <span class="updates__label">${message}</span>
+                    <span class="updates__time">${date} ${timestamp}</span>
                 `;
-                updatesSection.innerHTML = updateHTML + updatesSection.innerHTML;
+                updatesSection.prepend(li);
+
+                // Keep only last 10 updates
+                const updates = updatesSection.querySelectorAll('.update-item');
+                if (updates.length > 10) {
+                    updates[updates.length - 1].remove();
+                }
             }
         }
 
-        // Simulate location updates
+        // Enhanced location simulation with coordinates
         function simulateLocationUpdates() {
-            const locations = [
-                'Port of Tokyo, Japan',
-                'Pacific Ocean - In Transit',
-                'Panama Canal',
-                'Atlantic Ocean - In Transit',
-                'Port of Tema, Ghana',
-                'Customs Clearance - Tema',
-                'Final Delivery Location'
+            const locationData = [
+                { name: 'Port of Tokyo, Japan', coords: [35.6762, 139.6503], status: 'At Port' },
+                { name: 'Pacific Ocean - En Route', coords: [25.0, 155.0], status: 'In Transit' },
+                { name: 'Panama Canal', coords: [9.0, -79.5], status: 'Canal Transit' },
+                { name: 'Atlantic Ocean - En Route', coords: [15.0, -45.0], status: 'In Transit' },
+                { name: 'Port of Tema, Ghana', coords: [5.6703, -0.0165], status: 'Arrived' },
+                { name: 'Customs Clearance - Tema', coords: [5.6703, -0.0165], status: 'Customs' },
+                { name: 'Final Delivery Location', coords: [5.6037, -0.1870], status: 'Delivery' }
             ];
             
-            const currentLocation = document.querySelector('.stats .card:nth-child(2) p')?.textContent;
-            if (currentLocation) {
-                const currentIndex = locations.findIndex(loc => currentLocation.includes(loc.split(',')[0]));
-                if (currentIndex !== -1 && currentIndex < locations.length - 1) {
-                    // 5% chance to update location every 45 seconds
-                    if (Math.random() < 0.05) {
-                        const nextLocation = locations[currentIndex + 1];
-                        document.querySelector('.stats .card:nth-child(2) p').textContent = nextLocation;
-                        addRecentUpdate(`Location updated: ${nextLocation}`);
+            const currentStatus = document.getElementById('shipStatus')?.textContent;
+            if (!currentStatus) return;
+            
+            let targetIndex = 0;
+            if (currentStatus === 'Pending' || currentStatus === 'Documentation') targetIndex = 0;
+            else if (currentStatus === 'Processing') targetIndex = 1;
+            else if (currentStatus === 'In Transit') targetIndex = Math.floor(Math.random() * 3) + 1;
+            else if (currentStatus === 'Customs Clearance') targetIndex = 5;
+            else if (currentStatus === 'Delivered') targetIndex = 6;
+            
+            const targetLocation = locationData[targetIndex];
+            const currentLocationEl = document.querySelector('.stats .card:nth-child(2) p');
+            
+            if (currentLocationEl && targetLocation) {
+                const currentText = currentLocationEl.textContent;
+                if (!currentText.includes(targetLocation.name.split(',')[0])) {
+                    currentLocationEl.textContent = `${targetLocation.name} (${targetLocation.status})`;
+                    addRecentUpdate(`Location: ${targetLocation.name} - Coordinates: ${targetLocation.coords[0].toFixed(4)}, ${targetLocation.coords[1].toFixed(4)}`, 'location');
+                    
+                    // Update map if available
+                    if (window.map && window.marker) {
+                        window.marker.setLatLng(targetLocation.coords);
+                        window.map.setView(targetLocation.coords, 6);
                     }
                 }
             }
         }
 
-        // Start live update simulations
-        setInterval(simulateLiveUpdates, 60000); // Check for status updates every 60 seconds
-        setInterval(simulateLocationUpdates, 45000); // Check for location updates every 45 seconds
+        // Simulate weather and condition updates
+        function simulateWeatherUpdates() {
+            const weatherConditions = [
+                'Clear skies, 28°C',
+                'Partly cloudy, 26°C',
+                'Light rain, 24°C',
+                'Overcast, 25°C',
+                'Sunny, 30°C'
+            ];
+            
+            const seaConditions = [
+                'Calm seas, 1-2m waves',
+                'Moderate seas, 2-3m waves',
+                'Rough seas, 3-4m waves',
+                'Smooth sailing, 1m waves'
+            ];
+            
+            if (Math.random() < 0.2) { // 20% chance every 90 seconds
+                const weather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+                const sea = seaConditions[Math.floor(Math.random() * seaConditions.length)];
+                addRecentUpdate(`Weather Update: ${weather} | Sea Conditions: ${sea}`, 'weather');
+            }
+        }
+
+        // Simulate ETA updates
+        function simulateETAUpdates() {
+            const currentStatus = document.getElementById('shipStatus')?.textContent;
+            if (currentStatus && currentStatus !== 'Delivered' && Math.random() < 0.1) {
+                const etaDays = Math.floor(Math.random() * 15) + 5;
+                const etaDate = new Date();
+                etaDate.setDate(etaDate.getDate() + etaDays);
+                addRecentUpdate(`Estimated Arrival: ${etaDate.toLocaleDateString()} (${etaDays} days remaining)`, 'eta');
+            }
+        }
+
+        // Add CSS animation for updates
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            .update-item {
+                animation: slideIn 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Start live update simulations with more frequent updates for demo
+        setInterval(simulateLiveUpdates, 30000); // Check for status updates every 30 seconds
+        setInterval(simulateLocationUpdates, 20000); // Check for location updates every 20 seconds
+        setInterval(simulateWeatherUpdates, 90000); // Weather updates every 90 seconds
+        setInterval(simulateETAUpdates, 60000); // ETA updates every 60 seconds
+
+        // Notification System
+        let notifications = [];
+
+        function initNotifications() {
+            const user = JSON.parse(localStorage.getItem('asan_current_user'));
+            if (!user) return;
+            
+            const savedNotifs = localStorage.getItem('asan_notifications_' + user.email);
+            if (savedNotifs) {
+                notifications = JSON.parse(savedNotifs);
+            } else {
+                notifications = [{
+                    id: 1,
+                    title: 'Welcome to Tracking',
+                    message: 'Track your vehicle imports in real-time with live updates.',
+                    type: 'info',
+                    read: false,
+                    timestamp: new Date().toISOString()
+                }];
+                localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+            }
+            
+            updateNotificationBadge();
+        }
+
+        function showNotifications() {
+            const panel = document.getElementById('notificationPanel');
+            if (!panel) {
+                createNotificationPanel();
+            }
+            panel = document.getElementById('notificationPanel');
+            panel.classList.toggle('active');
+            renderNotifications();
+            
+            notifications.forEach(n => n.read = true);
+            const user = JSON.parse(localStorage.getItem('asan_current_user'));
+            localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+            updateNotificationBadge();
+        }
+
+        function hideNotifications() {
+            const panel = document.getElementById('notificationPanel');
+            if (panel) panel.classList.remove('active');
+        }
+
+        function createNotificationPanel() {
+            const panel = document.createElement('div');
+            panel.id = 'notificationPanel';
+            panel.className = 'notification-panel';
+            panel.innerHTML = `
+                <div class="notification-panel-header">
+                    <h3>Notifications</h3>
+                    <span class="notif-count" id="notifCountBadge">0</span>
+                    <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
+                </div>
+                <div class="notification-panel-actions">
+                    <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+                    <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+                </div>
+                <div class="notification-list" id="notificationList">
+                    <div class="notification-empty">
+                        <i class="fas fa-bell"></i>
+                        <h4>No Notifications</h4>
+                        <p>You're all caught up! Check back later for updates.</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(panel);
+            addNotificationPanelStyles();
+        }
+
+        function addNotificationPanelStyles() {
+            if (document.getElementById('notificationPanelStyles')) return;
+            
+            const style = document.createElement('style');
+            style.id = 'notificationPanelStyles';
+            style.textContent = `
+                .notification-panel {
+                    position: fixed;
+                    top: 80px;
+                    right: 20px;
+                    width: 380px;
+                    max-height: 500px;
+                    background: white;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+                    z-index: 3000;
+                    display: none;
+                    overflow: hidden;
+                    animation: slideIn 0.3s ease;
+                }
+                @keyframes slideIn {
+                    from { opacity: 0; transform: translateY(-20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .notification-panel.active { display: block; }
+                .notification-panel-header {
+                    padding: 24px;
+                    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+                    color: white;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    position: relative;
+                }
+                .notification-panel-header::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 3px;
+                    background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+                }
+                .notification-panel-header h3 {
+                    font-size: 18px;
+                    font-weight: 600;
+                    margin: 0;
+                }
+                .notification-panel-header .notif-count {
+                    background: rgba(255,255,255,0.2);
+                    padding: 4px 12px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    font-weight: 500;
+                }
+                .notification-panel-header .close-notif {
+                    cursor: pointer;
+                    font-size: 22px;
+                    transition: transform 0.3s;
+                    width: 32px;
+                    height: 32px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    background: rgba(255,255,255,0.1);
+                }
+                .notification-panel-header .close-notif:hover {
+                    background: rgba(255,255,255,0.2);
+                    transform: rotate(90deg);
+                }
+                .notification-panel-actions {
+                    padding: 12px 24px;
+                    background: #f8f9fa;
+                    border-bottom: 1px solid #eee;
+                    display: flex;
+                    gap: 10px;
+                }
+                .notification-panel-actions button {
+                    padding: 8px 16px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                }
+                .notification-panel-actions .mark-all-read {
+                    background: #007bff;
+                    color: white;
+                }
+                .notification-panel-actions .mark-all-read:hover {
+                    background: #0056b3;
+                }
+                .notification-panel-actions .clear-all {
+                    background: #f0f4f8;
+                    color: #666;
+                }
+                .notification-panel-actions .clear-all:hover {
+                    background: #e0e4e8;
+                }
+                .notification-list {
+                    max-height: 350px;
+                    overflow-y: auto;
+                }
+                .notification-item {
+                    padding: 20px;
+                    border-bottom: 1px solid #f0f0f0;
+                    display: flex;
+                    gap: 16px;
+                    align-items: start;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    position: relative;
+                }
+                .notification-item:hover {
+                    background: #f8f9fa;
+                    transform: translateX(4px);
+                }
+                .notification-item.unread {
+                    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+                    border-left: 4px solid #007bff;
+                }
+                .notification-item .notif-icon {
+                    width: 44px;
+                    height: 44px;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                }
+                .notification-item .notif-icon.info {
+                    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+                    color: white;
+                }
+                .notification-item .notif-icon.success {
+                    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                    color: white;
+                }
+                .notification-item .notif-icon.warning {
+                    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                    color: white;
+                }
+                .notification-item .notif-icon i {
+                    font-size: 18px;
+                }
+                .notification-item .notif-content {
+                    flex: 1;
+                    min-width: 0;
+                }
+                .notification-item .notif-content h5 {
+                    font-size: 15px;
+                    color: #003366;
+                    margin-bottom: 6px;
+                    font-weight: 600;
+                    line-height: 1.3;
+                }
+                .notification-item .notif-content p {
+                    font-size: 13px;
+                    color: #666;
+                    margin-bottom: 8px;
+                    line-height: 1.4;
+                }
+                .notification-item .notif-content .notif-meta {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    font-size: 11px;
+                    color: #999;
+                }
+                .notification-item .unread-dot {
+                    width: 10px;
+                    height: 10px;
+                    background: #007bff;
+                    border-radius: 50%;
+                    flex-shrink: 0;
+                    box-shadow: 0 0 0 4px rgba(0,123,255,0.2);
+                    animation: pulse 2s infinite;
+                }
+                @keyframes pulse {
+                    0%,100% { box-shadow: 0 0 0 4px rgba(0,123,255,0.2); }
+                    50% { box-shadow: 0 0 0 8px rgba(0,123,255,0.1); }
+                }
+                .notification-empty {
+                    padding: 60px 20px;
+                    text-align: center;
+                    color: #999;
+                }
+                .notification-empty i {
+                    font-size: 64px;
+                    margin-bottom: 20px;
+                    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
+                .notification-empty h4 {
+                    font-size: 18px;
+                    color: #003366;
+                    margin-bottom: 8px;
+                    font-weight: 600;
+                }
+                .notification-empty p {
+                    font-size: 14px;
+                    color: #999;
+                    line-height: 1.5;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notificationBadge');
+            const notifCountBadge = document.getElementById('notifCountBadge');
+            const unreadCount = notifications.filter(n => !n.read).length;
+            
+            if (unreadCount > 0) {
+                badge.style.display = 'block';
+                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+                if (notifCountBadge) notifCountBadge.textContent = unreadCount;
+            } else {
+                badge.style.display = 'none';
+                if (notifCountBadge) notifCountBadge.textContent = '0';
+            }
+        }
+
+        function renderNotifications() {
+            const list = document.getElementById('notificationList');
+            if (!list) return;
+            
+            if (notifications.length === 0) {
+                list.innerHTML = `
+                    <div class="notification-empty">
+                        <i class="fas fa-bell"></i>
+                        <h4>No Notifications</h4>
+                        <p>You're all caught up! Check back later for updates.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = notifications.map(notif => {
+                let iconClass = notif.type;
+                let icon = 'fa-info-circle';
+                
+                switch(notif.type) {
+                    case 'success': icon = 'fa-check'; break;
+                    case 'warning': icon = 'fa-exclamation-triangle'; break;
+                    default: icon = 'fa-info-circle';
+                }
+                
+                const timeAgo = getTimeAgo(new Date(notif.timestamp));
+                
+                return `
+                    <div class="notification-item ${notif.read ? '' : 'unread'}" onclick="markAsRead(${notif.id})">
+                        <div class="notif-icon ${iconClass}">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div class="notif-content">
+                            <h5>${notif.title}</h5>
+                            <p>${notif.message}</p>
+                            <div class="notif-meta">
+                                <span><i class="fas fa-clock"></i> ${timeAgo}</span>
+                            </div>
+                        </div>
+                        ${!notif.read ? '<div class="unread-dot"></div>' : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function markAllAsRead() {
+            notifications.forEach(n => n.read = true);
+            const user = JSON.parse(localStorage.getItem('asan_current_user'));
+            localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+            updateNotificationBadge();
+            renderNotifications();
+        }
+
+        function clearAllNotifications() {
+            if (confirm('Are you sure you want to clear all notifications?')) {
+                notifications = [];
+                const user = JSON.parse(localStorage.getItem('asan_current_user'));
+                localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+                updateNotificationBadge();
+                renderNotifications();
+            }
+        }
+
+        function markAsRead(id) {
+            const notif = notifications.find(n => n.id === id);
+            if (notif) {
+                notif.read = true;
+                const user = JSON.parse(localStorage.getItem('asan_current_user'));
+                localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+                updateNotificationBadge();
+                renderNotifications();
+            }
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return Math.floor(seconds / 60) + ' min ago';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
+            if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
+            return date.toLocaleDateString();
+        }
+
+        function addNotification(title, message, type = 'info') {
+            const user = JSON.parse(localStorage.getItem('asan_current_user'));
+            if (!user) return;
+            
+            const newNotif = {
+                id: Date.now(),
+                title,
+                message,
+                type,
+                read: false,
+                timestamp: new Date().toISOString()
+            };
+            
+            notifications.unshift(newNotif);
+            localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+            updateNotificationBadge();
+        }
+
+        // Initialize notifications
+        document.addEventListener('DOMContentLoaded', function() {
+            initNotifications();
+        });
     </script>
 
 </body>

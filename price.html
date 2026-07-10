@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asan Global | Pricing</title>
+  <meta name="description" content="Asan Global — import services pricing and service fee structure for vehicle imports and sourcing.">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+display:flex;
+background:#0a1929;
+min-height:100vh;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:280px;
+height:100vh;
+background:linear-gradient(180deg, #1a365d 0%, #2d4a6f 100%);
+color:white;
+position:fixed;
+padding:0;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
+z-index:1000;
+display:flex;
+flex-direction:column;
+overflow:auto;
+}
+
+.sidebar .logo{
+padding:30px 25px;
+margin-bottom:10px;
+display:flex;
+align-items:center;
+gap:15px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar .logo i{
+font-size:32px;
+color:#ffd54f;
+}
+
+.sidebar .logo h2{
+font-size:20px;
+font-weight:700;
+margin:0;
+letter-spacing:1px;
+}
+
+.sidebar .logo span{
+font-size:12px;
+color:rgba(255,255,255,0.7);
+font-weight:400;
+}
+
+.sidebar nav{
+flex:1;
+padding:20px 15px;
+}
+
+.sidebar nav ul{
+list-style:none;
+padding:0;
+margin:0;
+}
+
+.sidebar nav ul li{
+margin-bottom:5px;
+}
+
+.sidebar nav ul li a{
+color:rgba(255,255,255,0.85);
+text-decoration:none;
+display:flex;
+align-items:center;
+gap:15px;
+padding:14px 18px;
+border-radius:12px;
+transition:.35s;
+font-size:14px;
+font-weight:500;
+}
+
+.sidebar nav ul li a:hover{
+background:rgba(255,255,255,.12);
+transform:translateX(5px);
+color:#fff;
+}
+
+.sidebar nav ul li.active a{
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color:#fff;
+font-weight:600;
+box-shadow:0 4px 15px rgba(102,126,234,0.4);
+}
+
+.sidebar nav ul li a i{
+font-size:16px;
+width:20px;
+text-align:center;
+}
+
+.sidebar-footer{
+padding:25px;
+border-top:1px solid rgba(255,255,255,0.1);
+background:rgba(0,0,0,0.1);
+}
+
+.sidebar-footer strong{
+font-size:14px;
+color:#ffd54f;
+display:block;
+margin-bottom:5px;
+}
+
+.sidebar-footer p{
+font-size:12px;
+color:rgba(255,255,255,0.6);
+line-height:1.5;
+margin:0;
+}
+
+/* Main */
+
+.main{
+margin-left:280px;
+width:calc(100% - 280px);
+background:#0a1929;
+}
+
+/* Header */
+
+.topbar{
+background:linear-gradient(180deg, #1a365d 0%, #0a1929 100%);
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 15px rgba(0,0,0,0.3);
+position:sticky;
+top:0;
+z-index:100;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.topbar h1{
+font-size:24px;
+color:#fff;
+font-weight:600;
+}
+
+.topbar .user-info{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.topbar .user-avatar{
+width:45px;
+height:45px;
+border-radius:50%;
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-weight:600;
+font-size:18px;
+}
+
+/* Content */
+
+.content{
+padding:40px;
+background:#0a1929;
+}
+
+/* Hero Section */
+
+.pricing-hero{
+position:relative;
+overflow:hidden;
+padding:40px 0;
+margin-bottom:30px;
+}
+
+.pricing-hero__inner{
+position:relative;
+z-index:2;
+}
+
+.pricing-kicker{
+display:inline-flex;
+align-items:center;
+gap:10px;
+padding:10px 14px;
+border-radius:999px;
+background:rgba(102,126,234,0.2);
+color:#ffd54f;
+font-weight:600;
+letter-spacing:.2px;
+border:1px solid rgba(102,126,234,0.3);
+}
+
+.dot{
+width:10px;
+height:10px;
+border-radius:50%;
+background:#ffd54f;
+box-shadow:0 0 0 6px rgba(255,213,79,.15);
+}
+
+.pricing-hero h1{
+margin:18px 0 10px;
+color:#fff;
+font-size:44px;
+line-height:1.1;
+}
+
+.pricing-hero p{
+margin:0;
+max-width:720px;
+color:rgba(255,255,255,0.8);
+font-size:16px;
+line-height:1.7;
+}
+
+.pricing-hero__cta{
+display:flex;
+gap:14px;
+flex-wrap:wrap;
+margin-top:22px;
+}
+
+.cta-primary,
+.cta-secondary{
+display:inline-flex;
+align-items:center;
+gap:10px;
+padding:12px 18px;
+border-radius:14px;
+text-decoration:none;
+font-weight:700;
+transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.cta-primary{
+background:linear-gradient(135deg, #667eea, #764ba2);
+color:#fff;
+box-shadow:0 12px 30px rgba(102,126,234,0.4);
+}
+
+.cta-primary:hover{ transform:translateY(-2px); box-shadow:0 18px 40px rgba(102,126,234,0.5); border:none;}
+
+.cta-secondary{
+background:rgba(102,126,234,0.2);
+color:#fff;
+border:1px solid rgba(102,126,234,0.4);
+}
+
+.cta-secondary:hover{ transform:translateY(-2px); border-color:rgba(102,126,234,0.6); border:none;}
+
+.pricing-note{
+margin-top:22px;
+display:flex;
+gap:12px;
+align-items:flex-start;
+padding:14px 16px;
+border-radius:16px;
+background:rgba(102,126,234,0.1);
+color:rgba(255,255,255,0.9);
+border:1px solid rgba(102,126,234,0.3);
+}
+
+.pricing-note i{ font-size:20px; color:#ffd54f; margin-top:2px; }
+.pricing-note b{ color:#fff; }
+
+/* Table Section */
+
+.pricing-section{
+margin-top:30px;
+}
+
+.pricing-section__header{
+display:flex;
+align-items:flex-end;
+justify-content:space-between;
+gap:18px;
+margin:28px 0 18px;
+}
+
+.pricing-section h2{
+margin:0 0 6px;
+color:#fff;
+font-size:30px;
+}
+
+.section-subtitle{
+margin:0;
+color:rgba(255,255,255,0.7);
+font-size:14px;
+line-height:1.6;
+}
+
+.pricing-section__lead{
+margin: 0 0 14px;
+color: rgba(255,255,255,0.7);
+font-size: 15px;
+line-height: 1.7;
+}
+
+.pricing-badges{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.badge{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:9px 12px;
+border-radius:999px;
+background:rgba(102,126,234,0.2);
+border:1px solid rgba(102,126,234,0.3);
+color:#fff;
+font-weight:600;
+font-size:13px;
+}
+
+.badge i{ color:#ffd54f; }
+
+.table-container{ overflow-x:auto; padding:0 4px; }
+
+.pricing-table{
+width:100%;
+min-width:900px;
+border-collapse:separate;
+border-spacing:0;
+background:rgba(26,54,93,0.5);
+border:1px solid rgba(102,126,234,0.3);
+border-radius:16px;
+overflow:hidden;
+}
+
+.pricing-table thead th{
+background:linear-gradient(135deg, #667eea, #764ba2);
+color:#fff;
+text-align:left;
+padding:18px;
+font-size:15px;
+letter-spacing:.2px;
+border-bottom:1px solid rgba(255,255,255,0.2);
+}
+
+.pricing-table td{
+padding:16px 18px;
+border-bottom:1px solid rgba(102,126,234,0.2);
+color:rgba(255,255,255,0.9);
+line-height:1.65;
+font-size:14.5px;
+vertical-align:top;
+}
+
+.pricing-table tbody tr:nth-child(even) td{ background:rgba(102,126,234,0.1); }
+
+.pricing-table tbody tr:hover td{
+background:rgba(102,126,234,0.2);
+}
+
+.pricing-table td i{ color:#ffd54f; margin-right:10px; }
+
+/* Footer CTA */
+
+.pricing-footer-cta{
+margin:22px 0 0;
+display:flex;
+align-items:center;
+gap:18px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.pricing-footer-cta__hint{
+margin:0;
+color:rgba(255,255,255,0.7);
+font-size:13px;
+}
+
+.pricing-footer-cta .cta-primary{ border-radius:18px; border:none;}
+
+/* Responsive */
+
+@media (max-width: 900px){
+.pricing-section__header{ align-items:flex-start; flex-direction:column; }
+.pricing-hero h1{ font-size:34px; }
+.pricing-hero{ padding-top:30px; }
+.pricing-note{ max-width:720px; }
+.pricing-table{ min-width:760px; }
+.sidebar{ width:220px; }
+.main{ margin-left:220px; width:calc(100% - 220px); }
+}
+
+@media (max-width: 768px){
+.sidebar{ display:none; }
+.main{ margin-left:0; width:100%; }
+.content{ padding:20px; }
+.pricing-hero h1{ font-size:30px; }
+.pricing-hero p{ font-size:15px; }
+.pricing-section__lead{ font-size:14px; }
+}
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">
+      <i class="fas fa-car"></i>
+      <div>
+        <h2>Asan Global</h2>
+        <span>Vehicle Import Services</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+        <li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
+        <li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
+        <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
+        <li><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
+        <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
+        <li class="active"><a href="price.html"><i class="fas fa-tag"></i> Pricing</a></li>
+        <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <strong>24/7 Support</strong>
+      <p>Live tracking and dedicated support for your imports.</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1>Pricing</h1>
+      <div class="user-info">
+        <div class="user-avatar" id="userAvatar">U</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <section class="pricing-hero">
+        <div class="pricing-hero__inner">
+          <div class="pricing-kicker"><span class="dot"></span> Import Services</div>
+          <h1>Transparent Pricing for Vehicle Import & Sourcing</h1>
+          <p>
+            Explore our service structure. If you need a quick estimate, request a quote and our staff will respond within 24 hours.
+          </p>
+
+          <div class="pricing-hero__cta">
+            <a class="cta-primary" href="import.html"><i class="fas fa-file-invoice"></i> Request a Quote</a>
+            <a class="cta-secondary" href="payment.html"><i class="fas fa-wallet"></i> View Payments</a>
+          </div>
+
+          <div class="pricing-note">
+            <i class="fas fa-shield-halved"></i>
+            <div>
+              <b>Client note:</b> Before submitting your request, sign the <b>Client Agreement Form</b> to proceed.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing-section">
+        <header class="pricing-section__header">
+          <div>
+            <h2>Import Services & Pricing</h2>
+            <p class="section-subtitle">Service fees are based on scope, shipment details, and agreed terms.</p>
+            <p class="pricing-section__lead">This page shows our typical fee structure. Your final quote depends on vehicle value, shipping route, and required documentation.</p>
+          </div>
+          <div class="pricing-badges">
+            <span class="badge"><i class="fas fa-check"></i> Staff-managed</span>
+            <span class="badge"><i class="fas fa-check"></i> Documentation support</span>
+            <span class="badge"><i class="fas fa-check"></i> Clearance assistance</span>
+          </div>
+        </header>
+
+        <div class="table-container">
+          <table class="pricing-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Description</th>
+                <th>Pricing Structure</th>
+                <th>Estimated Charges</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td><i class="fas fa-car"></i> Vehicle Sourcing</td>
+                <td>Finding and negotiating vehicle purchases from overseas dealers.</td>
+                <td>Commission</td>
+                <td>5% - 10% of Vehicle Value</td>
+              </tr>
+
+              <tr>
+                <td><i class="fas fa-lightbulb"></i> Auto Accessories Import</td>
+                <td>Importation of lights, audio systems, body kits, tyres, rims, and other accessories.</td>
+                <td>Profit Margin</td>
+                <td>15% - 30%</td>
+              </tr>
+
+              <tr>
+                <td><i class="fas fa-globe"></i> General Product Sourcing</td>
+                <td>Sourcing products from China, Dubai, USA, and other international markets.</td>
+                <td>Service Fee</td>
+                <td>GHS 300 - GHS 2,000</td>
+              </tr>
+
+              <tr>
+                <td><i class="fas fa-clipboard-list"></i> Supplier Verification</td>
+                <td>Checking supplier credibility, business legitimacy, and product quality.</td>
+                <td>Per Supplier</td>
+                <td>GHS 500 - GHS 1,500</td>
+              </tr>
+
+              <tr>
+                <td><i class="fas fa-truck-loading"></i> Shipping Coordination</td>
+                <td>Managing shipping arrangements, freight forwarding, and logistics.</td>
+                <td>Handling Fee</td>
+                <td>5% - 8% of Shipment Cost</td>
+              </tr>
+
+              <tr>
+                <td><i class="fas fa-file-signature"></i> Customs Clearance Assistance</td>
+                <td>Documentation support and customs clearance assistance.</td>
+                <td>Service Charge</td>
+                <td>Based on Shipment</td>
+              </tr>
+
+              <tr>
+                <td><i class="fas fa-magnifying-glass"></i> Inspection Service</td>
+                <td>Product inspection and quality checks before shipment.</td>
+                <td>Per Inspection</td>
+                <td>GHS 400 - GHS 1,200</td>
+              </tr>
+
+              <tr>
+                <td><i class="fas fa-layer-group"></i> Bulk Procurement</td>
+                <td>Corporate and institutional product sourcing services.</td>
+                <td>Negotiable</td>
+                <td>Custom Quotation</td>
+              </tr>
+
+              <tr>
+                <td><i class="fas fa-comments"></i> Import Consultation</td>
+                <td>Professional guidance on the importation process.</td>
+                <td>Per Session</td>
+                <td>GHS 200 - GHS 500</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pricing-footer-cta">
+          <a class="cta-primary" href="import.html"><i class="fas fa-paper-plane"></i> Tap to Request a Quote</a>
+          <p class="pricing-footer-cta__hint">If you're on mobile, this will jump you to the import form for the next step.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Check authentication
+    function checkAuth() {
+      const user = JSON.parse(localStorage.getItem('asan_current_user'));
+      if (!user) {
+        window.location.href = 'login.html';
+        return false;
+      }
+      return user;
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('asan_current_user');
+      window.location.href = 'login.html';
+    }
+
+    // Load user info on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const user = checkAuth();
+      if (user) {
+        document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+      }
+    });
+  </script>
+</body>
+</html>
+

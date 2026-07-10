@@ -8,15 +8,33 @@
   const nameLink = document.getElementById('afterLoginLink');
   const nameText = document.getElementById('afterLoginName');
 
-  // Initialize user database if not exists
-  function initUserDatabase() {
-    if (!localStorage.getItem('asan_users')) {
-      const defaultUsers = [
-        { email: 'admin@asan.com', password: 'admin123', name: 'Admin', role: 'admin' },
-        { email: 'user@asan.com', password: 'user123', name: 'User', role: 'user' }
-      ];
-      localStorage.setItem('asan_users', JSON.stringify(defaultUsers));
+  function normalizeEmail(value) {
+    return String(value || '').trim().toLowerCase();
+  }
+
+  async function hashPassword(password) {
+    return securityUtils?.hashText(password) || password;
+  }
+
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('asan_users') || '[]');
+  }
+
+  function setUsers(users) {
+    localStorage.setItem('asan_users', JSON.stringify(users));
+  }
+
+  async function initUserDatabase() {
+    const existingUsers = getUsers();
+    if (existingUsers.length) {
+      return;
     }
+
+    const defaultUsers = [
+      { email: 'admin@asan.com', password: await hashPassword('admin123'), name: 'Admin', role: 'admin' },
+      { email: 'user@asan.com', password: await hashPassword('user123'), name: 'User', role: 'user' }
+    ];
+    setUsers(defaultUsers);
   }
 
   initUserDatabase();
@@ -27,7 +45,7 @@
       e.preventDefault();
       const isPassword = passwordInput.type === 'password';
       passwordInput.type = isPassword ? 'text' : 'password';
-      
+
       const icon = togglePasswordBtn.querySelector('i');
       if (isPassword) {
         icon.classList.remove('fa-eye');
@@ -39,20 +57,16 @@
     });
   }
 
-  // Restore saved email & password on page load
+  // Restore saved email on page load
   const savedEmail = localStorage.getItem('asan_user_email');
-  const savedPassword = localStorage.getItem('asan_user_password');
   const savedRemember = localStorage.getItem('asan_remember_me') === 'true';
 
   if (savedEmail && emailInput) {
     emailInput.value = savedEmail;
   }
 
-  if (savedPassword && passwordInput && savedRemember) {
-    passwordInput.value = savedPassword;
-    if (rememberMeCheckbox) {
-      rememberMeCheckbox.checked = true;
-    }
+  if (savedRemember && rememberMeCheckbox) {
+    rememberMeCheckbox.checked = true;
   }
 
   // Restore name after reload
@@ -61,49 +75,86 @@
     nameText.textContent = savedName;
   }
 
-  // Validate login credentials
-  function validateLogin(email, password) {
-    const users = JSON.parse(localStorage.getItem('asan_users') || '[]');
-    const user = users.find(u => u.email === email && u.password === password);
-    return user;
+  async function validateLogin(email, password) {
+    const users = getUsers();
+    const normalizedEmail = normalizeEmail(email);
+    const user = users.find((entry) => normalizeEmail(entry.email) === normalizedEmail);
+    if (!user) {
+      return null;
+    }
+
+    const inputHash = await hashPassword(password);
+    const storedHash = typeof user.password === 'string' && /^[a-f0-9]{64}$/i.test(user.password)
+      ? user.password
+      : await hashPassword(user.password || '');
+
+    return inputHash === storedHash ? user : null;
   }
 
+  function persistSession(user) {
+    const safeUser = { email: user.email, name: user.name, role: user.role };
+    localStorage.setItem('asan_current_user', JSON.stringify(safeUser));
+    localStorage.setItem('asan_user_name', user.name);
+    localStorage.setItem('asan_user_email', user.email);
+    localStorage.setItem('asan_user_role', user.role);
+  }
+
+  function showRegistration() {
+    document.querySelector('.login-box form').style.display = 'none';
+    document.querySelector('.social-login').style.display = 'none';
+    document.querySelector('.divider').style.display = 'none';
+    document.querySelector('.signup').style.display = 'none';
+    document.querySelector('.after-login-links').style.display = 'none';
+    document.getElementById('registrationForm').style.display = 'block';
+  }
+
+  function showLogin() {
+    document.querySelector('.login-box form').style.display = 'block';
+    document.querySelector('.social-login').style.display = 'flex';
+    document.querySelector('.divider').style.display = 'block';
+    document.querySelector('.signup').style.display = 'block';
+    document.querySelector('.after-login-links').style.display = 'block';
+    document.getElementById('registrationForm').style.display = 'none';
+  }
+
+  document.getElementById('showRegistrationLink')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showRegistration();
+  });
+
+  document.getElementById('showLoginLink')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showLogin();
+  });
+
   // Handle login submit
-  form?.addEventListener('submit', (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const emailValue = (emailInput?.value || '').trim();
     const passwordValue = (passwordInput?.value || '').trim();
 
-    // Validate credentials
-    const user = validateLogin(emailValue, passwordValue);
+    const user = await validateLogin(emailValue, passwordValue);
 
     if (!user) {
       alert('Invalid email or password. Please try again.');
       return;
     }
 
-    // Save user session
-    localStorage.setItem('asan_current_user', JSON.stringify(user));
-    localStorage.setItem('asan_user_name', user.name);
-    localStorage.setItem('asan_user_email', user.email);
-    localStorage.setItem('asan_user_role', user.role);
+    persistSession(user);
 
-    // Handle "Remember Me"
     if (rememberMeCheckbox?.checked) {
-      localStorage.setItem('asan_user_password', passwordValue);
       localStorage.setItem('asan_remember_me', 'true');
+      localStorage.setItem('asan_user_email', user.email);
     } else {
-      localStorage.removeItem('asan_user_password');
       localStorage.setItem('asan_remember_me', 'false');
+      localStorage.setItem('asan_user_email', user.email);
     }
 
-    // Update text immediately
     if (nameLink && nameText) {
       nameText.textContent = user.name;
     }
 
-    // Navigate based on role
     if (user.role === 'admin') {
       window.location.href = 'Admin.html';
     } else {
@@ -111,91 +162,78 @@
     }
   });
 
-  // Social login handlers
+  const socialNamePrompt = document.getElementById('socialNamePrompt');
+  const socialNameInput = document.getElementById('socialName');
+  const socialNameContinue = document.getElementById('socialNameContinue');
+  let pendingProvider = '';
+
+  function finishSocialLogin(provider, name) {
+    const socialUser = {
+      email: `user@${provider.toLowerCase()}.com`,
+      password: 'social123',
+      name,
+      role: 'user'
+    };
+
+    const users = getUsers();
+    if (!users.find((entry) => normalizeEmail(entry.email) === normalizeEmail(socialUser.email))) {
+      users.push(socialUser);
+      setUsers(users);
+    }
+
+    persistSession(socialUser);
+    localStorage.setItem('asan_remember_me', 'false');
+
+    alert(`Successfully signed in with ${provider}!`);
+    window.location.href = 'dashboard.html';
+  }
+
   const socialButtons = document.querySelectorAll('.social-login a');
-  socialButtons.forEach(btn => {
+  socialButtons.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      const provider = btn.classList.contains('google') ? 'Google' : 'Facebook';
-      
-      // Simulate OAuth flow
-      const socialUser = {
-        email: `user@${provider.toLowerCase()}.com`,
-        password: 'social123',
-        name: `${provider} User`,
-        role: 'user'
-      };
-
-      // Add to users if not exists
-      const users = JSON.parse(localStorage.getItem('asan_users') || '[]');
-      if (!users.find(u => u.email === socialUser.email)) {
-        users.push(socialUser);
-        localStorage.setItem('asan_users', JSON.stringify(users));
-      }
-
-      // Auto-login
-      localStorage.setItem('asan_current_user', JSON.stringify(socialUser));
-      localStorage.setItem('asan_user_name', socialUser.name);
-      localStorage.setItem('asan_user_email', socialUser.email);
-      localStorage.setItem('asan_user_role', socialUser.role);
-
-      alert(`Successfully signed in with ${provider}!`);
-      window.location.href = 'dashboard.html';
+      pendingProvider = btn.classList.contains('google') ? 'Google' : 'Facebook';
+      socialNamePrompt.style.display = 'block';
+      socialNameInput.focus();
     });
   });
 
-  // Show/Hide registration form
-  window.showRegistration = function() {
-    document.querySelector('.login-box form').style.display = 'none';
-    document.querySelector('.social-login').style.display = 'none';
-    document.querySelector('.divider').style.display = 'none';
-    document.querySelector('.signup').style.display = 'none';
-    document.querySelector('.after-login-links').style.display = 'none';
-    document.getElementById('registrationForm').style.display = 'block';
-  };
+  socialNameContinue?.addEventListener('click', () => {
+    const name = socialNameInput.value.trim();
+    if (!name) {
+      alert('Name is required. Please try again.');
+      return;
+    }
 
-  window.showLogin = function() {
-    document.querySelector('.login-box form').style.display = 'block';
-    document.querySelector('.social-login').style.display = 'flex';
-    document.querySelector('.divider').style.display = 'block';
-    document.querySelector('.signup').style.display = 'block';
-    document.querySelector('.after-login-links').style.display = 'block';
-    document.getElementById('registrationForm').style.display = 'none';
-  };
+    finishSocialLogin(pendingProvider || 'Google', name);
+  });
 
-  // Handle registration
   const regForm = document.getElementById('regForm');
-  regForm?.addEventListener('submit', (e) => {
+  regForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name = document.getElementById('regName').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
+    const email = normalizeEmail(document.getElementById('regEmail').value);
     const password = document.getElementById('regPassword').value.trim();
 
-    // Check if user already exists
-    const users = JSON.parse(localStorage.getItem('asan_users') || '[]');
-    if (users.find(u => u.email === email)) {
+    const users = getUsers();
+    if (users.find((entry) => normalizeEmail(entry.email) === email)) {
       alert('An account with this email already exists. Please login instead.');
       showLogin();
       return;
     }
 
-    // Create new user
     const newUser = {
-      email: email,
-      password: password,
-      name: name,
+      email,
+      password: await hashPassword(password),
+      name,
       role: 'user'
     };
 
     users.push(newUser);
-    localStorage.setItem('asan_users', JSON.stringify(users));
-
-    // Auto-login after registration
-    localStorage.setItem('asan_current_user', JSON.stringify(newUser));
-    localStorage.setItem('asan_user_name', newUser.name);
-    localStorage.setItem('asan_user_email', newUser.email);
-    localStorage.setItem('asan_user_role', newUser.role);
+    setUsers(users);
+    persistSession(newUser);
+    localStorage.setItem('asan_remember_me', 'false');
 
     alert('Account created successfully! Welcome to Asan Global.');
     window.location.href = 'dashboard.html';

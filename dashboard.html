@@ -3,485 +3,405 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Asan Global | Vehicle Import Dashboard</title>
-
+<title>Asan Global | Logistics Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-display:flex;
-background:#f0f4f8;
-min-height:100vh;
-}
-
-/* Sidebar */
-
-.sidebar{
-width:280px;
-height:100vh;
-background:linear-gradient(180deg, #1a365d 0%, #2d5a87 100%);
-color:white;
-position:fixed;
-padding:30px 25px;
-box-shadow:4px 0 15px rgba(0,0,0,0.1);
-z-index:1000;
-}
-
-.sidebar .logo{
-display:flex;
-align-items:center;
-gap:15px;
-margin-bottom:50px;
-padding-bottom:20px;
-border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-.sidebar .logo i{
-font-size:32px;
-color:#ffd54f;
-}
-
-.sidebar .logo h2{
-font-size:22px;
-font-weight:600;
-}
-
-.sidebar .logo span{
-font-size:12px;
-color:#ffd54f;
-}
-
-.sidebar ul{
-list-style:none;
-}
-
-.sidebar ul li{
-margin:8px 0;
-}
-
-.sidebar ul li a{
-color:rgba(255,255,255,0.8);
-text-decoration:none;
-display:flex;
-align-items:center;
-gap:12px;
-padding:14px 16px;
-border-radius:12px;
-transition:.3s;
-font-size:15px;
-}
-
-.sidebar ul li a:hover,
-.sidebar ul li a.active{
-background:rgba(255,255,255,0.15);
-color:white;
-transform:translateX(5px);
-}
-
-.sidebar ul li a i{
-width:20px;
-text-align:center;
-}
-
-/* Main */
-
-.main{
-margin-left:280px;
-width:calc(100% - 280px);
-}
-
-/* Header */
-
-.topbar{
-background:white;
-padding:20px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 15px rgba(0,0,0,0.08);
-position:sticky;
-top:0;
-z-index:100;
-}
-
-.topbar .user-info{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.topbar .user-avatar{
-width:45px;
-height:45px;
-border-radius:50%;
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-weight:600;
-font-size:18px;
-}
-
-.topbar .user-details h4{
-font-size:16px;
-color:#1a365d;
-}
-
-.topbar .user-details p{
-font-size:12px;
-color:#666;
-}
-
-.topbar .notifications{
-position:relative;
-cursor:pointer;
-padding:10px;
-}
-
-.topbar .notifications i{
-font-size:20px;
-color:#666;
-transition:.3s;
-}
-
-.topbar .notifications:hover i{
-color:#1a365d;
-}
-
-.topbar .notification-badge{
-position:absolute;
-top:5px;
-right:5px;
-width:8px;
-height:8px;
-background:#ff4757;
-border-radius:50%;
-animation:pulse 2s infinite;
-}
-
-@keyframes pulse{
-0%,100%{transform:scale(1);}
-50%{transform:scale(1.2);}
-}
-
-/* Banner */
-
-.banner{
-margin:30px 40px;
-padding:50px;
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-border-radius:24px;
-color:white;
-box-shadow:0 10px 40px rgba(102,126,234,0.3);
-position:relative;
-overflow:hidden;
-}
-
-.banner::before{
-content:'';
-position:absolute;
-top:-50%;
-right:-10%;
-width:300px;
-height:300px;
-background:rgba(255,255,255,0.1);
-border-radius:50%;
-}
-
-.banner h1{
-font-size:42px;
-margin-bottom:10px;
-font-weight:700;
-}
-
-.banner h4{
-font-size:16px;
-color:rgba(255,255,255,0.9);
-margin-bottom:20px;
-font-weight:400;
-}
-
-.banner p{
-font-size:18px;
-margin-bottom:25px;
-opacity:0.95;
-}
-
-.banner .cta-button{
-display:inline-block;
-padding:14px 32px;
-background:white;
-color:#667eea;
-text-decoration:none;
-border-radius:30px;
-font-weight:600;
-transition:.3s;
-box-shadow:0 5px 20px rgba(0,0,0,0.2);
-}
-
-.banner .cta-button:hover{
-transform:translateY(-3px);
-box-shadow:0 8px 25px rgba(0,0,0,0.3);
-}
-
-/* Cards */
-
-.cards{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-padding:0 40px 40px;
-}
-
-.card{
-background:white;
-padding:35px 30px;
-border-radius:20px;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
-transition:.4s;
-position:relative;
-overflow:hidden;
-}
-
-.card::before{
-content:'';
-position:absolute;
-top:0;
-left:0;
-width:4px;
-height:100%;
-background:linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-}
-
-.card:hover{
-transform:translateY(-10px);
-box-shadow:0 15px 40px rgba(0,0,0,0.15);
-}
-
-.card .icon-wrapper{
-width:60px;
-height:60px;
-border-radius:16px;
-display:flex;
-align-items:center;
-justify-content:center;
-margin-bottom:20px;
-}
-
-.card .icon-wrapper i{
-font-size:28px;
-color:white;
-}
-
-.card.blue .icon-wrapper{
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.card.green .icon-wrapper{
-background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-}
-
-.card.orange .icon-wrapper{
-background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-
-.card.purple .icon-wrapper{
-background:linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-
-.card h2{
-font-size:36px;
-margin-bottom:8px;
-color:#1a365d;
-font-weight:700;
-}
-
-.card p{
-color:#666;
-font-size:15px;
-}
-
-/* Import Table */
-
-.section{
-padding:0 40px 40px;
-}
-
-.section-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:25px;
-}
-
-.section-header h2{
-font-size:24px;
-color:#1a365d;
-font-weight:600;
-}
-
-.section-header .add-button{
-display:inline-flex;
-align-items:center;
-gap:8px;
-padding:12px 24px;
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-color:white;
-text-decoration:none;
-border-radius:12px;
-font-weight:500;
-transition:.3s;
-}
-
-.section-header .add-button:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 25px rgba(102,126,234,0.4);
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-background:white;
-border-radius:16px;
-overflow:hidden;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
-}
-
-th{
-background:linear-gradient(135deg, #1a365d 0%, #2d5a87 100%);
-color:white;
-padding:18px 20px;
-font-weight:500;
-font-size:14px;
-text-transform:uppercase;
-letter-spacing:0.5px;
-}
-
-td{
-padding:20px;
-text-align:center;
-border-bottom:1px solid #f0f0f0;
-color:#333;
-font-size:14px;
-}
-
-tr:hover td{
-background:#f8f9fa;
-}
-
-.status{
-padding:8px 20px;
-border-radius:25px;
-color:white;
-font-size:12px;
-font-weight:500;
-text-transform:uppercase;
-letter-spacing:0.5px;
-}
-
-.status.pending{
-background:linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-}
-
-.status.documentation{
-background:linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-}
-
-.status.processing{
-background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-
-.status.transit{
-background:linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-
-.status.customs{
-background:linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-}
-
-.status.delivered{
-background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-}
-
-.tracking-link{
-color:#667eea;
-font-weight:600;
-text-decoration:none;
-transition:.3s;
-}
-
-.tracking-link:hover{
-color:#764ba2;
-text-decoration:underline;
-}
-
-/* Footer */
-
-footer{
-text-align:center;
-padding:30px 40px;
-color:#999;
-font-size:14px;
-}
-
-/* Responsive */
-
-@media(max-width:900px){
-
-.sidebar{
-width:220px;
-}
-
-.main{
-margin-left:220px;
-width:calc(100% - 220px);
-}
-
-.banner h1{
-font-size:32px;
-}
-
-}
-
-@media(max-width:768px){
-
-.sidebar{
-display:none;
-}
-
-.main{
-margin-left:0;
-width:100%;
-}
-
-.cards{
-grid-template-columns:1fr;
-}
-
-.banner{
-margin:20px;
-padding:30px;
-}
-
-.section{
-padding:0 20px 20px;
-}
-
-}
-
-</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="executive-theme">
+  <aside class="sidebar">
+    <div class="logo">
+      <i class="fas fa-car"></i>
+      <div>
+        <h2>Asan Global</h2>
+        <span>Vehicle Import Services</span>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li class="active"><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+        <li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
+        <li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
+        <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
+        <li><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
+        <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
+        <li><a href="price.html"><i class="fas fa-tag"></i> Pricing</a></li>
+        <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-footer">
+      <strong>24/7 Support</strong>
+      <p>Live tracking and dedicated support for your imports.</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="title-group">
+        <button class="hamburger" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Premium logistics control center</p>
+          <h1>Shipment operations dashboard</h1>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <label class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="search" placeholder="Search shipments or customers">
+        </label>
+        <button class="topbar-btn" aria-label="Notifications"><i class="fas fa-bell"></i><span class="badge"></span></button>
+        <div class="profile-chip">
+          <div class="avatar">AD</div>
+          <div>
+            <strong>Admin Desk</strong>
+            <small>Operations Lead</small>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="overview" class="banner reveal">
+      <div>
+        <div class="pill"><i class="fas fa-circle"></i> Live network performance</div>
+        <h2>Professional monitoring for every shipment, route, and customer milestone.</h2>
+        <p>Track loading, customs events, delivery progress, and client communication from one modern workspace.</p>
+        <div class="banner-actions">
+          <a class="banner-btn" href="#">View active shipments</a>
+          <a class="banner-btn secondary" href="#">Create new dispatch</a>
+        </div>
+      </div>
+      <div class="banner-card">
+        <div class="mini-stat"><span>Today’s completion</span><strong>92%</strong></div>
+        <div class="mini-stat"><span>On-time delivery</span><strong>98.4%</strong></div>
+        <div class="mini-stat"><span>Issues flagged</span><strong>4</strong></div>
+      </div>
+    </section>
+
+    <section class="stats-grid reveal">
+      <article class="stat-card">
+        <div class="stat-head"><span class="icon blue"><i class="fas fa-box-open"></i></span><span class="badge success">+12%</span></div>
+        <h3 data-value="184" data-suffix="">0</h3>
+        <p>Active shipments</p>
+      </article>
+      <article class="stat-card">
+        <div class="stat-head"><span class="icon green"><i class="fas fa-truck-moving"></i></span><span class="badge success">+8%</span></div>
+        <h3 data-value="96" data-suffix="%">0</h3>
+        <p>On-time arrivals</p>
+      </article>
+      <article class="stat-card">
+        <div class="stat-head"><span class="icon orange"><i class="fas fa-users"></i></span><span class="badge warn">6 pending</span></div>
+        <h3 data-value="73" data-suffix="">0</h3>
+        <p>Customers served</p>
+      </article>
+      <article class="stat-card">
+        <div class="stat-head"><span class="icon purple"><i class="fas fa-clock"></i></span><span class="badge success">Live</span></div>
+        <h3 data-value="14" data-suffix=" min">0</h3>
+        <p>Average response</p>
+      </article>
+    </section>
+
+    <section class="dashboard-grid reveal">
+      <article class="panel">
+        <div class="panel-head">
+          <h4>Shipment tracking</h4>
+          <span class="badge success">Updated 2 min ago</span>
+        </div>
+        <form class="tracking-form">
+          <input type="text" placeholder="Enter tracking code" aria-label="Tracking code">
+          <button type="button"><i class="fas fa-search"></i></button>
+        </form>
+        <div class="tracking-result">
+          <strong>ASAN-2048</strong>
+          Status: <span class="tracking-status">In transit</span><br>
+          ETA: <span class="tracking-eta">Today, 16:00</span><br>
+          Location: <span class="tracking-location">Tema Port • Customs clearance pending</span>
+        </div>
+        <p class="tracking-meta"><span class="live-pill"><i class="fas fa-circle"></i> Live feed active</span> Last update <span class="live-time">just now</span></p>
+        <div class="progress-steps">
+          <div class="progress-item active"><span><span class="dot"></span> Shipment booked</span><span>Done</span></div>
+          <div class="progress-item active"><span><span class="dot"></span> Port handling</span><span>Done</span></div>
+          <div class="progress-item"><span><span class="dot"></span> Customs review</span><span>Pending</span></div>
+          <div class="progress-item"><span><span class="dot"></span> Final delivery</span><span>Pending</span></div>
+        </div>
+        <div class="progress-bar"><div></div></div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h4>Customer information</h4>
+          <span class="badge warn">Priority list</span>
+        </div>
+        <div class="customer-list">
+          <button class="active" type="button">
+            <div class="customer-card">
+              <div class="avatar">KW</div>
+              <div><h5>Kwame Boateng</h5><p>Vehicle import • Accra</p></div>
+            </div>
+          </button>
+          <button type="button">
+            <div class="customer-card">
+              <div class="avatar">SM</div>
+              <div><h5>Sarah Mensah</h5><p>Luxury delivery • Tema</p></div>
+            </div>
+          </button>
+          <button type="button">
+            <div class="customer-card">
+              <div class="avatar">IK</div>
+              <div><h5>Ibrahim K.</h5><p>Express freight • Kumasi</p></div>
+            </div>
+          </button>
+        </div>
+      </article>
+    </section>
+
+    <section class="executive-grid reveal">
+      <article class="panel map-panel">
+        <div class="panel-head">
+          <h4>Live route map</h4>
+          <span class="badge success">Tracking live</span>
+        </div>
+        <div class="map-card">
+          <div class="map-route route-1"></div>
+          <div class="map-route route-2"></div>
+          <div class="map-point point-a"></div>
+          <div class="map-point point-b"></div>
+          <div class="map-point point-c"></div>
+          <div class="map-moving-dot dot-1"></div>
+          <div class="map-moving-dot dot-2"></div>
+          <div class="map-badge route-label label-a">Japan → Accra</div>
+          <div class="map-badge route-label label-b">Dubai → Tema</div>
+          <div class="map-badges">
+            <div class="map-badge"><strong>12</strong><span>Active routes</span></div>
+            <div class="map-badge"><strong>04</strong><span>Critical hubs</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article id="analytics" class="panel analytics-panel">
+        <div class="panel-head">
+          <h4>Animated delivery chart</h4>
+          <span class="badge success">Weekly trend</span>
+        </div>
+        <div class="bars">
+          <div class="bar-item"><span>Mon</span><i class="bar-fill" data-height="54"></i></div>
+          <div class="bar-item"><span>Tue</span><i class="bar-fill" data-height="68"></i></div>
+          <div class="bar-item"><span>Wed</span><i class="bar-fill" data-height="82"></i></div>
+          <div class="bar-item"><span>Thu</span><i class="bar-fill" data-height="74"></i></div>
+          <div class="bar-item"><span>Fri</span><i class="bar-fill" data-height="92"></i></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="secondary-grid reveal">
+      <article class="panel pricing-panel">
+        <div class="panel-head">
+          <h4>Pricing & service plans</h4>
+          <span class="badge success">Premium options</span>
+        </div>
+        <div class="pricing-list">
+          <div class="plan-card featured">
+            <h5>Priority Logistics</h5>
+            <p>Fast-track customs, premium support, and guaranteed route updates.</p>
+            <strong>$1,850 / shipment</strong>
+          </div>
+          <div class="plan-card">
+            <h5>Express Vehicle Import</h5>
+            <p>Door-to-port handling for urgent vehicle transfers.</p>
+            <strong>$2,300 / shipment</strong>
+          </div>
+          <div class="plan-card">
+            <h5>Fleet Consolidation</h5>
+            <p>Multi-unit shipping, cost control, and full visibility for dealers.</p>
+            <strong>From $980 / unit</strong>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-head">
+          <h4>Operations team</h4>
+          <span class="badge warn">Live support</span>
+        </div>
+        <div class="team-list">
+          <div class="team-item">
+            <div class="avatar">NK</div>
+            <div>
+              <h5>Nadia K.</h5>
+              <p>Customs liaison • Responding now</p>
+            </div>
+          </div>
+          <div class="team-item">
+            <div class="avatar">TS</div>
+            <div>
+              <h5>Tony S.</h5>
+              <p>Route coordinator • On call</p>
+            </div>
+          </div>
+          <div class="team-item">
+            <div class="avatar">RM</div>
+            <div>
+              <h5>Ruth M.</h5>
+              <p>Client care • Reviewing delivery notes</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="module-grid reveal">
+      <article id="shipments" class="panel module-card">
+        <div class="panel-head">
+          <h4>Shipments hub</h4>
+          <span class="badge success">Live movement</span>
+        </div>
+        <ul class="module-list">
+          <li><strong>ASAN-2048</strong><span>Japan → Accra</span></li>
+          <li><strong>ASAN-3312</strong><span>Dubai → Tema</span></li>
+          <li><strong>ASAN-1001</strong><span>Germany → Kumasi</span></li>
+        </ul>
+      </article>
+
+      <article id="customers" class="panel module-card">
+        <div class="panel-head">
+          <h4>Customer portfolio</h4>
+          <span class="badge warn">Priority clients</span>
+        </div>
+        <ul class="module-list">
+          <li><strong>Kwame Boateng</strong><span>Vehicle import</span></li>
+          <li><strong>Sarah Mensah</strong><span>Luxury delivery</span></li>
+          <li><strong>Ibrahim K.</strong><span>Express freight</span></li>
+        </ul>
+      </article>
+
+      <article id="analytics" class="panel module-card analytics-card">
+        <div class="panel-head">
+          <h4>Analytics snapshot</h4>
+          <span class="badge success">Weekly trend</span>
+        </div>
+        <div class="bars">
+          <div><span>Mon</span><i style="height: 54%"></i></div>
+          <div><span>Tue</span><i style="height: 68%"></i></div>
+          <div><span>Wed</span><i style="height: 82%"></i></div>
+          <div><span>Thu</span><i style="height: 74%"></i></div>
+          <div><span>Fri</span><i style="height: 92%"></i></div>
+        </div>
+      </article>
+
+      <article id="pricing" class="panel module-card">
+        <div class="panel-head">
+          <h4>Pricing overview</h4>
+          <span class="badge success">Competitive</span>
+        </div>
+        <ul class="module-list">
+          <li><strong>Priority</strong><span>$1,850 / shipment</span></li>
+          <li><strong>Express</strong><span>$2,300 / shipment</span></li>
+          <li><strong>Fleet</strong><span>From $980 / unit</span></li>
+        </ul>
+      </article>
+
+      <article id="documents" class="panel module-card">
+        <div class="panel-head">
+          <h4>Documents center</h4>
+          <span class="badge warn">Ready</span>
+        </div>
+        <ul class="module-list">
+          <li><strong>Invoice package</strong><span>3 new uploads</span></li>
+          <li><strong>Customs docs</strong><span>Verified today</span></li>
+          <li><strong>Delivery notes</strong><span>Pending signature</span></li>
+        </ul>
+      </article>
+
+      <article id="support" class="panel module-card">
+        <div class="panel-head">
+          <h4>Support queue</h4>
+          <span class="badge success">4 active</span>
+        </div>
+        <ul class="module-list">
+          <li><strong>Urgent ticket</strong><span>Route disruption</span></li>
+          <li><strong>Client follow-up</strong><span>Delivery confirmation</span></li>
+          <li><strong>Escalation</strong><span>Customs hold</span></li>
+        </ul>
+      </article>
+
+      <article id="settings" class="panel module-card">
+        <div class="panel-head">
+          <h4>System settings</h4>
+          <span class="badge success">Synced</span>
+        </div>
+        <ul class="module-list">
+          <li><strong>Live alerts</strong><span>Enabled</span></li>
+          <li><strong>Auto dispatch</strong><span>Enabled</span></li>
+          <li><strong>Backup sync</strong><span>Every 15 mins</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel shipments-panel reveal">
+      <div class="panel-head">
+        <h4>Delivery status overview</h4>
+        <span class="badge success">Updated now</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Shipment</th>
+              <th>Customer</th>
+              <th>Route</th>
+              <th>Status</th>
+              <th>ETA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ASAN-2048</td>
+              <td>Kwame Boateng</td>
+              <td>Japan → Accra</td>
+              <td><span class="status-pill transit">In Transit</span></td>
+              <td>Today, 16:00</td>
+            </tr>
+            <tr>
+              <td>ASAN-3312</td>
+              <td>Sarah Mensah</td>
+              <td>Dubai → Tema</td>
+              <td><span class="status-pill customs">Customs</span></td>
+              <td>Tomorrow</td>
+            </tr>
+            <tr>
+              <td>ASAN-1001</td>
+              <td>Ibrahim K.</td>
+              <td>Germany → Kumasi</td>
+              <td><span class="status-pill delayed">Delayed</span></td>
+              <td>2 days</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <aside class="notification-panel" aria-label="Notifications">
+    <div class="notification-head">
+      <strong>Notifications</strong>
+      <button class="close-notif" aria-label="Close notifications"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="notification-list">
+      <div class="notification-item">
+        <strong>Customs update</strong>
+        <small>Shipment ASAN-2048 cleared for transfer.</small>
+      </div>
+      <div class="notification-item">
+        <strong>Delivery reminder</strong>
+        <small>Customer Sarah requested a delivery confirmation call.</small>
+      </div>
+    </div>
+  </aside>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
 
 </head>
 
@@ -506,9 +426,14 @@ padding:0 20px 20px;
 <li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
 <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
 <li><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
+<li><a href="price.html"><i class="fas fa-tag"></i> Price</a></li>
 <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
 
+
+<li><a href="client-agreement-form.html" target="_blank"><i class="fas fa-file-signature"></i> Client Agreement</a></li>
+
 <li><a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+
 
 </ul>
 
@@ -518,6 +443,10 @@ padding:0 20px 20px;
 
 <div class="topbar">
 
+<div class="hamburger" onclick="toggleSidebar()">
+<i class="fas fa-bars"></i>
+</div>
+
 <div class="user-info">
 <div class="user-avatar" id="userAvatar">U</div>
 <div class="user-details">
@@ -526,9 +455,9 @@ padding:0 20px 20px;
 </div>
 </div>
 
-<div class="notifications">
+<div class="notifications" onclick="showNotifications()">
 <i class="fas fa-bell"></i>
-<div class="notification-badge"></div>
+<div class="notification-badge" id="notificationBadge"></div>
 </div>
 
 </div>
@@ -617,6 +546,26 @@ Track all your vehicle imports in real-time with our professional import service
 
 </footer>
 
+</div>
+
+<!-- Notification Panel -->
+<div class="notification-panel" id="notificationPanel">
+    <div class="notification-panel-header">
+        <h3>Notifications</h3>
+        <span class="notif-count" id="notifCountBadge">0</span>
+        <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
+    </div>
+    <div class="notification-panel-actions">
+        <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+        <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+    </div>
+    <div class="notification-list" id="notificationList">
+        <div class="notification-empty">
+            <i class="fas fa-bell"></i>
+            <h4>No Notifications</h4>
+            <p>You're all caught up! Check back later for updates.</p>
+        </div>
+    </div>
 </div>
 
 <!-- AI Assistant Chat Widget -->
@@ -963,7 +912,12 @@ function getStatusClass(status) {
 
 // Logout function
 function logout() {
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('asan_current_user');
+    localStorage.removeItem('asan_user_name');
+    localStorage.removeItem('asan_user_email');
+    localStorage.removeItem('asan_user_role');
+    localStorage.removeItem('asan_remember_me');
+    localStorage.removeItem('asan_user_password');
     window.location.href = 'login.html';
 }
 
@@ -979,6 +933,232 @@ document.addEventListener('DOMContentLoaded', loadDashboardData);
 
 // Refresh data every 30 seconds
 setInterval(loadDashboardData, 30000);
+
+// Toggle Sidebar
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('active');
+}
+
+// Close sidebar when clicking outside
+document.addEventListener('click', function(e) {
+    const sidebar = document.querySelector('.sidebar');
+    const hamburger = document.querySelector('.hamburger');
+    if (sidebar.classList.contains('active') && !sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+        sidebar.classList.remove('active');
+    }
+});
+
+// Notification System
+let notifications = [];
+
+function initNotifications() {
+    const user = checkAuth();
+    if (!user) return;
+    
+    // Load saved notifications
+    const savedNotifs = localStorage.getItem('asan_notifications_' + user.email);
+    if (savedNotifs) {
+        notifications = JSON.parse(savedNotifs);
+    } else {
+        // Generate initial welcome notification
+        notifications = [{
+            id: 1,
+            title: 'Welcome to Asan Global',
+            message: 'Thank you for joining our vehicle import service. Start by submitting your first import request.',
+            type: 'info',
+            read: false,
+            timestamp: new Date().toISOString()
+        }];
+        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    }
+    
+    updateNotificationBadge();
+}
+
+function showNotifications() {
+    const panel = document.getElementById('notificationPanel');
+    panel.classList.toggle('active');
+    renderNotifications();
+    
+    // Mark all as read when opened
+    notifications.forEach(n => n.read = true);
+    localStorage.setItem('asan_notifications_' + JSON.parse(localStorage.getItem('asan_current_user')).email, JSON.stringify(notifications));
+    updateNotificationBadge();
+}
+
+function hideNotifications() {
+    const panel = document.getElementById('notificationPanel');
+    panel.classList.remove('active');
+}
+
+function updateNotificationBadge() {
+    const badge = document.getElementById('notificationBadge');
+    const notifCountBadge = document.getElementById('notifCountBadge');
+    const unreadCount = notifications.filter(n => !n.read).length;
+    
+    if (unreadCount > 0) {
+        badge.style.display = 'block';
+        badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+        notifCountBadge.textContent = unreadCount;
+    } else {
+        badge.style.display = 'none';
+        notifCountBadge.textContent = '0';
+    }
+}
+
+function renderNotifications() {
+    const list = document.getElementById('notificationList');
+    
+    if (notifications.length === 0) {
+        list.innerHTML = `
+            <div class="notification-empty">
+                <i class="fas fa-bell"></i>
+                <h4>No Notifications</h4>
+                <p>You're all caught up! Check back later for updates.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    list.innerHTML = notifications.map(notif => {
+        let iconClass = notif.type;
+        let icon = 'fa-info';
+        
+        switch(notif.type) {
+            case 'success':
+                icon = 'fa-check';
+                break;
+            case 'warning':
+                icon = 'fa-exclamation-triangle';
+                break;
+            case 'payment':
+                icon = 'fa-credit-card';
+                break;
+            case 'shipping':
+                icon = 'fa-ship';
+                break;
+            default:
+                icon = 'fa-info-circle';
+        }
+        
+        const timeAgo = getTimeAgo(new Date(notif.timestamp));
+        
+        return `
+            <div class="notification-item ${notif.read ? '' : 'unread'}" onclick="markAsRead(${notif.id})">
+                <div class="notif-icon ${iconClass}">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="notif-content">
+                    <h5>${notif.title}</h5>
+                    <p>${notif.message}</p>
+                    <div class="notif-meta">
+                        <span><i class="fas fa-clock"></i> ${timeAgo}</span>
+                    </div>
+                </div>
+                ${!notif.read ? '<div class="unread-dot"></div>' : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function markAllAsRead() {
+    notifications.forEach(n => n.read = true);
+    const user = JSON.parse(localStorage.getItem('asan_current_user'));
+    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    updateNotificationBadge();
+    renderNotifications();
+}
+
+function clearAllNotifications() {
+    if (confirm('Are you sure you want to clear all notifications?')) {
+        notifications = [];
+        const user = JSON.parse(localStorage.getItem('asan_current_user'));
+        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+        updateNotificationBadge();
+        renderNotifications();
+    }
+}
+
+function markAsRead(id) {
+    const notif = notifications.find(n => n.id === id);
+    if (notif) {
+        notif.read = true;
+        const user = JSON.parse(localStorage.getItem('asan_current_user'));
+        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+        updateNotificationBadge();
+        renderNotifications();
+    }
+}
+
+function addNotification(title, message, type = 'info') {
+    const user = JSON.parse(localStorage.getItem('asan_current_user'));
+    if (!user) return;
+    
+    const newNotif = {
+        id: Date.now(),
+        title,
+        message,
+        type,
+        read: false,
+        timestamp: new Date().toISOString()
+    };
+    
+    notifications.unshift(newNotif);
+    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    updateNotificationBadge();
+}
+
+function getTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return Math.floor(seconds / 60) + ' min ago';
+    if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
+    if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
+    return date.toLocaleDateString();
+}
+
+// Generate realistic notifications based on import status changes
+function generateImportNotifications() {
+    const user = checkAuth();
+    if (!user) return;
+    
+    const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+    const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
+    
+    userImports.forEach(imp => {
+        // Check for status changes that should trigger notifications
+        const lastStatus = localStorage.getItem('last_status_' + imp.tracking);
+        if (lastStatus && lastStatus !== imp.status) {
+            const statusMessages = {
+                'Documentation': 'Your vehicle documentation is being processed',
+                'Processing': 'Your vehicle is being prepared for shipment',
+                'In Transit': 'Your vehicle is now in transit to destination',
+                'Customs Clearance': 'Your vehicle has arrived and is in customs',
+                'Delivered': 'Your vehicle has been delivered successfully!'
+            };
+            
+            if (statusMessages[imp.status]) {
+                addNotification(
+                    `Import Status Update: ${imp.tracking}`,
+                    `${statusMessages[imp.status]} - ${imp.make} ${imp.model}`,
+                    imp.status === 'Delivered' ? 'success' : 'info'
+                );
+            }
+        }
+        localStorage.setItem('last_status_' + imp.tracking, imp.status);
+    });
+}
+
+// Initialize notifications on page load
+document.addEventListener('DOMContentLoaded', function() {
+    initNotifications();
+    generateImportNotifications();
+});
+
+// Check for new notifications periodically
+setInterval(generateImportNotifications, 60000);
 
 // AI Assistant Functions
 function toggleAIChat() {

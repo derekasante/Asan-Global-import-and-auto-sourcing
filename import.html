@@ -17,7 +17,7 @@ font-family:'Poppins',sans-serif;
 
 body{
 display:flex;
-background:#f0f4f8;
+background:#0a1929;
 min-height:100vh;
 }
 
@@ -26,20 +26,23 @@ min-height:100vh;
 .sidebar{
 width:280px;
 height:100vh;
-background:linear-gradient(180deg, #1a365d 0%, #2d5a87 100%);
+background:linear-gradient(180deg, #1a365d 0%, #2d4a6f 100%);
 color:white;
 position:fixed;
-padding:30px 25px;
-box-shadow:4px 0 15px rgba(0,0,0,0.1);
+padding:0;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
 z-index:1000;
+display:flex;
+flex-direction:column;
+overflow:auto;
 }
 
 .sidebar .logo{
+padding:30px 25px;
+margin-bottom:10px;
 display:flex;
 align-items:center;
 gap:15px;
-margin-bottom:50px;
-padding-bottom:20px;
 border-bottom:1px solid rgba(255,255,255,0.1);
 }
 
@@ -49,33 +52,83 @@ color:#ffd54f;
 }
 
 .sidebar .logo h2{
-font-size:22px;
-font-weight:600;
+font-size:20px;
+font-weight:700;
+margin:0;
+letter-spacing:1px;
 }
 
 .sidebar .logo span{
 font-size:12px;
-color:#ffd54f;
+color:rgba(255,255,255,0.7);
+font-weight:400;
 }
 
-.sidebar a{
-color:rgba(255,255,255,0.8);
+.sidebar nav{
+flex:1;
+padding:20px 15px;
+}
+
+.sidebar nav ul{
+list-style:none;
+padding:0;
+margin:0;
+}
+
+.sidebar nav ul li{
+margin-bottom:5px;
+}
+
+.sidebar nav ul li a{
+color:rgba(255,255,255,0.85);
 text-decoration:none;
 display:flex;
 align-items:center;
-gap:12px;
-padding:14px 16px;
+gap:15px;
+padding:14px 18px;
 border-radius:12px;
-margin:8px 0;
-transition:.3s;
-font-size:15px;
+transition:.35s;
+font-size:14px;
+font-weight:500;
 }
 
-.sidebar a:hover,
-.sidebar a.active{
-background:rgba(255,255,255,0.15);
-color:white;
+.sidebar nav ul li a:hover{
+background:rgba(255,255,255,.12);
 transform:translateX(5px);
+color:#fff;
+}
+
+.sidebar nav ul li.active a{
+background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+color:#fff;
+font-weight:600;
+box-shadow:0 4px 15px rgba(102,126,234,0.4);
+}
+
+.sidebar nav ul li a i{
+font-size:16px;
+width:20px;
+text-align:center;
+}
+
+.sidebar-footer{
+padding:25px;
+border-top:1px solid rgba(255,255,255,0.1);
+background:rgba(0,0,0,0.1);
+}
+
+.sidebar-footer strong{
+font-size:14px;
+color:#ffd54f;
+display:block;
+margin-bottom:5px;
+}
+
+.sidebar-footer p{
+font-size:12px;
+color:rgba(255,255,255,0.6);
+line-height:1.5;
+margin:0;
 }
 
 /* Main */
@@ -88,20 +141,21 @@ width:calc(100% - 280px);
 /* Header */
 
 .topbar{
-background:white;
+background:linear-gradient(180deg, #1a365d 0%, #0a1929 100%);
 padding:20px 40px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0 2px 15px rgba(0,0,0,0.08);
+box-shadow:0 2px 15px rgba(0,0,0,0.3);
 position:sticky;
 top:0;
 z-index:100;
+border-bottom:1px solid rgba(255,255,255,0.1);
 }
 
 .topbar h1{
 font-size:24px;
-color:#1a365d;
+color:#fff;
 font-weight:600;
 }
 
@@ -128,28 +182,30 @@ font-size:18px;
 
 .content{
 padding:40px;
+background:#0a1929;
 }
 
 /* Form Section */
 
 .form-section{
-background:white;
+background:rgba(26,54,93,0.5);
 padding:40px;
 border-radius:24px;
-box-shadow:0 5px 25px rgba(0,0,0,0.08);
+box-shadow:0 5px 25px rgba(0,0,0,0.3);
 max-width:900px;
 margin:0 auto;
+border:1px solid rgba(102,126,234,0.3);
 }
 
 .form-section h2{
 font-size:28px;
-color:#1a365d;
+color:#fff;
 margin-bottom:10px;
 font-weight:600;
 }
 
 .form-section p{
-color:#666;
+color:rgba(255,255,255,0.7);
 margin-bottom:30px;
 }
 
@@ -163,7 +219,7 @@ margin-bottom:25px;
 .form-group label{
 display:block;
 font-size:14px;
-color:#333;
+color:rgba(255,255,255,0.9);
 font-weight:500;
 margin-bottom:10px;
 }
@@ -173,11 +229,13 @@ margin-bottom:10px;
 .form-group textarea{
 width:100%;
 padding:14px 16px;
-border:2px solid #e0e0e0;
+border:2px solid rgba(102,126,234,0.3);
 border-radius:12px;
 font-size:15px;
 transition:.3s;
 font-family:'Poppins',sans-serif;
+background:rgba(10,25,41,0.5);
+color:#fff;
 }
 
 .form-group input:focus,
@@ -185,6 +243,7 @@ font-family:'Poppins',sans-serif;
 .form-group textarea:focus{
 outline:none;
 border-color:#667eea;
+background:rgba(10,25,41,0.7);
 }
 
 .form-group textarea{
@@ -216,12 +275,13 @@ box-shadow:0 8px 25px rgba(102,126,234,0.4);
 }
 
 .btn.secondary{
-background:#f0f4f8;
-color:#1a365d;
+background:rgba(102,126,234,0.2);
+color:#fff;
+border:1px solid rgba(102,126,234,0.4);
 }
 
 .btn.secondary:hover{
-background:#e0e4e8;
+background:rgba(102,126,234,0.3);
 }
 
 /* Info Cards */
@@ -255,6 +315,88 @@ font-weight:600;
 .info-card p{
 font-size:14px;
 opacity:0.9;
+}
+
+/* Fee Breakdown */
+.fee-breakdown{
+background:rgba(26,54,93,0.5);
+padding:30px;
+border-radius:16px;
+margin-top:30px;
+box-shadow:0 5px 20px rgba(0,0,0,0.3);
+border:1px solid rgba(102,126,234,0.3);
+}
+
+.fee-breakdown h3{
+font-size:18px;
+color:#fff;
+margin-bottom:20px;
+font-weight:600;
+}
+
+.fee-row{
+display:flex;
+justify-content:space-between;
+padding:12px 0;
+border-bottom:1px solid rgba(102,126,234,0.2);
+font-size:14px;
+color:rgba(255,255,255,0.9);
+}
+
+.fee-row:last-child{
+border-bottom:none;
+}
+
+.fee-row.total{
+margin-top:15px;
+padding-top:15px;
+border-top:2px solid #667eea;
+font-weight:600;
+font-size:16px;
+color:#667eea;
+}
+
+.fee-row span:last-child{
+font-weight:600;
+color:#fff;
+}
+
+/* Documents Checklist */
+.documents-checklist{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:12px;
+margin-top:10px;
+}
+
+.checkbox-label{
+display:flex;
+align-items:center;
+gap:10px;
+cursor:pointer;
+padding:10px;
+background:rgba(102,126,234,0.1);
+border-radius:8px;
+transition:background 0.3s;
+}
+
+.checkbox-label:hover{
+background:rgba(102,126,234,0.2);
+}
+
+.checkbox-label input[type="checkbox"]{
+width:18px;
+height:18px;
+cursor:pointer;
+}
+
+.checkbox-label span{
+font-size:13px;
+color:rgba(255,255,255,0.9);
+}
+
+.form-group.full-width{
+grid-column:1 / -1;
 }
 
 /* Responsive */
@@ -306,23 +448,37 @@ grid-template-columns:1fr;
         <i class="fas fa-car"></i>
         <div>
             <h2>Asan Global</h2>
-            <span>Import Services</span>
+            <span>Vehicle Import Services</span>
         </div>
     </div>
-    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-    <a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Track Import</a>
-    <a href="import.html" class="active"><i class="fas fa-file-import"></i> New Import</a>
-    <a href="finance.html"><i class="fas fa-wallet"></i> Finance</a>
-    <a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a>
-    <a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a>
-    <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
-    <a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
+            <li class="active"><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
+            <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
+            <li><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
+            <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
+            <li><a href="price.html"><i class="fas fa-tag"></i> Pricing</a></li>
+            <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+    <div class="sidebar-footer">
+        <strong>24/7 Support</strong>
+        <p>Live tracking and dedicated support for your imports.</p>
+    </div>
 </div>
 
 <div class="main">
     <div class="topbar">
         <h1>New Import Request</h1>
         <div class="user-info">
+            <div class="notifications" onclick="showNotifications()" style="position:relative;cursor:pointer;margin-right:15px;">
+                <i class="fas fa-bell" style="font-size:20px;color:#666;"></i>
+                <span class="notification-badge" id="notificationBadge" style="position:absolute;top:-5px;right:-5px;width:8px;height:8px;background:#ff4757;border-radius:50%;display:none;"></span>
+            </div>
             <div class="user-avatar" id="userAvatar">U</div>
         </div>
     </div>
@@ -397,21 +553,139 @@ grid-template-columns:1fr;
                             <option value="Sedan">Sedan</option>
                             <option value="SUV">SUV</option>
                             <option value="Truck">Truck</option>
-                            <option value="Motorcycle">Motorcycle</option>
                             <option value="Van">Van</option>
-                            <option value="Other">Other</option>
+                            <option value="Motorcycle">Motorcycle</option>
+                            <option value="Bus">Bus</option>
+                            <option value="Special">Special Equipment</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>Shipping Method</label>
+                        <select id="shippingMethod" required>
+                            <option value="">Select Method</option>
+                            <option value="Container">Container (40ft)</option>
+                            <option value="Container20">Container (20ft)</option>
+                            <option value="RORO">Roll-on/Roll-off (RORO)</option>
+                            <option value="Air">Air Freight</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Engine Size (cc)</label>
+                        <input type="number" id="engineSize" placeholder="e.g. 2500" min="500" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fuel Type</label>
+                        <select id="fuelType" required>
+                            <option value="">Select Fuel Type</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Electric">Electric</option>
+                            <option value="LPG">LPG</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Transmission</label>
+                        <select id="transmission" required>
+                            <option value="">Select Transmission</option>
+                            <option value="Automatic">Automatic</option>
+                            <option value="Manual">Manual</option>
+                            <option value="CVT">CVT</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <input type="text" id="color" placeholder="e.g. Pearl White" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mileage (km)</label>
+                        <input type="number" id="mileage" placeholder="e.g. 50000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Insurance Coverage</label>
+                        <select id="insurance" required>
+                            <option value="">Select Insurance</option>
+                            <option value="Basic">Basic Coverage (1% of value)</option>
+                            <option value="Standard">Standard Coverage (2% of value)</option>
+                            <option value="Premium">Premium Coverage (3% of value)</option>
+                            <option value="None">No Insurance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Inspection Required</label>
+                        <select id="inspection" required>
+                            <option value="">Select Option</option>
+                            <option value="Yes">Yes - Pre-shipment Inspection</option>
+                            <option value="No">No - Skip Inspection</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Special Requirements/Notes</label>
+                        <textarea id="notes" rows="3" placeholder="Any special requirements, modifications, or additional information..."></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Required Documents</label>
+                        <div class="documents-checklist">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="docInvoice" required>
+                                <span>Purchase Invoice</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="docTitle" required>
+                                <span>Vehicle Title/Registration</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="docID" required>
+                                <span>Valid ID/Passport</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="docExport">
+                                <span>Export Certificate</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="docInspection">
+                                <span>Inspection Report</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label>Additional Notes</label>
-                    <textarea id="notes" placeholder="Any special requirements or additional information..."></textarea>
+                
+                <div class="fee-breakdown">
+                    <h3>Estimated Fee Breakdown</h3>
+                    <div class="fee-row">
+                        <span>Import Fee (5%):</span>
+                        <span id="importFeeDisplay">$0.00</span>
+                    </div>
+                    <div class="fee-row">
+                        <span>Customs Fee (3%):</span>
+                        <span id="customsFeeDisplay">$0.00</span>
+                    </div>
+                    <div class="fee-row">
+                        <span>Shipping Fee:</span>
+                        <span id="shippingFeeDisplay">$0.00</span>
+                    </div>
+                    <div class="fee-row">
+                        <span>Insurance:</span>
+                        <span id="insuranceDisplay">$0.00</span>
+                    </div>
+                    <div class="fee-row">
+                        <span>Documentation:</span>
+                        <span id="docFeeDisplay">$150.00</span>
+                    </div>
+                    <div class="fee-row total">
+                        <span>Total Estimated Cost:</span>
+                        <span id="totalFeeDisplay">$0.00</span>
+                    </div>
                 </div>
-
+                
                 <div class="form-actions">
                     <button type="submit" class="btn">Submit Import Request</button>
-                    <button type="reset" class="btn secondary">Clear Form</button>
+                    <button type="button" class="btn secondary" id="signAgreementBtn">Sign Client Form</button>
+                    <button type="button" class="btn secondary" id="resetImportFormBtn">Reset Form</button>
+                </div>
+
+                <div style="margin-top:14px; padding:14px 16px; border-radius:14px; border:1px solid rgba(0,0,0,.08); background:#f8fafc; color:#334155; font-size:13px;">
+                    <b>Required:</b> You must sign the client agreement before we can process your request. Click <b>Sign Client Form</b> in a new tab.
                 </div>
             </form>
         </div>
@@ -454,6 +728,56 @@ function generateTrackingNumber() {
     return `ASAN-IMP-${timestamp}-${random}`;
 }
 
+// Calculate fees in real-time
+function calculateFees() {
+    const vehicleValue = parseFloat(document.getElementById('value').value) || 0;
+    const shippingMethod = document.getElementById('shippingMethod').value;
+    const insurance = document.getElementById('insurance').value;
+    
+    // Import fee (5%)
+    const importFee = vehicleValue * 0.05;
+    
+    // Customs fee (3%)
+    const customsFee = vehicleValue * 0.03;
+    
+    // Shipping fee based on method
+    const shippingFees = {
+        'Container': 3500,
+        'Container20': 2800,
+        'RORO': 2200,
+        'Air': 8500
+    };
+    const shippingFee = shippingFees[shippingMethod] || 0;
+    
+    // Insurance based on coverage
+    const insuranceRates = {
+        'Basic': 0.01,
+        'Standard': 0.02,
+        'Premium': 0.03,
+        'None': 0
+    };
+    const insuranceCost = vehicleValue * (insuranceRates[insurance] || 0);
+    
+    // Documentation fee (fixed)
+    const docFee = 150;
+    
+    // Total
+    const total = importFee + customsFee + shippingFee + insuranceCost + docFee;
+    
+    // Update display
+    document.getElementById('importFeeDisplay').textContent = '$' + importFee.toFixed(2);
+    document.getElementById('customsFeeDisplay').textContent = '$' + customsFee.toFixed(2);
+    document.getElementById('shippingFeeDisplay').textContent = '$' + shippingFee.toFixed(2);
+    document.getElementById('insuranceDisplay').textContent = '$' + insuranceCost.toFixed(2);
+    document.getElementById('totalFeeDisplay').textContent = '$' + total.toFixed(2);
+}
+
+// Reset form
+function resetForm() {
+    document.getElementById('importForm').reset();
+    calculateFees();
+}
+
 // Handle form submission
 document.getElementById('importForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -473,6 +797,26 @@ document.getElementById('importForm').addEventListener('submit', function(e) {
     const vehicleValue = parseFloat(document.getElementById('value').value);
     const importFee = Math.round(vehicleValue * 0.05); // 5% import fee
     const customsFee = Math.round(vehicleValue * 0.03); // 3% customs fee
+    
+    // Calculate additional fees
+    const shippingMethod = document.getElementById('shippingMethod').value;
+    const insurance = document.getElementById('insurance').value;
+    
+    const shippingFees = {
+        'Container': 3500,
+        'Container20': 2800,
+        'RORO': 2200,
+        'Air': 8500
+    };
+    const shippingFee = shippingFees[shippingMethod] || 0;
+    
+    const insuranceRates = {
+        'Basic': 0.01,
+        'Standard': 0.02,
+        'Premium': 0.03,
+        'None': 0
+    };
+    const insuranceCost = vehicleValue * (insuranceRates[insurance] || 0);
 
     // Create new import
     const newImport = {
@@ -486,11 +830,22 @@ document.getElementById('importForm').addEventListener('submit', function(e) {
         destination: document.getElementById('destination').value,
         value: vehicleValue,
         vehicleType: document.getElementById('vehicleType').value,
+        shippingMethod: shippingMethod,
+        engineSize: document.getElementById('engineSize').value,
+        fuelType: document.getElementById('fuelType').value,
+        transmission: document.getElementById('transmission').value,
+        color: document.getElementById('color').value,
+        mileage: document.getElementById('mileage').value,
+        insurance: insurance,
+        inspection: document.getElementById('inspection').value,
         notes: document.getElementById('notes').value,
         customer: user.name,
         assignedStaff: assignedStaff,
         importFee: importFee,
         customsFee: customsFee,
+        shippingFee: shippingFee,
+        insuranceCost: insuranceCost,
+        totalCost: importFee + customsFee + shippingFee + insuranceCost + 150,
         status: 'Pending',
         createdAt: new Date().toISOString()
     };
@@ -499,7 +854,19 @@ document.getElementById('importForm').addEventListener('submit', function(e) {
     imports.push(newImport);
     localStorage.setItem('asan_imports', JSON.stringify(imports));
     
-    alert(`Import request submitted successfully!\n\nTracking Number: ${newImport.tracking}\nImport Fee: $${importFee}\nCustoms Fee: $${customsFee}\nTotal: $${importFee + customsFee}\n\nYou can track your import on the dashboard.`);
+    // Add notification
+    const userNotifs = JSON.parse(localStorage.getItem('asan_notifications_' + user.email) || '[]');
+    userNotifs.unshift({
+        id: Date.now(),
+        title: 'Import Request Submitted',
+        message: `Your import request for ${newImport.make} ${newImport.model} has been submitted. Tracking: ${newImport.tracking}`,
+        type: 'success',
+        read: false,
+        timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(userNotifs));
+    
+    alert(`Import request submitted successfully!\n\nTracking Number: ${newImport.tracking}\nEstimated Total Cost: $${newImport.totalCost.toFixed(2)}\n\nYou can track your import on the dashboard.`);
     
     this.reset();
     
@@ -513,13 +880,443 @@ function logout() {
     window.location.href = 'login.html';
 }
 
+function bindImportActions() {
+    const signAgreementBtn = document.getElementById('signAgreementBtn');
+    const resetImportFormBtn = document.getElementById('resetImportFormBtn');
+
+    if (signAgreementBtn) {
+        signAgreementBtn.addEventListener('click', () => {
+            window.open('client-agreement-form.html', '_blank', 'noopener,noreferrer');
+        });
+    }
+
+    if (resetImportFormBtn) {
+        resetImportFormBtn.addEventListener('click', () => {
+            resetForm();
+        });
+    }
+}
+
 // Load user info on page load
 document.addEventListener('DOMContentLoaded', function() {
     const user = checkAuth();
     if (user) {
         document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+        
+        // Add event listeners for fee calculation
+        const valueInput = document.getElementById('value');
+        const shippingSelect = document.getElementById('shippingMethod');
+        const insuranceSelect = document.getElementById('insurance');
+        
+        valueInput.addEventListener('input', calculateFees);
+        shippingSelect.addEventListener('change', calculateFees);
+        insuranceSelect.addEventListener('change', calculateFees);
+        
+        // Initialize notifications
+        initNotifications();
+        bindImportActions();
     }
 });
+
+// Notification System
+let notifications = [];
+
+function initNotifications() {
+    const user = checkAuth();
+    if (!user) return;
+    
+    const savedNotifs = localStorage.getItem('asan_notifications_' + user.email);
+    if (savedNotifs) {
+        notifications = JSON.parse(savedNotifs);
+    } else {
+        notifications = [{
+            id: 1,
+            title: 'Welcome to Import',
+            message: 'Submit your vehicle import request and track it in real-time.',
+            type: 'info',
+            read: false,
+            timestamp: new Date().toISOString()
+        }];
+        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    }
+    
+    updateNotificationBadge();
+}
+
+function showNotifications() {
+    const panel = document.getElementById('notificationPanel');
+    if (!panel) {
+        createNotificationPanel();
+    }
+    panel = document.getElementById('notificationPanel');
+    panel.classList.toggle('active');
+    renderNotifications();
+    
+    notifications.forEach(n => n.read = true);
+    const user = checkAuth();
+    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    updateNotificationBadge();
+}
+
+function hideNotifications() {
+    const panel = document.getElementById('notificationPanel');
+    if (panel) panel.classList.remove('active');
+}
+
+function createNotificationPanel() {
+    const panel = document.createElement('div');
+    panel.id = 'notificationPanel';
+    panel.className = 'notification-panel';
+    panel.innerHTML = `
+        <div class="notification-panel-header">
+            <h3>Notifications</h3>
+            <span class="notif-count" id="notifCountBadge">0</span>
+            <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
+        </div>
+        <div class="notification-panel-actions">
+            <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+            <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <div class="notification-empty">
+                <i class="fas fa-bell"></i>
+                <h4>No Notifications</h4>
+                <p>You're all caught up! Check back later for updates.</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(panel);
+    addNotificationPanelStyles();
+}
+
+function addNotificationPanelStyles() {
+    if (document.getElementById('notificationPanelStyles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'notificationPanelStyles';
+    style.textContent = `
+        .notification-panel {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            width: 380px;
+            max-height: 500px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            z-index: 3000;
+            display: none;
+            overflow: hidden;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .notification-panel.active { display: block; }
+        .notification-panel-header {
+            padding: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        .notification-panel-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+        }
+        .notification-panel-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0;
+        }
+        .notification-panel-header .notif-count {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .notification-panel-header .close-notif {
+            cursor: pointer;
+            font-size: 22px;
+            transition: transform 0.3s;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+        .notification-panel-header .close-notif:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(90deg);
+        }
+        .notification-panel-actions {
+            padding: 12px 24px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        .notification-panel-actions button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .notification-panel-actions .mark-all-read {
+            background: #667eea;
+            color: white;
+        }
+        .notification-panel-actions .mark-all-read:hover {
+            background: #5568d3;
+        }
+        .notification-panel-actions .clear-all {
+            background: #f0f4f8;
+            color: #666;
+        }
+        .notification-panel-actions .clear-all:hover {
+            background: #e0e4e8;
+        }
+        .notification-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        .notification-item {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            gap: 16px;
+            align-items: start;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .notification-item:hover {
+            background: #f8f9fa;
+            transform: translateX(4px);
+        }
+        .notification-item.unread {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+            border-left: 4px solid #667eea;
+        }
+        .notification-item .notif-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .notification-item .notif-icon.info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .notification-item .notif-icon.success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        .notification-item .notif-icon.warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .notification-item .notif-icon i {
+            font-size: 18px;
+        }
+        .notification-item .notif-content {
+            flex: 1;
+            min-width: 0;
+        }
+        .notification-item .notif-content h5 {
+            font-size: 15px;
+            color: #1a365d;
+            margin-bottom: 6px;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        .notification-item .notif-content p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .notification-item .notif-content .notif-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 11px;
+            color: #999;
+        }
+        .notification-item .unread-dot {
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 4px rgba(102,126,234,0.2);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 0 0 4px rgba(102,126,234,0.2); }
+            50% { box-shadow: 0 0 0 8px rgba(102,126,234,0.1); }
+        }
+        .notification-empty {
+            padding: 60px 20px;
+            text-align: center;
+            color: #999;
+        }
+        .notification-empty i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .notification-empty h4 {
+            font-size: 18px;
+            color: #1a365d;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .notification-empty p {
+            font-size: 14px;
+            color: #999;
+            line-height: 1.5;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function updateNotificationBadge() {
+    const badge = document.getElementById('notificationBadge');
+    const notifCountBadge = document.getElementById('notifCountBadge');
+    const unreadCount = notifications.filter(n => !n.read).length;
+    
+    if (unreadCount > 0) {
+        badge.style.display = 'block';
+        badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+        if (notifCountBadge) notifCountBadge.textContent = unreadCount;
+    } else {
+        badge.style.display = 'none';
+        if (notifCountBadge) notifCountBadge.textContent = '0';
+    }
+}
+
+function renderNotifications() {
+    const list = document.getElementById('notificationList');
+    if (!list) return;
+    
+    if (notifications.length === 0) {
+        list.innerHTML = `
+            <div class="notification-empty">
+                <i class="fas fa-bell"></i>
+                <h4>No Notifications</h4>
+                <p>You're all caught up! Check back later for updates.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    list.innerHTML = notifications.map(notif => {
+        let iconClass = notif.type;
+        let icon = 'fa-info-circle';
+        
+        switch(notif.type) {
+            case 'success': icon = 'fa-check'; break;
+            case 'warning': icon = 'fa-exclamation-triangle'; break;
+            default: icon = 'fa-info-circle';
+        }
+        
+        const timeAgo = getTimeAgo(new Date(notif.timestamp));
+        
+        return `
+            <div class="notification-item ${notif.read ? '' : 'unread'}" onclick="markAsRead(${notif.id})">
+                <div class="notif-icon ${iconClass}">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="notif-content">
+                    <h5>${notif.title}</h5>
+                    <p>${notif.message}</p>
+                    <div class="notif-meta">
+                        <span><i class="fas fa-clock"></i> ${timeAgo}</span>
+                    </div>
+                </div>
+                ${!notif.read ? '<div class="unread-dot"></div>' : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function markAllAsRead() {
+    notifications.forEach(n => n.read = true);
+    const user = checkAuth();
+    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    updateNotificationBadge();
+    renderNotifications();
+}
+
+function clearAllNotifications() {
+    if (confirm('Are you sure you want to clear all notifications?')) {
+        notifications = [];
+        const user = checkAuth();
+        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+        updateNotificationBadge();
+        renderNotifications();
+    }
+}
+
+function markAsRead(id) {
+    const notif = notifications.find(n => n.id === id);
+    if (notif) {
+        notif.read = true;
+        const user = checkAuth();
+        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+        updateNotificationBadge();
+        renderNotifications();
+    }
+}
+
+function getTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    if (seconds < 60) return 'Just now';
+    if (seconds < 3600) return Math.floor(seconds / 60) + ' min ago';
+    if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
+    if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
+    return date.toLocaleDateString();
+}
+
+function addNotification(title, message, type = 'info') {
+    const user = checkAuth();
+    if (!user) return;
+    
+    const newNotif = {
+        id: Date.now(),
+        title,
+        message,
+        type,
+        read: false,
+        timestamp: new Date().toISOString()
+    };
+    
+    notifications.unshift(newNotif);
+    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    updateNotificationBadge();
+}
 </script>
 
 </body>
