@@ -186,18 +186,22 @@ try {
 const coordinateText =
 document.getElementById("coordinates");
 
-setInterval(() => {
+// NOTE: current tracking.html layout has no #coordinates element (superseded by
+// the live map). Guard so this legacy interval cannot throw and spam the console.
+if (coordinateText) {
+    setInterval(() => {
 
-    coordinateIndex++;
+        coordinateIndex++;
 
-    if (coordinateIndex >= coordinates.length) {
-        coordinateIndex = 0;
-    }
+        if (coordinateIndex >= coordinates.length) {
+            coordinateIndex = 0;
+        }
 
-    coordinateText.innerHTML =
-        coordinates[coordinateIndex];
+        coordinateText.innerHTML =
+            coordinates[coordinateIndex];
 
-}, 5000);
+    }, 5000);
+}
 
 // =========================
 // ETA Countdown

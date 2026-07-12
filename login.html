@@ -4,16 +4,248 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https: 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https: data:; connect-src 'self' https:;" />
-    <title>Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="login.css" />
+    <title>Sign In | Asan Global</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="design-system.css" />
+    <style>
+      /* ---- Login page layout — scoped, does not conflict with design-system ---- */
+      *{ box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: var(--ag-font);
+        background: var(--ag-navy-950);
+        overflow-x: hidden;
+      }
+
+      /* Subtle background layer */
+      .login-bg {
+        position: fixed;
+        inset: 0;
+        background:
+          linear-gradient(rgba(7,18,36,.72), rgba(7,18,36,.72)),
+          url("https://images.unsplash.com/photo-1494412574642-65878244971?w=1920&q=80") center/cover no-repeat;
+        z-index: 0;
+      }
+
+      /* Card */
+      .login-box {
+        position: relative;
+        z-index: 1;
+        width: min(440px, 94vw);
+        background: rgba(255,255,255,0.07);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: var(--ag-radius-lg);
+        padding: 44px 40px;
+        color: #fff;
+        box-shadow: var(--ag-shadow-lg);
+      }
+
+      /* Logo / brand */
+      .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+      .logo i { font-size: 36px; color: #00d4ff; }
+      .logo h2 { font-size: 26px; font-weight: 700; color: #fff; }
+
+      .login-box h1 { font-size: 24px; text-align: center; margin-bottom: 6px; }
+      .subtitle { text-align: center; color: rgba(255,255,255,0.65); font-size: 14px; margin-bottom: 28px; }
+
+      /* Form groups — use ag-field layout but with dark-surface overrides */
+      .form-group { margin-bottom: 18px; }
+      .form-group label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.82); }
+
+      .input-wrapper { position: relative; display: flex; align-items: center; }
+      .input-wrapper i:first-child {
+        position: absolute;
+        left: 14px;
+        color: var(--ag-blue-500);
+        font-size: 15px;
+        pointer-events: none;
+      }
+      .input-wrapper input {
+        width: 100%;
+        padding: 13px 14px 13px 42px;
+        border: 1.5px solid rgba(255,255,255,0.18);
+        border-radius: var(--ag-radius-sm);
+        font-size: 14.5px;
+        font-family: var(--ag-font);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        transition: border-color var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+      }
+      .input-wrapper input::placeholder { color: rgba(255,255,255,0.42); }
+      .input-wrapper input:focus {
+        border-color: var(--ag-blue-500);
+        box-shadow: 0 0 0 4px rgba(59,130,246,0.22);
+        outline: none;
+        background: rgba(255,255,255,0.12);
+      }
+
+      /* Toggle password */
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        color: var(--ag-blue-500);
+        cursor: pointer;
+        font-size: 15px;
+        padding: 6px 8px;
+        display: flex;
+        align-items: center;
+        transition: color var(--ag-transition-fast);
+      }
+      .toggle-password:hover { color: var(--ag-blue-600); }
+
+      /* Form options row */
+      .form-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 22px;
+        font-size: 13.5px;
+      }
+      .remember-me { display: flex; align-items: center; gap: 8px; }
+      .remember-me input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: var(--ag-blue-500); }
+      .remember-me label { cursor: pointer; color: rgba(255,255,255,0.8); margin: 0; }
+      .forgot-password { color: var(--ag-gold-400); text-decoration: none; font-weight: 500; transition: opacity var(--ag-transition-fast); }
+      .forgot-password:hover { opacity: 0.8; }
+
+      /* Primary login button */
+      .login-btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: var(--ag-radius-pill);
+        background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+        color: #fff;
+        font-size: 15px;
+        font-family: var(--ag-font);
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+        transition: transform var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+        box-shadow: 0 10px 24px rgba(37,99,235,0.28);
+      }
+      .login-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(37,99,235,0.38); }
+      .login-btn:active { transform: translateY(0); }
+
+      /* Divider */
+      .divider { margin: 24px 0; position: relative; text-align: center; }
+      .divider::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 0; right: 0;
+        height: 1px;
+        background: rgba(255,255,255,0.14);
+      }
+      .divider span {
+        position: relative;
+        background: rgba(255,255,255,0.08);
+        padding: 5px 16px;
+        border-radius: var(--ag-radius-pill);
+        font-size: 12.5px;
+        color: rgba(255,255,255,0.55);
+      }
+
+      /* Social login */
+      .social-login { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+      .social-login a {
+        text-decoration: none;
+        padding: 12px;
+        border-radius: var(--ag-radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-weight: 600;
+        font-size: 13.5px;
+        font-family: var(--ag-font);
+        transition: transform var(--ag-transition-fast), background var(--ag-transition-fast);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: #fff;
+      }
+      .social-login a:hover { transform: translateY(-2px); }
+      .google   { background: rgba(219,68,55,0.15);  border-color: rgba(219,68,55,0.3); }
+      .google:hover   { background: rgba(219,68,55,0.25); }
+      .facebook { background: rgba(24,119,242,0.15); border-color: rgba(24,119,242,0.3); }
+      .facebook:hover { background: rgba(24,119,242,0.25); }
+
+      /* Social name prompt */
+      #socialNamePrompt {
+        margin-top: 12px;
+        padding: 16px;
+        border-radius: var(--ag-radius-sm);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.16);
+      }
+      #socialNamePrompt label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: rgba(255,255,255,0.85); }
+      #socialName {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1.5px solid rgba(255,255,255,0.18);
+        border-radius: var(--ag-radius-sm);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        font-family: var(--ag-font);
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+      #socialName:focus { border-color: var(--ag-blue-500); outline: none; }
+
+      /* Sign up / links */
+      .signup { text-align: center; margin: 16px 0 10px; font-size: 13.5px; color: rgba(255,255,255,0.65); }
+      .signup a { color: var(--ag-gold-400); text-decoration: none; font-weight: 700; }
+      .signup a:hover { opacity: 0.8; }
+
+      /* After login links */
+      .after-login-links {
+        margin-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.10);
+        padding-top: 18px;
+        text-align: center;
+      }
+      .after-login-text { color: rgba(255,255,255,0.62); font-size: 12.5px; margin-bottom: 8px; }
+      #afterLoginLink {
+        display: inline-block;
+        color: var(--ag-gold-400);
+        text-decoration: none;
+        font-weight: 600;
+        transition: opacity var(--ag-transition-fast);
+      }
+      #afterLoginLink:hover { opacity: 0.8; }
+
+      /* Registration form section */
+      #registrationForm h2 { font-size: 20px; margin-bottom: 20px; text-align: center; }
+
+      @media (max-width: 500px) {
+        .login-box { padding: 32px 22px; }
+        .logo h2 { font-size: 22px; }
+        .login-box h1 { font-size: 20px; }
+        .form-options { flex-direction: column; align-items: flex-start; gap: 10px; }
+      }
+    </style>
   </head>
   <body>
-    <div class="background" style="--background-image:url('');"></div>
+    <div class="login-bg"></div>
 
     <div class="login-box">
       <div class="logo">
-        <i class="fas fa-ship"></i>
+        <i class="fas fa-car"></i>
         <h2>Asan Global</h2>
       </div>
 
@@ -69,17 +301,17 @@
         </a>
       </div>
 
-      <div id="socialNamePrompt" style="display:none; margin-top:12px; padding:12px; border-radius:12px; background:#f8fafc; border:1px solid #dbeafe;">
-        <label for="socialName" style="display:block; margin-bottom:8px; font-weight:600;">Your full name</label>
-        <input type="text" id="socialName" placeholder="Enter your full name" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:10px; box-sizing:border-box;" />
-        <button type="button" id="socialNameContinue" class="login-btn" style="margin-top:10px; width:100%;">Continue</button>
+      <div id="socialNamePrompt" style="display:none;">
+        <label for="socialName">Your full name</label>
+        <input type="text" id="socialName" placeholder="Enter your full name" />
+        <button type="button" id="socialNameContinue" class="login-btn">Continue</button>
       </div>
 
       <!-- Sign Up Link -->
       <p class="signup">
         Don't have an account? <a href="#" id="showRegistrationLink">Sign up</a>
       </p>
-      <p class="signup" style="margin-top:5px;">
+      <p class="signup" style="margin-top:4px;">
         <a href="index.html">&larr; Back to website</a>
       </p>
 
@@ -90,7 +322,7 @@
 
       <!-- Registration Form (Hidden by default) -->
       <div id="registrationForm" style="display:none;">
-        <h2 style="margin-bottom:20px;">Create Account</h2>
+        <h2>Create Account</h2>
         <form id="regForm">
           <div class="form-group">
             <label for="regName">Full Name</label>

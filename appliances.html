@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asan Global | Home Appliances</title>
+<meta name="description" content="Asan Global — import and buy home appliances such as refrigerators, air conditioners, washing machines and more.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+.apl-topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(10px);
+  padding: 18px 28px; border-bottom: 1px solid var(--ag-border);
+  box-shadow: var(--ag-shadow-sm); position: sticky; top: 0; z-index: 900;
+}
+.apl-topbar .title-group { display: flex; align-items: center; gap: 14px; }
+.apl-topbar h1 { margin: 0; font-size: 22px; color: var(--ag-text-900); }
+.apl-topbar .eyebrow { color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 700; margin: 0 0 2px; }
+.apl-topbar-actions { display: flex; align-items: center; gap: 14px; }
+.apl-notif-btn { position: relative; border: none; background: var(--ag-surface-muted); color: var(--ag-blue-600); width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 16px; display: grid; place-items: center; }
+.apl-notif-dot { position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--ag-danger); display: none; }
+.ag-avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); color: #fff; font-weight: 700; font-size: 16px; }
+
+.apl-content { padding: 28px; max-width: 1300px; margin: 0 auto; }
+
+.apl-hero {
+  background: linear-gradient(135deg, var(--ag-navy-900) 0%, var(--ag-blue-600) 100%);
+  color: #fff; border-radius: var(--ag-radius-lg); padding: 36px 40px;
+  margin-bottom: 28px; box-shadow: var(--ag-shadow-lg);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 28px; flex-wrap: wrap;
+}
+.apl-hero .hero-left { flex: 1; min-width: 260px; }
+.apl-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--ag-radius-pill); padding: 8px 14px;
+  font-size: 12.5px; font-weight: 600; margin-bottom: 16px; color: var(--ag-gold-400);
+}
+.apl-kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ag-gold-400); }
+.apl-hero h1 { font-size: 34px; line-height: 1.15; margin: 0 0 10px; color: #fff; }
+.apl-hero p { font-size: 15px; color: rgba(255,255,255,0.82); line-height: 1.7; margin: 0 0 22px; max-width: 560px; }
+.apl-hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.apl-section-head { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+.apl-section-head h2 { font-size: 24px; color: var(--ag-text-900); margin: 0 0 6px; }
+.apl-section-head p { font-size: 14px; color: var(--ag-text-600); margin: 0; }
+
+.apl-filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.apl-filter-chip {
+  border: 1.5px solid var(--ag-border); background: var(--ag-surface); color: var(--ag-text-600);
+  border-radius: var(--ag-radius-pill); padding: 8px 16px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all var(--ag-transition-fast);
+}
+.apl-filter-chip:hover { border-color: var(--ag-blue-500); color: var(--ag-blue-600); }
+.apl-filter-chip.active { background: var(--ag-blue-600); border-color: var(--ag-blue-600); color: #fff; }
+
+.apl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.apl-card {
+  background: var(--ag-surface); border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg);
+  overflow: hidden; box-shadow: var(--ag-shadow-sm); display: flex; flex-direction: column;
+  transition: transform var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+}
+.apl-card:hover { transform: translateY(-4px); box-shadow: var(--ag-shadow-md); }
+.apl-card-img {
+  width: 100%; aspect-ratio: 4/3; background: var(--ag-surface-muted); display: grid; place-items: center;
+  overflow: hidden; color: var(--ag-text-400); font-size: 40px; position: relative;
+}
+.apl-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.apl-card-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.apl-card-cat { font-size: 11px; font-weight: 700; color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: 0.06em; }
+.apl-card-name { font-size: 16.5px; font-weight: 700; color: var(--ag-text-900); margin: 0; }
+.apl-card-desc { font-size: 13px; color: var(--ag-text-600); line-height: 1.5; margin: 0; flex: 1; }
+.apl-card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 10px; }
+.apl-card-price { font-size: 18px; font-weight: 800; color: var(--ag-navy-800); }
+
+.apl-order-form .ag-field:last-child { margin-bottom: 0; }
+.apl-order-summary {
+  background: var(--ag-surface-muted); border: 1px solid var(--ag-border); border-radius: var(--ag-radius-md);
+  padding: 14px 16px; margin-bottom: 16px; display: flex; gap: 14px; align-items: center;
+}
+.apl-order-summary img { width: 64px; height: 64px; object-fit: cover; border-radius: var(--ag-radius-sm); background: var(--ag-surface); flex-shrink: 0; }
+.apl-order-summary .fa-blender { font-size: 30px; color: var(--ag-text-400); width: 64px; height: 64px; display: grid; place-items: center; background: var(--ag-surface); border-radius: var(--ag-radius-sm); flex-shrink: 0; }
+.apl-order-summary h4 { margin: 0 0 4px; font-size: 14.5px; color: var(--ag-text-900); }
+.apl-order-summary p { margin: 0; font-size: 13px; color: var(--ag-text-600); }
+
+@media (max-width: 900px) { .apl-hero h1 { font-size: 26px; } .apl-hero { padding: 26px 24px; } }
+@media (max-width: 640px) { .apl-content { padding: 16px; } .apl-hero-cta { flex-direction: column; } .apl-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); } }
+</style>
+</head>
+<body data-ag-page="appliances">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+    <header class="apl-topbar">
+      <div class="title-group">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Import &amp; buy</p>
+          <h1>Home Appliances</h1>
+        </div>
+      </div>
+      <div class="apl-topbar-actions">
+        <button class="apl-notif-btn" onclick="showNotifications()" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="apl-notif-dot" id="notificationBadge"></span>
+        </button>
+        <div class="ag-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <div class="apl-content">
+      <!-- Hero -->
+      <section class="apl-hero ag-reveal">
+        <div class="hero-left">
+          <div class="apl-kicker"><span class="dot"></span> Home Appliances</div>
+          <h1>Import &amp; Buy Home Appliances</h1>
+          <p>Browse refrigerators, air conditioners, washing machines, TVs and more sourced internationally. Request to buy or import any item below and our team will confirm pricing, shipping and delivery.</p>
+          <div class="apl-hero-cta">
+            <a class="ag-btn ag-btn-secondary" href="#applianceCatalog"><i class="fas fa-shopping-basket"></i> Browse Catalog</a>
+            <a class="ag-btn ag-btn-ghost" href="price.html" style="color:#fff; border-color:rgba(255,255,255,0.4);"><i class="fas fa-tag"></i> View Pricing</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Catalog -->
+      <section class="ag-card ag-reveal" id="applianceCatalog">
+        <div class="apl-section-head">
+          <div>
+            <h2>Appliance Catalog</h2>
+            <p>Select an item to request an import or purchase. Availability and final pricing are confirmed by our team.</p>
+          </div>
+          <span class="ag-badge ag-badge-info" id="catalogCount">0 items</span>
+        </div>
+
+        <div class="apl-filter-bar" id="categoryFilterBar"></div>
+
+        <div class="apl-grid" id="applianceGrid"></div>
+      </section>
+    </div>
+
+    <footer style="text-align:center; padding: 20px; color: var(--ag-text-400); font-size: 12.5px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
+
+<!-- Buy / Import Request Modal -->
+<div id="orderModal" class="ag-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+  <div class="ag-modal" style="width:min(520px,94vw); max-height:90vh; overflow-y:auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+      <h3 id="orderModalTitle" style="margin:0; font-size:18px; color:var(--ag-text-900);">Request to Buy / Import</h3>
+      <button class="ag-btn ag-btn-ghost" onclick="closeOrderModal()" style="padding:8px 12px;" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="apl-order-summary" id="orderSummary"></div>
+
+    <form id="orderForm" class="apl-order-form">
+      <div class="ag-field">
+        <label for="orderQty">Quantity</label>
+        <input type="number" id="orderQty" class="ag-input" min="1" value="1" required>
+      </div>
+      <div class="ag-field">
+        <label for="orderMode">Request Type</label>
+        <select id="orderMode" class="ag-select" required>
+          <option value="Buy Locally">Buy Locally (already in stock)</option>
+          <option value="Import">Import from Overseas Supplier</option>
+        </select>
+      </div>
+      <div class="ag-field">
+        <label for="orderDestination">Delivery Destination</label>
+        <input type="text" id="orderDestination" class="ag-input" placeholder="e.g. Accra, Ghana" required>
+      </div>
+      <div class="ag-field">
+        <label for="orderNotes">Notes (optional)</label>
+        <textarea id="orderNotes" class="ag-textarea" rows="3" placeholder="Color preference, warranty questions, delivery timing, etc."></textarea>
+      </div>
+      <div class="fee-breakdown" style="background:var(--ag-surface-muted); border:1px solid var(--ag-border); border-radius:var(--ag-radius-md); padding:16px; margin:6px 0 16px;">
+        <div class="fee-row" style="display:flex; justify-content:space-between; font-size:14px; color:var(--ag-text-600); padding:6px 0;">
+          <span>Unit Price:</span><span id="orderUnitPrice">$0.00</span>
+        </div>
+        <div class="fee-row total" style="display:flex; justify-content:space-between; font-weight:700; font-size:15px; color:var(--ag-blue-600); border-top:2px solid var(--ag-blue-600); margin-top:6px; padding-top:12px;">
+          <span>Estimated Total:</span><span id="orderTotalPrice">$0.00</span>
+        </div>
+      </div>
+      <button type="submit" class="ag-btn ag-btn-primary" style="width:100%;"><i class="fas fa-paper-plane"></i> Submit Request</button>
+    </form>
+  </div>
+</div>
+
+<!-- Notification Panel (shared design-system classes) -->
+<aside class="notification-panel" id="notificationPanel" aria-label="Notifications">
+  <div class="notification-panel-header">
+    <h3>Notifications</h3>
+    <span class="notif-count" id="notifCountBadge">0</span>
+    <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
+  </div>
+  <div class="notification-panel-actions">
+    <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+    <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+  </div>
+  <div class="notification-list" id="notificationList"></div>
+</aside>
+
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script>
+const escapeHtml = (value) => window.securityUtils?.escapeHtml ? window.securityUtils.escapeHtml(value) : String(value ?? '');
+
+// ---- Authentication ----
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('asan_current_user'));
+  if (!user) { window.location.href = 'login.html'; return false; }
+  return user;
+}
+
+function logout() {
+  localStorage.removeItem('asan_current_user');
+  window.location.href = 'login.html';
+}
+
+// ---- Default catalog (used only the first time, so the page isn't empty
+// before the admin has added real appliances). Admin edits/replaces these
+// from the Admin Panel — Home Appliances card.
+function seedAppliancesIfEmpty() {
+  if (localStorage.getItem('asan_appliances') !== null) return;
+  const seed = [
+    { id: 1, name: 'Double-Door Refrigerator', category: 'Refrigerators', price: 850, description: 'Energy-efficient double-door refrigerator with freezer compartment.', stock: 'In Stock', image: '' },
+    { id: 2, name: 'Front-Load Washing Machine', category: 'Washing Machines', price: 620, description: '8kg front-load washing machine with multiple wash programs.', stock: 'In Stock', image: '' },
+    { id: 3, name: 'Split-Unit Air Conditioner', category: 'Air Conditioners', price: 540, description: '1.5HP split-unit AC, ideal for bedrooms and small offices.', stock: 'Pre-Order', image: '' },
+    { id: 4, name: '55" Smart LED TV', category: 'Televisions', price: 480, description: '55-inch 4K Smart LED television with built-in streaming apps.', stock: 'In Stock', image: '' },
+    { id: 5, name: 'Microwave Oven (25L)', category: 'Microwaves', price: 130, description: '25-litre microwave oven with grill function.', stock: 'In Stock', image: '' },
+    { id: 6, name: 'Electric Water Heater', category: 'Water Heaters', price: 210, description: '30-litre instant electric water heater for home use.', stock: 'In Stock', image: '' }
+  ];
+  localStorage.setItem('asan_appliances', JSON.stringify(seed));
+}
+
+function getAppliances() {
+  try { return JSON.parse(localStorage.getItem('asan_appliances') || '[]'); } catch { return []; }
+}
+
+function applianceIcon(category) {
+  const map = {
+    'Refrigerators': 'fa-snowflake',
+    'Washing Machines': 'fa-soap',
+    'Air Conditioners': 'fa-wind',
+    'Televisions': 'fa-tv',
+    'Microwaves': 'fa-utensils',
+    'Cookers': 'fa-fire-burner',
+    'Water Heaters': 'fa-hot-tub-person',
+  };
+  return map[category] || 'fa-blender';
+}
+
+let activeCategory = 'All';
+
+function renderCategoryFilters(items) {
+  const bar = document.getElementById('categoryFilterBar');
+  const categories = ['All', ...new Set(items.map(i => i.category).filter(Boolean))];
+  bar.innerHTML = categories.map(cat =>
+    `<button class="apl-filter-chip${cat === activeCategory ? ' active' : ''}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`
+  ).join('');
+  bar.querySelectorAll('.apl-filter-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeCategory = btn.getAttribute('data-cat');
+      renderCatalog();
+    });
+  });
+}
+
+function formatPrice(value) {
+  const num = parseFloat(value) || 0;
+  return '$' + num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function renderCatalog() {
+  const items = getAppliances();
+  document.getElementById('catalogCount').textContent = items.length + (items.length === 1 ? ' item' : ' items');
+  renderCategoryFilters(items);
+
+  const filtered = activeCategory === 'All' ? items : items.filter(i => i.category === activeCategory);
+  const grid = document.getElementById('applianceGrid');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="ag-empty" style="grid-column:1/-1;"><i class="fas fa-box-open"></i><h4>No appliances yet</h4><p>Check back soon — our team is adding new items regularly.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(item => `
+    <article class="apl-card">
+      <div class="apl-card-img">
+        ${item.image ? `<img src="${item.image}" alt="${escapeHtml(item.name)}">` : `<i class="fas ${applianceIcon(item.category)}"></i>`}
+      </div>
+      <div class="apl-card-body">
+        <span class="apl-card-cat">${escapeHtml(item.category || 'Appliance')}</span>
+        <h3 class="apl-card-name">${escapeHtml(item.name)}</h3>
+        <p class="apl-card-desc">${escapeHtml(item.description || '')}</p>
+        <div class="apl-card-footer">
+          <span class="apl-card-price">${formatPrice(item.price)}</span>
+          <span class="ag-badge ${item.stock === 'Out of Stock' ? 'ag-badge-danger' : (item.stock === 'Pre-Order' ? 'ag-badge-warning' : 'ag-badge-success')}">${escapeHtml(item.stock || 'In Stock')}</span>
+        </div>
+        <button class="ag-btn ag-btn-primary" style="width:100%; margin-top:6px;" onclick="openOrderModal(${item.id})"><i class="fas fa-shopping-cart"></i> Buy / Import Request</button>
+      </div>
+    </article>
+  `).join('');
+}
+
+// ---- Order modal ----
+let selectedAppliance = null;
+
+function openOrderModal(id) {
+  const user = checkAuth();
+  if (!user) return;
+  const item = getAppliances().find(i => i.id === id);
+  if (!item) return;
+  selectedAppliance = item;
+
+  document.getElementById('orderSummary').innerHTML = `
+    ${item.image ? `<img src="${item.image}" alt="${escapeHtml(item.name)}">` : `<div class="fa-blender"><i class="fas ${applianceIcon(item.category)}"></i></div>`}
+    <div><h4>${escapeHtml(item.name)}</h4><p>${escapeHtml(item.category || 'Appliance')} · ${formatPrice(item.price)} / unit</p></div>
+  `;
+  document.getElementById('orderQty').value = 1;
+  document.getElementById('orderMode').value = 'Buy Locally';
+  document.getElementById('orderDestination').value = '';
+  document.getElementById('orderNotes').value = '';
+  updateOrderTotals();
+  document.getElementById('orderModal').classList.add('ag-open');
+}
+
+function closeOrderModal() {
+  document.getElementById('orderModal').classList.remove('ag-open');
+  selectedAppliance = null;
+}
+
+function updateOrderTotals() {
+  if (!selectedAppliance) return;
+  const qty = parseInt(document.getElementById('orderQty').value) || 1;
+  const unit = parseFloat(selectedAppliance.price) || 0;
+  document.getElementById('orderUnitPrice').textContent = formatPrice(unit);
+  document.getElementById('orderTotalPrice').textContent = formatPrice(unit * qty);
+}
+
+function generateApplianceTracking() {
+  const timestamp = Date.now().toString().slice(-6);
+  const random = Math.floor(Math.random() * 9000) + 1000;
+  return `ASAN-APL-${timestamp}-${random}`;
+}
+
+document.getElementById('orderForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const user = checkAuth();
+  if (!user || !selectedAppliance) return;
+
+  const qty = parseInt(document.getElementById('orderQty').value) || 1;
+  const unit = parseFloat(selectedAppliance.price) || 0;
+  const total = unit * qty;
+
+  const orders = JSON.parse(localStorage.getItem('asan_appliance_orders') || '[]');
+  const order = {
+    id: Date.now(),
+    tracking: generateApplianceTracking(),
+    applianceId: selectedAppliance.id,
+    applianceName: selectedAppliance.name,
+    applianceImage: selectedAppliance.image || '',
+    category: selectedAppliance.category || '',
+    quantity: qty,
+    unitPrice: unit,
+    totalCost: total,
+    mode: document.getElementById('orderMode').value,
+    destination: document.getElementById('orderDestination').value,
+    notes: document.getElementById('orderNotes').value,
+    customer: user.name,
+    customerEmail: user.email,
+    status: 'Pending',
+    createdAt: new Date().toISOString()
+  };
+  orders.push(order);
+  localStorage.setItem('asan_appliance_orders', JSON.stringify(orders));
+
+  const userNotifs = JSON.parse(localStorage.getItem('asan_notifications_' + user.email) || '[]');
+  userNotifs.unshift({
+    id: Date.now(),
+    title: 'Appliance Request Submitted',
+    message: `Your request for ${qty} × ${order.applianceName} has been submitted. Tracking: ${order.tracking}`,
+    type: 'success',
+    read: false,
+    timestamp: new Date().toISOString()
+  });
+  localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(userNotifs));
+
+  alert(`Request submitted successfully!\n\nTracking Number: ${order.tracking}\nEstimated Total: ${formatPrice(total)}\n\nOur team will confirm pricing and delivery shortly.`);
+  closeOrderModal();
+});
+
+document.getElementById('orderQty').addEventListener('input', updateOrderTotals);
+
+// ---- Notification System (shared pattern with other pages) ----
+let notifications = [];
+
+function initNotifications() {
+  const user = checkAuth();
+  if (!user) return;
+  const savedNotifs = localStorage.getItem('asan_notifications_' + user.email);
+  notifications = savedNotifs ? JSON.parse(savedNotifs) : [];
+  updateNotificationBadge();
+}
+
+function showNotifications() {
+  const panel = document.getElementById('notificationPanel');
+  panel.classList.toggle('active');
+  renderNotifications();
+  notifications.forEach(n => n.read = true);
+  const user = checkAuth();
+  if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+  updateNotificationBadge();
+}
+
+function hideNotifications() {
+  document.getElementById('notificationPanel').classList.remove('active');
+}
+
+function updateNotificationBadge() {
+  const badge = document.getElementById('notificationBadge');
+  const notifCountBadge = document.getElementById('notifCountBadge');
+  const unreadCount = notifications.filter(n => !n.read).length;
+  if (unreadCount > 0) {
+    badge.style.display = 'block';
+    if (notifCountBadge) notifCountBadge.textContent = unreadCount;
+  } else {
+    badge.style.display = 'none';
+    if (notifCountBadge) notifCountBadge.textContent = '0';
+  }
+}
+
+function renderNotifications() {
+  const list = document.getElementById('notificationList');
+  if (!list) return;
+  if (notifications.length === 0) {
+    list.innerHTML = `<div class="ag-empty"><i class="fas fa-bell"></i><h4>No Notifications</h4><p>You're all caught up!</p></div>`;
+    return;
+  }
+  list.innerHTML = notifications.map(notif => {
+    let icon = 'fa-info-circle';
+    if (notif.type === 'success') icon = 'fa-check';
+    if (notif.type === 'warning') icon = 'fa-exclamation-triangle';
+    const timeAgo = getTimeAgo(new Date(notif.timestamp));
+    return `<div class="notification-item ${notif.read ? '' : 'unread'}" onclick="markAsRead(${notif.id})">
+      <div class="notif-icon ${notif.type}"><i class="fas ${icon}"></i></div>
+      <div class="notif-content">
+        <h5>${escapeHtml(notif.title)}</h5>
+        <p>${escapeHtml(notif.message)}</p>
+        <div class="notif-meta"><span><i class="fas fa-clock"></i> ${timeAgo}</span></div>
+      </div>
+      ${!notif.read ? '<div class="unread-dot"></div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function markAllAsRead() {
+  notifications.forEach(n => n.read = true);
+  const user = checkAuth();
+  if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+  updateNotificationBadge();
+  renderNotifications();
+}
+
+function clearAllNotifications() {
+  if (confirm('Are you sure you want to clear all notifications?')) {
+    notifications = [];
+    const user = checkAuth();
+    if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    updateNotificationBadge();
+    renderNotifications();
+  }
+}
+
+function markAsRead(id) {
+  const notif = notifications.find(n => n.id === id);
+  if (notif) {
+    notif.read = true;
+    const user = checkAuth();
+    if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+    updateNotificationBadge();
+    renderNotifications();
+  }
+}
+
+function getTimeAgo(date) {
+  const seconds = Math.floor((new Date() - date) / 1000);
+  if (seconds < 60) return 'Just now';
+  if (seconds < 3600) return Math.floor(seconds / 60) + ' min ago';
+  if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
+  if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
+  return date.toLocaleDateString();
+}
+
+// ---- Init ----
+document.addEventListener('DOMContentLoaded', function () {
+  const user = checkAuth();
+  if (!user) return;
+  document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+  seedAppliancesIfEmpty();
+  renderCatalog();
+  initNotifications();
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'asan_appliances') renderCatalog();
+  });
+});
+
+document.getElementById('orderModal').addEventListener('click', function (e) {
+  if (e.target === this) closeOrderModal();
+});
+</script>
+</body>
+</html>

@@ -1,124 +1,154 @@
 (() => {
-  const CHAT_KEY = 'asan_admin_chat';
+  // Each client gets their own private, end-to-end-encrypted-at-rest thread
+  // with the admin — no shared/group pool. Threads are keyed by client email:
+  //   asan_chat_<clientEmail>  ->  [ { id, sender, iv, ct, ts }, ... ]
+  // Message bodies are AES-GCM encrypted before they ever touch localStorage
+  // (see security-utils.js) and are only decrypted in memory for rendering.
 
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '<')
-      .replace(/>/g, '>')
-      .replace(/"/g, '"')
-      .replace(/'/g, '&#039;');
+  const CHAT_PREFIX = 'asan_chat_';
+  const LEGACY_CHAT_KEY = 'asan_admin_chat'; // old shared/group chat, no longer used
+  const SALT = 'asan-global-admin-chat';
+  const ADMIN_EMAIL = 'admin@asan.com';
+
+  const keyCache = new Map();
+
+  function threadKey(clientEmail) {
+    return CHAT_PREFIX + String(clientEmail || '').toLowerCase();
   }
 
-  function getAdminChat() {
+  async function getThreadKey(clientEmail) {
+    const email = String(clientEmail || '').toLowerCase();
+    if (keyCache.has(email)) return keyCache.get(email);
+    // Deterministic per-thread passphrase from both participants, so each
+    // client<->admin conversation is encrypted with its own unique key.
+    const passphrase = `${ADMIN_EMAIL}::${email}::${SALT}`;
+    const key = await window.securityUtils?.deriveKey?.(passphrase, `${SALT}:${email}`);
+    keyCache.set(email, key || null);
+    return key || null;
+  }
+
+  function getThread(clientEmail) {
     try {
-      return JSON.parse(localStorage.getItem(CHAT_KEY) || '[]');
+      return JSON.parse(localStorage.getItem(threadKey(clientEmail)) || '[]');
     } catch {
       return [];
     }
   }
 
-  function setAdminChat(messages) {
-    localStorage.setItem(CHAT_KEY, JSON.stringify(messages));
+  function setThread(clientEmail, messages) {
+    localStorage.setItem(threadKey(clientEmail), JSON.stringify(messages));
   }
 
-  function getDemoClientName() {
-    const names = [
-      'Kwame A.',
-      'Sarah M.',
-      'Ibrahim K.',
-      'Fatima S.',
-      'Bright M.',
-      'Nana Akosua',
-      'Esi Agyeman',
-    ];
-    return names[Math.floor(Math.random() * names.length)];
+  function getUsers() {
+    try {
+      return JSON.parse(localStorage.getItem('asan_users') || '[]');
+    } catch {
+      return [];
+    }
   }
 
-  function ensureSeedMessages() {
-    const msgs = getAdminChat();
+  function getClients() {
+    return getUsers().filter((u) => u && u.role !== 'admin' && u.email);
+  }
+
+  async function pushMessage(clientEmail, sender, text) {
+    const key = await getThreadKey(clientEmail);
+    const payload = await window.securityUtils.encryptText(key, text);
+    const msgs = getThread(clientEmail);
+    msgs.push({ id: Date.now() + Math.random(), sender, ts: new Date().toISOString(), ...payload });
+    setThread(clientEmail, msgs);
+    return msgs;
+  }
+
+  async function ensureSeedMessage(clientEmail, clientName) {
+    const msgs = getThread(clientEmail);
     if (msgs.length > 0) return;
-
-    const client1 = getDemoClientName();
-    const client2 = getDemoClientName();
-
-    setAdminChat([
-      {
-        id: Date.now() - 100000,
-        sender: 'Client',
-        clientName: client1,
-        text: 'Hi admin, I just signed the client agreement. When can I submit my import request?',
-        ts: new Date(Date.now() - 100000).toISOString(),
-      },
-      {
-        id: Date.now() - 90000,
-        sender: 'Admin',
-        clientName: client1,
-        text: 'Thanks! Once you sign, you can submit your import request right away. If you already submitted, share your tracking number and we’ll help.',
-        ts: new Date(Date.now() - 90000).toISOString(),
-      },
-      {
-        id: Date.now() - 80000,
-        sender: 'Client',
-        clientName: client2,
-        text: 'Okay perfect. My tracking is ASAN-IMP-001-2024—can you confirm the status?',
-        ts: new Date(Date.now() - 80000).toISOString(),
-      },
-    ]);
+    await pushMessage(
+      clientEmail,
+      'Client',
+      `Hi admin, I just signed the client agreement. When can I submit my import request?`
+    );
+    await pushMessage(
+      clientEmail,
+      'Admin',
+      `Thanks ${clientName ? clientName.split(' ')[0] : ''}! Once you sign, you can submit your import request right away. If you already submitted, share your tracking number and we’ll help.`
+    );
   }
 
-  function renderMessages() {
+  let currentClientEmail = null;
+
+  function populateClientSelect() {
+    const select = document.getElementById('adminChatClientSelect');
+    if (!select) return;
+    const clients = getClients();
+
+    if (clients.length === 0) {
+      select.innerHTML = `<option value="">No registered clients yet</option>`;
+      currentClientEmail = null;
+      return;
+    }
+
+    const previous = currentClientEmail;
+    select.innerHTML = clients
+      .map((c) => `<option value="${window.securityUtils.escapeHtml(c.email)}">${window.securityUtils.escapeHtml(c.name || c.email)} — ${window.securityUtils.escapeHtml(c.email)}</option>`)
+      .join('');
+
+    const stillExists = previous && clients.some((c) => c.email === previous);
+    currentClientEmail = stillExists ? previous : clients[0].email;
+    select.value = currentClientEmail;
+  }
+
+  async function renderMessages() {
     const list = document.getElementById('adminChatMessages');
     if (!list) return;
-    const msgs = getAdminChat();
 
-    list.innerHTML = msgs
-      .slice(-50)
-      .map((m) => {
+    if (!currentClientEmail) {
+      list.innerHTML = `<p style="text-align:center; color:var(--ag-text-400); padding:24px 0;">Select a client to view your private conversation.</p>`;
+      return;
+    }
+
+    const key = await getThreadKey(currentClientEmail);
+    const msgs = getThread(currentClientEmail).slice(-50);
+
+    const rendered = await Promise.all(
+      msgs.map(async (m) => {
         const isAdmin = m.sender === 'Admin';
         const bubbleClass = isAdmin ? 'bot' : 'user';
-
-        // Identification like WhatsApp/Instagram: show name above each message.
-        const senderLabel = isAdmin
-          ? `Admin`
-          : (m.senderName ? `${m.senderName}` : (m.clientName ? `${m.clientName}` : 'Client'));
+        const text = await window.securityUtils.decryptText(key, m);
+        const senderLabel = isAdmin ? 'Admin' : (m.senderName || 'Client');
 
         return `
           <div class="chat-bubble ${bubbleClass}">
-            <div>${escapeHtml(senderLabel)}</div>
-            <div style="white-space:pre-wrap;">${escapeHtml(m.text)}</div>
+            <div>${window.securityUtils.escapeHtml(senderLabel)}</div>
+            <div style="white-space:pre-wrap;">${window.securityUtils.escapeHtml(text)}</div>
             <div style="font-size:11px;opacity:.65;margin-top:8px;">
+              <i class="fas fa-lock" title="Encrypted at rest" style="margin-right:4px;"></i>
               ${new Date(m.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </div>
           </div>
         `;
       })
-      .join('');
+    );
 
+    list.innerHTML = rendered.join('') || `<p style="text-align:center; color:var(--ag-text-400); padding:24px 0;">No messages yet in this private conversation.</p>`;
     list.scrollTop = list.scrollHeight;
   }
 
-  function sendMessage() {
+  async function sendMessage() {
     const input = document.getElementById('adminChatInput');
-    const user = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
-    if (!input) return;
+    if (!input || !currentClientEmail) return;
 
     const text = input.value.trim();
     if (!text) return;
 
-    const msgs = getAdminChat();
-    msgs.push({
-      id: Date.now(),
-      sender: 'Admin',
-      text,
-      ts: new Date().toISOString(),
-    });
-    setAdminChat(msgs);
+    await pushMessage(currentClientEmail, 'Admin', text);
     input.value = '';
     renderMessages();
   }
 
-  // Optional: simulate a client message so admin can see “receive” behavior.
+  // Optional: simulate the currently-open client occasionally replying, so
+  // the demo shows two-way traffic. Always scoped to the single open 1:1
+  // thread — never mixed with any other client.
   function startAutoClientReplies() {
     const adminExists = () => {
       const u = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
@@ -133,50 +163,69 @@
       'Please confirm my vehicle import status.',
     ];
 
-    // Reply after admin sends, with small probability.
-    let lastCount = getAdminChat().length;
-    setInterval(() => {
-      if (!adminExists()) return;
-      const msgs = getAdminChat();
-      if (msgs.length === lastCount) return;
+    let lastCount = 0;
 
+    setInterval(async () => {
+      if (!adminExists() || !currentClientEmail) return;
+      const msgs = getThread(currentClientEmail);
+      if (msgs.length === lastCount) return;
       lastCount = msgs.length;
 
-      // 45% chance to add a client message for demo realism
+      const last = msgs[msgs.length - 1];
+      if (last.sender !== 'Admin') return;
+
       if (Math.random() < 0.45) {
         const text = canned[Math.floor(Math.random() * canned.length)];
-        const next = getAdminChat();
-        next.push({
-          id: Date.now() + Math.random(),
-          sender: 'Client',
-          clientName: getDemoClientName(),
-          text,
-          ts: new Date().toISOString(),
-        });
-        setAdminChat(next);
+        await pushMessage(currentClientEmail, 'Client', text);
+        lastCount = getThread(currentClientEmail).length;
         renderMessages();
       }
     }, 1200);
   }
 
+  function migrateAwayFromLegacyGroupChat() {
+    // The old implementation stored every client's messages in one shared
+    // key, visible to whichever "client" happened to be picked at render
+    // time. That was never a real 1:1 conversation — remove it so it can't
+    // be confused with the new per-client threads.
+    if (localStorage.getItem(LEGACY_CHAT_KEY) !== null) {
+      localStorage.removeItem(LEGACY_CHAT_KEY);
+    }
+  }
+
   window.AdminChat = {
-    init() {
-      ensureSeedMessages();
-      renderMessages();
+    async init() {
+      migrateAwayFromLegacyGroupChat();
+      populateClientSelect();
+
+      if (currentClientEmail) {
+        const client = getClients().find((c) => c.email === currentClientEmail);
+        await ensureSeedMessage(currentClientEmail, client?.name);
+      }
+
+      await renderMessages();
       startAutoClientReplies();
 
       const sendBtn = document.getElementById('adminChatSendBtn');
       const form = document.getElementById('adminChatForm');
+      const select = document.getElementById('adminChatClientSelect');
 
       if (sendBtn) sendBtn.addEventListener('click', sendMessage);
-      if (form)
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          sendMessage();
+      if (form) form.addEventListener('submit', (e) => { e.preventDefault(); sendMessage(); });
+      if (select) {
+        select.addEventListener('change', async () => {
+          currentClientEmail = select.value || null;
+          if (currentClientEmail) {
+            const client = getClients().find((c) => c.email === currentClientEmail);
+            await ensureSeedMessage(currentClientEmail, client?.name);
+          }
+          renderMessages();
         });
+      }
 
       window.addEventListener('storage', (e) => {
-        if (e.key === CHAT_KEY) renderMessages();
+        if (currentClientEmail && e.key === threadKey(currentClientEmail)) renderMessages();
+        if (e.key === 'asan_users') populateClientSelect();
       });
 
       // Poll occasionally to keep in-sync even without storage events.
@@ -184,4 +233,3 @@
     },
   };
 })();
-

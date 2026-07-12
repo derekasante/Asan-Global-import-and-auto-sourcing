@@ -1,0 +1,832 @@
+/* ==========================================================================
+   Asan Global Shipping — Global Design System
+   One source of truth for color, type, spacing, components & motion.
+   Loaded on every page. Do not duplicate these rules locally.
+   ========================================================================== */
+
+:root {
+  /* Brand palette — premium international-logistics navy + confident blue */
+  --ag-navy-950: #071224;
+  --ag-navy-900: #0a1728;
+  --ag-navy-800: #0f2440;
+  --ag-navy-700: #16345c;
+  --ag-navy-600: #1e4a82;
+  --ag-blue-600: #2563eb;
+  --ag-blue-500: #3b82f6;
+  --ag-blue-100: #dbeafe;
+  --ag-gold-400: #ffd54f;
+
+  --ag-sidebar-gradient: linear-gradient(180deg, var(--ag-navy-900) 0%, var(--ag-navy-700) 100%);
+  --ag-page-gradient: linear-gradient(135deg, #eef4ff 0%, #f9fbff 100%);
+
+  /* Surfaces & text */
+  --ag-surface: #ffffff;
+  --ag-surface-muted: #f5f8fc;
+  --ag-surface-2: #f8fbff;
+  --ag-border: #e2e8f0;
+  --ag-text-900: #0f172a;
+  --ag-text-600: #475569;
+  --ag-text-400: #94a3b8;
+  --ag-on-dark: rgba(255, 255, 255, 0.92);
+  --ag-on-dark-muted: rgba(255, 255, 255, 0.62);
+
+  /* Semantic status colors */
+  --ag-success: #16a34a;
+  --ag-success-bg: #dcfce7;
+  --ag-warning: #b45309;
+  --ag-warning-bg: #fef3c7;
+  --ag-danger: #dc2626;
+  --ag-danger-bg: #fee2e2;
+  --ag-info: #1d4ed8;
+  --ag-info-bg: #dbeafe;
+
+  /* Type */
+  --ag-font: 'Poppins', 'Segoe UI', sans-serif;
+
+  /* Spacing scale */
+  --ag-space-1: 4px;
+  --ag-space-2: 8px;
+  --ag-space-3: 12px;
+  --ag-space-4: 16px;
+  --ag-space-5: 20px;
+  --ag-space-6: 24px;
+  --ag-space-8: 32px;
+  --ag-space-10: 40px;
+
+  /* Radius */
+  --ag-radius-sm: 8px;
+  --ag-radius-md: 14px;
+  --ag-radius-lg: 22px;
+  --ag-radius-pill: 999px;
+
+  /* Shadow */
+  --ag-shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.06);
+  --ag-shadow-md: 0 14px 40px rgba(15, 23, 42, 0.10);
+  --ag-shadow-lg: 0 24px 60px rgba(10, 23, 40, 0.18);
+  --ag-shadow-sidebar: 12px 0 35px rgba(10, 23, 40, 0.22);
+
+  /* Motion */
+  --ag-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ag-transition-fast: 0.18s var(--ag-ease);
+  --ag-transition: 0.28s var(--ag-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------- Focus -- */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--ag-blue-500);
+  outline-offset: 2px;
+  border-radius: var(--ag-radius-sm);
+}
+
+/* -------------------------------------------------------- Global sidebar -- */
+/* Canonical sidebar shell, shared by every dashboard-family page. Markup is
+   injected by sidebar.js so structure/styling can never drift per page. */
+.ag-app-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--ag-page-gradient);
+  font-family: var(--ag-font);
+}
+
+.ag-sidebar {
+  width: 280px;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--ag-sidebar-gradient);
+  color: var(--ag-on-dark);
+  padding: 28px 20px;
+  box-shadow: var(--ag-shadow-sidebar);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--ag-transition);
+}
+
+.ag-sidebar .ag-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.ag-sidebar .ag-logo i {
+  font-size: 28px;
+  color: var(--ag-gold-400);
+}
+
+.ag-sidebar .ag-logo h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ag-sidebar .ag-logo span {
+  font-size: 12px;
+  color: var(--ag-on-dark-muted);
+  display: block;
+}
+
+.ag-sidebar nav {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.ag-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ag-sidebar li {
+  margin: 4px 0;
+}
+
+.ag-sidebar a {
+  color: var(--ag-on-dark-muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--ag-radius-sm);
+  transition: background var(--ag-transition-fast), color var(--ag-transition-fast), transform var(--ag-transition-fast);
+  font-size: 14.5px;
+}
+
+.ag-sidebar a i {
+  width: 18px;
+  text-align: center;
+  color: var(--ag-blue-500);
+}
+
+.ag-sidebar a:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: #fff;
+  transform: translateX(3px);
+}
+
+.ag-sidebar a.active {
+  background: rgba(59, 130, 246, 0.22);
+  color: #fff;
+}
+
+.ag-sidebar a.active i {
+  color: var(--ag-gold-400);
+}
+
+.ag-sidebar-footer {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 12.5px;
+  color: var(--ag-on-dark-muted);
+}
+
+.ag-sidebar-footer strong {
+  display: block;
+  color: #fff;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.ag-sidebar-backdrop {
+  display: none;
+}
+
+.ag-main {
+  margin-left: 280px;
+  min-height: 100vh;
+  width: calc(100% - 280px);
+  flex: 1;
+}
+
+.ag-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--ag-text-900);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+@media (max-width: 960px) {
+  .ag-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .ag-sidebar.ag-open {
+    transform: translateX(0);
+  }
+
+  .ag-main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .ag-hamburger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ag-sidebar-backdrop.ag-open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 18, 36, 0.5);
+    z-index: 999;
+  }
+}
+
+/* ----------------------------------------------------------------- Card -- */
+.ag-card {
+  background: linear-gradient(135deg, var(--ag-surface) 0%, var(--ag-surface-2) 100%);
+  border: 1px solid var(--ag-border);
+  border-radius: var(--ag-radius-lg);
+  box-shadow: var(--ag-shadow-md);
+  padding: var(--ag-space-6);
+  transition: transform var(--ag-transition), box-shadow var(--ag-transition);
+}
+
+.ag-card--interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ag-shadow-lg);
+}
+
+/* --------------------------------------------------------------- Button -- */
+.ag-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--ag-font);
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 12px 22px;
+  border-radius: var(--ag-radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: transform var(--ag-transition-fast), box-shadow var(--ag-transition-fast), background var(--ag-transition-fast), opacity var(--ag-transition-fast);
+  text-decoration: none;
+}
+
+.ag-btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.ag-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ag-btn-primary {
+  background: linear-gradient(135deg, var(--ag-blue-600) 0%, var(--ag-navy-700) 100%);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.28);
+}
+
+.ag-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.36);
+}
+
+.ag-btn-secondary {
+  background: var(--ag-surface);
+  color: var(--ag-navy-800);
+  border: 1.5px solid var(--ag-border);
+}
+
+.ag-btn-secondary:hover {
+  border-color: var(--ag-blue-500);
+  color: var(--ag-blue-600);
+}
+
+.ag-btn-ghost {
+  background: transparent;
+  color: var(--ag-blue-600);
+  padding: 10px 16px;
+}
+
+.ag-btn-ghost:hover {
+  background: var(--ag-blue-100);
+}
+
+.ag-btn-danger {
+  background: var(--ag-danger);
+  color: #fff;
+}
+
+/* ---------------------------------------------------------------- Badge -- */
+.ag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: var(--ag-radius-pill);
+  padding: 6px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ag-badge-success { background: var(--ag-success-bg); color: var(--ag-success); }
+.ag-badge-warning { background: var(--ag-warning-bg); color: var(--ag-warning); }
+.ag-badge-danger  { background: var(--ag-danger-bg);  color: var(--ag-danger); }
+.ag-badge-info    { background: var(--ag-info-bg);    color: var(--ag-info); }
+.ag-badge-neutral { background: var(--ag-surface-muted); color: var(--ag-text-600); }
+
+/* ----------------------------------------------------------------- Form -- */
+.ag-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--ag-space-4);
+}
+
+.ag-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ag-text-600);
+}
+
+.ag-input,
+.ag-select,
+.ag-textarea {
+  font-family: var(--ag-font);
+  font-size: 14.5px;
+  padding: 12px 14px;
+  border-radius: var(--ag-radius-sm);
+  border: 1.5px solid var(--ag-border);
+  background: var(--ag-surface);
+  color: var(--ag-text-900);
+  transition: border-color var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+}
+
+.ag-input:focus,
+.ag-select:focus,
+.ag-textarea:focus {
+  border-color: var(--ag-blue-500);
+  box-shadow: 0 0 0 4px var(--ag-blue-100);
+  outline: none;
+}
+
+.ag-input::placeholder,
+.ag-textarea::placeholder {
+  color: var(--ag-text-400);
+}
+
+/* ---------------------------------------------------------------- Table -- */
+.ag-table-wrap {
+  overflow-x: auto;
+  border-radius: var(--ag-radius-md);
+  border: 1px solid var(--ag-border);
+}
+
+.ag-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.ag-table th {
+  text-align: left;
+  padding: 14px 16px;
+  background: var(--ag-surface-muted);
+  color: var(--ag-text-600);
+  font-weight: 600;
+  font-size: 12.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ag-table td {
+  padding: 14px 16px;
+  border-top: 1px solid var(--ag-border);
+  color: var(--ag-text-900);
+}
+
+.ag-table tbody tr {
+  transition: background var(--ag-transition-fast);
+}
+
+.ag-table tbody tr:hover {
+  background: var(--ag-surface-muted);
+}
+
+/* ---------------------------------------------------------------- Alert -- */
+.ag-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--ag-radius-md);
+  font-size: 14px;
+  border: 1px solid transparent;
+}
+
+.ag-alert-success { background: var(--ag-success-bg); color: var(--ag-success); border-color: rgba(22,163,74,0.25); }
+.ag-alert-warning { background: var(--ag-warning-bg); color: var(--ag-warning); border-color: rgba(180,83,9,0.25); }
+.ag-alert-danger  { background: var(--ag-danger-bg);  color: var(--ag-danger);  border-color: rgba(220,38,38,0.25); }
+.ag-alert-info    { background: var(--ag-info-bg);    color: var(--ag-info);    border-color: rgba(29,78,216,0.25); }
+
+/* ---------------------------------------------------------------- Modal -- */
+.ag-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 18, 36, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ag-transition);
+}
+
+.ag-modal-backdrop.ag-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ag-modal {
+  background: var(--ag-surface);
+  border-radius: var(--ag-radius-lg);
+  box-shadow: var(--ag-shadow-lg);
+  padding: var(--ag-space-8);
+  width: min(480px, 92vw);
+  transform: translateY(16px) scale(0.98);
+  transition: transform var(--ag-transition);
+}
+
+.ag-modal-backdrop.ag-open .ag-modal {
+  transform: translateY(0) scale(1);
+}
+
+/* -------------------------------------------------------------- Tooltip -- */
+.ag-tooltip {
+  position: relative;
+}
+
+.ag-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--ag-navy-900);
+  color: #fff;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: var(--ag-radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ag-transition-fast), transform var(--ag-transition-fast);
+}
+
+.ag-tooltip:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ------------------------------------------------------------ Pagination -- */
+.ag-pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ag-pagination button {
+  min-width: 36px;
+  height: 36px;
+  border-radius: var(--ag-radius-sm);
+  border: 1px solid var(--ag-border);
+  background: var(--ag-surface);
+  color: var(--ag-text-600);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all var(--ag-transition-fast);
+}
+
+.ag-pagination button.ag-active,
+.ag-pagination button:hover {
+  background: var(--ag-blue-600);
+  color: #fff;
+  border-color: var(--ag-blue-600);
+}
+
+/* ------------------------------------------------------------ Skeletons -- */
+.ag-skeleton {
+  background: linear-gradient(90deg, var(--ag-surface-muted) 25%, #eef2f8 37%, var(--ag-surface-muted) 63%);
+  background-size: 400% 100%;
+  animation: ag-shimmer 1.4s ease infinite;
+  border-radius: var(--ag-radius-sm);
+}
+
+@keyframes ag-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* -------------------------------------------------------------- Empty state */
+.ag-empty {
+  text-align: center;
+  padding: var(--ag-space-10) var(--ag-space-6);
+  color: var(--ag-text-400);
+}
+
+.ag-empty i {
+  font-size: 42px;
+  margin-bottom: 14px;
+  display: block;
+  color: var(--ag-blue-500);
+  opacity: 0.55;
+}
+
+/* -------------------------------------------------------- Toast messages -- */
+.ag-toast-region {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 3000;
+}
+
+.ag-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ag-navy-900);
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: var(--ag-radius-md);
+  box-shadow: var(--ag-shadow-lg);
+  font-size: 14px;
+  min-width: 260px;
+  transform: translateY(12px);
+  opacity: 0;
+  animation: ag-toast-in 0.3s var(--ag-ease) forwards;
+}
+
+.ag-toast-success { border-left: 4px solid var(--ag-success); }
+.ag-toast-error { border-left: 4px solid var(--ag-danger); }
+.ag-toast-info { border-left: 4px solid var(--ag-blue-500); }
+
+@keyframes ag-toast-in {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* -------------------------------------------------------------- Motion --- */
+.ag-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ag-ease), transform 0.6s var(--ag-ease);
+}
+
+.ag-reveal.ag-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------- Notifications -- */
+/* Canonical notification panel, shared by dashboard/tracking/import pages. */
+.notification-panel {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: min(380px, calc(100vw - 24px));
+  max-height: 500px;
+  background: var(--ag-surface);
+  border-radius: var(--ag-radius-lg);
+  box-shadow: var(--ag-shadow-lg);
+  z-index: 3000;
+  display: none;
+  overflow: hidden;
+  animation: ag-toast-in 0.3s var(--ag-ease);
+}
+
+.notification-panel.active { display: block; }
+
+.notification-panel-header {
+  padding: 22px 24px;
+  background: linear-gradient(135deg, var(--ag-navy-900) 0%, var(--ag-blue-600) 100%);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.notification-panel-header h3 { font-size: 17px; font-weight: 600; margin: 0; }
+
+.notification-panel-header .notif-count {
+  background: rgba(255,255,255,0.2);
+  padding: 4px 12px;
+  border-radius: var(--ag-radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.notification-panel-header .close-notif {
+  cursor: pointer;
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  transition: transform var(--ag-transition-fast), background var(--ag-transition-fast);
+}
+
+.notification-panel-header .close-notif:hover {
+  background: rgba(255,255,255,0.25);
+  transform: rotate(90deg);
+}
+
+.notification-panel-actions {
+  padding: 12px 20px;
+  background: var(--ag-surface-muted);
+  border-bottom: 1px solid var(--ag-border);
+  display: flex;
+  gap: 10px;
+}
+
+.notification-panel-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: var(--ag-radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--ag-transition-fast);
+  font-family: var(--ag-font);
+}
+
+.notification-panel-actions .mark-all-read { background: var(--ag-blue-600); color: #fff; }
+.notification-panel-actions .mark-all-read:hover { background: var(--ag-navy-700); }
+.notification-panel-actions .clear-all { background: #eef1f5; color: var(--ag-text-600); }
+.notification-panel-actions .clear-all:hover { background: #e2e8f0; }
+
+.notification-list {
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--ag-border);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: background var(--ag-transition-fast), transform var(--ag-transition-fast);
+  position: relative;
+}
+
+.notification-item:hover { background: var(--ag-surface-muted); transform: translateX(3px); }
+
+.notification-item.unread {
+  background: var(--ag-blue-100);
+  border-left: 4px solid var(--ag-blue-600);
+}
+
+.notification-item .notif-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--ag-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+  box-shadow: var(--ag-shadow-sm);
+}
+
+.notification-item .notif-icon.info,
+.notification-item .notif-icon.shipping { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); }
+.notification-item .notif-icon.success { background: linear-gradient(135deg, #16a34a, #15803d); }
+.notification-item .notif-icon.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.notification-item .notif-icon.payment { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+
+.notification-item .notif-content { flex: 1; min-width: 0; }
+.notification-item .notif-content h5 { font-size: 14.5px; color: var(--ag-navy-900); margin: 0 0 5px; font-weight: 600; }
+.notification-item .notif-content p { font-size: 13px; color: var(--ag-text-600); margin: 0 0 7px; line-height: 1.4; }
+.notification-item .notif-content .notif-meta { font-size: 11px; color: var(--ag-text-400); }
+
+.notification-item .unread-dot {
+  width: 9px;
+  height: 9px;
+  background: var(--ag-blue-600);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* -------------------------------------------------------------- Branding -- */
+/* All shipping / logistics glyphs share one brand blue unless status color
+   applies (success/warning/danger). */
+.ag-icon-brand {
+  color: var(--ag-blue-600);
+}
+
+/* --------------------------------------------------------------- Print --- */
+@media print {
+  .ag-sidebar,
+  .ag-hamburger,
+  .ag-sidebar-backdrop,
+  .ag-no-print,
+  #aiAssistant,
+  .notification-panel {
+    display: none !important;
+  }
+
+  .ag-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  .ag-document {
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+.ag-document {
+  max-width: 850px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 48px;
+  box-shadow: var(--ag-shadow-md);
+  border-radius: var(--ag-radius-md);
+}
+
+.ag-document-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 28px;
+  border-bottom: 3px solid var(--ag-navy-800);
+}
+
+.ag-document-header .ag-logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ag-document-header .ag-logo-mark i {
+  font-size: 30px;
+  color: var(--ag-blue-600);
+}
+
+.ag-document-header .ag-logo-mark h2 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--ag-navy-900);
+}
+
+.ag-document-header .ag-logo-mark span {
+  font-size: 12px;
+  color: var(--ag-text-600);
+}
+
+.ag-document-meta {
+  text-align: right;
+  font-size: 12.5px;
+  color: var(--ag-text-600);
+}
+
+.ag-document-footer {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ag-border);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--ag-text-400);
+}

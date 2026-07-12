@@ -1,797 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asan Global | Payment Center</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="dashboard-shell.css">
-    <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-display:flex;
-background:#0a1929;
-min-height:100vh;
-}
-
-/* Sidebar */
-
-.sidebar{
-width:280px;
-height:100vh;
-background:linear-gradient(180deg, #1a365d 0%, #2d4a6f 100%);
-color:white;
-position:fixed;
-padding:0;
-box-shadow:4px 0 20px rgba(0,0,0,0.1);
-z-index:1000;
-display:flex;
-flex-direction:column;
-overflow:auto;
-}
-
-.sidebar .logo{
-padding:30px 25px;
-margin-bottom:10px;
-display:flex;
-align-items:center;
-gap:15px;
-border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-.sidebar .logo i{
-font-size:32px;
-color:#ffd54f;
-}
-
-.sidebar .logo h2{
-font-size:20px;
-font-weight:700;
-margin:0;
-letter-spacing:1px;
-}
-
-.sidebar .logo span{
-font-size:12px;
-color:rgba(255,255,255,0.7);
-font-weight:400;
-}
-
-.sidebar nav{
-flex:1;
-padding:20px 15px;
-}
-
-.sidebar nav ul{
-list-style:none;
-padding:0;
-margin:0;
-}
-
-.sidebar nav ul li{
-margin-bottom:5px;
-}
-
-.sidebar nav ul li a{
-color:rgba(255,255,255,0.85);
-text-decoration:none;
-display:flex;
-align-items:center;
-gap:15px;
-padding:14px 18px;
-border-radius:12px;
-transition:.35s;
-font-size:14px;
-font-weight:500;
-}
-
-.sidebar nav ul li a:hover{
-background:rgba(255,255,255,.12);
-transform:translateX(5px);
-color:#fff;
-}
-
-.sidebar nav ul li.active a{
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-color:#fff;
-font-weight:600;
-box-shadow:0 4px 15px rgba(102,126,234,0.4);
-}
-
-.sidebar nav ul li a i{
-font-size:16px;
-width:20px;
-text-align:center;
-}
-
-.sidebar-footer{
-padding:25px;
-border-top:1px solid rgba(255,255,255,0.1);
-background:rgba(0,0,0,0.1);
-}
-
-.sidebar-footer strong{
-font-size:14px;
-color:#ffd54f;
-display:block;
-margin-bottom:5px;
-}
-
-.sidebar-footer p{
-font-size:12px;
-color:rgba(255,255,255,0.6);
-line-height:1.5;
-margin:0;
-}
-
-/* Main */
-
-.main{
-margin-left:280px;
-width:calc(100% - 280px);
-}
-
-/* Header */
-
-.topbar{
-background:linear-gradient(180deg, #1a365d 0%, #0a1929 100%);
-padding:20px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 15px rgba(0,0,0,0.3);
-position:sticky;
-top:0;
-z-index:100;
-border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-.topbar h1{
-font-size:24px;
-color:#fff;
-font-weight:600;
-}
-
-.topbar .user-info{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.topbar .user-avatar{
-width:45px;
-height:45px;
-border-radius:50%;
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-weight:600;
-font-size:18px;
-}
-
-/* Content */
-
-.content{
-padding:40px;
-background:#0a1929;
-}
-
-/* Stats Cards */
-
-.stats-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-margin-bottom:40px;
-}
-
-.stat-card{
-background:rgba(26,54,93,0.5);
-padding:30px;
-border-radius:20px;
-box-shadow:0 5px 25px rgba(0,0,0,0.3);
-transition:.3s;
-border:1px solid rgba(102,126,234,0.3);
-}
-
-.stat-card:hover{
-transform:translateY(-5px);
-box-shadow:0 10px 35px rgba(0,0,0,0.12);
-}
-
-.stat-card .icon{
-width:60px;
-height:60px;
-border-radius:16px;
-display:flex;
-align-items:center;
-justify-content:center;
-margin-bottom:20px;
-}
-
-.stat-card .icon i{
-font-size:28px;
-color:white;
-}
-
-.stat-card.blue .icon{
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.stat-card.green .icon{
-background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-}
-
-.stat-card.orange .icon{
-background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-
-.stat-card.purple .icon{
-background:linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-
-.stat-card h3{
-font-size:36px;
-color:#fff;
-font-weight:700;
-margin-bottom:8px;
-}
-
-.stat-card p{
-color:rgba(255,255,255,0.7);
-font-size:15px;
-}
-
-/* Payment Methods */
-
-.payment-methods{
-background:rgba(26,54,93,0.5);
-padding:40px;
-border-radius:24px;
-box-shadow:0 5px 25px rgba(0,0,0,0.3);
-margin-bottom:40px;
-border:1px solid rgba(102,126,234,0.3);
-}
-
-.payment-methods h2{
-font-size:24px;
-color:#fff;
-margin-bottom:30px;
-font-weight:600;
-}
-
-.payment-logos{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
-}
-
-.payment-logo{
-background:rgba(102,126,234,0.1);
-padding:30px 20px;
-border-radius:16px;
-text-align:center;
-transition:.3s;
-border:2px solid rgba(102,126,234,0.3);
-cursor:pointer;
-}
-
-.payment-logo:hover{
-border-color:#667eea;
-transform:translateY(-5px);
-box-shadow:0 10px 30px rgba(102,126,234,0.4);
-background:rgba(102,126,234,0.2);
-}
-
-.payment-logo img{
-height:40px;
-margin-bottom:15px;
-}
-
-.payment-logo h4{
-font-size:16px;
-color:#fff;
-font-weight:600;
-margin-bottom:5px;
-}
-
-.payment-logo p{
-font-size:12px;
-color:rgba(255,255,255,0.6);
-}
-
-/* Payment Form */
-
-.payment-form-section{
-background:rgba(26,54,93,0.5);
-padding:40px;
-border-radius:24px;
-box-shadow:0 5px 25px rgba(0,0,0,0.3);
-margin-bottom:40px;
-border:1px solid rgba(102,126,234,0.3);
-}
-
-.payment-form-section h2{
-font-size:24px;
-color:#fff;
-margin-bottom:30px;
-font-weight:600;
-}
-
-.form-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
-
-.form-group label{
-display:block;
-font-size:14px;
-color:rgba(255,255,255,0.9);
-font-weight:500;
-margin-bottom:10px;
-}
-
-.form-group input,
-.form-group select{
-width:100%;
-padding:14px 16px;
-border:2px solid rgba(102,126,234,0.3);
-border-radius:12px;
-font-size:15px;
-transition:.3s;
-background:rgba(10,25,41,0.5);
-color:#fff;
-}
-
-.form-group input:focus,
-.form-group select:focus{
-outline:none;
-border-color:#667eea;
-background:rgba(10,25,41,0.7);
-}
-
-.form-actions{
-margin-top:30px;
-display:flex;
-gap:15px;
-}
-
-.btn{
-padding:14px 32px;
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-color:white;
-border:none;
-border-radius:12px;
-font-size:15px;
-font-weight:600;
-cursor:pointer;
-transition:.3s;
-}
-
-.btn:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 25px rgba(102,126,234,0.4);
-}
-
-.btn.secondary{
-background:rgba(102,126,234,0.2);
-color:#fff;
-border:1px solid rgba(102,126,234,0.4);
-}
-
-.btn.secondary:hover{
-background:rgba(102,126,234,0.3);
-}
-
-/* Transactions Table */
-
-.transactions-section{
-background:rgba(26,54,93,0.5);
-padding:40px;
-border-radius:24px;
-box-shadow:0 5px 25px rgba(0,0,0,0.3);
-border:1px solid rgba(102,126,234,0.3);
-}
-
-.transactions-section h2{
-font-size:24px;
-color:#fff;
-margin-bottom:30px;
-font-weight:600;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th{
-background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-color:white;
-padding:18px 20px;
-font-weight:500;
-font-size:14px;
-text-transform:uppercase;
-letter-spacing:0.5px;
-}
-
-td{
-padding:20px;
-border-bottom:1px solid rgba(102,126,234,0.2);
-color:rgba(255,255,255,0.9);
-font-size:14px;
-}
-
-tr:hover td{
-background:rgba(102,126,234,0.1);
-}
-
-.status{
-padding:8px 20px;
-border-radius:25px;
-font-size:12px;
-font-weight:500;
-text-transform:uppercase;
-letter-spacing:0.5px;
-}
-
-.status.paid{
-background:linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-color:white;
-}
-
-.status.pending{
-background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-color:white;
-}
-
-.status.failed{
-background:linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-color:white;
-}
-
-/* Responsive */
-
-@media(max-width:900px){
-
-.sidebar{
-width:220px;
-}
-
-.main{
-margin-left:220px;
-width:calc(100% - 220px);
-}
-
-}
-
-@media(max-width:768px){
-
-.sidebar{
-display:none;
-}
-
-.main{
-margin-left:0;
-width:100%;
-}
-
-.content{
-padding:20px;
-}
-
-.payment-methods,
-.payment-form-section,
-.transactions-section{
-padding:25px;
-}
-
-}
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asan Global | Payment Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+.pay-topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(10px);
+  padding: 18px 28px; border-bottom: 1px solid var(--ag-border);
+  box-shadow: var(--ag-shadow-sm); position: sticky; top: 0; z-index: 900;
+}
+.pay-topbar .title-group { display: flex; align-items: center; gap: 14px; }
+.pay-topbar h1 { margin: 0; font-size: 22px; color: var(--ag-text-900); }
+.pay-topbar .eyebrow { color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 700; margin: 0 0 2px; }
+.pay-topbar-actions { display: flex; align-items: center; gap: 14px; }
+.ag-avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); color: #fff; font-weight: 700; font-size: 16px; }
+
+.pay-content { padding: 28px; max-width: 1400px; margin: 0 auto; }
+.pay-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; margin-bottom: 24px; }
+.pay-stat-icon { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: #fff; font-size: 18px; margin-bottom: 14px; }
+.pay-stat-icon.blue  { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); }
+.pay-stat-icon.green { background: linear-gradient(135deg, #16a34a, #15803d); }
+.pay-stat-icon.orange{ background: linear-gradient(135deg, #f59e0b, #d97706); }
+.pay-stat-icon.purple{ background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.pay-stat h2 { font-size: 28px; margin: 0 0 4px; color: var(--ag-text-900); }
+.pay-stat p  { margin: 0; color: var(--ag-text-600); font-size: 13.5px; }
+
+.pay-methods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-top: 4px; }
+.pay-method-card {
+  border: 1.5px solid var(--ag-border); border-radius: var(--ag-radius-md);
+  padding: 22px 16px; text-align: center; cursor: pointer;
+  transition: border-color var(--ag-transition), transform var(--ag-transition), box-shadow var(--ag-transition);
+  background: var(--ag-surface);
+}
+.pay-method-card:hover { border-color: var(--ag-blue-500); transform: translateY(-3px); box-shadow: var(--ag-shadow-md); }
+.pay-method-card i { font-size: 36px; margin-bottom: 10px; display: block; }
+.pay-method-card h4 { font-size: 14px; font-weight: 600; color: var(--ag-text-900); margin: 0 0 4px; }
+.pay-method-card p  { font-size: 12px; color: var(--ag-text-400); margin: 0; }
+
+.pay-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 20px; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.panel-head h4 { margin: 0; font-size: 16px; color: var(--ag-text-900); }
+.pay-form-actions { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+
+@media (max-width: 1100px) { .pay-grid-4 { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 640px)  { .pay-grid-4 { grid-template-columns: 1fr; } .pay-content { padding: 16px; } .pay-form-grid { grid-template-columns: 1fr; } }
+</style>
 </head>
+<body data-ag-page="payment">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
 
-<body>
-
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fas fa-car"></i>
-            <div>
-                <h2>Asan Global</h2>
-                <span>Vehicle Import Services</span>
-            </div>
+  <main class="ag-main">
+    <header class="pay-topbar">
+      <div class="title-group">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Transactions & billing</p>
+          <h1>Payment Center</h1>
         </div>
-        <nav>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
-                <li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
-                <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
-                <li class="active"><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
-                <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
-                <li><a href="price.html"><i class="fas fa-tag"></i> Pricing</a></li>
-                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
-                <li><a href="login.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </nav>
-        <div class="sidebar-footer">
-            <strong>24/7 Support</strong>
-            <p>Live tracking and dedicated support for your imports.</p>
+      </div>
+      <div class="pay-topbar-actions">
+        <div class="ag-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <div class="pay-content">
+      <!-- KPI Cards -->
+      <section class="pay-grid-4 ag-reveal">
+        <article class="ag-card ag-card--interactive pay-stat">
+          <div class="pay-stat-icon blue"><i class="fas fa-money-bill-wave"></i></div>
+          <h2 id="totalPayments">$0</h2>
+          <p>Total Payments</p>
+        </article>
+        <article class="ag-card ag-card--interactive pay-stat">
+          <div class="pay-stat-icon orange"><i class="fas fa-clock"></i></div>
+          <h2 id="pendingPayments">$0</h2>
+          <p>Pending</p>
+        </article>
+        <article class="ag-card ag-card--interactive pay-stat">
+          <div class="pay-stat-icon green"><i class="fas fa-check-circle"></i></div>
+          <h2 id="completedPayments">$0</h2>
+          <p>Completed</p>
+        </article>
+        <article class="ag-card ag-card--interactive pay-stat">
+          <div class="pay-stat-icon purple"><i class="fas fa-file-invoice-dollar"></i></div>
+          <h2 id="totalTransactions">0</h2>
+          <p>Transactions</p>
+        </article>
+      </section>
+
+      <!-- Payment Methods -->
+      <section class="ag-card ag-reveal" style="margin-bottom:24px;">
+        <div class="panel-head">
+          <h4>Accepted Payment Methods</h4>
         </div>
-    </aside>
-
-    <main class="main">
-        <div class="topbar">
-            <h1>Payment Center</h1>
-            <div class="user-info">
-                <div class="user-avatar" id="userAvatar">U</div>
-            </div>
+        <div class="pay-methods-grid">
+          <div class="pay-method-card">
+            <i class="fab fa-cc-visa" style="color:#1a1f71;"></i>
+            <h4>Visa</h4><p>Credit &amp; Debit</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fab fa-cc-mastercard" style="color:#eb001b;"></i>
+            <h4>Mastercard</h4><p>Credit &amp; Debit</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fab fa-paypal" style="color:#00457c;"></i>
+            <h4>PayPal</h4><p>Secure Online</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fab fa-stripe" style="color:#635bff;"></i>
+            <h4>Stripe</h4><p>Global Payments</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fas fa-mobile-alt ag-icon-brand"></i>
+            <h4>Mobile Money</h4><p>MTN / Vodafone</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fas fa-university ag-icon-brand"></i>
+            <h4>Bank Transfer</h4><p>Direct Transfer</p>
+          </div>
         </div>
+      </section>
 
-        <div class="content">
-            <div class="stats-grid">
-                <div class="stat-card blue">
-                    <div class="icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3 id="totalPayments">$0</h3>
-                    <p>Total Payments</p>
-                </div>
-                <div class="stat-card orange">
-                    <div class="icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3 id="pendingPayments">$0</h3>
-                    <p>Pending</p>
-                </div>
-                <div class="stat-card green">
-                    <div class="icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3 id="completedPayments">$0</h3>
-                    <p>Completed</p>
-                </div>
-                <div class="stat-card purple">
-                    <div class="icon">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                    </div>
-                    <h3 id="totalTransactions">0</h3>
-                    <p>Transactions</p>
-                </div>
-            </div>
-
-            <div class="payment-methods">
-                <h2>Accepted Payment Methods</h2>
-                <div class="payment-logos">
-                    <div class="payment-logo">
-                        <i class="fab fa-cc-visa" style="font-size:48px;color:#1a1f71;"></i>
-                        <h4>Visa</h4>
-                        <p>Credit & Debit</p>
-                    </div>
-                    <div class="payment-logo">
-                        <i class="fab fa-cc-mastercard" style="font-size:48px;color:#eb001b;"></i>
-                        <h4>Mastercard</h4>
-                        <p>Credit & Debit</p>
-                    </div>
-                    <div class="payment-logo">
-                        <i class="fab fa-paypal" style="font-size:48px;color:#00457c;"></i>
-                        <h4>PayPal</h4>
-                        <p>Secure Online</p>
-                    </div>
-                    <div class="payment-logo">
-                        <i class="fab fa-stripe" style="font-size:48px;color:#635bff;"></i>
-                        <h4>Stripe</h4>
-                        <p>Global Payments</p>
-                    </div>
-                    <div class="payment-logo">
-                        <i class="fas fa-mobile-alt" style="font-size:48px;color:#25d366;"></i>
-                        <h4>Mobile Money</h4>
-                        <p>MTN / Vodafone</p>
-                    </div>
-                    <div class="payment-logo">
-                        <i class="fas fa-university" style="font-size:48px;color:#1a365d;"></i>
-                        <h4>Bank Transfer</h4>
-                        <p>Direct Transfer</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="payment-form-section">
-                <h2>Make a Payment</h2>
-                <form id="paymentForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Import Tracking Number</label>
-                            <select id="importSelect" required>
-                                <option value="">Select Import</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Payment Method</label>
-                            <select id="paymentMethod" required>
-                                <option value="Visa">Visa</option>
-                                <option value="Mastercard">Mastercard</option>
-                                <option value="PayPal">PayPal</option>
-                                <option value="Stripe">Stripe</option>
-                                <option value="Mobile Money">Mobile Money</option>
-                                <option value="Bank Transfer">Bank Transfer</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Amount ($)</label>
-                            <input type="number" id="amount" placeholder="Enter amount" min="1" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Payer Name</label>
-                            <input type="text" id="payerName" placeholder="Enter your name" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Reference</label>
-                            <input type="text" id="reference" placeholder="Payment reference" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Card Number / Account</label>
-                            <input type="text" id="cardNumber" placeholder="**** **** **** ****">
-                        </div>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn">Submit Payment</button>
-                        <button type="reset" class="btn secondary">Clear</button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="transactions-section">
-                <h2>Recent Transactions</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Tracking ID</th>
-                            <th>Method</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionsTable">
-                    </tbody>
-                </table>
-            </div>
+      <!-- Payment Form -->
+      <section class="ag-card ag-reveal" style="margin-bottom:24px;">
+        <div class="panel-head">
+          <h4>Make a Payment</h4>
         </div>
-    </main>
+        <form id="paymentForm">
+          <div class="pay-form-grid">
+            <div class="ag-field">
+              <label for="importSelect">Import Tracking Number</label>
+              <select id="importSelect" class="ag-select" required>
+                <option value="">Select Import</option>
+              </select>
+            </div>
+            <div class="ag-field">
+              <label for="paymentMethod">Payment Method</label>
+              <select id="paymentMethod" class="ag-select" required>
+                <option value="Visa">Visa</option>
+                <option value="Mastercard">Mastercard</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Stripe">Stripe</option>
+                <option value="Mobile Money">Mobile Money</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+              </select>
+            </div>
+            <div class="ag-field">
+              <label for="amount">Amount ($)</label>
+              <input type="number" id="amount" class="ag-input" placeholder="Enter amount" min="1" required>
+            </div>
+            <div class="ag-field">
+              <label for="payerName">Payer Name</label>
+              <input type="text" id="payerName" class="ag-input" placeholder="Enter your name" required>
+            </div>
+            <div class="ag-field">
+              <label for="reference">Reference</label>
+              <input type="text" id="reference" class="ag-input" placeholder="Payment reference" required>
+            </div>
+            <div class="ag-field">
+              <label for="cardNumber">Card Number / Account</label>
+              <input type="text" id="cardNumber" class="ag-input" placeholder="**** **** **** ****">
+            </div>
+          </div>
+          <div class="pay-form-actions">
+            <button type="submit" class="ag-btn ag-btn-primary"><i class="fas fa-paper-plane"></i> Submit Payment</button>
+            <button type="reset" class="ag-btn ag-btn-secondary"><i class="fas fa-times"></i> Clear</button>
+          </div>
+        </form>
+      </section>
 
-    <script>
-        // Check authentication
-        function checkAuth() {
-            const user = JSON.parse(localStorage.getItem('asan_current_user'));
-            if (!user) {
-                window.location.href = 'login.html';
-                return false;
-            }
-            return user;
-        }
+      <!-- Transactions Table -->
+      <section class="ag-card ag-reveal">
+        <div class="panel-head">
+          <h4>Recent Transactions</h4>
+          <span class="ag-badge ag-badge-info">Live</span>
+        </div>
+        <div class="ag-table-wrap">
+          <table class="ag-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Tracking ID</th>
+                <th>Method</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="transactionsTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
 
-        // Load payment data
-        function loadPaymentData() {
-            const user = checkAuth();
-            if (!user) return;
+    <footer style="text-align:center; padding: 20px; color: var(--ag-text-400); font-size: 12.5px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
 
-            // Update user avatar
-            document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+<script src="sidebar.js"></script>
+<script>
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('asan_current_user'));
+  if (!user) { window.location.href = 'login.html'; return false; }
+  return user;
+}
 
-            // Load finance data from admin panel
-            const finance = JSON.parse(localStorage.getItem('asan_finance') || '[]');
-            const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
-            
-            // Filter transactions for current user
-            const userFinance = user.role === 'admin' ? finance : finance.filter(f => f.customer === user.name);
-            const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
+function getStatusBadge(status) {
+  if (status === 'Paid') return 'ag-badge-success';
+  if (status === 'Pending') return 'ag-badge-warning';
+  return 'ag-badge-danger';
+}
 
-            // Calculate stats
-            const totalPayments = userFinance.reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
-            const pendingPayments = userFinance.filter(f => f.status === 'Pending').reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
-            const completedPayments = userFinance.filter(f => f.status === 'Paid').reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+function loadPaymentData() {
+  const user = checkAuth();
+  if (!user) return;
 
-            document.getElementById('totalPayments').textContent = '$' + totalPayments.toLocaleString();
-            document.getElementById('pendingPayments').textContent = '$' + pendingPayments.toLocaleString();
-            document.getElementById('completedPayments').textContent = '$' + completedPayments.toLocaleString();
-            document.getElementById('totalTransactions').textContent = userFinance.length;
+  document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
 
-            // Populate import select
-            const importSelect = document.getElementById('importSelect');
-            importSelect.innerHTML = '<option value="">Select Import</option>';
-            userImports.forEach(imp => {
-                const totalCost = parseFloat(imp.importFee) + parseFloat(imp.customsFee);
-                importSelect.innerHTML += `<option value="${imp.tracking}">${imp.tracking} - ${imp.make} ${imp.model} ($${totalCost})</option>`;
-            });
+  const finance = JSON.parse(localStorage.getItem('asan_finance') || '[]');
+  const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
 
-            // Populate transactions table
-            const table = document.getElementById('transactionsTable');
-            if (userFinance.length === 0) {
-                table.innerHTML = `
-                    <tr>
-                        <td colspan="5" style="text-align:center;padding:40px;color:#999;">
-                            <i class="fas fa-inbox" style="font-size:48px;margin-bottom:15px;display:block;"></i>
-                            No transactions yet
-                        </td>
-                    </tr>
-                `;
-            } else {
-                table.innerHTML = userFinance.slice(0, 10).map(f => {
-                    const statusClass = f.status === 'Paid' ? 'paid' : (f.status === 'Pending' ? 'pending' : 'failed');
-                    return `
-                        <tr>
-                            <td>${f.date || new Date().toLocaleDateString()}</td>
-                            <td>${f.tracking || 'N/A'}</td>
-                            <td>${f.method || 'N/A'}</td>
-                            <td>$${parseFloat(f.amount || 0).toLocaleString()}</td>
-                            <td><span class="status ${statusClass}">${f.status || 'Pending'}</span></td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-        }
+  const userFinance = user.role === 'admin' ? finance : finance.filter(f => f.customer === user.name);
+  const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
 
-        // Handle payment form submission
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const user = JSON.parse(localStorage.getItem('asan_current_user'));
-            const finance = JSON.parse(localStorage.getItem('asan_finance') || '[]');
-            
-            const newPayment = {
-                id: Date.now(),
-                tracking: document.getElementById('importSelect').value,
-                method: document.getElementById('paymentMethod').value,
-                amount: document.getElementById('amount').value,
-                payer: document.getElementById('payerName').value,
-                reference: document.getElementById('reference').value,
-                cardNumber: document.getElementById('cardNumber').value,
-                customer: user.name,
-                status: 'Pending',
-                date: new Date().toLocaleDateString()
-            };
-            
-            finance.push(newPayment);
-            localStorage.setItem('asan_finance', JSON.stringify(finance));
-            
-            alert('Payment submitted successfully!');
-            this.reset();
-            loadPaymentData();
-        });
+  const totalPayments    = userFinance.reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+  const pendingPayments  = userFinance.filter(f => f.status === 'Pending').reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+  const completedPayments= userFinance.filter(f => f.status === 'Paid').reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
 
-        // Logout function
-        function logout() {
-            localStorage.removeItem('asan_current_user');
-            window.location.href = 'login.html';
-        }
+  document.getElementById('totalPayments').textContent     = '$' + totalPayments.toLocaleString();
+  document.getElementById('pendingPayments').textContent   = '$' + pendingPayments.toLocaleString();
+  document.getElementById('completedPayments').textContent = '$' + completedPayments.toLocaleString();
+  document.getElementById('totalTransactions').textContent = userFinance.length;
 
-        // Listen for admin updates
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'asan_finance' || e.key === 'asan_imports') {
-                loadPaymentData();
-            }
-        });
+  const importSelect = document.getElementById('importSelect');
+  importSelect.innerHTML = '<option value="">Select Import</option>';
+  userImports.forEach(imp => {
+    const totalCost = parseFloat(imp.importFee || 0) + parseFloat(imp.customsFee || 0);
+    importSelect.innerHTML += `<option value="${imp.tracking}">${imp.tracking} - ${imp.make} ${imp.model} ($${totalCost})</option>`;
+  });
 
-        // Load data on page load
-        document.addEventListener('DOMContentLoaded', loadPaymentData);
+  const tbody = document.getElementById('transactionsTable');
+  if (userFinance.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="ag-empty"><i class="fas fa-inbox"></i>No transactions yet.</div></td></tr>`;
+  } else {
+    tbody.innerHTML = userFinance.slice(0, 10).map(f => {
+      const badgeClass = getStatusBadge(f.status);
+      return `<tr>
+        <td>${f.date || new Date().toLocaleDateString()}</td>
+        <td>${f.tracking || 'N/A'}</td>
+        <td>${f.method || 'N/A'}</td>
+        <td>$${parseFloat(f.amount || 0).toLocaleString()}</td>
+        <td><span class="ag-badge ${badgeClass}">${f.status || 'Pending'}</span></td>
+      </tr>`;
+    }).join('');
+  }
+}
 
-        // Refresh data every 30 seconds
-        setInterval(loadPaymentData, 30000);
-    </script>
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const user = JSON.parse(localStorage.getItem('asan_current_user'));
+  const finance = JSON.parse(localStorage.getItem('asan_finance') || '[]');
+  const newPayment = {
+    id: Date.now(),
+    tracking: document.getElementById('importSelect').value,
+    method:   document.getElementById('paymentMethod').value,
+    amount:   document.getElementById('amount').value,
+    payer:    document.getElementById('payerName').value,
+    reference:document.getElementById('reference').value,
+    cardNumber:document.getElementById('cardNumber').value,
+    customer: user.name,
+    status: 'Pending',
+    date: new Date().toLocaleDateString()
+  };
+  finance.push(newPayment);
+  localStorage.setItem('asan_finance', JSON.stringify(finance));
+  alert('Payment submitted successfully!');
+  this.reset();
+  loadPaymentData();
+});
+
+function logout() {
+  localStorage.removeItem('asan_current_user');
+  window.location.href = 'login.html';
+}
+
+window.addEventListener('storage', function(e) {
+  if (e.key === 'asan_finance' || e.key === 'asan_imports') loadPaymentData();
+});
+
+document.addEventListener('DOMContentLoaded', loadPaymentData);
+setInterval(loadPaymentData, 30000);
+</script>
 </body>
-
 </html>
