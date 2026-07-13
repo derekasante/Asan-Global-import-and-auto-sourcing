@@ -3,635 +3,869 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Asan Global | Logistics Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Asan Global | Dashboard</title>
+<meta name="description" content="Asan Global customer dashboard — track imports, view payments, manage your profile.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="design-system.css">
-<link rel="stylesheet" href="ai-assistant.css">
 <style>
-  .dash-topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    background: rgba(255,255,255,0.96);
-    backdrop-filter: blur(10px);
-    padding: 18px 28px;
-    border-bottom: 1px solid var(--ag-border);
-    box-shadow: var(--ag-shadow-sm);
-    position: sticky;
-    top: 0;
-    z-index: 900;
-  }
-  .dash-topbar .title-group { display: flex; align-items: center; gap: 14px; }
-  .dash-topbar h1 { margin: 0; font-size: 22px; color: var(--ag-text-900); }
-  .dash-topbar .eyebrow { color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 700; margin: 0 0 2px; }
-  .dash-topbar-actions { display: flex; align-items: center; gap: 14px; }
-  .dash-notif-btn { position: relative; border: none; background: var(--ag-surface-muted); color: var(--ag-blue-600); width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 16px; }
-  .dash-notif-dot { position: absolute; top: 8px; right: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--ag-danger); display: none; }
-  .dash-profile-chip { display: flex; align-items: center; gap: 10px; }
-  .dash-profile-chip .ag-avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); color: #fff; font-weight: 700; }
-  .dash-profile-chip small { display: block; color: var(--ag-text-400); }
+/* ============================================================
+   DASHBOARD — Premium Customer Workspace
+   ============================================================ */
+.dash-topbar {
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  background:#fff; padding:0 28px; border-bottom:1px solid var(--ag-border);
+  position:sticky; top:0; z-index:900; height:66px;
+  box-shadow:0 1px 3px rgba(15,23,42,.06);
+}
+.dash-topbar-left  { display:flex; align-items:center; gap:14px; }
+.dash-topbar-right { display:flex; align-items:center; gap:12px; }
+.dash-eyebrow { font-size:10.5px; font-weight:700; color:var(--ag-blue-600); text-transform:uppercase; letter-spacing:.14em; margin:0 0 1px; }
+.dash-topbar h1 { margin:0; font-size:20px; font-weight:700; color:var(--ag-text-900); }
 
-  .dash-content { padding: 28px; max-width: 1400px; margin: 0 auto; }
+.dash-icon-btn {
+  position:relative; border:none; background:var(--ag-surface-muted); color:var(--ag-text-600);
+  width:40px; height:40px; border-radius:50%; cursor:pointer; font-size:15px;
+  display:grid; place-items:center; transition:background var(--ag-transition-fast),color var(--ag-transition-fast);
+}
+.dash-icon-btn:hover { background:var(--ag-blue-100); color:var(--ag-blue-600); }
+.dash-notif-dot { position:absolute; top:7px; right:7px; width:8px; height:8px; border-radius:50%; background:var(--ag-danger); border:2px solid #fff; display:none; }
 
-  .dash-banner {
-    background: linear-gradient(135deg, var(--ag-navy-900) 0%, var(--ag-blue-600) 100%);
-    color: #fff;
-    border-radius: var(--ag-radius-lg);
-    padding: 30px 34px;
-    margin-bottom: 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 18px;
-    box-shadow: var(--ag-shadow-lg);
-  }
-  .dash-banner h1 { margin: 0 0 6px; font-size: 26px; }
-  .dash-banner p { margin: 0; color: rgba(255,255,255,0.82); max-width: 520px; }
+.dash-profile-chip { display:flex; align-items:center; gap:10px; cursor:pointer; }
+.dash-profile-chip .ag-avatar { width:38px; height:38px; border-radius:50%; display:grid; place-items:center; background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-800)); color:#fff; font-weight:700; font-size:15px; flex-shrink:0; }
+.dash-profile-chip .chip-name  { font-size:13.5px; font-weight:700; color:var(--ag-text-900); }
+.dash-profile-chip .chip-role  { font-size:11.5px; color:var(--ag-text-400); }
 
-  .dash-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-bottom: 24px; }
-  .dash-grid-2 { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; margin-bottom: 24px; }
+/* ---- Page content ---- */
+.dash-content { padding:28px; max-width:1400px; margin:0 auto; }
 
-  .dash-stat-icon { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: #fff; font-size: 18px; margin-bottom: 14px; }
-  .dash-stat-icon.blue { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); }
-  .dash-stat-icon.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
-  .dash-stat-icon.green { background: linear-gradient(135deg, #16a34a, #15803d); }
-  .dash-stat-icon.purple { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
-  .dash-stat h2 { font-size: 28px; margin: 0 0 4px; color: var(--ag-text-900); }
-  .dash-stat p { margin: 0; color: var(--ag-text-600); font-size: 13.5px; }
+/* ---- Welcome banner ---- */
+.dash-banner {
+  background:linear-gradient(135deg,var(--ag-navy-950) 0%,var(--ag-navy-800) 45%,var(--ag-blue-600) 100%);
+  border-radius:var(--ag-radius-lg); padding:34px 40px; margin-bottom:24px;
+  display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap;
+  position:relative; overflow:hidden; box-shadow:var(--ag-shadow-lg);
+}
+.dash-banner::before {
+  content:''; position:absolute; inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.dash-banner-blob {
+  position:absolute; border-radius:50%; filter:blur(70px); opacity:.2; pointer-events:none;
+}
+.dash-banner-blob-1 { width:280px; height:280px; background:#00b7ff; top:-80px; right:200px; }
+.dash-banner-blob-2 { width:200px; height:200px; background:#ffd54f; bottom:-60px; right:20px; opacity:.12; }
+.dash-banner-body { position:relative; z-index:1; }
+.dash-banner-body h2 { color:#fff; font-size:clamp(1.3rem,2.2vw,1.8rem); font-weight:800; margin:0 0 6px; }
+.dash-banner-body p  { color:rgba(255,255,255,.72); font-size:14px; margin:0; max-width:480px; line-height:1.6; }
+.dash-banner-actions { position:relative; z-index:1; display:flex; gap:10px; flex-wrap:wrap; }
 
-  .dash-panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; flex-wrap: wrap; }
-  .dash-panel-head h4 { margin: 0; font-size: 16px; color: var(--ag-text-900); }
+/* ---- Stat cards ---- */
+.dash-stats-row { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; margin-bottom:24px; }
+.dash-stat-card {
+  background:#fff; border:1px solid var(--ag-border); border-radius:var(--ag-radius-lg);
+  padding:22px; display:flex; flex-direction:column; gap:4px;
+  box-shadow:var(--ag-shadow-sm); transition:transform var(--ag-transition),box-shadow var(--ag-transition);
+  position:relative; overflow:hidden;
+}
+.dash-stat-card:hover { transform:translateY(-3px); box-shadow:var(--ag-shadow-md); }
+.dash-stat-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+  border-radius:0 0 var(--ag-radius-lg) var(--ag-radius-lg);
+}
+.dash-stat-card.blue::after   { background:linear-gradient(90deg,var(--ag-blue-600),#00d4ff); }
+.dash-stat-card.green::after  { background:linear-gradient(90deg,#16a34a,#4ade80); }
+.dash-stat-card.amber::after  { background:linear-gradient(90deg,#f59e0b,#fcd34d); }
+.dash-stat-card.purple::after { background:linear-gradient(90deg,#7c3aed,#a78bfa); }
 
-  .dash-status-list { display: flex; flex-direction: column; gap: 12px; }
-  .dash-status-row { display: flex; align-items: center; gap: 12px; }
-  .dash-status-row .label { flex: 0 0 140px; font-size: 13px; color: var(--ag-text-600); }
-  .dash-status-row .track { flex: 1; height: 8px; background: var(--ag-surface-muted); border-radius: 999px; overflow: hidden; }
-  .dash-status-row .fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--ag-blue-500), var(--ag-blue-600)); width: 0%; transition: width 0.8s var(--ag-ease); }
-  .dash-status-row .count { flex: 0 0 26px; text-align: right; font-weight: 700; color: var(--ag-text-900); font-size: 13px; }
+.dash-stat-icon-row { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.dash-stat-icon {
+  width:44px; height:44px; border-radius:12px; display:grid; place-items:center; font-size:18px; color:#fff;
+}
+.dash-stat-icon.blue   { background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700)); }
+.dash-stat-icon.green  { background:linear-gradient(135deg,#16a34a,#15803d); }
+.dash-stat-icon.amber  { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.dash-stat-icon.purple { background:linear-gradient(135deg,#7c3aed,#5b21b6); }
 
-  .dash-add-btn { text-decoration: none; }
+.dash-stat-trend { font-size:12px; font-weight:700; padding:3px 9px; border-radius:999px; }
+.dash-stat-trend.up   { background:#dcfce7; color:#15803d; }
+.dash-stat-trend.down { background:#fee2e2; color:#dc2626; }
+.dash-stat-trend.neu  { background:#f1f5f9; color:#64748b; }
 
-  @media (max-width: 1100px) {
-    .dash-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .dash-grid-2 { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 560px) {
-    .dash-grid-4 { grid-template-columns: 1fr; }
-    .dash-content { padding: 18px; }
-  }
+.dash-stat-value { font-size:30px; font-weight:800; color:var(--ag-text-900); line-height:1; margin-bottom:4px; }
+.dash-stat-label { font-size:13px; color:var(--ag-text-600); font-weight:500; }
+
+/* ---- Two-column main grid ---- */
+.dash-main-grid { display:grid; grid-template-columns:1fr 360px; gap:22px; margin-bottom:24px; }
+
+/* ---- Section card ---- */
+.dash-section-card {
+  background:#fff; border:1px solid var(--ag-border); border-radius:var(--ag-radius-lg);
+  box-shadow:var(--ag-shadow-sm); overflow:hidden;
+}
+.dash-section-head {
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding:20px 22px 16px; border-bottom:1px solid var(--ag-border); flex-wrap:wrap;
+}
+.dash-section-head h3 { margin:0; font-size:15px; font-weight:700; color:var(--ag-text-900); }
+.dash-section-body    { padding:16px 22px; }
+
+/* ---- Active shipments table ---- */
+.dash-ship-table { width:100%; border-collapse:collapse; font-size:13px; }
+.dash-ship-table th { text-align:left; padding:10px 12px; background:var(--ag-surface-muted); color:var(--ag-text-600); font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+.dash-ship-table td { padding:13px 12px; border-top:1px solid var(--ag-border); color:var(--ag-text-900); vertical-align:middle; }
+.dash-ship-table tr:hover td { background:var(--ag-surface-muted); }
+.dash-ship-table a { color:var(--ag-blue-600); font-weight:700; text-decoration:none; }
+.dash-ship-table a:hover { text-decoration:underline; }
+
+/* ---- Status badges (mini) ---- */
+.s-badge { display:inline-flex; align-items:center; gap:5px; border-radius:999px; padding:4px 10px; font-size:11px; font-weight:700; white-space:nowrap; }
+.s-badge .dot { width:6px; height:6px; border-radius:50%; }
+.s-pending    { background:#f1f5f9; color:#475569; }  .s-pending .dot    { background:#94a3b8; }
+.s-processing { background:#dbeafe; color:#1d4ed8; }  .s-processing .dot { background:#2563eb; animation:pulse-s 2s infinite; }
+.s-transit    { background:#fef3c7; color:#92400e; }  .s-transit .dot    { background:#f59e0b; animation:pulse-s 2s infinite; }
+.s-customs    { background:#fce7f3; color:#9d174d; }  .s-customs .dot    { background:#ec4899; animation:pulse-s 2s infinite; }
+.s-arrived    { background:#d1fae5; color:#065f46; }  .s-arrived .dot    { background:#10b981; animation:pulse-s 2s infinite; }
+.s-delivered  { background:#dcfce7; color:#15803d; }  .s-delivered .dot  { background:#16a34a; }
+@keyframes pulse-s { 0%,100%{opacity:1;} 50%{opacity:.45;} }
+
+/* ---- Activity feed ---- */
+.dash-activity-list { display:flex; flex-direction:column; }
+.dash-activity-item { display:flex; gap:12px; align-items:flex-start; padding:13px 0; border-bottom:1px solid var(--ag-surface-muted); }
+.dash-activity-item:last-child { border-bottom:none; }
+.dash-act-icon { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; font-size:13px; color:#fff; flex-shrink:0; }
+.dash-act-icon.blue   { background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700)); }
+.dash-act-icon.green  { background:linear-gradient(135deg,#16a34a,#15803d); }
+.dash-act-icon.amber  { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.dash-act-icon.purple { background:linear-gradient(135deg,#7c3aed,#5b21b6); }
+.dash-act-icon.rose   { background:linear-gradient(135deg,#e11d48,#be123c); }
+.dash-act-body  { flex:1; min-width:0; }
+.dash-act-title { font-size:13.5px; font-weight:600; color:var(--ag-text-900); margin:0 0 2px; line-height:1.35; }
+.dash-act-sub   { font-size:12px; color:var(--ag-text-400); }
+.dash-act-time  { font-size:11.5px; color:var(--ag-text-400); white-space:nowrap; margin-top:1px; }
 </style>
+
+<style>
+/* ---- Quick actions ---- */
+.dash-quick-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:16px; }
+.dash-quick-btn {
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  padding:18px 10px; background:var(--ag-surface-muted); border:1.5px solid var(--ag-border);
+  border-radius:var(--ag-radius-md); text-decoration:none; color:var(--ag-text-900);
+  font-size:12.5px; font-weight:600; text-align:center; cursor:pointer;
+  transition:all var(--ag-transition-fast);
+}
+.dash-quick-btn:hover { border-color:var(--ag-blue-500); background:var(--ag-blue-100); color:var(--ag-blue-600); transform:translateY(-2px); }
+.dash-quick-btn i { font-size:22px; color:var(--ag-blue-600); }
+
+/* ---- Payment history ---- */
+.dash-payment-list { display:flex; flex-direction:column; }
+.dash-payment-item {
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding:13px 22px; border-bottom:1px solid var(--ag-border); transition:background var(--ag-transition-fast);
+}
+.dash-payment-item:last-child { border-bottom:none; }
+.dash-payment-item:hover { background:var(--ag-surface-muted); }
+.dash-pay-left { display:flex; align-items:center; gap:12px; }
+.dash-pay-icon { width:36px; height:36px; border-radius:10px; display:grid; place-items:center; font-size:14px; color:#fff; flex-shrink:0; }
+.dash-pay-icon.paid    { background:linear-gradient(135deg,#16a34a,#15803d); }
+.dash-pay-icon.pending { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.dash-pay-icon.overdue { background:linear-gradient(135deg,#dc2626,#b91c1c); }
+.dash-pay-name    { font-size:13.5px; font-weight:700; color:var(--ag-text-900); margin-bottom:2px; }
+.dash-pay-ref     { font-size:11.5px; color:var(--ag-text-400); }
+.dash-pay-right   { text-align:right; }
+.dash-pay-amount  { font-size:14.5px; font-weight:800; color:var(--ag-text-900); }
+.dash-pay-date    { font-size:11.5px; color:var(--ag-text-400); }
+
+/* ---- Three-column lower grid ---- */
+.dash-lower-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; margin-bottom:24px; }
+
+/* ---- Saved addresses ---- */
+.dash-addr-list { padding:14px 16px; display:flex; flex-direction:column; gap:10px; }
+.dash-addr-card {
+  background:var(--ag-surface-muted); border:1.5px solid var(--ag-border);
+  border-radius:var(--ag-radius-md); padding:14px 16px; position:relative;
+  transition:border-color var(--ag-transition-fast);
+}
+.dash-addr-card.default { border-color:var(--ag-blue-500); background:#f0f7ff; }
+.dash-addr-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+.dash-addr-card-name { font-size:13.5px; font-weight:700; color:var(--ag-text-900); }
+.dash-addr-tag { font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; }
+.dash-addr-tag.home    { background:#dbeafe; color:#1d4ed8; }
+.dash-addr-tag.office  { background:#fce7f3; color:#9d174d; }
+.dash-addr-tag.default { background:#dcfce7; color:#15803d; }
+.dash-addr-detail { font-size:12.5px; color:var(--ag-text-600); line-height:1.55; }
+.dash-addr-actions { display:flex; gap:6px; margin-top:10px; }
+.dash-addr-btn { padding:5px 12px; border:1.5px solid var(--ag-border); border-radius:6px; background:transparent; font-size:11.5px; font-weight:600; cursor:pointer; color:var(--ag-text-600); transition:all var(--ag-transition-fast); font-family:var(--ag-font); }
+.dash-addr-btn:hover { border-color:var(--ag-blue-500); color:var(--ag-blue-600); }
+.dash-addr-add-btn { border:2px dashed var(--ag-border); border-radius:var(--ag-radius-md); padding:14px; text-align:center; color:var(--ag-text-400); font-size:13px; cursor:pointer; transition:all var(--ag-transition-fast); font-weight:600; }
+.dash-addr-add-btn:hover { border-color:var(--ag-blue-500); color:var(--ag-blue-600); background:var(--ag-blue-100); }
+
+/* ---- Profile card ---- */
+.dash-profile-body { padding:22px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px; }
+.dash-profile-avatar-lg {
+  width:80px; height:80px; border-radius:50%; display:grid; place-items:center;
+  background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700));
+  color:#fff; font-size:32px; font-weight:800; flex-shrink:0;
+  box-shadow:0 8px 24px rgba(37,99,235,.32);
+}
+.dash-profile-name  { font-size:18px; font-weight:800; color:var(--ag-text-900); margin:0; }
+.dash-profile-email { font-size:13px; color:var(--ag-text-400); }
+.dash-profile-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; width:100%; margin-top:4px; }
+.dash-profile-stat  { background:var(--ag-surface-muted); border-radius:var(--ag-radius-sm); padding:12px 8px; }
+.dash-profile-stat .n { font-size:20px; font-weight:800; color:var(--ag-text-900); }
+.dash-profile-stat .l { font-size:11px; color:var(--ag-text-400); font-weight:600; margin-top:2px; }
+.dash-profile-fields { width:100%; display:flex; flex-direction:column; gap:10px; text-align:left; }
+.dash-profile-field  { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--ag-surface-muted); border-radius:var(--ag-radius-sm); }
+.dash-profile-field i { color:var(--ag-blue-600); width:16px; flex-shrink:0; }
+.dash-profile-field span { font-size:13px; color:var(--ag-text-900); font-weight:500; }
+.dash-profile-field small { font-size:11px; color:var(--ag-text-400); display:block; }
+
+/* ---- Support ---- */
+.dash-support-body { padding:18px; display:flex; flex-direction:column; gap:10px; }
+.dash-support-item {
+  display:flex; align-items:center; gap:14px; padding:14px 16px;
+  background:var(--ag-surface-muted); border:1.5px solid var(--ag-border);
+  border-radius:var(--ag-radius-md); text-decoration:none; color:var(--ag-text-900);
+  transition:all var(--ag-transition-fast);
+}
+.dash-support-item:hover { border-color:var(--ag-blue-500); background:var(--ag-blue-100); transform:translateX(4px); }
+.dash-support-icon { width:38px; height:38px; border-radius:10px; display:grid; place-items:center; font-size:16px; color:#fff; flex-shrink:0; }
+.dash-support-icon.green  { background:linear-gradient(135deg,#16a34a,#15803d); }
+.dash-support-icon.blue   { background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700)); }
+.dash-support-icon.purple { background:linear-gradient(135deg,#7c3aed,#5b21b6); }
+.dash-support-icon.amber  { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.dash-support-text p { margin:0 0 2px; font-size:13.5px; font-weight:700; color:var(--ag-text-900); }
+.dash-support-text small { font-size:12px; color:var(--ag-text-400); }
+
+/* ---- Status overview chart bars ---- */
+.dash-bar-list { display:flex; flex-direction:column; gap:12px; }
+.dash-bar-row  { display:flex; align-items:center; gap:10px; }
+.dash-bar-label { flex:0 0 130px; font-size:12.5px; color:var(--ag-text-600); font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.dash-bar-track { flex:1; height:7px; background:var(--ag-surface-muted); border-radius:999px; overflow:hidden; }
+.dash-bar-fill  { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--ag-blue-500),var(--ag-blue-600)); width:0; transition:width 1s cubic-bezier(.4,0,.2,1); }
+.dash-bar-count { flex:0 0 24px; text-align:right; font-size:12.5px; font-weight:700; color:var(--ag-text-900); }
+
+/* ---- Responsive ---- */
+@media (max-width:1200px) { .dash-main-grid  { grid-template-columns:1fr; } }
+@media (max-width:1000px) { .dash-stats-row  { grid-template-columns:repeat(2,1fr); } .dash-lower-grid { grid-template-columns:1fr; } }
+@media (max-width:560px)  { .dash-stats-row  { grid-template-columns:1fr; } .dash-content { padding:14px; } .dash-topbar { padding:0 16px; } }
+</style>
+
 </head>
 <body data-ag-page="dashboard">
-  <div class="ag-app-shell">
-    <div id="ag-sidebar-mount"></div>
-    <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
 
-    <main class="ag-main">
-      <header class="dash-topbar">
-        <div class="title-group">
-          <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+  <main class="ag-main">
+
+    <!-- TOP BAR -->
+    <header class="dash-topbar">
+      <div class="dash-topbar-left">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="dash-eyebrow">Vehicle import workspace</p>
+          <h1>Dashboard</h1>
+        </div>
+      </div>
+      <div class="dash-topbar-right">
+        <button class="dash-icon-btn" onclick="showNotifications()" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="dash-notif-dot" id="notificationBadge"></span>
+        </button>
+        <div class="dash-profile-chip" onclick="scrollToProfile()">
+          <div class="ag-avatar" id="userAvatar">U</div>
           <div>
-            <p class="eyebrow">Premium logistics control center</p>
-            <h1 id="dashHeading">Vehicle import dashboard</h1>
+            <div class="chip-name" id="userName">Welcome</div>
+            <div class="chip-role" id="userRole">Customer</div>
           </div>
         </div>
-        <div class="dash-topbar-actions">
-          <button class="dash-notif-btn" onclick="showNotifications()" aria-label="Notifications">
-            <i class="fas fa-bell"></i>
-            <span class="dash-notif-dot" id="notificationBadge"></span>
-          </button>
-          <div class="dash-profile-chip">
-            <div class="ag-avatar" id="userAvatar">U</div>
-            <div>
-              <strong id="userName">Welcome</strong>
-              <small id="userRole">Customer</small>
-            </div>
-          </div>
+      </div>
+    </header>
+
+    <div class="dash-content">
+
+      <!-- WELCOME BANNER -->
+      <section class="dash-banner ag-reveal">
+        <div class="dash-banner-blob dash-banner-blob-1"></div>
+        <div class="dash-banner-blob dash-banner-blob-2"></div>
+        <div class="dash-banner-body">
+          <h2 id="bannerGreeting">Good morning 👋</h2>
+          <p>Manage every vehicle import from one modern workspace — real-time tracking, payments, and documentation in one place.</p>
         </div>
-      </header>
+        <div class="dash-banner-actions">
+          <a href="import.html" class="ag-btn ag-btn-primary"><i class="fas fa-plus"></i> New Import</a>
+          <a href="tracking.html" class="ag-btn ag-btn-secondary" style="background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25);"><i class="fas fa-location-dot"></i> Track Shipment</a>
+        </div>
+      </section>
 
-      <div class="dash-content">
-        <section class="dash-banner ag-reveal">
-          <div>
-            <h1>Track every import from one modern workspace.</h1>
-            <p>Real-time status, documentation, payments, and delivery progress for every vehicle you're importing with Asan Global.</p>
-          </div>
-          <a href="import.html" class="ag-btn ag-btn-secondary"><i class="fas fa-plus"></i> Start new import</a>
-        </section>
-
-        <section class="dash-grid-4 ag-reveal">
-          <article class="ag-card ag-card--interactive dash-stat">
+      <!-- STAT CARDS -->
+      <section class="dash-stats-row ag-reveal">
+        <div class="dash-stat-card blue">
+          <div class="dash-stat-icon-row">
             <div class="dash-stat-icon blue"><i class="fas fa-car"></i></div>
-            <h2 id="totalImports">0</h2>
-            <p>Total imports</p>
-          </article>
-          <article class="ag-card ag-card--interactive dash-stat">
-            <div class="dash-stat-icon orange"><i class="fas fa-clock"></i></div>
-            <h2 id="inProgress">0</h2>
-            <p>In progress</p>
-          </article>
-          <article class="ag-card ag-card--interactive dash-stat">
-            <div class="dash-stat-icon green"><i class="fas fa-check-circle"></i></div>
-            <h2 id="completed">0</h2>
-            <p>Completed</p>
-          </article>
-          <article class="ag-card ag-card--interactive dash-stat">
-            <div class="dash-stat-icon purple"><i class="fas fa-user-tie"></i></div>
-            <h2 id="assignedStaff">0</h2>
-            <p>Staff assigned</p>
-          </article>
-        </section>
-
-        <section class="dash-grid-2 ag-reveal">
-          <article class="ag-card">
-            <div class="dash-panel-head">
-              <h4>Shipment status overview</h4>
-              <span class="ag-badge ag-badge-info">Live</span>
-            </div>
-            <div class="dash-status-list" id="statusOverview">
-              <!-- populated by loadDashboardData() -->
-            </div>
-          </article>
-
-          <article class="ag-card">
-            <div class="dash-panel-head">
-              <h4>Revenue summary</h4>
-              <span class="ag-badge ag-badge-success">Declared value</span>
-            </div>
-            <h2 id="revenueTotal" style="margin:0 0 6px; font-size:26px; color: var(--ag-text-900);">$0</h2>
-            <p style="margin:0 0 18px; color: var(--ag-text-600); font-size: 13px;">Total declared vehicle value across your imports</p>
-            <div class="dash-status-row">
-              <span class="label">Avg. per import</span>
-              <span class="count" id="revenueAvg" style="flex:1; text-align:left;">$0</span>
-            </div>
-          </article>
-        </section>
-
-        <section class="ag-card ag-reveal">
-          <div class="dash-panel-head">
-            <h4>Recent vehicle imports</h4>
-            <a href="import.html" class="ag-btn ag-btn-primary dash-add-btn"><i class="fas fa-plus"></i> New import</a>
+            <span class="dash-stat-trend neu" id="trendTotal">—</span>
           </div>
-          <div class="ag-table-wrap">
-            <table class="ag-table" id="importsTable">
+          <div class="dash-stat-value" id="statTotal">0</div>
+          <div class="dash-stat-label">Total Imports</div>
+        </div>
+        <div class="dash-stat-card amber">
+          <div class="dash-stat-icon-row">
+            <div class="dash-stat-icon amber"><i class="fas fa-clock"></i></div>
+            <span class="dash-stat-trend neu" id="trendActive">—</span>
+          </div>
+          <div class="dash-stat-value" id="statActive">0</div>
+          <div class="dash-stat-label">Active Shipments</div>
+        </div>
+        <div class="dash-stat-card green">
+          <div class="dash-stat-icon-row">
+            <div class="dash-stat-icon green"><i class="fas fa-check-circle"></i></div>
+            <span class="dash-stat-trend up" id="trendDelivered">—</span>
+          </div>
+          <div class="dash-stat-value" id="statDelivered">0</div>
+          <div class="dash-stat-label">Delivered</div>
+        </div>
+        <div class="dash-stat-card purple">
+          <div class="dash-stat-icon-row">
+            <div class="dash-stat-icon purple"><i class="fas fa-dollar-sign"></i></div>
+            <span class="dash-stat-trend neu">Value</span>
+          </div>
+          <div class="dash-stat-value" id="statValue">$0</div>
+          <div class="dash-stat-label">Declared Value</div>
+        </div>
+      </section>
+
+      <!-- MAIN 2-COL GRID -->
+      <div class="dash-main-grid ag-reveal">
+
+        <!-- LEFT: Active shipments table -->
+        <div class="dash-section-card">
+          <div class="dash-section-head">
+            <h3><i class="fas fa-ship" style="margin-right:8px;color:var(--ag-blue-600);"></i>Active Shipments</h3>
+            <a href="import.html" class="ag-btn ag-btn-primary" style="font-size:12.5px;padding:8px 16px;"><i class="fas fa-plus"></i> New Import</a>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="dash-ship-table" id="shipmentsTable">
               <thead>
                 <tr>
-                  <th>Tracking ID</th>
+                  <th>Tracking</th>
                   <th>Vehicle</th>
-                  <th>Origin</th>
-                  <th>Destination</th>
+                  <th>Route</th>
                   <th>Status</th>
                   <th>Staff</th>
+                  <th>Action</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody id="shipmentsBody"></tbody>
             </table>
           </div>
-        </section>
-      </div>
-
-      <footer style="text-align:center; padding: 20px; color: var(--ag-text-400); font-size: 12.5px;">
-        © 2026 Asan Global Vehicle Import Services
-      </footer>
-    </main>
-  </div>
-
-  <!-- Notification Panel -->
-  <aside class="notification-panel" id="notificationPanel" aria-label="Notifications">
-    <div class="notification-panel-header">
-      <h3>Notifications</h3>
-      <span class="notif-count" id="notifCountBadge">0</span>
-      <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
-    </div>
-    <div class="notification-panel-actions">
-      <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
-      <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
-    </div>
-    <div class="notification-list" id="notificationList"></div>
-  </aside>
-
-  <!-- AI Assistant Chat Widget -->
-  <div id="aiAssistant" class="ai-assistant">
-    <div class="ai-chat-button" onclick="toggleAIChat()">
-      <i class="fas fa-robot"></i>
-      <span>AI Assistant</span>
-    </div>
-    <div class="ai-chat-window" id="aiChatWindow">
-      <div class="ai-chat-header">
-        <div class="ai-header-content">
-          <i class="fas fa-robot"></i>
-          <div>
-            <h3>Asan AI Assistant</h3>
-            <p>Online • Ready to help</p>
-          </div>
         </div>
-        <button onclick="toggleAIChat()" class="ai-close-btn"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="ai-chat-messages" id="aiChatMessages">
-        <div class="ai-message ai-bot">
-          <div class="ai-avatar"><i class="fas fa-robot"></i></div>
-          <div class="ai-message-content">
-            <p>Hello! I'm your AI assistant for Asan Global Vehicle Import Services. I can help you with:</p>
-            <ul>
-              <li>Vehicle import processes</li>
-              <li>Tracking your imports</li>
-              <li>Payment information</li>
-              <li>Website navigation</li>
-              <li>General import questions</li>
-            </ul>
-            <p>How can I assist you today?</p>
+
+        <!-- RIGHT: Quick actions + activity -->
+        <div style="display:flex;flex-direction:column;gap:22px;">
+          <!-- Quick actions -->
+          <div class="dash-section-card">
+            <div class="dash-section-head">
+              <h3><i class="fas fa-bolt" style="margin-right:8px;color:var(--ag-blue-600);"></i>Quick Actions</h3>
+            </div>
+            <div class="dash-quick-actions">
+              <a href="tracking.html" class="dash-quick-btn"><i class="fas fa-location-dot"></i>Track Import</a>
+              <a href="import.html"   class="dash-quick-btn"><i class="fas fa-plus-circle"></i>New Import</a>
+              <a href="payment.html"  class="dash-quick-btn"><i class="fas fa-credit-card"></i>Make Payment</a>
+              <a href="finance.html"  class="dash-quick-btn"><i class="fas fa-wallet"></i>Finance</a>
+              <a href="schudule.html" class="dash-quick-btn"><i class="fas fa-calendar"></i>Schedule</a>
+              <a href="price.html"    class="dash-quick-btn"><i class="fas fa-tag"></i>Pricing</a>
+            </div>
+          </div>
+
+          <!-- Status overview -->
+          <div class="dash-section-card">
+            <div class="dash-section-head">
+              <h3><i class="fas fa-chart-bar" style="margin-right:8px;color:var(--ag-blue-600);"></i>Status Overview</h3>
+              <span class="ag-badge ag-badge-info">Live</span>
+            </div>
+            <div class="dash-section-body">
+              <div class="dash-bar-list" id="statusOverview"></div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="ai-chat-input">
-        <input type="text" id="aiInput" placeholder="Type your question..." onkeypress="handleAIKeyPress(event)">
-        <button onclick="sendAIMessage()"><i class="fas fa-paper-plane"></i></button>
-      </div>
-    </div>
-  </div>
 
-  <script src="sidebar.js"></script>
-  <script>
-// Notification panel styling now lives in style.css-level shared rules; keep minimal fallback here
-// so this page still works if notification-panel classes aren't styled elsewhere.
-</script>
-  <script>
-// ---- Authentication ----
+      <!-- PAYMENT HISTORY (full-width) -->
+      <div class="dash-section-card ag-reveal" style="margin-bottom:24px;">
+        <div class="dash-section-head">
+          <h3><i class="fas fa-receipt" style="margin-right:8px;color:var(--ag-blue-600);"></i>Payment History</h3>
+          <a href="payment.html" class="ag-btn ag-btn-ghost" style="font-size:12.5px;padding:6px 14px;">View All</a>
+        </div>
+        <div class="dash-payment-list" id="paymentList"></div>
+      </div>
+
+      <!-- LOWER 3-COL GRID -->
+      <div class="dash-lower-grid ag-reveal">
+
+        <!-- Saved Addresses -->
+        <div class="dash-section-card">
+          <div class="dash-section-head">
+            <h3><i class="fas fa-map-marker-alt" style="margin-right:8px;color:var(--ag-blue-600);"></i>Saved Addresses</h3>
+            <button class="ag-btn ag-btn-ghost" style="font-size:12px;padding:5px 12px;" onclick="addAddress()"><i class="fas fa-plus"></i></button>
+          </div>
+          <div class="dash-addr-list" id="addressList"></div>
+        </div>
+
+        <!-- Profile -->
+        <div class="dash-section-card" id="profileSection">
+          <div class="dash-section-head">
+            <h3><i class="fas fa-user-circle" style="margin-right:8px;color:var(--ag-blue-600);"></i>My Profile</h3>
+            <a href="profile.html" class="ag-btn ag-btn-ghost" style="font-size:12px;padding:5px 12px;"><i class="fas fa-edit"></i> Edit</a>
+          </div>
+          <div class="dash-profile-body" id="profileBody"></div>
+        </div>
+
+        <!-- Support -->
+        <div class="dash-section-card">
+          <div class="dash-section-head">
+            <h3><i class="fas fa-headset" style="margin-right:8px;color:var(--ag-blue-600);"></i>Support &amp; Help</h3>
+          </div>
+          <div class="dash-support-body">
+            <a href="https://wa.me/233245357611" target="_blank" rel="noopener" class="dash-support-item">
+              <div class="dash-support-icon green"><i class="fab fa-whatsapp"></i></div>
+              <div class="dash-support-text"><p>WhatsApp Support</p><small>Instant replies • Mon–Sat 8AM–6PM</small></div>
+              <i class="fas fa-chevron-right" style="color:var(--ag-text-400);margin-left:auto;font-size:12px;"></i>
+            </a>
+            <a href="tel:+233245357611" class="dash-support-item">
+              <div class="dash-support-icon blue"><i class="fas fa-phone"></i></div>
+              <div class="dash-support-text"><p>Call Us</p><small>+233 245 357 611</small></div>
+              <i class="fas fa-chevron-right" style="color:var(--ag-text-400);margin-left:auto;font-size:12px;"></i>
+            </a>
+            <a href="mailto:info@asanglobal.com" class="dash-support-item">
+              <div class="dash-support-icon purple"><i class="fas fa-envelope"></i></div>
+              <div class="dash-support-text"><p>Email Support</p><small>info@asanglobal.com</small></div>
+              <i class="fas fa-chevron-right" style="color:var(--ag-text-400);margin-left:auto;font-size:12px;"></i>
+            </a>
+            <a href="client-agreement-form.html" target="_blank" class="dash-support-item">
+              <div class="dash-support-icon amber"><i class="fas fa-file-signature"></i></div>
+              <div class="dash-support-text"><p>Client Agreement Form</p><small>Download, print &amp; sign</small></div>
+              <i class="fas fa-chevron-right" style="color:var(--ag-text-400);margin-left:auto;font-size:12px;"></i>
+            </a>
+            <a href="tracking.html" class="dash-support-item">
+              <div class="dash-support-icon blue" style="background:linear-gradient(135deg,#0891b2,#0e7490);"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="dash-support-text"><p>Track My Shipment</p><small>Real-time import status</small></div>
+              <i class="fas fa-chevron-right" style="color:var(--ag-text-400);margin-left:auto;font-size:12px;"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT ACTIVITY (full-width) -->
+      <div class="dash-section-card ag-reveal" style="margin-bottom:24px;">
+        <div class="dash-section-head">
+          <h3><i class="fas fa-history" style="margin-right:8px;color:var(--ag-blue-600);"></i>Recent Activity</h3>
+          <span class="ag-badge ag-badge-info">Last 30 days</span>
+        </div>
+        <div class="dash-section-body">
+          <div class="dash-activity-list" id="activityList"></div>
+        </div>
+      </div>
+
+    </div><!-- /dash-content -->
+
+    <footer style="text-align:center;padding:20px;color:var(--ag-text-400);font-size:12px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
+
+<!-- Notification Panel -->
+<aside class="notification-panel" id="notificationPanel" aria-label="Notifications">
+  <div class="notification-panel-header">
+    <h3>Notifications</h3>
+    <span class="notif-count" id="notifCountBadge">0</span>
+    <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
+  </div>
+  <div class="notification-panel-actions">
+    <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+    <button class="clear-all"     onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+  </div>
+  <div class="notification-list" id="notificationList"></div>
+</aside>
+
+<!-- Toast region -->
+<div id="dashToastRegion" style="position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:3000;"></div>
+
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script>
+'use strict';
+const esc = v => window.securityUtils?.escapeHtml ? window.securityUtils.escapeHtml(v) : String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ================================================================
+   AUTH
+================================================================ */
 function checkAuth() {
-    const user = JSON.parse(localStorage.getItem('asan_current_user'));
-    if (!user) {
-        window.location.href = 'login.html';
-        return false;
-    }
-    return user;
+  const u = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
+  if (!u) { window.location.href = 'login.html'; return null; }
+  return u;
 }
-
-const STATUS_ORDER = ['Pending', 'Documentation', 'Processing', 'In Transit', 'Customs Clearance', 'Delivered'];
-
-function getStatusClass(status) {
-    const statusMap = {
-        'Pending': 'ag-badge-neutral',
-        'Documentation': 'ag-badge-info',
-        'Processing': 'ag-badge-info',
-        'In Transit': 'ag-badge-warning',
-        'Customs Clearance': 'ag-badge-warning',
-        'Delivered': 'ag-badge-success'
-    };
-    return statusMap[status] || 'ag-badge-neutral';
-}
-
-function loadDashboardData() {
-    const user = checkAuth();
-    if (!user) return;
-
-    document.getElementById('userName').textContent = user.name || 'Welcome';
-    document.getElementById('userRole').textContent = user.role || 'Customer';
-    document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
-
-    const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
-    const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
-
-    document.getElementById('totalImports').textContent = userImports.length;
-    document.getElementById('inProgress').textContent = userImports.filter(imp => imp.status !== 'Delivered').length;
-    document.getElementById('completed').textContent = userImports.filter(imp => imp.status === 'Delivered').length;
-
-    const uniqueStaff = [...new Set(userImports.map(imp => imp.assignedStaff).filter(s => s))];
-    document.getElementById('assignedStaff').textContent = uniqueStaff.length;
-
-    // Revenue summary — sum of declared vehicle values
-    const totalValue = userImports.reduce((sum, imp) => sum + (parseFloat(imp.value) || 0), 0);
-    const avgValue = userImports.length ? totalValue / userImports.length : 0;
-    document.getElementById('revenueTotal').textContent = '$' + totalValue.toLocaleString(undefined, { maximumFractionDigits: 0 });
-    document.getElementById('revenueAvg').textContent = '$' + avgValue.toLocaleString(undefined, { maximumFractionDigits: 0 });
-
-    // Shipment status overview
-    const statusCounts = STATUS_ORDER.map(status => ({
-        status,
-        count: userImports.filter(imp => imp.status === status).length
-    }));
-    const maxCount = Math.max(1, ...statusCounts.map(s => s.count));
-    const overview = document.getElementById('statusOverview');
-    overview.innerHTML = statusCounts.map(s => `
-        <div class="dash-status-row">
-            <span class="label">${s.status}</span>
-            <div class="track"><div class="fill" style="width:${(s.count / maxCount) * 100}%"></div></div>
-            <span class="count">${s.count}</span>
-        </div>
-    `).join('');
-
-    // Recent imports table
-    const table = document.getElementById('importsTable');
-    const tbody = table.querySelector('tbody');
-    tbody.innerHTML = '';
-
-    if (userImports.length === 0) {
-        const row = tbody.insertRow();
-        row.innerHTML = `
-            <td colspan="6">
-                <div class="ag-empty">
-                    <i class="fas fa-inbox"></i>
-                    No imports yet. <a href="import.html" style="color:var(--ag-blue-600);font-weight:600;">Start your first import</a>
-                </div>
-            </td>
-        `;
-    } else {
-        userImports.slice(0, 10).forEach(imp => {
-            const row = tbody.insertRow();
-            const statusClass = getStatusClass(imp.status);
-            row.innerHTML = `
-                <td><a href="tracking.html?tracking=${imp.tracking}" style="color:var(--ag-blue-600); font-weight:600; text-decoration:none;">${imp.tracking}</a></td>
-                <td>${imp.make || ''} ${imp.model || ''} ${imp.year || ''}</td>
-                <td>${imp.origin || '—'}</td>
-                <td>${imp.destination || '—'}</td>
-                <td><span class="ag-badge ${statusClass}">${imp.status}</span></td>
-                <td>${imp.assignedStaff || 'Unassigned'}</td>
-            `;
-        });
-    }
-}
-
 function logout() {
-    localStorage.removeItem('asan_current_user');
-    localStorage.removeItem('asan_user_name');
-    localStorage.removeItem('asan_user_email');
-    localStorage.removeItem('asan_user_role');
-    localStorage.removeItem('asan_remember_me');
-    localStorage.removeItem('asan_user_password');
-    window.location.href = 'login.html';
+  localStorage.removeItem('asan_current_user');
+  window.location.href = 'login.html';
 }
 
-window.addEventListener('storage', function (e) {
-    if (e.key === 'asan_imports') loadDashboardData();
-});
+/* ================================================================
+   STATUS HELPERS
+================================================================ */
+const STATUS_CSS = {
+  'Pending':'s-pending','Payment Confirmed':'s-processing','Processing':'s-processing',
+  'Documentation':'s-processing','Purchased':'s-processing','Packed':'s-processing',
+  'Ready for Shipment':'s-processing','Shipped':'s-processing',
+  'In Transit':'s-transit','Customs Clearance':'s-customs',
+  'Arrived in Ghana':'s-arrived','Out for Delivery':'s-arrived','Delivered':'s-delivered'
+};
+function statusBadge(s){
+  const cls = STATUS_CSS[s] || 's-pending';
+  return `<span class="s-badge ${cls}"><span class="dot"></span>${esc(s||'Pending')}</span>`;
+}
 
-document.addEventListener('DOMContentLoaded', loadDashboardData);
-setInterval(loadDashboardData, 30000);
+/* ================================================================
+   DATA HELPERS
+================================================================ */
+function getImports() { try { return JSON.parse(localStorage.getItem('asan_imports')||'[]'); } catch{ return []; } }
+function getFinance() { try { return JSON.parse(localStorage.getItem('asan_finance')||'[]'); } catch{ return []; } }
+function getNotifs(email){ try { return JSON.parse(localStorage.getItem('asan_notifications_'+email)||'[]'); } catch{ return []; } }
+function saveNotifs(email, n){ localStorage.setItem('asan_notifications_'+email, JSON.stringify(n)); }
 
-// ---- Notifications ----
+/* ================================================================
+   GREETING
+================================================================ */
+function setGreeting(name){
+  const h = new Date().getHours();
+  const g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('bannerGreeting').textContent = `${g}, ${name.split(' ')[0]} 👋`;
+}
+
+/* ================================================================
+   STAT CARDS — animate counter
+================================================================ */
+function animateCount(el, target, prefix='', suffix=''){
+  let cur = 0;
+  const step = Math.ceil(target / 28) || 1;
+  const tick = () => {
+    cur = Math.min(cur + step, target);
+    el.textContent = prefix + cur.toLocaleString() + suffix;
+    if (cur < target) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+function renderStats(user){
+  const all = getImports();
+  const mine = all.filter(i => i.customer?.toLowerCase() === user.name?.toLowerCase() || !user.name);
+  const src = mine.length > 0 ? mine : all; // fallback to all for demo
+  const active = src.filter(i => i.status !== 'Delivered').length;
+  const delivered = src.filter(i => i.status === 'Delivered').length;
+  const totalValue = src.reduce((s,i)=>{
+    const v = parseFloat((i.value||'0').replace(/[^0-9.]/g,''))||0;
+    return s + v;
+  }, 0);
+
+  animateCount(document.getElementById('statTotal'), src.length);
+  animateCount(document.getElementById('statActive'), active);
+  animateCount(document.getElementById('statDelivered'), delivered);
+
+  const vEl = document.getElementById('statValue');
+  if (totalValue >= 1000) {
+    animateCount(vEl, Math.round(totalValue/1000), '$', 'K');
+  } else {
+    animateCount(vEl, totalValue, '$');
+  }
+
+  document.getElementById('trendTotal').textContent = src.length + ' Total';
+  document.getElementById('trendActive').textContent = active + ' In Progress';
+  document.getElementById('trendDelivered').textContent = delivered > 0 ? `+${delivered} Done` : '0 Done';
+
+  renderStatusOverview(src);
+}
+
+/* ================================================================
+   STATUS OVERVIEW BAR CHART
+================================================================ */
+function renderStatusOverview(imports){
+  const counts = {};
+  imports.forEach(i => { counts[i.status] = (counts[i.status]||0)+1; });
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const max = Math.max(...sorted.map(e=>e[1]), 1);
+  const container = document.getElementById('statusOverview');
+  container.innerHTML = sorted.map(([s,n]) => `
+    <div class="dash-bar-row">
+      <span class="dash-bar-label">${esc(s)}</span>
+      <div class="dash-bar-track">
+        <div class="dash-bar-fill" data-w="${Math.round((n/max)*100)}"></div>
+      </div>
+      <span class="dash-bar-count">${n}</span>
+    </div>`).join('');
+  // Animate after paint
+  requestAnimationFrame(()=>{
+    container.querySelectorAll('.dash-bar-fill').forEach(el=>{
+      setTimeout(()=>{ el.style.width = el.dataset.w + '%'; }, 100);
+    });
+  });
+}
+
+/* ================================================================
+   SHIPMENTS TABLE
+================================================================ */
+function renderShipments(user){
+  const all = getImports();
+  const mine = all.filter(i => i.customer?.toLowerCase() === user.name?.toLowerCase());
+  const src = mine.length > 0 ? mine : all;
+  const tbody = document.getElementById('shipmentsBody');
+  if (!src.length){
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--ag-text-400);">
+      <i class="fas fa-ship" style="font-size:28px;opacity:.3;display:block;margin-bottom:8px;"></i>
+      No shipments yet. <a href="import.html" style="color:var(--ag-blue-600);">Start your first import →</a>
+    </td></tr>`;
+    return;
+  }
+  tbody.innerHTML = src.map(i=>`
+    <tr>
+      <td><a href="tracking.html?tracking=${esc(i.tracking)}" title="Track shipment"><i class="fas fa-qrcode" style="margin-right:6px;color:var(--ag-text-400);"></i>${esc(i.tracking||'—')}</a></td>
+      <td><strong>${esc(i.make||'')} ${esc(i.model||'')}</strong><br><small style="color:var(--ag-text-400);">${esc(i.year||'')} · ${esc(i.vehicleType||'')}</small></td>
+      <td><i class="fas fa-arrow-right" style="color:var(--ag-text-400);font-size:10px;margin:0 4px;"></i><span style="font-size:12px;color:var(--ag-text-600);">${esc(i.origin||'—')} → ${esc(i.destination||'—')}</span></td>
+      <td>${statusBadge(i.status)}</td>
+      <td><span style="font-size:12.5px;color:var(--ag-text-600);">${esc(i.assignedStaff||'Unassigned')}</span></td>
+      <td><a href="tracking.html?tracking=${esc(i.tracking)}" class="ag-btn ag-btn-ghost" style="font-size:12px;padding:5px 12px;"><i class="fas fa-location-dot"></i> Track</a></td>
+    </tr>`).join('');
+}
+
+/* ================================================================
+   PAYMENT HISTORY
+================================================================ */
+function renderPayments(user){
+  const all = getFinance();
+  const src = all.length > 0 ? all.slice(0, 6) : [];
+  const container = document.getElementById('paymentList');
+  if (!src.length){
+    container.innerHTML = `<div style="padding:24px;text-align:center;color:var(--ag-text-400);font-size:13.5px;"><i class="fas fa-receipt" style="font-size:28px;opacity:.3;display:block;margin-bottom:8px;"></i>No payment records yet.</div>`;
+    return;
+  }
+  container.innerHTML = src.map(p=>{
+    const s = (p.status||'Pending').toLowerCase();
+    const iconCls = s==='paid' ? 'paid' : s==='overdue' ? 'overdue' : 'pending';
+    const icon = s==='paid' ? 'fa-check' : s==='overdue' ? 'fa-exclamation' : 'fa-clock';
+    return `<div class="dash-payment-item">
+      <div class="dash-pay-left">
+        <div class="dash-pay-icon ${iconCls}"><i class="fas ${icon}"></i></div>
+        <div><div class="dash-pay-name">${esc(p.type||'Transaction')}</div><div class="dash-pay-ref">${esc(p.client||p.tracking||'—')}</div></div>
+      </div>
+      <div class="dash-pay-right">
+        <div class="dash-pay-amount">${esc(p.amount||'—')}</div>
+        <div class="dash-pay-date">${esc(p.date||'—')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ================================================================
+   SAVED ADDRESSES
+================================================================ */
+const DEFAULT_ADDRESSES = [
+  { id:1, name:'Home Address', tag:'home', detail:'Tema, Greater Accra, Ghana', isDefault:true },
+  { id:2, name:'Office Address', tag:'office', detail:'Tema Port Area, Accra, Ghana', isDefault:false }
+];
+function getAddresses(){ try { return JSON.parse(localStorage.getItem('asan_addresses')||'null') || DEFAULT_ADDRESSES; } catch{ return DEFAULT_ADDRESSES; } }
+function saveAddresses(a){ localStorage.setItem('asan_addresses', JSON.stringify(a)); }
+
+function renderAddresses(){
+  const addrs = getAddresses();
+  const container = document.getElementById('addressList');
+  container.innerHTML = addrs.map(a=>`
+    <div class="dash-addr-card${a.isDefault ? ' default':''}">
+      <div class="dash-addr-card-top">
+        <span class="dash-addr-card-name">${esc(a.name)}</span>
+        <span class="dash-addr-tag ${a.tag}">${a.isDefault?'Default':a.tag.charAt(0).toUpperCase()+a.tag.slice(1)}</span>
+      </div>
+      <div class="dash-addr-detail"><i class="fas fa-map-marker-alt" style="color:var(--ag-blue-600);margin-right:6px;"></i>${esc(a.detail)}</div>
+      <div class="dash-addr-actions">
+        ${!a.isDefault ? `<button class="dash-addr-btn" onclick="setDefaultAddress(${a.id})"><i class="fas fa-star" style="margin-right:4px;"></i>Set Default</button>` : ''}
+        <button class="dash-addr-btn" onclick="deleteAddress(${a.id})"><i class="fas fa-trash" style="margin-right:4px;"></i>Remove</button>
+      </div>
+    </div>`).join('') +
+    `<div class="dash-addr-add-btn" onclick="addAddress()"><i class="fas fa-plus" style="margin-right:6px;color:var(--ag-blue-600);"></i>Add New Address</div>`;
+}
+
+function setDefaultAddress(id){
+  const addrs = getAddresses().map(a=>({...a, isDefault: a.id===id}));
+  saveAddresses(addrs); renderAddresses();
+}
+function deleteAddress(id){
+  if(!confirm('Remove this address?')) return;
+  const addrs = getAddresses().filter(a=>a.id!==id);
+  saveAddresses(addrs); renderAddresses();
+}
+function addAddress(){
+  const detail = prompt('Enter new address (e.g. 14 Ring Road, Accra, Ghana):');
+  if(!detail || !detail.trim()) return;
+  const name = prompt('Label (e.g. Home, Office, Warehouse):') || 'Address';
+  const addrs = getAddresses();
+  addrs.push({ id: Date.now(), name: name.trim(), tag:'home', detail: detail.trim(), isDefault:false });
+  saveAddresses(addrs); renderAddresses();
+  showToast('Address added successfully', 'success');
+}
+
+/* ================================================================
+   PROFILE
+================================================================ */
+function renderProfile(user){
+  const all = getImports();
+  const mine = all.filter(i=>i.customer?.toLowerCase()===user.name?.toLowerCase());
+  const src = mine.length > 0 ? mine : all;
+  const delivered = src.filter(i=>i.status==='Delivered').length;
+  const initials = (user.name||'U').split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase();
+
+  document.getElementById('profileBody').innerHTML = `
+    <div class="dash-profile-avatar-lg">${esc(initials)}</div>
+    <div>
+      <p class="dash-profile-name">${esc(user.name||'Guest')}</p>
+      <p class="dash-profile-email">${esc(user.email||'')}</p>
+    </div>
+    <div class="dash-profile-stats">
+      <div class="dash-profile-stat"><div class="n">${src.length}</div><div class="l">Imports</div></div>
+      <div class="dash-profile-stat"><div class="n">${delivered}</div><div class="l">Delivered</div></div>
+      <div class="dash-profile-stat"><div class="n">${src.filter(i=>i.status!=='Delivered').length}</div><div class="l">Active</div></div>
+    </div>
+    <div class="dash-profile-fields">
+      <div class="dash-profile-field"><i class="fas fa-user"></i><div><span>${esc(user.name||'—')}</span><small>Full Name</small></div></div>
+      <div class="dash-profile-field"><i class="fas fa-envelope"></i><div><span>${esc(user.email||'—')}</span><small>Email Address</small></div></div>
+      <div class="dash-profile-field"><i class="fas fa-shield-alt"></i><div><span>${esc((user.role||'customer').charAt(0).toUpperCase()+(user.role||'customer').slice(1))}</span><small>Account Role</small></div></div>
+    </div>
+    <a href="profile.html" class="ag-btn ag-btn-secondary" style="width:100%;justify-content:center;font-size:13px;"><i class="fas fa-edit"></i> Edit Profile</a>`;
+}
+
+function scrollToProfile(){
+  document.getElementById('profileSection')?.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ================================================================
+   RECENT ACTIVITY
+================================================================ */
+function renderActivity(user){
+  const imports = getImports();
+  const finance = getFinance();
+  const items = [];
+
+  imports.slice(0,4).forEach((i,idx)=>{
+    const d = new Date(); d.setDate(d.getDate()-idx*3);
+    items.push({ icon:'fa-ship', cls:'blue', title:`${i.make||''} ${i.model||''} — Status: ${i.status||'Pending'}`, sub:`Tracking: ${i.tracking||'—'} · ${i.origin||'?'} → ${i.destination||'?'}`, time: d });
+  });
+  finance.slice(0,3).forEach((f,idx)=>{
+    const d = new Date(); d.setDate(d.getDate()-(idx*2+1));
+    items.push({ icon:'fa-receipt', cls: f.status==='Paid'?'green':'amber', title:`${f.type||'Payment'} — ${f.status||'Pending'}`, sub:`${f.client||'—'} · ${f.amount||'—'}`, time: d });
+  });
+
+  items.sort((a,b)=>b.time-a.time);
+
+  const container = document.getElementById('activityList');
+  if (!items.length){
+    container.innerHTML = `<div style="padding:24px;text-align:center;color:var(--ag-text-400);">No recent activity.</div>`;
+    return;
+  }
+  container.innerHTML = items.slice(0,7).map(item=>`
+    <div class="dash-activity-item">
+      <div class="dash-act-icon ${item.cls}"><i class="fas ${item.icon}"></i></div>
+      <div class="dash-act-body">
+        <div class="dash-act-title">${esc(item.title)}</div>
+        <div class="dash-act-sub">${esc(item.sub)}</div>
+      </div>
+      <div class="dash-act-time">${item.time.toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div>
+    </div>`).join('');
+}
+
+/* ================================================================
+   NOTIFICATIONS
+================================================================ */
 let notifications = [];
 
-function initNotifications() {
-    const user = checkAuth();
-    if (!user) return;
-
-    const savedNotifs = localStorage.getItem('asan_notifications_' + user.email);
-    if (savedNotifs) {
-        notifications = JSON.parse(savedNotifs);
-    } else {
-        notifications = [{
-            id: 1,
-            title: 'Welcome to Asan Global',
-            message: 'Thank you for joining our vehicle import service. Start by submitting your first import request.',
-            type: 'info',
-            read: false,
-            timestamp: new Date().toISOString()
-        }];
-        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-    }
-
-    updateNotificationBadge();
+function initNotifications(user){
+  notifications = getNotifs(user.email);
+  if (!notifications.length){
+    notifications = [
+      { id:1, title:'Welcome to Asan Global', message:'Your dashboard is ready. Start your first vehicle import today.', type:'info', read:false, timestamp: new Date().toISOString() },
+      { id:2, title:'Import Tracking Available', message:'Track your vehicle imports in real-time from the Tracking page.', type:'success', read:false, timestamp: new Date(Date.now()-3600000).toISOString() }
+    ];
+    saveNotifs(user.email, notifications);
+  }
+  updateNotifBadge();
 }
 
-function showNotifications() {
-    const panel = document.getElementById('notificationPanel');
-    panel.classList.toggle('active');
-    renderNotifications();
+function showNotifications(){
+  document.getElementById('notificationPanel').classList.toggle('active');
+  renderNotifList();
+  notifications.forEach(n=>n.read=true);
+  const u=checkAuth(); if(u) saveNotifs(u.email, notifications);
+  updateNotifBadge();
+}
+function hideNotifications(){ document.getElementById('notificationPanel').classList.remove('active'); }
 
-    notifications.forEach(n => n.read = true);
-    const user = JSON.parse(localStorage.getItem('asan_current_user'));
-    if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-    updateNotificationBadge();
+function updateNotifBadge(){
+  const unread = notifications.filter(n=>!n.read).length;
+  const dot=document.getElementById('notificationBadge'); const badge=document.getElementById('notifCountBadge');
+  dot.style.display = unread ? 'block':'none';
+  if(badge) badge.textContent = unread;
 }
 
-function hideNotifications() {
-    document.getElementById('notificationPanel').classList.remove('active');
+function renderNotifList(){
+  const list=document.getElementById('notificationList'); if(!list) return;
+  if(!notifications.length){ list.innerHTML=`<div class="ag-empty"><i class="fas fa-bell"></i><h4>All clear!</h4><p>No notifications.</p></div>`; return; }
+  const icons={info:'fa-info-circle',success:'fa-check',warning:'fa-exclamation-triangle'};
+  list.innerHTML=notifications.map(n=>`
+    <div class="notification-item${n.read?'':' unread'}" onclick="markNotifRead(${n.id})">
+      <div class="notif-icon ${n.type||'info'}"><i class="fas ${icons[n.type]||'fa-info-circle'}"></i></div>
+      <div class="notif-content"><h5>${esc(n.title)}</h5><p>${esc(n.message)}</p>
+        <div class="notif-meta"><i class="fas fa-clock"></i> ${getTimeAgo(new Date(n.timestamp))}</div>
+      </div>${!n.read?'<div class="unread-dot"></div>':''}
+    </div>`).join('');
+}
+function markNotifRead(id){ const n=notifications.find(x=>x.id===id); if(n){ n.read=true; } renderNotifList(); updateNotifBadge(); }
+function markAllAsRead(){ notifications.forEach(n=>n.read=true); const u=checkAuth(); if(u) saveNotifs(u.email,notifications); updateNotifBadge(); renderNotifList(); }
+function clearAllNotifications(){ if(!confirm('Clear all notifications?')) return; notifications=[]; const u=checkAuth(); if(u) saveNotifs(u.email,notifications); updateNotifBadge(); renderNotifList(); }
+function getTimeAgo(d){ const s=Math.floor((Date.now()-d)/1000); if(s<60) return 'Just now'; if(s<3600) return Math.floor(s/60)+' min ago'; if(s<86400) return Math.floor(s/3600)+' hours ago'; return d.toLocaleDateString(); }
+
+/* ================================================================
+   TOAST
+================================================================ */
+function showToast(msg, type='info'){
+  const region=document.getElementById('dashToastRegion');
+  const icons={info:'fa-info-circle',success:'fa-check-circle',error:'fa-exclamation-circle'};
+  const colors={info:'var(--ag-blue-500)',success:'#16a34a',error:'var(--ag-danger)'};
+  const t=document.createElement('div');
+  t.style.cssText=`display:flex;align-items:center;gap:10px;background:var(--ag-navy-900);color:#fff;padding:13px 18px;border-radius:12px;box-shadow:var(--ag-shadow-lg);font-size:13.5px;min-width:260px;border-left:4px solid ${colors[type]};animation:ag-toast-in .28s ease;font-family:var(--ag-font);`;
+  t.innerHTML=`<i class="fas ${icons[type]}" style="color:${colors[type]};font-size:15px;flex-shrink:0;"></i><span>${esc(msg)}</span>`;
+  region.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(8px)'; t.style.transition='.3s'; setTimeout(()=>t.remove(),320); }, 3200);
 }
 
-function updateNotificationBadge() {
-    const badge = document.getElementById('notificationBadge');
-    const notifCountBadge = document.getElementById('notifCountBadge');
-    const unreadCount = notifications.filter(n => !n.read).length;
+/* ================================================================
+   INIT
+================================================================ */
+document.addEventListener('DOMContentLoaded', function(){
+  const user = checkAuth(); if(!user) return;
 
-    if (unreadCount > 0) {
-        badge.style.display = 'block';
-        notifCountBadge.textContent = unreadCount;
-    } else {
-        badge.style.display = 'none';
-        notifCountBadge.textContent = '0';
-    }
-}
+  // Topbar user info
+  document.getElementById('userAvatar').textContent = (user.name||'U').charAt(0).toUpperCase();
+  document.getElementById('userName').textContent = user.name || 'Guest';
+  document.getElementById('userRole').textContent = (user.role||'customer').charAt(0).toUpperCase()+(user.role||'customer').slice(1);
 
-function renderNotifications() {
-    const list = document.getElementById('notificationList');
-
-    if (notifications.length === 0) {
-        list.innerHTML = `
-            <div class="ag-empty">
-                <i class="fas fa-bell"></i>
-                <h4>No notifications</h4>
-                <p>You're all caught up! Check back later for updates.</p>
-            </div>
-        `;
-        return;
-    }
-
-    list.innerHTML = notifications.map(notif => {
-        let icon = 'fa-info-circle';
-        switch (notif.type) {
-            case 'success': icon = 'fa-check'; break;
-            case 'warning': icon = 'fa-exclamation-triangle'; break;
-            case 'payment': icon = 'fa-credit-card'; break;
-            case 'shipping': icon = 'fa-ship'; break;
-        }
-
-        const timeAgo = getTimeAgo(new Date(notif.timestamp));
-
-        return `
-            <div class="notification-item ${notif.read ? '' : 'unread'}" onclick="markAsRead(${notif.id})">
-                <div class="notif-icon ${notif.type}"><i class="fas ${icon}"></i></div>
-                <div class="notif-content">
-                    <h5>${notif.title}</h5>
-                    <p>${notif.message}</p>
-                    <div class="notif-meta"><span><i class="fas fa-clock"></i> ${timeAgo}</span></div>
-                </div>
-                ${!notif.read ? '<div class="unread-dot"></div>' : ''}
-            </div>
-        `;
-    }).join('');
-}
-
-function markAllAsRead() {
-    notifications.forEach(n => n.read = true);
-    const user = JSON.parse(localStorage.getItem('asan_current_user'));
-    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-    updateNotificationBadge();
-    renderNotifications();
-}
-
-function clearAllNotifications() {
-    if (confirm('Are you sure you want to clear all notifications?')) {
-        notifications = [];
-        const user = JSON.parse(localStorage.getItem('asan_current_user'));
-        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-        updateNotificationBadge();
-        renderNotifications();
-    }
-}
-
-function markAsRead(id) {
-    const notif = notifications.find(n => n.id === id);
-    if (notif) {
-        notif.read = true;
-        const user = JSON.parse(localStorage.getItem('asan_current_user'));
-        localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-        updateNotificationBadge();
-        renderNotifications();
-    }
-}
-
-function addNotification(title, message, type = 'info') {
-    const user = JSON.parse(localStorage.getItem('asan_current_user'));
-    if (!user) return;
-
-    notifications.unshift({ id: Date.now(), title, message, type, read: false, timestamp: new Date().toISOString() });
-    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-    updateNotificationBadge();
-}
-
-function getTimeAgo(date) {
-    const seconds = Math.floor((new Date() - date) / 1000);
-    if (seconds < 60) return 'Just now';
-    if (seconds < 3600) return Math.floor(seconds / 60) + ' min ago';
-    if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
-    if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
-    return date.toLocaleDateString();
-}
-
-function generateImportNotifications() {
-    const user = checkAuth();
-    if (!user) return;
-
-    const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
-    const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
-
-    userImports.forEach(imp => {
-        const lastStatus = localStorage.getItem('last_status_' + imp.tracking);
-        if (lastStatus && lastStatus !== imp.status) {
-            const statusMessages = {
-                'Documentation': 'Your vehicle documentation is being processed',
-                'Processing': 'Your vehicle is being prepared for shipment',
-                'In Transit': 'Your vehicle is now in transit to destination',
-                'Customs Clearance': 'Your vehicle has arrived and is in customs',
-                'Delivered': 'Your vehicle has been delivered successfully!'
-            };
-            if (statusMessages[imp.status]) {
-                addNotification(`Import Status Update: ${imp.tracking}`, `${statusMessages[imp.status]} - ${imp.make} ${imp.model}`, imp.status === 'Delivered' ? 'success' : 'info');
-            }
-        }
-        localStorage.setItem('last_status_' + imp.tracking, imp.status);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    initNotifications();
-    generateImportNotifications();
+  setGreeting(user.name||'Guest');
+  renderStats(user);
+  renderShipments(user);
+  renderPayments(user);
+  renderAddresses();
+  renderProfile(user);
+  renderActivity(user);
+  initNotifications(user);
 });
-setInterval(generateImportNotifications, 60000);
-
-// ---- AI Assistant ----
-function toggleAIChat() {
-    document.getElementById('aiChatWindow').classList.toggle('active');
-}
-
-function handleAIKeyPress(event) {
-    if (event.key === 'Enter') sendAIMessage();
-}
-
-function sendAIMessage() {
-    const input = document.getElementById('aiInput');
-    const message = input.value.trim();
-    if (!message) return;
-
-    addChatMessage(message, 'user');
-    input.value = '';
-
-    setTimeout(() => {
-        addChatMessage(getAIResponse(message), 'bot');
-    }, 500);
-}
-
-function addChatMessage(message, sender) {
-    const messagesContainer = document.getElementById('aiChatMessages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `ai-message ai-${sender}`;
-    const avatar = sender === 'bot' ? 'fa-robot' : 'fa-user';
-    messageDiv.innerHTML = `
-        <div class="ai-avatar"><i class="fas ${avatar}"></i></div>
-        <div class="ai-message-content"><p>${message}</p></div>
-    `;
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function getAIResponse(message) {
-    const lowerMessage = message.toLowerCase();
-
-    if (lowerMessage.includes('import') && (lowerMessage.includes('process') || lowerMessage.includes('how') || lowerMessage.includes('start'))) {
-        return "To start importing a vehicle with Asan Global: 1) Submit an import request through the Import page with vehicle details, 2) Our team sources and quotes you, 3) We handle shipping to your destination port, 4) We manage customs clearance, 5) We deliver to your location. The entire process typically takes 4-6 weeks depending on origin.";
-    }
-    if (lowerMessage.includes('import') && (lowerMessage.includes('cost') || lowerMessage.includes('fee') || lowerMessage.includes('price'))) {
-        return "Import costs include: Import fee (5% of vehicle value), Customs fee (3% of vehicle value), Shipping fee (varies by route), Insurance (optional), and Documentation fees. For a $50,000 vehicle, expect approximately $4,000-$6,000 in total fees excluding the vehicle price.";
-    }
-    if (lowerMessage.includes('document') || lowerMessage.includes('paperwork')) {
-        return "Required documents include: Valid ID/Passport, Purchase invoice, Bill of lading (we provide), Import permit (if required), Customs declaration form, and Proof of payment. Our team assists with all documentation.";
-    }
-    if (lowerMessage.includes('track') || lowerMessage.includes('tracking') || lowerMessage.includes('where is')) {
-        return "To track your import: 1) Go to the Tracking page, 2) Enter your tracking number (format: ASAN-IMP-XXXX-XXXX), 3) View real-time status, location, and progress. You can also track from your dashboard where all your imports are listed.";
-    }
-    if (lowerMessage.includes('status') || lowerMessage.includes('progress')) {
-        return "Import statuses are: Pending → Documentation → Processing → In Transit → Customs Clearance → Delivered. Each step is updated in real-time. You can check your current status on the Tracking page or Dashboard.";
-    }
-    if (lowerMessage.includes('pay') || lowerMessage.includes('payment') || lowerMessage.includes('money')) {
-        return "We accept multiple payment methods: Visa, Mastercard, PayPal, Stripe, Mobile Money (MTN, Vodafone), and Bank Transfer. You can make payments through the Payment page. All transactions are secure and encrypted.";
-    }
-    if (lowerMessage.includes('refund') || lowerMessage.includes('return')) {
-        return "Refunds are processed within 5-7 business days. Contact our support team with your tracking number and reason for refund. Partial refunds may apply depending on the stage of import.";
-    }
-    if (lowerMessage.includes('dashboard') || lowerMessage.includes('home') || lowerMessage.includes('navigate')) {
-        return "The Dashboard shows your import statistics, recent imports, and quick access to all features. From there you can: Track imports, Submit new requests, View payments, Check schedule, and Manage your profile.";
-    }
-    if (lowerMessage.includes('help') || lowerMessage.includes('support') || lowerMessage.includes('contact')) {
-        return "For support: Call +233 245 357 611, Email support@asanglobal.com, or use WhatsApp for instant assistance. Our team is available Monday-Friday 8AM-6PM GMT.";
-    }
-    if (lowerMessage.includes('vehicle') || lowerMessage.includes('car') || lowerMessage.includes('type')) {
-        return "We import all vehicle types: Sedans, SUVs, Trucks, Motorcycles, Vans, and specialty vehicles. We source from Japan, USA, UK, Germany, UAE, and South Korea. Popular imports include Toyota Land Cruiser, Honda Accord, BMW X5, and Mercedes G-Class.";
-    }
-    if (lowerMessage.includes('country') || lowerMessage.includes('origin') || lowerMessage.includes('from')) {
-        return "We import vehicles from: Japan (Tokyo), USA (Los Angeles), UK (London), Germany (Hamburg), UAE (Dubai), and South Korea (Seoul). We deliver to Ghana, Nigeria, Kenya, South Africa, and other African countries.";
-    }
-    if (lowerMessage.includes('long') || lowerMessage.includes('time') || lowerMessage.includes('duration') || lowerMessage.includes('how long')) {
-        return "Import duration varies by origin: Japan (4-5 weeks), USA (3-4 weeks), Europe (3-4 weeks), UAE (2-3 weeks). This includes sourcing, shipping, customs clearance, and delivery.";
-    }
-    if (lowerMessage.includes('asan') || lowerMessage.includes('company') || lowerMessage.includes('about')) {
-        return "Asan Global is a premier vehicle import service provider specializing in end-to-end vehicle sourcing, shipping, customs clearance, and delivery across Africa. We have over 10 years of experience and have successfully imported 5,000+ vehicles.";
-    }
-    if (lowerMessage.includes('staff') || lowerMessage.includes('team') || lowerMessage.includes('agent')) {
-        return "Our team includes expert import agents, customs brokers, logistics coordinators, and customer support specialists. Each import is assigned a dedicated staff member who handles your case from start to finish.";
-    }
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-        return "Hello! Welcome to Asan Global. How can I help you with your vehicle import needs today?";
-    }
-    if (lowerMessage.includes('thank')) {
-        return "You're welcome! If you need any further assistance, I'm here to help. Have a great day!";
-    }
-    if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye')) {
-        return "Goodbye! Feel free to return anytime you need assistance with your imports. Safe travels!";
-    }
-    return "I understand you're asking about: \"" + message + "\". I can help you with vehicle imports, tracking, payments, documentation, or general questions about our services. Could you please provide more specific details so I can assist you better?";
-}
 </script>
 </body>
 </html>

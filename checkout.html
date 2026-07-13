@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | Asan Global Home Appliances</title>
+<meta name="description" content="Complete your appliance order — secure checkout with multiple payment options and delivery to Ghana.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ============================================================
+   CHECKOUT — Professional 4-Step Flow
+   ============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--ag-font); background: var(--ag-page-gradient); color: var(--ag-text-900); min-height: 100vh; }
+
+/* ---- Top bar ---- */
+.ck-topbar {
+  background: #fff; border-bottom: 1px solid var(--ag-border);
+  padding: 0 32px; height: 64px; display: flex; align-items: center;
+  justify-content: space-between; gap: 16px; position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 1px 3px rgba(15,23,42,.06);
+}
+.ck-topbar-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.ck-topbar-brand svg { flex-shrink: 0; }
+.ck-topbar-brand-text h2 { font-size: 18px; font-weight: 800; color: var(--ag-navy-900); margin: 0; }
+.ck-topbar-brand-text span { font-size: 11px; color: var(--ag-text-400); }
+.ck-secure-badge { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--ag-success); background: var(--ag-success-bg); padding: 6px 14px; border-radius: var(--ag-radius-pill); }
+.ck-back-link { display: flex; align-items: center; gap: 6px; color: var(--ag-text-600); font-size: 13.5px; font-weight: 600; text-decoration: none; transition: color .18s; }
+.ck-back-link:hover { color: var(--ag-blue-600); }
+
+/* ---- Progress steps ---- */
+.ck-progress { background: #fff; border-bottom: 1px solid var(--ag-border); padding: 20px 32px; }
+.ck-steps { display: flex; align-items: center; max-width: 680px; margin: 0 auto; gap: 0; }
+.ck-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; }
+.ck-step:not(:last-child)::after {
+  content: ''; position: absolute; top: 18px; left: 50%; right: -50%;
+  height: 2px; background: var(--ag-border); z-index: 0;
+}
+.ck-step.done:not(:last-child)::after  { background: var(--ag-blue-600); }
+.ck-step.active:not(:last-child)::after{ background: linear-gradient(90deg, var(--ag-blue-600), var(--ag-border)); }
+
+.ck-step-circle {
+  width: 36px; height: 36px; border-radius: 50%; border: 2.5px solid var(--ag-border);
+  background: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 700;
+  color: var(--ag-text-400); z-index: 1; position: relative; transition: all .28s;
+}
+.ck-step.done   .ck-step-circle { background: var(--ag-blue-600); border-color: var(--ag-blue-600); color: #fff; }
+.ck-step.active .ck-step-circle { border-color: var(--ag-blue-600); color: var(--ag-blue-600); box-shadow: 0 0 0 5px rgba(37,99,235,.14); }
+.ck-step-label { font-size: 11.5px; font-weight: 600; color: var(--ag-text-400); text-align: center; line-height: 1.3; }
+.ck-step.done   .ck-step-label { color: var(--ag-text-900); }
+.ck-step.active .ck-step-label { color: var(--ag-blue-600); }
+
+/* ---- Main layout ---- */
+.ck-layout { max-width: 1100px; margin: 0 auto; padding: 32px 24px; display: grid; grid-template-columns: 1fr 380px; gap: 28px; align-items: start; }
+
+/* ---- Panel card ---- */
+.ck-panel {
+  background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg);
+  overflow: hidden; box-shadow: var(--ag-shadow-sm);
+}
+.ck-panel-head { padding: 22px 26px 18px; border-bottom: 1px solid var(--ag-border); }
+.ck-panel-head h3 { margin: 0; font-size: 17px; font-weight: 700; color: var(--ag-text-900); }
+.ck-panel-head p  { margin: 4px 0 0; font-size: 13px; color: var(--ag-text-600); }
+.ck-panel-body { padding: 24px 26px; }
+
+/* ---- Form grid ---- */
+.ck-form-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ck-form-full   { grid-column: 1 / -1; }
+.ck-form-label  { display: block; font-size: 13px; font-weight: 600; color: var(--ag-text-600); margin-bottom: 6px; }
+.ck-form-input, .ck-form-select {
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--ag-border);
+  border-radius: var(--ag-radius-sm); font-family: var(--ag-font); font-size: 14px;
+  color: var(--ag-text-900); background: #fff; transition: border-color .18s, box-shadow .18s;
+}
+.ck-form-input:focus, .ck-form-select:focus {
+  border-color: var(--ag-blue-500); box-shadow: 0 0 0 4px rgba(59,130,246,.12); outline: none;
+}
+.ck-form-input::placeholder { color: var(--ag-text-400); }
+.ck-form-hint { font-size: 11.5px; color: var(--ag-text-400); margin-top: 4px; }
+.ck-field { display: flex; flex-direction: column; }
+
+/* ---- Shipping options ---- */
+.ck-shipping-opts { display: flex; flex-direction: column; gap: 12px; }
+.ck-shipping-opt {
+  display: flex; align-items: center; gap: 14px; padding: 16px 18px;
+  border: 2px solid var(--ag-border); border-radius: var(--ag-radius-md);
+  cursor: pointer; transition: all .2s; position: relative;
+}
+.ck-shipping-opt:hover { border-color: var(--ag-blue-500); background: #f0f7ff; }
+.ck-shipping-opt.selected { border-color: var(--ag-blue-600); background: #eff6ff; }
+.ck-shipping-opt input[type="radio"] { accent-color: var(--ag-blue-600); width: 18px; height: 18px; flex-shrink: 0; }
+.ck-shipping-icon { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; font-size: 18px; color: #fff; flex-shrink: 0; }
+.ck-shipping-icon.std   { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700)); }
+.ck-shipping-icon.exp   { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.ck-shipping-icon.pickup{ background: linear-gradient(135deg, #16a34a, #15803d); }
+.ck-shipping-info { flex: 1; }
+.ck-shipping-info strong { font-size: 14px; font-weight: 700; color: var(--ag-text-900); display: block; margin-bottom: 2px; }
+.ck-shipping-info span   { font-size: 12.5px; color: var(--ag-text-600); }
+.ck-shipping-price { font-size: 15px; font-weight: 800; color: var(--ag-navy-800); }
+.ck-shipping-badge { position: absolute; top: -9px; right: 14px; background: var(--ag-blue-600); color: #fff; font-size: 10.5px; font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+
+/* ---- Payment methods ---- */
+.ck-pay-tabs { display: flex; background: var(--ag-surface-muted); border-radius: 12px; padding: 4px; margin-bottom: 20px; gap: 4px; }
+.ck-pay-tab {
+  flex: 1; padding: 10px 8px; border: none; background: transparent; font-family: var(--ag-font);
+  font-size: 13px; font-weight: 600; color: var(--ag-text-600); border-radius: 9px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px; transition: all .22s;
+}
+.ck-pay-tab.active { background: #fff; color: var(--ag-text-900); box-shadow: 0 2px 8px rgba(15,23,42,.1); }
+.ck-pay-tab i { font-size: 14px; }
+
+.ck-pay-panel { display: none; }
+.ck-pay-panel.active { display: block; animation: ag-fade-in .3s ease; }
+
+.ck-card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.ck-card-icons { display: flex; gap: 8px; margin-top: 14px; align-items: center; flex-wrap: wrap; }
+.ck-card-icon  { height: 26px; padding: 0 10px; background: var(--ag-surface-muted); border: 1px solid var(--ag-border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+
+.ck-mobile-money { display: flex; flex-direction: column; gap: 14px; }
+.ck-mobile-provider {
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  border: 2px solid var(--ag-border); border-radius: var(--ag-radius-md); cursor: pointer; transition: all .2s;
+}
+.ck-mobile-provider:hover    { border-color: var(--ag-blue-500); background: #f0f7ff; }
+.ck-mobile-provider.selected { border-color: var(--ag-blue-600); background: #eff6ff; }
+.ck-mobile-provider input    { accent-color: var(--ag-blue-600); width: 18px; height: 18px; flex-shrink: 0; }
+.ck-provider-dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 12px; color: #fff; flex-shrink: 0; }
+.ck-provider-dot.mtn  { background: #ffcc00; color: #333; }
+.ck-provider-dot.voda { background: #e2001a; }
+.ck-provider-dot.airt { background: #ff0000; }
+.ck-provider-dot.bank { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700)); }
+
+.ck-bank-info { background: var(--ag-surface-muted); border: 1px solid var(--ag-border); border-radius: var(--ag-radius-md); padding: 18px 20px; margin-top: 8px; }
+.ck-bank-row  { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--ag-border); font-size: 13.5px; }
+.ck-bank-row:last-child { border-bottom: none; }
+.ck-bank-row .lbl { color: var(--ag-text-600); font-weight: 500; }
+.ck-bank-row .val { font-weight: 700; color: var(--ag-text-900); display: flex; align-items: center; gap: 8px; }
+.ck-copy-btn { background: none; border: none; color: var(--ag-blue-600); cursor: pointer; font-size: 13px; padding: 2px 6px; transition: color .18s; }
+.ck-copy-btn:hover { color: var(--ag-navy-700); }
+
+/* ---- Order summary (sidebar) ---- */
+.ck-summary { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); position: sticky; top: 84px; }
+.ck-summary-head { padding: 18px 22px 14px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; }
+.ck-summary-head h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+.ck-summary-head a  { font-size: 12.5px; color: var(--ag-blue-600); font-weight: 600; text-decoration: none; }
+.ck-summary-head a:hover { text-decoration: underline; }
+
+.ck-summary-items { padding: 12px 22px; max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 0; }
+.ck-summary-item {
+  display: flex; gap: 12px; align-items: flex-start; padding: 12px 0;
+  border-bottom: 1px solid var(--ag-border);
+}
+.ck-summary-item:last-child { border-bottom: none; }
+.ck-summary-item-thumb {
+  width: 52px; height: 52px; border-radius: var(--ag-radius-sm); overflow: hidden;
+  background: var(--ag-surface-muted); display: grid; place-items: center;
+  font-size: 22px; color: var(--ag-text-400); flex-shrink: 0; border: 1px solid var(--ag-border);
+}
+.ck-summary-item-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ck-summary-item-info { flex: 1; min-width: 0; }
+.ck-summary-item-name  { font-size: 13.5px; font-weight: 700; color: var(--ag-text-900); line-height: 1.3; margin-bottom: 3px; }
+.ck-summary-item-cat   { font-size: 11.5px; color: var(--ag-text-400); }
+.ck-summary-item-price { font-size: 14px; font-weight: 800; color: var(--ag-navy-800); text-align: right; flex-shrink: 0; }
+
+.ck-summary-totals { padding: 16px 22px; border-top: 1px solid var(--ag-border); }
+.ck-total-row  { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--ag-text-600); padding: 5px 0; }
+.ck-total-row.grand { font-size: 16px; font-weight: 800; color: var(--ag-text-900); padding-top: 12px; border-top: 2px solid var(--ag-blue-600); margin-top: 6px; }
+.ck-total-row.grand span:last-child { color: var(--ag-blue-600); }
+.ck-total-row.shipping-free span:last-child { color: var(--ag-success); font-weight: 700; }
+
+.ck-summary-footer { padding: 16px 22px 20px; }
+.ck-summary-secure { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ag-text-400); margin-top: 10px; justify-content: center; }
+.ck-summary-secure i { color: var(--ag-success); }
+
+/* ---- CTA button ---- */
+.ck-cta {
+  width: 100%; padding: 16px; border: none; border-radius: var(--ag-radius-pill);
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  color: #fff; font-family: var(--ag-font); font-size: 15.5px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: transform .18s, box-shadow .18s;
+  box-shadow: 0 10px 24px rgba(37,99,235,.32);
+}
+.ck-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(37,99,235,.40); }
+.ck-cta:active { transform: scale(.98); }
+
+/* ---- Trust badges ---- */
+.ck-trust-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 18px; }
+.ck-trust-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--ag-text-400); font-weight: 600; }
+.ck-trust-item i { font-size: 14px; color: var(--ag-success); }
+
+/* ---- Confirmation / Success screen ---- */
+.ck-success { text-align: center; padding: 60px 32px 80px; animation: ag-fade-in .5s ease; }
+.ck-success-icon {
+  width: 96px; height: 96px; border-radius: 50%; margin: 0 auto 24px;
+  background: linear-gradient(135deg, #16a34a, #4ade80);
+  display: grid; place-items: center; font-size: 42px; color: #fff;
+  box-shadow: 0 16px 40px rgba(22,163,74,.3);
+  animation: ck-pop .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes ck-pop { from{transform:scale(0);opacity:0;} to{transform:scale(1);opacity:1;} }
+.ck-success h2 { font-size: 28px; font-weight: 800; color: var(--ag-text-900); margin-bottom: 10px; }
+.ck-success p  { font-size: 15px; color: var(--ag-text-600); max-width: 500px; margin: 0 auto 28px; line-height: 1.7; }
+.ck-tracking-box {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: var(--ag-blue-100); border: 2px solid var(--ag-blue-500);
+  border-radius: var(--ag-radius-md); padding: 14px 22px; margin-bottom: 32px;
+}
+.ck-tracking-box .lbl { font-size: 12px; font-weight: 700; color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+.ck-tracking-box .num { font-size: 20px; font-weight: 800; color: var(--ag-navy-900); font-family: monospace; letter-spacing: 1px; }
+.ck-success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+.ck-success-timeline { max-width: 520px; margin: 36px auto 0; text-align: left; }
+.ck-success-timeline h4 { font-size: 14px; font-weight: 700; color: var(--ag-text-900); margin-bottom: 14px; text-align: center; }
+.ck-next-steps { display: flex; flex-direction: column; gap: 10px; }
+.ck-next-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--ag-surface-muted); border: 1px solid var(--ag-border);
+  border-radius: var(--ag-radius-md); padding: 14px 16px;
+}
+.ck-next-step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--ag-blue-600); color: #fff; font-size: 12px; font-weight: 800; display: grid; place-items: center; flex-shrink: 0; }
+.ck-next-step-text strong { font-size: 13.5px; font-weight: 700; color: var(--ag-text-900); display: block; margin-bottom: 2px; }
+.ck-next-step-text span   { font-size: 12.5px; color: var(--ag-text-600); }
+
+/* ---- Empty cart ---- */
+.ck-empty { text-align: center; padding: 80px 32px; }
+.ck-empty i { font-size: 64px; color: var(--ag-text-400); opacity: .3; display: block; margin-bottom: 18px; }
+.ck-empty h3 { font-size: 22px; font-weight: 800; color: var(--ag-text-900); margin-bottom: 8px; }
+.ck-empty p  { font-size: 14px; color: var(--ag-text-600); margin-bottom: 24px; }
+
+/* ---- Responsive ---- */
+@media (max-width: 860px) {
+  .ck-layout { grid-template-columns: 1fr; }
+  .ck-summary { position: static; }
+}
+@media (max-width: 600px) {
+  .ck-layout { padding: 16px; gap: 18px; }
+  .ck-form-grid { grid-template-columns: 1fr; }
+  .ck-card-row  { grid-template-columns: 1fr; }
+  .ck-topbar { padding: 0 16px; }
+  .ck-progress { padding: 16px; }
+  .ck-step-label { display: none; }
+  .ck-success { padding: 40px 16px 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="ck-topbar">
+  <a href="appliances.html" class="ck-back-link">
+    <i class="fas fa-arrow-left"></i> Back to Shop
+  </a>
+  <a href="index.html" class="ck-topbar-brand">
+    <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="48" height="48" rx="10" fill="url(#ckLogoGrad)"/>
+      <defs><linearGradient id="ckLogoGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#2563eb"/><stop offset="1" stop-color="#0f2440"/></linearGradient></defs>
+      <path d="M8 30h32v3a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-3z" fill="#fff" opacity=".9"/>
+      <path d="M10 30l4-9h20l4 9H10z" fill="#fff" opacity=".9"/>
+      <path d="M16 21l3-5h10l3 5H16z" fill="#00d4ff"/>
+      <circle cx="15" cy="31" r="4" fill="#0f2440"/><circle cx="15" cy="31" r="2" fill="#00d4ff"/>
+      <circle cx="33" cy="31" r="4" fill="#0f2440"/><circle cx="33" cy="31" r="2" fill="#00d4ff"/>
+      <rect x="38" y="27" width="3" height="2" rx="1" fill="#ffd54f"/>
+    </svg>
+    <div class="ck-topbar-brand-text">
+      <h2>Asan Global</h2>
+      <span>Secure Checkout</span>
+    </div>
+  </a>
+  <div class="ck-secure-badge">
+    <i class="fas fa-lock"></i> SSL Secured
+  </div>
+</header>
+
+<!-- PROGRESS STEPS -->
+<div class="ck-progress">
+  <div class="ck-steps" id="ckSteps">
+    <div class="ck-step active" data-step="1">
+      <div class="ck-step-circle"><i class="fas fa-shopping-cart"></i></div>
+      <span class="ck-step-label">Cart Review</span>
+    </div>
+    <div class="ck-step" data-step="2">
+      <div class="ck-step-circle"><i class="fas fa-user"></i></div>
+      <span class="ck-step-label">Your Details</span>
+    </div>
+    <div class="ck-step" data-step="3">
+      <div class="ck-step-circle"><i class="fas fa-credit-card"></i></div>
+      <span class="ck-step-label">Payment</span>
+    </div>
+    <div class="ck-step" data-step="4">
+      <div class="ck-step-circle"><i class="fas fa-check"></i></div>
+      <span class="ck-step-label">Confirmation</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT (steps 1–3 use this layout; step 4 is full-width) -->
+<div id="ckMainLayout" class="ck-layout">
+
+  <!-- LEFT: Step panels -->
+  <div id="ckPanelArea">
+
+    <!-- ========== STEP 1 — Cart Review ========== -->
+    <div id="step1Panel" class="ck-panel">
+      <div class="ck-panel-head">
+        <h3><i class="fas fa-shopping-basket" style="color:var(--ag-blue-600);margin-right:8px;"></i>Review Your Cart</h3>
+        <p>Check all items before continuing to checkout.</p>
+      </div>
+      <div class="ck-panel-body" id="step1Body"></div>
+    </div>
+
+    <!-- ========== STEP 2 — Customer Details + Shipping ========== -->
+    <div id="step2Panel" class="ck-panel" style="display:none;">
+      <div class="ck-panel-head">
+        <h3><i class="fas fa-user" style="color:var(--ag-blue-600);margin-right:8px;"></i>Your Details &amp; Delivery</h3>
+        <p>Where should we deliver your order?</p>
+      </div>
+      <div class="ck-panel-body">
+        <form id="detailsForm" novalidate>
+
+          <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ag-text-400);margin-bottom:14px;">Contact Information</p>
+          <div class="ck-form-grid">
+            <div class="ck-field">
+              <label class="ck-form-label" for="ckFirstName">First Name *</label>
+              <input class="ck-form-input" type="text" id="ckFirstName" placeholder="Kwame" required autocomplete="given-name">
+            </div>
+            <div class="ck-field">
+              <label class="ck-form-label" for="ckLastName">Last Name *</label>
+              <input class="ck-form-input" type="text" id="ckLastName" placeholder="Asante" required autocomplete="family-name">
+            </div>
+            <div class="ck-field">
+              <label class="ck-form-label" for="ckEmail">Email Address *</label>
+              <input class="ck-form-input" type="email" id="ckEmail" placeholder="you@example.com" required autocomplete="email">
+            </div>
+            <div class="ck-field">
+              <label class="ck-form-label" for="ckPhone">Phone / WhatsApp *</label>
+              <input class="ck-form-input" type="tel" id="ckPhone" placeholder="+233 24 535 7611" required autocomplete="tel">
+            </div>
+          </div>
+
+          <div style="height:1px;background:var(--ag-border);margin:22px 0;"></div>
+          <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ag-text-400);margin-bottom:14px;">Delivery Address</p>
+          <div class="ck-form-grid">
+            <div class="ck-field ck-form-full">
+              <label class="ck-form-label" for="ckAddress">Street Address *</label>
+              <input class="ck-form-input" type="text" id="ckAddress" placeholder="House No. 14, Ring Road Central" required autocomplete="street-address">
+            </div>
+            <div class="ck-field">
+              <label class="ck-form-label" for="ckCity">City *</label>
+              <input class="ck-form-input" type="text" id="ckCity" placeholder="Accra" required autocomplete="address-level2">
+            </div>
+            <div class="ck-field">
+              <label class="ck-form-label" for="ckRegion">Region</label>
+              <select class="ck-form-select" id="ckRegion" autocomplete="address-level1">
+                <option value="">Select Region</option>
+                <option>Greater Accra</option><option>Ashanti</option><option>Central</option>
+                <option>Western</option><option>Eastern</option><option>Volta</option>
+                <option>Northern</option><option>Upper East</option><option>Upper West</option>
+                <option>Bono</option><option>Bono East</option><option>Ahafo</option>
+                <option>Savannah</option><option>North East</option><option>Oti</option>
+                <option>Western North</option>
+              </select>
+            </div>
+            <div class="ck-field ck-form-full">
+              <label class="ck-form-label" for="ckNotes">Delivery Notes <span style="font-weight:400;color:var(--ag-text-400);">(optional)</span></label>
+              <input class="ck-form-input" type="text" id="ckNotes" placeholder="e.g. Landmark, gate colour, best time to deliver">
+            </div>
+          </div>
+
+          <div style="height:1px;background:var(--ag-border);margin:22px 0;"></div>
+          <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ag-text-400);margin-bottom:14px;">Shipping Method</p>
+          <div class="ck-shipping-opts">
+            <label class="ck-shipping-opt selected" id="shipOpt1">
+              <input type="radio" name="shipping" value="standard" checked>
+              <div class="ck-shipping-icon std"><i class="fas fa-truck"></i></div>
+              <div class="ck-shipping-info">
+                <strong>Standard Delivery</strong>
+                <span>3–5 business days · Greater Accra &amp; nearby regions</span>
+              </div>
+              <span class="ck-shipping-price">$12</span>
+              <span class="ck-shipping-badge">Most Popular</span>
+            </label>
+            <label class="ck-shipping-opt" id="shipOpt2">
+              <input type="radio" name="shipping" value="express">
+              <div class="ck-shipping-icon exp"><i class="fas fa-bolt"></i></div>
+              <div class="ck-shipping-info">
+                <strong>Express Delivery</strong>
+                <span>Next business day · Accra &amp; Tema only</span>
+              </div>
+              <span class="ck-shipping-price">$28</span>
+            </label>
+            <label class="ck-shipping-opt" id="shipOpt3">
+              <input type="radio" name="shipping" value="pickup">
+              <div class="ck-shipping-icon pickup"><i class="fas fa-store"></i></div>
+              <div class="ck-shipping-info">
+                <strong>Pickup from Tema Port Office</strong>
+                <span>Ready in 1–2 days · Near Tema Port, Greater Accra</span>
+              </div>
+              <span class="ck-shipping-price" style="color:var(--ag-success);font-weight:800;">FREE</span>
+            </label>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========== STEP 3 — Payment ========== -->
+    <div id="step3Panel" class="ck-panel" style="display:none;">
+      <div class="ck-panel-head">
+        <h3><i class="fas fa-credit-card" style="color:var(--ag-blue-600);margin-right:8px;"></i>Payment Method</h3>
+        <p>All transactions are encrypted and secure.</p>
+      </div>
+      <div class="ck-panel-body">
+
+        <div class="ck-pay-tabs">
+          <button class="ck-pay-tab active" onclick="switchPayTab('card', this)"><i class="fas fa-credit-card"></i> Card</button>
+          <button class="ck-pay-tab" onclick="switchPayTab('mobile', this)"><i class="fas fa-mobile-alt"></i> Mobile Money</button>
+          <button class="ck-pay-tab" onclick="switchPayTab('bank', this)"><i class="fas fa-university"></i> Bank Transfer</button>
+          <button class="ck-pay-tab" onclick="switchPayTab('cod', this)"><i class="fas fa-hand-holding-usd"></i> Pay on Delivery</button>
+        </div>
+
+        <!-- Card -->
+        <div class="ck-pay-panel active" id="payCard">
+          <div class="ck-field">
+            <label class="ck-form-label" for="ckCardName">Name on Card</label>
+            <input class="ck-form-input" type="text" id="ckCardName" placeholder="Kwame Asante" autocomplete="cc-name">
+          </div>
+          <div class="ck-field" style="margin-top:14px;">
+            <label class="ck-form-label" for="ckCardNum">Card Number</label>
+            <input class="ck-form-input" type="text" id="ckCardNum" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number" inputmode="numeric">
+          </div>
+          <div class="ck-card-row">
+            <div class="ck-field">
+              <label class="ck-form-label" for="ckCardExpiry">Expiry Date</label>
+              <input class="ck-form-input" type="text" id="ckCardExpiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp">
+            </div>
+            <div class="ck-field">
+              <label class="ck-form-label" for="ckCardCvv">CVV</label>
+              <input class="ck-form-input" type="text" id="ckCardCvv" placeholder="•••" maxlength="4" autocomplete="cc-csc" inputmode="numeric">
+              <span class="ck-form-hint"><i class="fas fa-info-circle"></i> 3 digits on back of card</span>
+            </div>
+          </div>
+          <div class="ck-card-icons">
+            <span style="font-size:11.5px;color:var(--ag-text-400);font-weight:600;">We accept:</span>
+            <div class="ck-card-icon"><i class="fab fa-cc-visa" style="color:#1a1f71;"></i></div>
+            <div class="ck-card-icon"><i class="fab fa-cc-mastercard" style="color:#eb001b;"></i></div>
+            <div class="ck-card-icon"><i class="fab fa-cc-amex" style="color:#007bc1;"></i></div>
+          </div>
+        </div>
+
+        <!-- Mobile Money -->
+        <div class="ck-pay-panel" id="payMobile">
+          <div class="ck-mobile-money" id="mobileProviders">
+            <label class="ck-mobile-provider selected">
+              <input type="radio" name="mobileProvider" value="MTN" checked>
+              <div class="ck-provider-dot mtn">MTN</div>
+              <div><strong style="font-size:14px;font-weight:700;display:block;color:var(--ag-text-900);">MTN Mobile Money</strong><span style="font-size:12.5px;color:var(--ag-text-600);">*170# · Instant confirmation</span></div>
+            </label>
+            <label class="ck-mobile-provider">
+              <input type="radio" name="mobileProvider" value="Vodafone">
+              <div class="ck-provider-dot voda">VOD</div>
+              <div><strong style="font-size:14px;font-weight:700;display:block;color:var(--ag-text-900);">Vodafone Cash</strong><span style="font-size:12.5px;color:var(--ag-text-600);">*110# · Instant confirmation</span></div>
+            </label>
+            <label class="ck-mobile-provider">
+              <input type="radio" name="mobileProvider" value="AirtelTigo">
+              <div class="ck-provider-dot airt">AIR</div>
+              <div><strong style="font-size:14px;font-weight:700;display:block;color:var(--ag-text-900);">AirtelTigo Money</strong><span style="font-size:12.5px;color:var(--ag-text-600);">*500# · Instant confirmation</span></div>
+            </label>
+          </div>
+          <div style="margin-top:16px;">
+            <label class="ck-form-label" for="ckMobileNum">Mobile Money Number</label>
+            <input class="ck-form-input" type="tel" id="ckMobileNum" placeholder="e.g. 024 535 7611" autocomplete="tel">
+            <span class="ck-form-hint">You will receive a push notification to approve the payment.</span>
+          </div>
+        </div>
+
+        <!-- Bank Transfer -->
+        <div class="ck-pay-panel" id="payBank">
+          <p style="font-size:13.5px;color:var(--ag-text-600);margin-bottom:14px;line-height:1.6;">Transfer the exact order total to the account below, then click <strong>Place Order</strong>. Our team will confirm within 2 business hours.</p>
+          <div class="ck-bank-info">
+            <div class="ck-bank-row"><span class="lbl">Bank</span><span class="val">GCB Bank Ghana</span></div>
+            <div class="ck-bank-row"><span class="lbl">Account Name</span><span class="val">Asan Global Ltd<button class="ck-copy-btn" onclick="copyText('Asan Global Ltd')" title="Copy"><i class="fas fa-copy"></i></button></span></div>
+            <div class="ck-bank-row"><span class="lbl">Account Number</span><span class="val">1234567890<button class="ck-copy-btn" onclick="copyText('1234567890')" title="Copy"><i class="fas fa-copy"></i></button></span></div>
+            <div class="ck-bank-row"><span class="lbl">Branch</span><span class="val">Tema Main Branch</span></div>
+            <div class="ck-bank-row"><span class="lbl">Reference</span><span class="val" id="bankRef">—<button class="ck-copy-btn" onclick="copyText(document.getElementById('bankRef').textContent.slice(1))" title="Copy"><i class="fas fa-copy"></i></button></span></div>
+          </div>
+        </div>
+
+        <!-- Pay on Delivery -->
+        <div class="ck-pay-panel" id="payCod">
+          <div style="display:flex;align-items:flex-start;gap:14px;background:var(--ag-success-bg);border:1px solid rgba(22,163,74,.25);border-radius:var(--ag-radius-md);padding:18px;">
+            <i class="fas fa-hand-holding-usd" style="color:var(--ag-success);font-size:22px;flex-shrink:0;margin-top:2px;"></i>
+            <div>
+              <strong style="font-size:14px;font-weight:700;display:block;margin-bottom:4px;color:var(--ag-text-900);">Pay on Delivery</strong>
+              <p style="font-size:13px;color:var(--ag-text-600);line-height:1.6;margin:0;">Pay in cash or mobile money when your order arrives. Available for Greater Accra, Tema, and nearby regions only. A small deposit may be required for orders above $500.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /ckPanelArea -->
+
+  <!-- RIGHT: Order summary sidebar -->
+  <aside class="ck-summary" id="ckSummary">
+    <div class="ck-summary-head">
+      <h3>Order Summary</h3>
+      <a href="appliances.html">Edit Cart</a>
+    </div>
+    <div class="ck-summary-items" id="ckSummaryItems"></div>
+    <div class="ck-summary-totals">
+      <div class="ck-total-row"><span>Subtotal</span><span id="ckSubtotal">$0.00</span></div>
+      <div class="ck-total-row" id="ckShippingRow"><span>Shipping</span><span id="ckShippingCost">$12.00</span></div>
+      <div class="ck-total-row"><span>Tax (estimated)</span><span id="ckTax">$0.00</span></div>
+      <div class="ck-total-row grand"><span>Total</span><span id="ckGrandTotal">$0.00</span></div>
+    </div>
+    <div class="ck-summary-footer">
+      <button class="ck-cta" id="ckCtaBtn" onclick="handleCta()">
+        <i class="fas fa-arrow-right" id="ckCtaIcon"></i>
+        <span id="ckCtaLabel">Continue to Details</span>
+      </button>
+      <div class="ck-trust-row">
+        <span class="ck-trust-item"><i class="fas fa-lock"></i> Secure Checkout</span>
+        <span class="ck-trust-item"><i class="fas fa-shield-alt"></i> Buyer Protection</span>
+        <span class="ck-trust-item"><i class="fas fa-undo"></i> Easy Returns</span>
+      </div>
+    </div>
+    <div class="ck-summary-secure">
+      <i class="fas fa-lock"></i> 256-bit SSL encryption · Your data is safe
+    </div>
+  </aside>
+
+</div><!-- /ckMainLayout -->
+
+<!-- STEP 4 — Full-width Confirmation (hidden until placed) -->
+<div id="step4Screen" style="display:none;max-width:700px;margin:0 auto;padding:0 24px 60px;">
+  <div class="ck-panel">
+    <div class="ck-success">
+      <div class="ck-success-icon"><i class="fas fa-check"></i></div>
+      <h2>Order Placed Successfully!</h2>
+      <p>Thank you for your order. Our team will review it and contact you within 2 business hours to confirm pricing, availability, and delivery schedule.</p>
+      <div class="ck-tracking-box">
+        <div><div class="lbl">Order Reference</div><div class="num" id="ckOrderRef">—</div></div>
+      </div>
+      <div class="ck-success-actions">
+        <a href="appliances.html" class="ag-btn ag-btn-secondary" style="text-decoration:none;"><i class="fas fa-store"></i> Continue Shopping</a>
+        <a href="dashboard.html" class="ag-btn ag-btn-primary" style="text-decoration:none;"><i class="fas fa-th-large"></i> Go to Dashboard</a>
+      </div>
+      <div class="ck-success-timeline">
+        <h4>What happens next?</h4>
+        <div class="ck-next-steps">
+          <div class="ck-next-step"><div class="ck-next-step-num">1</div><div class="ck-next-step-text"><strong>Team Review</strong><span>Our team checks stock and confirms your order within 2 hours.</span></div></div>
+          <div class="ck-next-step"><div class="ck-next-step-num">2</div><div class="ck-next-step-text"><strong>Payment Confirmation</strong><span>You receive a WhatsApp/email confirmation with payment details.</span></div></div>
+          <div class="ck-next-step"><div class="ck-next-step-num">3</div><div class="ck-next-step-text"><strong>Delivery Scheduled</strong><span>Delivery is booked and you get a date and time window.</span></div></div>
+          <div class="ck-next-step"><div class="ck-next-step-num">4</div><div class="ck-next-step-text"><strong>Delivered to Your Door</strong><span>Your appliance arrives and is set up if you requested installation.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="security-utils.js"></script>
+<script>
+/* ================================================================
+   CHECKOUT — Full payment flow
+   ================================================================ */
+'use strict';
+
+const esc = v => window.securityUtils?.escapeHtml
+  ? window.securityUtils.escapeHtml(v)
+  : String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+/* ---- Icons per appliance category ---- */
+const CAT_ICONS = {
+  'Refrigerators':'fa-snowflake','Washing Machines':'fa-soap',
+  'Air Conditioners':'fa-wind','Televisions':'fa-tv',
+  'Microwaves':'fa-utensils','Cookers':'fa-fire-burner',
+  'Water Heaters':'fa-hot-tub-person'
+};
+function catIcon(cat){ return CAT_ICONS[cat] || 'fa-blender'; }
+
+/* ---- Shipping rates (USD) ---- */
+const SHIPPING_RATES = { standard: 12, express: 28, pickup: 0 };
+let selectedShipping = 'standard';
+let currentStep = 1;
+let cart = [];
+
+/* ================================================================
+   INIT
+================================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  cart = loadCart();
+
+  if (!cart.length) {
+    showEmptyCart();
+    return;
+  }
+
+  renderSummaryItems();
+  updateTotals();
+  prefillFromSession();
+  wireShippingOpts();
+  wireCardFormatting();
+  wireMobileProviders();
+  updateStepUI(1);
+
+  /* Generate a bank transfer reference once per page load */
+  const ref = 'ASAN-' + Date.now().toString(36).toUpperCase();
+  const bankRefEl = document.getElementById('bankRef');
+  if (bankRefEl) bankRefEl.childNodes[0].textContent = ref + ' ';
+});
+
+/* ================================================================
+   CART
+================================================================ */
+function loadCart() {
+  try { return JSON.parse(localStorage.getItem('asan_cart') || '[]'); } catch { return []; }
+}
+
+function saveCart(c) {
+  localStorage.setItem('asan_cart', JSON.stringify(c));
+}
+
+function showEmptyCart() {
+  document.getElementById('step1Body').innerHTML = `
+    <div class="ck-empty">
+      <i class="fas fa-shopping-cart"></i>
+      <h3>Your cart is empty</h3>
+      <p>Browse our appliances catalogue and add items before checking out.</p>
+      <a href="appliances.html" class="ck-cta" style="width:auto;padding:14px 32px;text-decoration:none;display:inline-flex;">
+        <i class="fas fa-store"></i> Browse Appliances
+      </a>
+    </div>`;
+  document.getElementById('ckCtaBtn').disabled = true;
+  document.getElementById('ckCtaBtn').style.opacity = '0.5';
+}
+
+/* ================================================================
+   SUMMARY SIDEBAR
+================================================================ */
+function renderSummaryItems() {
+  const container = document.getElementById('ckSummaryItems');
+  container.innerHTML = cart.map(item => `
+    <div class="ck-summary-item">
+      <div class="ck-summary-item-thumb">
+        ${item.image
+          ? `<img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy">`
+          : `<i class="fas ${catIcon(item.category)}"></i>`}
+      </div>
+      <div class="ck-summary-item-info">
+        <div class="ck-summary-item-name">${esc(item.name)}</div>
+        <div class="ck-summary-item-cat">${esc(item.category || 'Appliance')} × ${esc(String(item.qty || 1))}</div>
+      </div>
+      <div class="ck-summary-item-price">${fmtPrice((item.price || 0) * (item.qty || 1))}</div>
+    </div>`).join('');
+}
+
+function updateTotals() {
+  const subtotal = cart.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
+  const shipping = SHIPPING_RATES[selectedShipping] ?? 12;
+  const tax = 0; /* Tax handled at fulfilment — shown as $0 client-side */
+  const grand = subtotal + shipping + tax;
+
+  document.getElementById('ckSubtotal').textContent    = fmtPrice(subtotal);
+  document.getElementById('ckShippingCost').textContent = shipping === 0 ? 'FREE' : fmtPrice(shipping);
+  document.getElementById('ckTax').textContent         = fmtPrice(tax);
+  document.getElementById('ckGrandTotal').textContent  = fmtPrice(grand);
+
+  const shippingRow = document.getElementById('ckShippingRow');
+  shippingRow.classList.toggle('shipping-free', shipping === 0);
+}
+
+function fmtPrice(v) {
+  return '$' + (parseFloat(v) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+/* ================================================================
+   STEP NAVIGATION
+================================================================ */
+function updateStepUI(step) {
+  currentStep = step;
+  document.querySelectorAll('.ck-step').forEach((el, i) => {
+    el.classList.remove('active', 'done');
+    if (i + 1 < step)  el.classList.add('done');
+    if (i + 1 === step) el.classList.add('active');
+  });
+
+  /* Swap step icons to checkmarks when done */
+  document.querySelectorAll('.ck-step.done .ck-step-circle').forEach(c => {
+    if (!c.querySelector('.fa-check')) c.innerHTML = '<i class="fas fa-check"></i>';
+  });
+
+  const panels = ['step1Panel','step2Panel','step3Panel'];
+  panels.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (i + 1 === step) ? '' : 'none';
+  });
+
+  /* CTA label */
+  const labels = { 1: 'Continue to Details', 2: 'Continue to Payment', 3: 'Place Order' };
+  document.getElementById('ckCtaLabel').textContent = labels[step] || 'Place Order';
+  const icon = document.getElementById('ckCtaIcon');
+  icon.className = step === 3 ? 'fas fa-lock' : 'fas fa-arrow-right';
+}
+
+/* Global handler wired to the CTA button in HTML */
+function handleCta() {
+  if (currentStep === 1) {
+    if (!cart.length) return;
+    updateStepUI(2);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  if (currentStep === 2) {
+    if (!validateDetailsForm()) return;
+    updateStepUI(3);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  if (currentStep === 3) {
+    placeOrder();
+  }
+}
+
+/* ================================================================
+   SHIPPING OPTIONS
+================================================================ */
+function wireShippingOpts() {
+  document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      selectedShipping = radio.value;
+      document.querySelectorAll('.ck-shipping-opt').forEach(opt => {
+        opt.classList.toggle('selected', opt.querySelector('input')?.value === selectedShipping);
+      });
+      updateTotals();
+    });
+  });
+}
+
+/* ================================================================
+   PREFILL FROM SESSION
+================================================================ */
+function prefillFromSession() {
+  const user = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
+  if (!user) return;
+
+  const nameparts = (user.name || '').split(' ');
+  const fnEl = document.getElementById('ckFirstName');
+  const lnEl = document.getElementById('ckLastName');
+  const emEl = document.getElementById('ckEmail');
+
+  if (fnEl && nameparts[0]) fnEl.value = nameparts[0];
+  if (lnEl && nameparts[1]) lnEl.value = nameparts.slice(1).join(' ');
+  if (emEl && user.email)   emEl.value = user.email;
+}
+
+/* ================================================================
+   FORM VALIDATION (step 2)
+================================================================ */
+function validateDetailsForm() {
+  const fields = [
+    { id: 'ckFirstName', label: 'First Name', min: 2 },
+    { id: 'ckLastName',  label: 'Last Name',  min: 2 },
+    { id: 'ckEmail',     label: 'Email',      type: 'email' },
+    { id: 'ckPhone',     label: 'Phone',      type: 'phone' },
+    { id: 'ckAddress',   label: 'Street Address', min: 5 },
+    { id: 'ckCity',      label: 'City',       min: 2 }
+  ];
+
+  let firstError = null;
+  let allOk = true;
+
+  fields.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (!el) return;
+    const val = el.value.trim();
+    let ok = true;
+    let msg = '';
+
+    if (!val) {
+      ok = false; msg = `${f.label} is required.`;
+    } else if (f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      ok = false; msg = 'Please enter a valid email address.';
+    } else if (f.type === 'phone' && !/^[+\d\s\-().]{7,20}$/.test(val)) {
+      ok = false; msg = 'Please enter a valid phone number.';
+    } else if (f.min && val.length < f.min) {
+      ok = false; msg = `${f.label} must be at least ${f.min} characters.`;
+    }
+
+    markField(el, ok, msg);
+    if (!ok && !firstError) firstError = el;
+    if (!ok) allOk = false;
+  });
+
+  if (firstError) firstError.focus();
+  return allOk;
+}
+
+function markField(el, ok, msg) {
+  /* Remove previous error */
+  const existing = el.parentElement.querySelector('.ck-field-error');
+  if (existing) existing.remove();
+  el.style.borderColor = '';
+
+  if (!ok) {
+    el.style.borderColor = 'var(--ag-danger)';
+    const err = document.createElement('span');
+    err.className = 'ck-field-error';
+    err.style.cssText = 'font-size:11.5px;color:var(--ag-danger);margin-top:4px;display:block;';
+    err.textContent = msg;
+    el.parentElement.appendChild(err);
+  }
+}
+
+/* Clear error state on input */
+document.addEventListener('input', e => {
+  if (e.target.classList.contains('ck-form-input')) {
+    e.target.style.borderColor = '';
+    const err = e.target.parentElement.querySelector('.ck-field-error');
+    if (err) err.remove();
+  }
+});
+
+/* ================================================================
+   CARD NUMBER FORMATTING
+================================================================ */
+function wireCardFormatting() {
+  const cardNum = document.getElementById('ckCardNum');
+  if (cardNum) {
+    cardNum.addEventListener('input', () => {
+      let v = cardNum.value.replace(/\D/g, '').slice(0, 16);
+      cardNum.value = v.match(/.{1,4}/g)?.join(' ') || v;
+    });
+  }
+
+  const expiry = document.getElementById('ckCardExpiry');
+  if (expiry) {
+    expiry.addEventListener('input', () => {
+      let v = expiry.value.replace(/\D/g, '').slice(0, 4);
+      if (v.length > 2) v = v.slice(0, 2) + ' / ' + v.slice(2);
+      expiry.value = v;
+    });
+  }
+}
+
+/* ================================================================
+   MOBILE MONEY PROVIDER SELECTION
+================================================================ */
+function wireMobileProviders() {
+  document.querySelectorAll('#mobileProviders input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.querySelectorAll('.ck-mobile-provider').forEach(p => {
+        p.classList.toggle('selected', p.querySelector('input')?.value === radio.value);
+      });
+    });
+  });
+}
+
+/* ================================================================
+   PAYMENT TAB SWITCHING (global — called from onclick in HTML)
+================================================================ */
+function switchPayTab(tab, btn) {
+  document.querySelectorAll('.ck-pay-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.ck-pay-panel').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const panelMap = { card: 'payCard', mobile: 'payMobile', bank: 'payBank', cod: 'payCod' };
+  const panel = document.getElementById(panelMap[tab]);
+  if (panel) panel.classList.add('active');
+}
+
+/* ================================================================
+   COPY TO CLIPBOARD (global — called from onclick in HTML)
+================================================================ */
+function copyText(text) {
+  navigator.clipboard?.writeText(text).then(() => showToast('Copied to clipboard', 'success'))
+    .catch(() => {
+      /* Fallback for older browsers */
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;opacity:0;';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showToast('Copied', 'success');
+    });
+}
+
+/* ================================================================
+   VALIDATE PAYMENT (step 3)
+================================================================ */
+function validatePayment() {
+  const activePanel = document.querySelector('.ck-pay-panel.active');
+  if (!activePanel) return true;
+
+  if (activePanel.id === 'payCard') {
+    const name   = document.getElementById('ckCardName')?.value.trim();
+    const num    = document.getElementById('ckCardNum')?.value.replace(/\s/g, '');
+    const expiry = document.getElementById('ckCardExpiry')?.value.trim();
+    const cvv    = document.getElementById('ckCardCvv')?.value.trim();
+
+    if (!name || name.length < 3) {
+      showToast('Please enter the name on your card.', 'error'); return false;
+    }
+    if (!/^\d{13,16}$/.test(num)) {
+      showToast('Please enter a valid card number.', 'error'); return false;
+    }
+    if (!/^\d{2}\s*\/\s*\d{2}$/.test(expiry)) {
+      showToast('Please enter a valid expiry date (MM / YY).', 'error'); return false;
+    }
+    if (!/^\d{3,4}$/.test(cvv)) {
+      showToast('Please enter a valid CVV.', 'error'); return false;
+    }
+
+    /* Luhn check */
+    const digits = num.split('').reverse().map(Number);
+    const luhnSum = digits.reduce((sum, d, i) => {
+      if (i % 2 === 1) { d *= 2; if (d > 9) d -= 9; }
+      return sum + d;
+    }, 0);
+    if (luhnSum % 10 !== 0) {
+      showToast('Card number appears invalid. Please check and try again.', 'error'); return false;
+    }
+  }
+
+  if (activePanel.id === 'payMobile') {
+    const num = document.getElementById('ckMobileNum')?.value.trim();
+    if (!num || !/^[+\d\s\-().]{7,20}$/.test(num)) {
+      showToast('Please enter a valid Mobile Money number.', 'error'); return false;
+    }
+  }
+
+  return true;
+}
+
+/* ================================================================
+   PLACE ORDER
+================================================================ */
+function placeOrder() {
+  if (!validatePayment()) return;
+
+  const btn = document.getElementById('ckCtaBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ag-spinner sm" style="border-color:#fff3;border-top-color:#fff;"></span> Processing…';
+
+  /* Collect sanitised customer data — nothing sensitive is persisted */
+  const firstName = document.getElementById('ckFirstName')?.value.trim() || '';
+  const lastName  = document.getElementById('ckLastName')?.value.trim()  || '';
+  const email     = document.getElementById('ckEmail')?.value.trim()     || '';
+  const phone     = document.getElementById('ckPhone')?.value.trim()     || '';
+  const address   = document.getElementById('ckAddress')?.value.trim()   || '';
+  const city      = document.getElementById('ckCity')?.value.trim()      || '';
+  const region    = document.getElementById('ckRegion')?.value           || '';
+  const notes     = document.getElementById('ckNotes')?.value.trim()     || '';
+
+  const activePanel = document.querySelector('.ck-pay-panel.active');
+  const payMethod   = activePanel?.id === 'payCard'   ? 'Card' :
+                      activePanel?.id === 'payMobile' ? 'Mobile Money' :
+                      activePanel?.id === 'payBank'   ? 'Bank Transfer' : 'Pay on Delivery';
+
+  const mobileProvider = activePanel?.id === 'payMobile'
+    ? (document.querySelector('input[name="mobileProvider"]:checked')?.value || 'MTN')
+    : null;
+
+  const subtotal = cart.reduce((s, i) => s + (i.price || 0) * (i.qty || 1), 0);
+  const shipping = SHIPPING_RATES[selectedShipping] ?? 12;
+  const grand    = subtotal + shipping;
+
+  const orderRef = 'ASAN-APL-' + Date.now().toString().slice(-8);
+
+  /* Build a clean order record — no raw card data ever stored */
+  const order = {
+    ref:        orderRef,
+    items:      cart.map(i => ({ id: i.id, name: i.name, qty: i.qty || 1, price: i.price, category: i.category })),
+    customer: {
+      name:    `${firstName} ${lastName}`.trim(),
+      email:   email,
+      phone:   phone,
+      address: `${address}, ${city}${region ? ', ' + region : ''}`,
+      notes:   notes
+    },
+    shipping: {
+      method: selectedShipping,
+      cost:   shipping
+    },
+    payment: {
+      method:   payMethod,
+      provider: mobileProvider,
+      /* card details are NEVER stored — only the method name is recorded */
+    },
+    subtotal:   subtotal,
+    total:      grand,
+    currency:   'USD',
+    status:     payMethod === 'Pay on Delivery' ? 'Awaiting Delivery' : 'Awaiting Payment',
+    createdAt:  new Date().toISOString()
+  };
+
+  /* Persist order */
+  const orders = JSON.parse(localStorage.getItem('asan_appliance_orders') || '[]');
+  orders.push(order);
+  localStorage.setItem('asan_appliance_orders', JSON.stringify(orders));
+
+  /* Push notification to the user's account if logged in */
+  const user = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
+  if (user?.email) {
+    const notifs = JSON.parse(localStorage.getItem('asan_notifications_' + user.email) || '[]');
+    notifs.unshift({
+      id:        Date.now(),
+      title:     'Order Confirmed',
+      message:   `Your order ${orderRef} has been placed. Total: ${fmtPrice(grand)}. Payment method: ${payMethod}.`,
+      type:      'success',
+      read:      false,
+      timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifs));
+  }
+
+  /* Clear the cart */
+  localStorage.removeItem('asan_cart');
+
+  /* Simulate a short processing delay (replace with real gateway call later) */
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-check"></i> Order Placed';
+    showConfirmation(orderRef, order, payMethod);
+  }, 1400);
+}
+
+/* ================================================================
+   CONFIRMATION SCREEN
+================================================================ */
+function showConfirmation(ref, order, payMethod) {
+  /* Hide main layout, show full-width confirmation */
+  document.getElementById('ckMainLayout').style.display = 'none';
+  document.getElementById('step4Screen').style.display  = '';
+
+  updateStepUI(4);
+  document.getElementById('ckOrderRef').textContent = ref;
+
+  /* Customise the "what happens next" text for the chosen payment method */
+  const payNote = document.getElementById('confirmPayNote');
+  if (payNote) {
+    const notes = {
+      'Card':            'Your card payment is being verified. You will receive a confirmation email shortly.',
+      'Mobile Money':    `A push prompt was sent to ${order.payment?.provider || ''} number ${order.customer?.phone || ''}. Approve it to confirm payment.`,
+      'Bank Transfer':   'Please transfer the order total using the reference number above. Our team will confirm within 2 business hours.',
+      'Pay on Delivery': 'Pay in cash or mobile money when your appliance is delivered to your door.'
+    };
+    payNote.textContent = notes[payMethod] || '';
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ================================================================
+   TOAST NOTIFICATIONS
+================================================================ */
+function showToast(msg, type = 'info') {
+  const icons   = { info: 'fa-info-circle', success: 'fa-check-circle', error: 'fa-exclamation-circle' };
+  const colors  = { info: 'var(--ag-blue-500)', success: '#16a34a', error: 'var(--ag-danger)' };
+
+  const region = document.getElementById('ckToastRegion');
+  const toast  = document.createElement('div');
+  toast.setAttribute('role', 'alert');
+  toast.style.cssText = [
+    'display:flex;align-items:center;gap:10px',
+    'background:var(--ag-navy-900)',
+    'color:#fff',
+    'padding:13px 18px',
+    'border-radius:12px',
+    'box-shadow:0 8px 24px rgba(0,0,0,.22)',
+    'font-size:13.5px',
+    'min-width:260px',
+    'font-family:var(--ag-font)',
+    `border-left:4px solid ${colors[type]}`,
+    'animation:ag-toast-in .28s ease'
+  ].join(';');
+  toast.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]};font-size:15px;flex-shrink:0;"></i><span>${esc(msg)}</span>`;
+  region.appendChild(toast);
+  setTimeout(() => {
+    toast.style.transition = 'opacity .3s,transform .3s';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(8px)';
+    setTimeout(() => toast.remove(), 320);
+  }, 3500);
+}
+</script>
+
+<!-- Toast region -->
+<div id="ckToastRegion" style="position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:3000;pointer-events:none;"></div>
+
+<!-- Payment confirmation note (used by JS) -->
+<p id="confirmPayNote" style="display:none;"></p>
+
+</body>
+</html>

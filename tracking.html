@@ -1,1224 +1,956 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asan Global | Vehicle Import Tracking Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asan Global | Shipment Tracking</title>
+<meta name="description" content="Track your vehicle import in real-time — status, location, timeline, and delivery details.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ============================================================
+   TRACKING PAGE — Professional Logistics Experience
+   ============================================================ */
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="tracking.css">
-    <link rel="stylesheet" href="tracking-chat.css">
-    <link rel="stylesheet" href="dashboard-shell.css">
+/* ---- Top bar ---- */
+.trk-topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: #fff; padding: 0 28px; border-bottom: 1px solid var(--ag-border);
+  position: sticky; top: 0; z-index: 900; height: 66px;
+  box-shadow: 0 1px 3px rgba(15,23,42,.06);
+}
+.trk-topbar-left  { display: flex; align-items: center; gap: 14px; }
+.trk-topbar-right { display: flex; align-items: center; gap: 12px; }
+.trk-eyebrow { font-size: 10.5px; font-weight: 700; color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 1px; }
+.trk-topbar h1  { margin: 0; font-size: 20px; font-weight: 700; color: var(--ag-text-900); }
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+/* ---- Search hero ---- */
+.trk-search-hero {
+  background: linear-gradient(135deg, var(--ag-navy-950) 0%, var(--ag-navy-800) 50%, var(--ag-blue-600) 100%);
+  padding: 44px 32px 56px; position: relative; overflow: hidden;
+}
+.trk-search-hero::before {
+  content:''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.trk-search-hero-blob {
+  position: absolute; border-radius: 50%; filter: blur(70px); opacity: .18; pointer-events: none;
+}
+.trk-blob-1 { width: 350px; height: 350px; background: #2563eb; top: -80px; right: 80px; }
+.trk-blob-2 { width: 250px; height: 250px; background: #00b7ff; bottom: -50px; left: 60px; }
 
-    <!-- Google Font -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+.trk-search-hero-content { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; text-align: center; }
+.trk-search-hero-content h2 { color: #fff; font-size: clamp(1.5rem, 2.8vw, 2.2rem); font-weight: 800; margin: 0 0 8px; }
+.trk-search-hero-content p  { color: rgba(255,255,255,.72); font-size: 14.5px; margin: 0 0 28px; }
 
-    <!-- Leaflet Map -->
-    <link rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css" />
+.trk-search-bar {
+  display: flex; gap: 0; background: #fff; border-radius: var(--ag-radius-pill);
+  overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.24);
+  border: 2px solid transparent; transition: border-color var(--ag-transition-fast);
+}
+.trk-search-bar:focus-within { border-color: var(--ag-blue-500); }
+.trk-search-bar i { padding: 0 16px 0 20px; color: var(--ag-text-400); font-size: 16px; display: flex; align-items: center; flex-shrink: 0; }
+.trk-search-bar input {
+  flex: 1; padding: 16px 8px; border: none; outline: none;
+  font-family: var(--ag-font); font-size: 15px; color: var(--ag-text-900); background: transparent;
+}
+.trk-search-bar input::placeholder { color: var(--ag-text-400); }
+.trk-search-btn {
+  padding: 0 28px; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  color: #fff; border: none; font-family: var(--ag-font); font-size: 14.5px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; gap: 9px; white-space: nowrap;
+  transition: opacity var(--ag-transition-fast);
+}
+.trk-search-btn:hover { opacity: .88; }
+
+.trk-demo-links { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,.6); }
+.trk-demo-links button {
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.9); border-radius: var(--ag-radius-pill); padding: 5px 14px;
+  font-size: 12px; font-weight: 600; cursor: pointer; margin: 0 4px;
+  transition: background var(--ag-transition-fast); font-family: var(--ag-font);
+}
+.trk-demo-links button:hover { background: rgba(255,255,255,.25); }
+
+/* ---- Content container ---- */
+.trk-content { padding: 28px; max-width: 1300px; margin: 0 auto; }
+
+/* ---- Status badge pill ---- */
+.trk-status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: var(--ag-radius-pill); padding: 8px 18px;
+  font-size: 13px; font-weight: 700; letter-spacing: .03em;
+}
+.trk-status-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+.trk-status--pending    { background: #f1f5f9; color: #475569; }
+.trk-status--processing { background: #dbeafe; color: #1d4ed8; }
+.trk-status--shipped    { background: #e0f2fe; color: #0369a1; }
+.trk-status--transit    { background: #fef3c7; color: #92400e; }
+.trk-status--customs    { background: #fce7f3; color: #9d174d; }
+.trk-status--arrived    { background: #d1fae5; color: #065f46; }
+.trk-status--delivered  { background: #dcfce7; color: #15803d; }
+.trk-status--pending    .dot { background: #94a3b8; }
+.trk-status--processing .dot { background: #2563eb; animation: pulse-dot 2s infinite; }
+.trk-status--shipped    .dot { background: #0ea5e9; animation: pulse-dot 2s infinite; }
+.trk-status--transit    .dot { background: #f59e0b; animation: pulse-dot 2s infinite; }
+.trk-status--customs    .dot { background: #ec4899; animation: pulse-dot 2s infinite; }
+.trk-status--arrived    .dot { background: #10b981; animation: pulse-dot 2s infinite; }
+.trk-status--delivered  .dot { background: #16a34a; }
+@keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1;} 50%{box-shadow:0 0 0 5px rgba(0,0,0,0);opacity:.7;} }
+
+/* ---- Summary strip (below hero) ---- */
+.trk-summary-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px; margin-bottom: 24px;
+}
+.trk-summary-card {
+  background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-md);
+  padding: 18px 20px; display: flex; align-items: flex-start; gap: 14px;
+  box-shadow: var(--ag-shadow-sm); transition: transform var(--ag-transition-fast);
+}
+.trk-summary-card:hover { transform: translateY(-2px); }
+.trk-summary-icon {
+  width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+  font-size: 17px; color: #fff; flex-shrink: 0;
+}
+.trk-summary-icon.blue   { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700)); }
+.trk-summary-icon.green  { background: linear-gradient(135deg, #16a34a, #15803d); }
+.trk-summary-icon.amber  { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.trk-summary-icon.purple { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.trk-summary-icon.teal   { background: linear-gradient(135deg, #0891b2, #0e7490); }
+.trk-summary-icon.rose   { background: linear-gradient(135deg, #e11d48, #be123c); }
+.trk-summary-text { min-width: 0; }
+.trk-summary-text .label { font-size: 11.5px; font-weight: 600; color: var(--ag-text-400); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.trk-summary-text .value { font-size: 15px; font-weight: 700; color: var(--ag-text-900); line-height: 1.3; }
+.trk-summary-text .sub   { font-size: 12px; color: var(--ag-text-400); margin-top: 2px; }
+
+/* ---- Two-column layout ---- */
+.trk-main-grid { display: grid; grid-template-columns: 1fr 380px; gap: 22px; margin-bottom: 24px; }
+
+/* ---- Progress section ---- */
+.trk-progress-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); }
+.trk-progress-header { padding: 22px 24px 18px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.trk-progress-header h3 { margin: 0; font-size: 16px; font-weight: 700; color: var(--ag-text-900); }
+
+/* Animated progress bar */
+.trk-bar-wrap { padding: 20px 24px 8px; }
+.trk-bar-track { height: 8px; background: var(--ag-surface-muted); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+.trk-bar-fill  { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--ag-blue-600), #00d4ff); width: 0%; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+.trk-bar-pct   { text-align: right; font-size: 12px; font-weight: 700; color: var(--ag-blue-600); }
+
+/* Timeline steps */
+.trk-steps { padding: 4px 24px 24px; }
+.trk-step {
+  display: flex; gap: 16px; position: relative; padding-bottom: 0;
+}
+.trk-step:not(:last-child)::before {
+  content: ''; position: absolute; left: 19px; top: 38px;
+  width: 2px; bottom: -8px; background: var(--ag-border);
+}
+.trk-step.step-done::before   { background: var(--ag-blue-600); }
+.trk-step.step-active::before { background: linear-gradient(to bottom, var(--ag-blue-600), var(--ag-border)); }
+
+.trk-step-icon {
+  width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--ag-border);
+  background: var(--ag-surface-muted); display: grid; place-items: center;
+  font-size: 14px; color: var(--ag-text-400); flex-shrink: 0; position: relative; z-index: 1;
+  transition: all var(--ag-transition);
+}
+.trk-step.step-done .trk-step-icon   { background: var(--ag-blue-600); border-color: var(--ag-blue-600); color: #fff; }
+.trk-step.step-active .trk-step-icon { background: #fff; border-color: var(--ag-blue-600); color: var(--ag-blue-600); box-shadow: 0 0 0 5px rgba(37,99,235,.12); }
+.trk-step.step-active .trk-step-icon i { animation: icon-pulse 2s ease-in-out infinite; }
+@keyframes icon-pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+
+.trk-step-body { flex: 1; padding: 8px 0 20px; }
+.trk-step-title { font-size: 14px; font-weight: 700; color: var(--ag-text-400); margin: 0 0 2px; transition: color var(--ag-transition); }
+.trk-step.step-done .trk-step-title   { color: var(--ag-text-900); }
+.trk-step.step-active .trk-step-title { color: var(--ag-blue-600); }
+.trk-step-desc { font-size: 12.5px; color: var(--ag-text-400); margin: 0 0 4px; line-height: 1.5; }
+.trk-step.step-done .trk-step-desc  { color: var(--ag-text-600); }
+.trk-step.step-active .trk-step-desc{ color: var(--ag-text-600); }
+.trk-step-time { font-size: 11.5px; color: var(--ag-text-400); font-weight: 500; }
+.trk-step.step-done .trk-step-time  { color: var(--ag-blue-600); }
+</style>
+
+<style>
+/* ---- Shipment details card ---- */
+.trk-detail-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); }
+.trk-detail-header { padding: 20px 22px 16px; border-bottom: 1px solid var(--ag-border); }
+.trk-detail-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+
+.trk-detail-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 12px 22px; border-bottom: 1px solid var(--ag-surface-muted); }
+.trk-detail-row:last-child { border-bottom: none; }
+.trk-detail-row .lbl { font-size: 12.5px; color: var(--ag-text-400); font-weight: 500; white-space: nowrap; }
+.trk-detail-row .val { font-size: 13px; font-weight: 700; color: var(--ag-text-900); text-align: right; }
+
+/* ---- Sender / Receiver ---- */
+.trk-parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 24px; }
+.trk-party-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); padding: 22px; box-shadow: var(--ag-shadow-sm); }
+.trk-party-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.trk-party-avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 18px; color: #fff; flex-shrink: 0; }
+.trk-party-avatar.sender   { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700)); }
+.trk-party-avatar.receiver { background: linear-gradient(135deg, #16a34a, #15803d); }
+.trk-party-header h4 { margin: 0 0 2px; font-size: 14px; font-weight: 700; color: var(--ag-text-900); }
+.trk-party-header span { font-size: 11.5px; color: var(--ag-text-400); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.trk-party-info { display: flex; flex-direction: column; gap: 8px; }
+.trk-party-info div { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: var(--ag-text-600); }
+.trk-party-info i { color: var(--ag-blue-600); margin-top: 1px; width: 14px; flex-shrink: 0; }
+
+/* ---- Map ---- */
+.trk-map-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); margin-bottom: 24px; }
+.trk-map-header { padding: 18px 22px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.trk-map-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+#trkMap { height: 340px; }
+
+/* ---- Updates + Chat grid ---- */
+.trk-bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; margin-bottom: 24px; }
+
+/* ---- Updates ---- */
+.trk-updates-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); }
+.trk-updates-header { padding: 18px 20px 14px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; }
+.trk-updates-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+.trk-live-badge { display: inline-flex; align-items: center; gap: 6px; background: #dcfce7; color: #15803d; border-radius: 999px; padding: 4px 10px; font-size: 11px; font-weight: 700; }
+.trk-live-badge::before { content:''; width: 7px; height: 7px; border-radius: 50%; background: #16a34a; display: block; animation: pulse-dot 1.5s infinite; }
+.trk-update-list { padding: 8px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 0; }
+.trk-update-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: var(--ag-radius-sm); transition: background var(--ag-transition-fast); }
+.trk-update-item:hover { background: var(--ag-surface-muted); }
+.trk-update-dot { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; color: #fff; flex-shrink: 0; }
+.trk-update-dot.info    { background: var(--ag-blue-600); }
+.trk-update-dot.success { background: #16a34a; }
+.trk-update-dot.warning { background: #f59e0b; }
+.trk-update-dot.location{ background: #7c3aed; }
+.trk-update-text  { flex: 1; min-width: 0; }
+.trk-update-msg   { font-size: 13px; font-weight: 600; color: var(--ag-text-900); margin: 0 0 2px; line-height: 1.4; }
+.trk-update-time  { font-size: 11.5px; color: var(--ag-text-400); }
+
+/* ---- Chat ---- */
+.trk-chat-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); display: flex; flex-direction: column; }
+.trk-chat-header { padding: 16px 20px; border-bottom: 1px solid var(--ag-border); display: flex; align-items: center; gap: 12px; }
+.trk-chat-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700)); display: grid; place-items: center; color: #fff; font-size: 16px; flex-shrink: 0; }
+.trk-chat-header h3  { margin: 0 0 1px; font-size: 14px; font-weight: 700; color: var(--ag-text-900); }
+.trk-chat-header span{ font-size: 11.5px; color: #16a34a; font-weight: 600; }
+.trk-chat-msgs { flex: 1; padding: 12px; overflow-y: auto; max-height: 240px; display: flex; flex-direction: column; gap: 10px; background: var(--ag-surface-muted); }
+.trk-bubble { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5; }
+.trk-bubble.bot  { background: linear-gradient(135deg, var(--ag-navy-900), var(--ag-blue-600)); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.trk-bubble.user { background: #fff; border: 1px solid var(--ag-border); color: var(--ag-text-900); align-self: flex-start; border-bottom-left-radius: 4px; }
+.trk-chat-form { display: flex; border-top: 1px solid var(--ag-border); }
+.trk-chat-form input { flex: 1; padding: 13px 16px; border: none; outline: none; font-family: var(--ag-font); font-size: 13.5px; background: #fff; color: var(--ag-text-900); }
+.trk-chat-form button { padding: 0 18px; background: var(--ag-blue-600); color: #fff; border: none; cursor: pointer; font-size: 15px; transition: background var(--ag-transition-fast); }
+.trk-chat-form button:hover { background: var(--ag-navy-700); }
+
+/* ---- Import fee breakdown card ---- */
+.trk-fee-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); }
+.trk-fee-header { padding: 18px 20px 14px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; }
+.trk-fee-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+.trk-fee-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 20px; border-bottom: 1px solid var(--ag-surface-muted); font-size: 13.5px; color: var(--ag-text-600); }
+.trk-fee-row.total { font-weight: 800; font-size: 15px; color: var(--ag-text-900); border-top: 2px solid var(--ag-blue-600); border-bottom: none; padding-top: 14px; }
+.trk-fee-row.total span:last-child { color: var(--ag-blue-600); }
+.trk-fee-actions { padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
+
+/* ---- Skeleton loader ---- */
+.trk-skeleton { animation: shimmer 1.5s ease infinite; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 37%, #f1f5f9 63%); background-size: 400% 100%; border-radius: 6px; }
+
+/* ---- Not-found state ---- */
+.trk-not-found { text-align: center; padding: 80px 20px; }
+.trk-not-found i { font-size: 64px; color: var(--ag-text-400); opacity: .3; margin-bottom: 18px; }
+.trk-not-found h3 { font-size: 20px; color: var(--ag-text-900); margin-bottom: 8px; }
+.trk-not-found p  { color: var(--ag-text-600); font-size: 14px; }
+
+/* ---- Notification dot on bell ---- */
+.trk-notif-btn { position: relative; border: none; background: var(--ag-surface-muted); color: var(--ag-blue-600); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 15px; display: grid; place-items: center; transition: background var(--ag-transition-fast); }
+.trk-notif-btn:hover { background: var(--ag-blue-100); }
+.trk-notif-dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--ag-danger); border: 2px solid #fff; display: none; }
+.ag-avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); color: #fff; font-weight: 700; font-size: 15px; }
+
+/* ---- Responsive ---- */
+@media (max-width: 1100px) { .trk-main-grid  { grid-template-columns: 1fr; } }
+@media (max-width: 900px)  { .trk-bottom-grid { grid-template-columns: 1fr; } .trk-parties-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px)  { .trk-content { padding: 14px; } .trk-search-hero { padding: 32px 16px 44px; } .trk-summary-strip { grid-template-columns: 1fr 1fr; } }
+</style>
+
 </head>
+<body data-ag-page="tracking">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
 
-<body>
+  <main class="ag-main">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fas fa-car"></i>
+    <!-- TOP BAR -->
+    <header class="trk-topbar">
+      <div class="trk-topbar-left">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="trk-eyebrow">Real-time logistics</p>
+          <h1>Shipment Tracking</h1>
+        </div>
+      </div>
+      <div class="trk-topbar-right">
+        <button class="trk-notif-btn" onclick="showNotifications()" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="trk-notif-dot" id="notificationBadge"></span>
+        </button>
+        <div class="ag-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <!-- SEARCH HERO -->
+    <section class="trk-search-hero">
+      <div class="trk-search-hero-blob trk-blob-1"></div>
+      <div class="trk-search-hero-blob trk-blob-2"></div>
+      <div class="trk-search-hero-content">
+        <h2>Track Your Shipment</h2>
+        <p>Enter your Asan Global tracking number to get real-time status, location, and delivery updates.</p>
+        <div class="trk-search-bar" role="search">
+          <i class="fas fa-search"></i>
+          <input type="text" id="trackingInput" placeholder="e.g. ASAN-IMP-001-2024" autocomplete="off" aria-label="Enter tracking number">
+          <button class="trk-search-btn" id="trackBtn" aria-label="Track shipment">
+            <i class="fas fa-location-dot"></i> Track Now
+          </button>
+        </div>
+        <div class="trk-demo-links">
+          Try a demo: <button onclick="loadDemo('ASAN-IMP-001-2024')">ASAN-IMP-001-2024</button>
+          <button onclick="loadDemo('ASAN-IMP-002-2024')">ASAN-IMP-002-2024</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN TRACKING CONTENT (hidden until a search is made) -->
+    <div class="trk-content" id="trkResultArea" style="display:none;">
+
+      <!-- Summary strip -->
+      <div class="trk-summary-strip" id="trkSummaryStrip">
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon blue"><i class="fas fa-car"></i></div>
+          <div class="trk-summary-text"><div class="label">Vehicle</div><div class="value" id="sumVehicle">—</div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon amber"><i class="fas fa-location-dot"></i></div>
+          <div class="trk-summary-text"><div class="label">Current Location</div><div class="value" id="sumLocation">—</div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon green"><i class="fas fa-calendar-check"></i></div>
+          <div class="trk-summary-text"><div class="label">Est. Delivery</div><div class="value" id="sumEta">—</div><div class="sub" id="sumEtaDays"></div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon purple"><i class="fas fa-weight-hanging"></i></div>
+          <div class="trk-summary-text"><div class="label">Weight / Method</div><div class="value" id="sumWeight">—</div><div class="sub" id="sumMethod">—</div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon teal"><i class="fas fa-user-tie"></i></div>
+          <div class="trk-summary-text"><div class="label">Assigned Staff</div><div class="value" id="sumStaff">—</div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon rose"><i class="fas fa-ship"></i></div>
+          <div class="trk-summary-text"><div class="label">Carrier</div><div class="value" id="sumCarrier">—</div></div>
+        </div>
+      </div>
+
+      <!-- Main 2-col: progress + detail -->
+      <div class="trk-main-grid">
+
+        <!-- Progress / Timeline -->
+        <div class="trk-progress-card">
+          <div class="trk-progress-header">
+            <h3><i class="fas fa-route" style="margin-right:8px;color:var(--ag-blue-600);"></i>Import Progress</h3>
+            <span id="trkStatusPill" class="trk-status-pill trk-status--processing">
+              <span class="dot"></span> <span id="trkStatusLabel">Processing</span>
+            </span>
+          </div>
+          <div class="trk-bar-wrap">
+            <div class="trk-bar-track"><div class="trk-bar-fill" id="trkBarFill"></div></div>
+            <div class="trk-bar-pct" id="trkBarPct">0%</div>
+          </div>
+          <div class="trk-steps" id="trkSteps"></div>
+        </div>
+
+        <!-- Shipment details -->
+        <div class="trk-detail-card">
+          <div class="trk-detail-header">
+            <h3><i class="fas fa-file-lines" style="margin-right:8px;color:var(--ag-blue-600);"></i>Shipment Details</h3>
+          </div>
+          <div class="trk-detail-row"><span class="lbl">Tracking #</span><span class="val" id="detTracking">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Make / Model</span><span class="val" id="detVehicle">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Year</span><span class="val" id="detYear">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">VIN</span><span class="val" id="detVin" style="font-family:monospace;font-size:11px;">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Origin</span><span class="val" id="detOrigin">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Destination</span><span class="val" id="detDestination">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Vehicle Type</span><span class="val" id="detType">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Declared Value</span><span class="val" id="detValue">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Import Fee</span><span class="val" id="detImportFee">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Customs Fee</span><span class="val" id="detCustomsFee">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Payment Status</span><span class="val"><span class="ag-badge ag-badge-success" style="font-size:11px;">Paid</span></span></div>
+          <div style="padding:14px 20px;">
+            <a href="client-agreement-form.html" target="_blank" class="ag-btn ag-btn-secondary" style="width:100%;justify-content:center;font-size:13px;">
+              <i class="fas fa-file-download"></i> Client Agreement Form
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sender / Receiver -->
+      <div class="trk-parties-grid">
+        <div class="trk-party-card">
+          <div class="trk-party-header">
+            <div class="trk-party-avatar sender"><i class="fas fa-building"></i></div>
+            <div><h4 id="senderName">Asan Global Logistics</h4><span>Sender / Shipper</span></div>
+          </div>
+          <div class="trk-party-info">
+            <div><i class="fas fa-map-marker-alt"></i><span id="senderAddr">Tokyo Automotive Port, Japan</span></div>
+            <div><i class="fas fa-phone"></i><span>+81 3-1234-5678</span></div>
+            <div><i class="fas fa-envelope"></i><span>shipping@asanglobal.com</span></div>
+          </div>
+        </div>
+        <div class="trk-party-card">
+          <div class="trk-party-header">
+            <div class="trk-party-avatar receiver"><i class="fas fa-user"></i></div>
+            <div><h4 id="receiverName">—</h4><span>Receiver / Customer</span></div>
+          </div>
+          <div class="trk-party-info">
+            <div><i class="fas fa-map-marker-alt"></i><span id="receiverAddr">—</span></div>
+            <div><i class="fas fa-phone"></i><span id="receiverPhone">Contact via Asan Global</span></div>
+            <div><i class="fas fa-id-badge"></i><span id="receiverRef">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="trk-map-card">
+        <div class="trk-map-header">
+          <h3><i class="fas fa-map" style="margin-right:8px;color:var(--ag-blue-600);"></i>Live Route Map</h3>
+          <span class="ag-badge ag-badge-info" id="trkMapBadge">Route visualization</span>
+        </div>
+        <div id="trkMap"></div>
+      </div>
+
+      <!-- Updates + Chat + Fees -->
+      <div class="trk-bottom-grid">
+
+        <!-- Recent Updates -->
+        <div class="trk-updates-card">
+          <div class="trk-updates-header">
+            <h3>Recent Updates</h3>
+            <span class="trk-live-badge">Live</span>
+          </div>
+          <div class="trk-update-list" id="trkUpdateList"></div>
+        </div>
+
+        <!-- Chat -->
+        <div class="trk-chat-card">
+          <div class="trk-chat-header">
+            <div class="trk-chat-avatar"><i class="fas fa-headset"></i></div>
             <div>
-                <h2>Asan Global</h2>
-                <span>Vehicle Import Services</span>
+              <h3>Support Chat</h3>
+              <span><i class="fas fa-circle" style="font-size:7px;"></i> Online</span>
             </div>
+          </div>
+          <div class="trk-chat-msgs" id="trkChatMsgs"></div>
+          <form class="trk-chat-form" id="trkChatForm">
+            <input type="text" id="trkChatInput" placeholder="Ask about your shipment…" autocomplete="off">
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          </form>
         </div>
-        <nav>
-            <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                <li class="active"><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
-                <li><a href="import.html"><i class="fas fa-file-import"></i> New Import</a></li>
-                <li><a href="finance.html"><i class="fas fa-wallet"></i> Finance</a></li>
-                <li><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
-                <li><a href="schudule.html"><i class="fas fa-calendar"></i> Schedule</a></li>
-                <li><a href="price.html"><i class="fas fa-tag"></i> Pricing</a></li>
-                <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
-                <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </nav>
-        <div class="sidebar-footer">
-            <strong>24/7 Support</strong>
-            <p>Live tracking and dedicated support for your imports.</p>
+
+        <!-- Fee Breakdown -->
+        <div class="trk-fee-card">
+          <div class="trk-fee-header">
+            <h3><i class="fas fa-receipt" style="margin-right:8px;color:var(--ag-blue-600);"></i>Fee Breakdown</h3>
+            <span class="ag-badge ag-badge-success">Paid</span>
+          </div>
+          <div class="trk-fee-row"><span>Import Service Fee</span><span id="feeImport">—</span></div>
+          <div class="trk-fee-row"><span>Customs &amp; Duties</span><span id="feeCustoms">—</span></div>
+          <div class="trk-fee-row"><span>Documentation</span><span>Included</span></div>
+          <div class="trk-fee-row"><span>Insurance</span><span>Included</span></div>
+          <div class="trk-fee-row total"><span>Total Cost</span><span id="feeTotal">—</span></div>
+          <div class="trk-fee-actions">
+            <button class="ag-btn ag-btn-primary" onclick="downloadReport()" style="font-size:13px;">
+              <i class="fas fa-download"></i> Download Report
+            </button>
+            <a href="payment.html" class="ag-btn ag-btn-secondary" style="font-size:13px;text-decoration:none;justify-content:center;">
+              <i class="fas fa-credit-card"></i> Make Payment
+            </a>
+          </div>
         </div>
-    </aside>
-
-    <!-- Main Content -->
-
-    <main class="main-content">
-
-        <!-- Top Bar -->
-
-        <header class="topbar">
-
-            <div class="search-box">
-
-                <input type="text" id="trackingInput"
-                    placeholder="Enter Tracking Number">
-
-                <button>
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    Track
-                </button>
-
-            </div>
-
-            <div class="top-icons">
-
-                <i class="fa-solid fa-bell" onclick="showNotifications()" style="position:relative;cursor:pointer;">
-                    <span class="notification-badge" id="notificationBadge" style="position:absolute;top:-5px;right:-5px;width:8px;height:8px;background:#ff4757;border-radius:50%;display:none;"></span>
-                </i>
-
-                <i class="fa-solid fa-user"></i>
-
-            </div>
-
-        </header>
-
-        <!-- Statistics -->
-
-        <section class="stats">
-
-            <div class="card">
-
-                <i class="fa-solid fa-car"></i>
-
-                <h3>Vehicle</h3>
-
-                <p>Toyota Land Cruiser 2024</p>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fa-solid fa-location-dot"></i>
-
-                <h3>Current Location</h3>
-
-                <p>Customs Clearance</p>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fa-solid fa-clock"></i>
-
-                <h3>ETA</h3>
-
-                <p id="etaCountdown">Feb 5, 2024</p>
-
-            </div>
-
-            <div class="card">
-
-                <i class="fa-solid fa-user-tie"></i>
-
-                <h3>Assigned Staff</h3>
-
-                <span class="online">Maria Garcia</span>
-
-            </div>
-
-        </section>
-
-        <!-- Map & Ship -->
-
-        <section class="middle">
-
-            <!-- Map -->
-
-            <div class="map-section">
-
-                <div class="section-title">
-
-                    <h2>
-                        Live Tracking Map
-                    </h2>
-
-                </div>
-
-                <div id="map"></div>
-
-            </div>
-
-            <!-- Vehicle Information -->
-
-            <div class="ship-card">
-
-                <h2>Vehicle Information</h2>
-
-                <div class="info">
-
-                    <p><strong>Tracking:</strong> ASAN-IMP-001-2024</p>
-
-                    <p><strong>Make/Model:</strong> Toyota Land Cruiser</p>
-
-                    <p><strong>Year:</strong> 2024</p>
-
-                    <p><strong>VIN:</strong> JTDKN3DU5A0123456</p>
-
-                    <p><strong>Status:</strong> <span id="shipStatus">Customs Clearance</span></p>
-
-                    <p><strong>Customer:</strong> John Smith</p>
-
-                    <p><strong>Origin:</strong> Tokyo, Japan</p>
-
-                    <p><strong>Destination:</strong> Los Angeles, USA</p>
-
-                    <p><strong>Value:</strong> $85,000</p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Progress -->
-
-        <section class="progress-area">
-
-            <h2>Import Progress</h2>
-
-            <div class="timeline">
-
-                <div class="step complete">
-
-                    <span></span>
-
-                    Import Request
-
-                </div>
-
-                <div class="step complete">
-
-                    <span></span>
-
-                    Vehicle Sourced
-
-                </div>
-
-                <div class="step complete">
-
-                    <span></span>
-
-                    Documentation
-
-                </div>
-
-                <div class="step active">
-
-                    <span></span>
-
-                    Customs Clearance
-
-                </div>
-
-                <div class="step">
-
-                    <span></span>
-
-                    Final Delivery
-
-                </div>
-
-                <div class="step">
-
-                    <span></span>
-
-                    Completed
-
-                </div>
-
-            </div>
-
-        </section>
-
-        <!-- Lower Section -->
-        <section class="bottom">
-
-            <!-- Updates -->
-            <div class="updates">
-
-                <div class="updates__header">
-                    <h2>Recent Updates</h2>
-                    <span class="updates__live" aria-label="updates live">Live</span>
-                </div>
-
-                <ul>
-                    <li>
-                        <span class="updates__label">📄 Documentation completed</span>
-                        <span class="updates__time">08:30 AM</span>
-                    </li>
-                    <li>
-                        <span class="updates__label">🚢 Vehicle loaded on carrier</span>
-                        <span class="updates__time">11:15 AM</span>
-                    </li>
-                    <li>
-                        <span class="updates__label">✅ Customs inspection passed</span>
-                        <span class="updates__time">02:00 PM</span>
-                    </li>
-                    <li>
-                        <span class="updates__label">👤 Staff assigned: Maria Garcia</span>
-                        <span class="updates__time">04:45 PM</span>
-                    </li>
-                </ul>
-
-            </div>
-
-            <!-- Chat / Message Area -->
-            <div class="chat-card">
-                <h2>Messages</h2>
-                <div class="chat-messages" id="chatMessages">
-                    <div class="chat-bubble bot">Hi! Ask me about your import progress.</div>
-                </div>
-                <form id="chatForm" class="chat-input">
-                    <input id="chatInput" type="text" placeholder="Type a message..." autocomplete="off" required />
-                    <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
-                </form>
-            </div>
-
-            <!-- Download client agreement form -->
-            <div class="container-card">
-                <h2>Download Client Agreement Form</h2>
-                <p style="color:#666; margin-top:-10px; line-height:1.6;">
-                    Print and sign the agreement before processing.
-                </p>
-                <a class="download" href="client-agreement-form.html" target="_blank" style="text-align:center; display:inline-flex; justify-content:center; align-items:center; gap:10px; text-decoration:none;">
-                    <i class="fa-solid fa-file-download"></i>
-                    Download / Print Form
-                </a>
-            </div>
-
-
-            <!-- Import Details -->
-            <div class="container-card">
-
-
-                <h2>Import Details</h2>
-
-                <table>
-
-                    <tr>
-
-                        <td>Tracking Number</td>
-
-                        <td>ASAN-IMP-001-2024</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Import Fee</td>
-
-                        <td>$3,500</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Customs Fee</td>
-
-                        <td>$2,800</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Total Cost</td>
-
-                        <td>$6,300</td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Payment Status</td>
-
-                        <td>Paid</td>
-
-                    </tr>
-
-                </table>
-
-                <button class="download">
-
-                    <i class="fa-solid fa-download"></i>
-
-                    Download Report
-
-                </button>
-
-            </div>
-
-        </section>
-
-    </main>
-
-    <!-- Leaflet -->
-
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <!-- JavaScript -->
-
-    <script src="tracking.js"></script>
-
-    <!-- Real-time Data Script -->
-    <script>
-        // Messaging state (local, no backend)
-        (function initChat(){
-            const chatForm = document.getElementById('chatForm');
-            const chatInput = document.getElementById('chatInput');
-            const chatMessages = document.getElementById('chatMessages');
-            if(!chatForm || !chatInput || !chatMessages) return;
-
-            function addBubble(text, sender){
-                const bubble = document.createElement('div');
-                bubble.className = `chat-bubble ${sender === 'bot' ? 'bot' : 'user'}`;
-                bubble.textContent = text;
-                chatMessages.appendChild(bubble);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function getBotReply(msg){
-                const lower = msg.toLowerCase();
-                if(lower.includes('track') || lower.includes('tracking')){
-                    return 'To track your shipment: open Tracking, enter your tracking number (ASAN-IMP-...), and the map + timeline update automatically.';
-                }
-                if(lower.includes('status') || lower.includes('progress')){
-                    return 'Current progress updates are shown in the timeline and Current Status card. If your tracking number exists in the dashboard data, it will reflect the latest status.';
-                }
-                if(lower.includes('payment') || lower.includes('pay')){
-                    return 'Payments are shown in the Finance/Payment pages. For a specific tracking number, you can make a payment from Payment → select the import.';
-                }
-                if(lower.includes('hello') || lower.includes('hi') || lower.includes('sup')){
-                    return 'What’s good bro 😄 Ask me about tracking, status, or payments.';
-                }
-                if(lower.includes('help') || lower.includes('support') || lower.includes('message')){
-                    return 'Tell me your tracking number (ASAN-IMP-...) and what you want to know.';
-                }
-                return 'I got you. Ask me: “track my shipment”, “what is my status?”, or “how to pay?”';
-            }
-
-            // Load history
-            const stored = JSON.parse(localStorage.getItem('asan_chat_messages') || '[]');
-            chatMessages.innerHTML = '';
-            stored.forEach(m => addBubble(m.text, m.sender));
-
-            chatForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const text = (chatInput.value || '').trim();
-                if(!text) return;
-
-                addBubble(text, 'user');
-
-                const history = JSON.parse(localStorage.getItem('asan_chat_messages') || '[]');
-                history.push({ text, sender: 'user' });
-                localStorage.setItem('asan_chat_messages', JSON.stringify(history));
-
-                chatInput.value = '';
-
-                setTimeout(() => {
-                    const reply = getBotReply(text);
-                    addBubble(reply, 'bot');
-                    const history2 = JSON.parse(localStorage.getItem('asan_chat_messages') || '[]');
-                    history2.push({ text: reply, sender: 'bot' });
-                    localStorage.setItem('asan_chat_messages', JSON.stringify(history2));
-                }, 400);
-            });
-
-            if(chatMessages.children.length === 0){
-                addBubble('Hi! Ask me about your import progress.', 'bot');
-                localStorage.setItem('asan_chat_messages', JSON.stringify([{ text: 'Hi! Ask me about your import progress.', sender: 'bot' }]));
-            }
-        })();
-
-        // Real country coordinates for realistic map tracking
-        const countryCoordinates = {
-            'Japan': { lat: 36.2048, lng: 138.2529, city: 'Tokyo' },
-            'USA': { lat: 37.0902, lng: -95.7129, city: 'Los Angeles' },
-            'UK': { lat: 55.3781, lng: -3.4360, city: 'London' },
-            'Germany': { lat: 51.1657, lng: 10.4515, city: 'Hamburg' },
-            'UAE': { lat: 23.4241, lng: 53.8478, city: 'Dubai' },
-            'South Korea': { lat: 35.9078, lng: 127.7669, city: 'Seoul' },
-            'Ghana': { lat: 7.9465, lng: -1.0232, city: 'Tema' },
-            'Nigeria': { lat: 9.0820, lng: 8.6753, city: 'Lagos' },
-            'Kenya': { lat: -0.0236, lng: 37.9062, city: 'Mombasa' },
-            'South Africa': { lat: -30.5595, lng: 22.9375, city: 'Durban' },
-            'Other': { lat: 0, lng: 0, city: 'Unknown' }
-        };
-
-        // Get tracking number from URL
-        function getTrackingNumber() {
-            const urlParams = new URLSearchParams(window.location.search);
-            // Accept both ?tracking= and ?ref= for robustness
-            return (
-                urlParams.get('tracking') ||
-                urlParams.get('ref') ||
-                'ASAN-IMP-001-2024'
-            );
-        }
-
-        // Initialize map with real coordinates
-        function initMap(origin, destination) {
-            const originCoords = countryCoordinates[origin] || countryCoordinates['Other'];
-            const destCoords = countryCoordinates[destination] || countryCoordinates['Other'];
-
-            // Create map centered between origin and destination
-            const centerLat = (originCoords.lat + destCoords.lat) / 2;
-            const centerLng = (originCoords.lng + destCoords.lng) / 2;
-
-            const map = L.map('map').setView([centerLat, centerLng], 3);
-
-            // Add OpenStreetMap tiles
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
-            }).addTo(map);
-
-            // Add origin marker
-            const originIcon = L.divIcon({
-                className: 'custom-marker',
-                html: '<div style="background: #667eea; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"></div>',
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-            });
-
-            L.marker([originCoords.lat, originCoords.lng], { icon: originIcon })
-                .addTo(map)
-                .bindPopup(`<b>Origin: ${origin}</b><br>${originCoords.city}`);
-
-            // Add destination marker
-            const destIcon = L.divIcon({
-                className: 'custom-marker',
-                html: '<div style="background: #11998e; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 10px rgba(0,0,0,0.3);"></div>',
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-            });
-
-            L.marker([destCoords.lat, destCoords.lng], { icon: destIcon })
-                .addTo(map)
-                .bindPopup(`<b>Destination: ${destination}</b><br>${destCoords.city}`);
-
-            // Draw route line
-            const routeLine = L.polyline([
-                [originCoords.lat, originCoords.lng],
-                [destCoords.lat, destCoords.lng]
-            ], {
-                color: '#667eea',
-                weight: 3,
-                opacity: 0.7,
-                dashArray: '10, 10'
-            }).addTo(map);
-
-            // Fit bounds to show both markers
-            const bounds = L.latLngBounds([
-                [originCoords.lat, originCoords.lng],
-                [destCoords.lat, destCoords.lng]
-            ]);
-            map.fitBounds(bounds, { padding: [50, 50] });
-        }
-
-        // Load real import data from admin panel
-        function loadImportData() {
-            const trackingNumber = getTrackingNumber();
-            const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
-            const importData = imports.find(imp => imp.tracking === trackingNumber);
-
-            if (!importData) {
-                // Show demo data if no real data found
-                loadDemoData(trackingNumber);
-                return;
-            }
-
-            // Update statistics cards
-            document.querySelector('.stats .card:nth-child(1) p').textContent = `${importData.make} ${importData.model} ${importData.year}`;
-            document.querySelector('.stats .card:nth-child(2) p').textContent = importData.status;
-            document.querySelector('.stats .card:nth-child(3) p').textContent = 'Feb 5, 2024';
-            document.querySelector('.stats .card:nth-child(4) span').textContent = importData.assignedStaff || 'Unassigned';
-
-            // Update vehicle information
-            const infoSection = document.querySelector('.ship-card .info');
-            infoSection.innerHTML = `
-                <p><strong>Tracking:</strong> ${importData.tracking}</p>
-                <p><strong>Make/Model:</strong> ${importData.make} ${importData.model}</p>
-                <p><strong>Year:</strong> ${importData.year}</p>
-                <p><strong>VIN:</strong> ${importData.vin}</p>
-                <p><strong>Status:</strong> <span id="shipStatus">${importData.status}</span></p>
-                <p><strong>Customer:</strong> ${importData.customer}</p>
-                <p><strong>Origin:</strong> ${importData.origin}</p>
-                <p><strong>Destination:</strong> ${importData.destination}</p>
-                <p><strong>Value:</strong> $${importData.value}</p>
-            `;
-
-            // Update import details
-            const importDetails = document.querySelector('.container-card table');
-            importDetails.innerHTML = `
-                <tr>
-                    <td>Tracking Number</td>
-                    <td>${importData.tracking}</td>
-                </tr>
-                <tr>
-                    <td>Import Fee</td>
-                    <td>$${importData.importFee}</td>
-                </tr>
-                <tr>
-                    <td>Customs Fee</td>
-                    <td>$${importData.customsFee}</td>
-                </tr>
-                <tr>
-                    <td>Total Cost</td>
-                    <td>$${parseFloat(importData.importFee) + parseFloat(importData.customsFee)}</td>
-                </tr>
-                <tr>
-                    <td>Payment Status</td>
-                    <td>Paid</td>
-                </tr>
-            `;
-
-            // Update tracking input
-            document.getElementById('trackingInput').value = trackingNumber;
-
-            // Initialize map with real coordinates
-            initMap(importData.origin, importData.destination);
-
-            // Update progress timeline based on status
-            updateProgressTimeline(importData.status);
-        }
-
-        // Load demo data if no real data found
-        function loadDemoData(trackingNumber) {
-            document.querySelector('.stats .card:nth-child(1) p').textContent = 'Toyota Land Cruiser 2024';
-            document.querySelector('.stats .card:nth-child(2) p').textContent = 'Customs Clearance';
-            document.querySelector('.stats .card:nth-child(3) p').textContent = 'Feb 5, 2024';
-            document.querySelector('.stats .card:nth-child(4) span').textContent = 'Maria Garcia';
-
-            document.getElementById('trackingInput').value = trackingNumber;
-
-            // Initialize demo map
-            initMap('Japan', 'Ghana');
-        }
-
-        // Update progress timeline based on status
-        function updateProgressTimeline(status) {
-            const timeline = document.querySelector('.timeline');
-            const steps = timeline.querySelectorAll('.step');
-            
-            const statusOrder = ['Pending', 'Documentation', 'Processing', 'In Transit', 'Customs Clearance', 'Delivered'];
-            const currentIndex = statusOrder.indexOf(status);
-            
-            steps.forEach((step, index) => {
-                step.classList.remove('complete', 'active');
-                if (index < currentIndex) {
-                    step.classList.add('complete');
-                } else if (index === currentIndex) {
-                    step.classList.add('active');
-                }
-            });
-        }
-
-        // Listen for localStorage changes from admin panel
-        function listenForAdminUpdates() {
-            window.addEventListener('storage', function(e) {
-                if (e.key === 'asan_imports') {
-                    loadImportData();
-                }
-            });
-        }
-
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            loadImportData();
-            listenForAdminUpdates();
-        });
-
-        // Refresh data every 30 seconds
-        setInterval(loadImportData, 30000);
-
-        // Simulate real-time status updates
-        function simulateLiveUpdates() {
-            const statusOrder = ['Pending', 'Documentation', 'Processing', 'In Transit', 'Customs Clearance', 'Delivered'];
-            const currentStatus = document.getElementById('shipStatus')?.textContent;
-            
-            if (currentStatus && currentStatus !== 'Delivered') {
-                const currentIndex = statusOrder.indexOf(currentStatus);
-                if (currentIndex !== -1 && currentIndex < statusOrder.length - 1) {
-                    // 15% chance to advance status every 30 seconds for demo purposes
-                    if (Math.random() < 0.15) {
-                        const nextStatus = statusOrder[currentIndex + 1];
-                        updateImportStatus(nextStatus);
-                    }
-                }
-            }
-        }
-
-        // Update import status in localStorage
-        function updateImportStatus(newStatus) {
-            const trackingNumber = getTrackingNumber();
-            const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
-            const importIndex = imports.findIndex(imp => imp.tracking === trackingNumber);
-            
-            if (importIndex !== -1) {
-                imports[importIndex].status = newStatus;
-                imports[importIndex].lastUpdated = new Date().toISOString();
-                localStorage.setItem('asan_imports', JSON.stringify(imports));
-                loadImportData();
-                
-                // Add detailed update based on status
-                const statusMessages = {
-                    'Documentation': 'Documentation review completed. Vehicle verified and approved.',
-                    'Processing': 'Vehicle processing started. Loading preparation in progress.',
-                    'In Transit': 'Vehicle departed origin port. Currently en route to destination.',
-                    'Customs Clearance': 'Arrived at destination port. Customs clearance initiated.',
-                    'Delivered': 'Vehicle delivered successfully to customer address.'
-                };
-                
-                addRecentUpdate(statusMessages[newStatus] || `Status updated to: ${newStatus}`);
-            }
-        }
-
-        // Add recent update with more details
-        function addRecentUpdate(message, type = 'status') {
-            const updatesSection = document.querySelector('.updates ul');
-            if (updatesSection) {
-                const now = new Date();
-                const timestamp = now.toLocaleTimeString();
-                const date = now.toLocaleDateString();
-                const li = document.createElement('li');
-                li.className = 'update-item';
-                li.setAttribute('data-type', type);
-                li.style.animation = 'slideIn 0.3s ease';
-                li.innerHTML = `
-                    <span class="updates__label">${message}</span>
-                    <span class="updates__time">${date} ${timestamp}</span>
-                `;
-                updatesSection.prepend(li);
-
-                // Keep only last 10 updates
-                const updates = updatesSection.querySelectorAll('.update-item');
-                if (updates.length > 10) {
-                    updates[updates.length - 1].remove();
-                }
-            }
-        }
-
-        // Enhanced location simulation with coordinates
-        function simulateLocationUpdates() {
-            const locationData = [
-                { name: 'Port of Tokyo, Japan', coords: [35.6762, 139.6503], status: 'At Port' },
-                { name: 'Pacific Ocean - En Route', coords: [25.0, 155.0], status: 'In Transit' },
-                { name: 'Panama Canal', coords: [9.0, -79.5], status: 'Canal Transit' },
-                { name: 'Atlantic Ocean - En Route', coords: [15.0, -45.0], status: 'In Transit' },
-                { name: 'Port of Tema, Ghana', coords: [5.6703, -0.0165], status: 'Arrived' },
-                { name: 'Customs Clearance - Tema', coords: [5.6703, -0.0165], status: 'Customs' },
-                { name: 'Final Delivery Location', coords: [5.6037, -0.1870], status: 'Delivery' }
-            ];
-            
-            const currentStatus = document.getElementById('shipStatus')?.textContent;
-            if (!currentStatus) return;
-            
-            let targetIndex = 0;
-            if (currentStatus === 'Pending' || currentStatus === 'Documentation') targetIndex = 0;
-            else if (currentStatus === 'Processing') targetIndex = 1;
-            else if (currentStatus === 'In Transit') targetIndex = Math.floor(Math.random() * 3) + 1;
-            else if (currentStatus === 'Customs Clearance') targetIndex = 5;
-            else if (currentStatus === 'Delivered') targetIndex = 6;
-            
-            const targetLocation = locationData[targetIndex];
-            const currentLocationEl = document.querySelector('.stats .card:nth-child(2) p');
-            
-            if (currentLocationEl && targetLocation) {
-                const currentText = currentLocationEl.textContent;
-                if (!currentText.includes(targetLocation.name.split(',')[0])) {
-                    currentLocationEl.textContent = `${targetLocation.name} (${targetLocation.status})`;
-                    addRecentUpdate(`Location: ${targetLocation.name} - Coordinates: ${targetLocation.coords[0].toFixed(4)}, ${targetLocation.coords[1].toFixed(4)}`, 'location');
-                    
-                    // Update map if available
-                    if (window.map && window.marker) {
-                        window.marker.setLatLng(targetLocation.coords);
-                        window.map.setView(targetLocation.coords, 6);
-                    }
-                }
-            }
-        }
-
-        // Simulate weather and condition updates
-        function simulateWeatherUpdates() {
-            const weatherConditions = [
-                'Clear skies, 28°C',
-                'Partly cloudy, 26°C',
-                'Light rain, 24°C',
-                'Overcast, 25°C',
-                'Sunny, 30°C'
-            ];
-            
-            const seaConditions = [
-                'Calm seas, 1-2m waves',
-                'Moderate seas, 2-3m waves',
-                'Rough seas, 3-4m waves',
-                'Smooth sailing, 1m waves'
-            ];
-            
-            if (Math.random() < 0.2) { // 20% chance every 90 seconds
-                const weather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
-                const sea = seaConditions[Math.floor(Math.random() * seaConditions.length)];
-                addRecentUpdate(`Weather Update: ${weather} | Sea Conditions: ${sea}`, 'weather');
-            }
-        }
-
-        // Simulate ETA updates
-        function simulateETAUpdates() {
-            const currentStatus = document.getElementById('shipStatus')?.textContent;
-            if (currentStatus && currentStatus !== 'Delivered' && Math.random() < 0.1) {
-                const etaDays = Math.floor(Math.random() * 15) + 5;
-                const etaDate = new Date();
-                etaDate.setDate(etaDate.getDate() + etaDays);
-                addRecentUpdate(`Estimated Arrival: ${etaDate.toLocaleDateString()} (${etaDays} days remaining)`, 'eta');
-            }
-        }
-
-        // Add CSS animation for updates
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    opacity: 0;
-                    transform: translateX(-20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-            .update-item {
-                animation: slideIn 0.3s ease;
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Start live update simulations with more frequent updates for demo
-        setInterval(simulateLiveUpdates, 30000); // Check for status updates every 30 seconds
-        setInterval(simulateLocationUpdates, 20000); // Check for location updates every 20 seconds
-        setInterval(simulateWeatherUpdates, 90000); // Weather updates every 90 seconds
-        setInterval(simulateETAUpdates, 60000); // ETA updates every 60 seconds
-
-        // Notification System
-        let notifications = [];
-
-        function initNotifications() {
-            const user = JSON.parse(localStorage.getItem('asan_current_user'));
-            if (!user) return;
-            
-            const savedNotifs = localStorage.getItem('asan_notifications_' + user.email);
-            if (savedNotifs) {
-                notifications = JSON.parse(savedNotifs);
-            } else {
-                notifications = [{
-                    id: 1,
-                    title: 'Welcome to Tracking',
-                    message: 'Track your vehicle imports in real-time with live updates.',
-                    type: 'info',
-                    read: false,
-                    timestamp: new Date().toISOString()
-                }];
-                localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-            }
-            
-            updateNotificationBadge();
-        }
-
-        function showNotifications() {
-            const panel = document.getElementById('notificationPanel');
-            if (!panel) {
-                createNotificationPanel();
-            }
-            panel = document.getElementById('notificationPanel');
-            panel.classList.toggle('active');
-            renderNotifications();
-            
-            notifications.forEach(n => n.read = true);
-            const user = JSON.parse(localStorage.getItem('asan_current_user'));
-            localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-            updateNotificationBadge();
-        }
-
-        function hideNotifications() {
-            const panel = document.getElementById('notificationPanel');
-            if (panel) panel.classList.remove('active');
-        }
-
-        function createNotificationPanel() {
-            const panel = document.createElement('div');
-            panel.id = 'notificationPanel';
-            panel.className = 'notification-panel';
-            panel.innerHTML = `
-                <div class="notification-panel-header">
-                    <h3>Notifications</h3>
-                    <span class="notif-count" id="notifCountBadge">0</span>
-                    <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
-                </div>
-                <div class="notification-panel-actions">
-                    <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
-                    <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
-                </div>
-                <div class="notification-list" id="notificationList">
-                    <div class="notification-empty">
-                        <i class="fas fa-bell"></i>
-                        <h4>No Notifications</h4>
-                        <p>You're all caught up! Check back later for updates.</p>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(panel);
-            addNotificationPanelStyles();
-        }
-
-        function addNotificationPanelStyles() {
-            if (document.getElementById('notificationPanelStyles')) return;
-            
-            const style = document.createElement('style');
-            style.id = 'notificationPanelStyles';
-            style.textContent = `
-                .notification-panel {
-                    position: fixed;
-                    top: 80px;
-                    right: 20px;
-                    width: 380px;
-                    max-height: 500px;
-                    background: white;
-                    border-radius: 20px;
-                    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-                    z-index: 3000;
-                    display: none;
-                    overflow: hidden;
-                    animation: slideIn 0.3s ease;
-                }
-                @keyframes slideIn {
-                    from { opacity: 0; transform: translateY(-20px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-                .notification-panel.active { display: block; }
-                .notification-panel-header {
-                    padding: 24px;
-                    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
-                    color: white;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    position: relative;
-                }
-                .notification-panel-header::after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    height: 3px;
-                    background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
-                }
-                .notification-panel-header h3 {
-                    font-size: 18px;
-                    font-weight: 600;
-                    margin: 0;
-                }
-                .notification-panel-header .notif-count {
-                    background: rgba(255,255,255,0.2);
-                    padding: 4px 12px;
-                    border-radius: 20px;
-                    font-size: 12px;
-                    font-weight: 500;
-                }
-                .notification-panel-header .close-notif {
-                    cursor: pointer;
-                    font-size: 22px;
-                    transition: transform 0.3s;
-                    width: 32px;
-                    height: 32px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 50%;
-                    background: rgba(255,255,255,0.1);
-                }
-                .notification-panel-header .close-notif:hover {
-                    background: rgba(255,255,255,0.2);
-                    transform: rotate(90deg);
-                }
-                .notification-panel-actions {
-                    padding: 12px 24px;
-                    background: #f8f9fa;
-                    border-bottom: 1px solid #eee;
-                    display: flex;
-                    gap: 10px;
-                }
-                .notification-panel-actions button {
-                    padding: 8px 16px;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 12px;
-                    font-weight: 500;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                }
-                .notification-panel-actions .mark-all-read {
-                    background: #007bff;
-                    color: white;
-                }
-                .notification-panel-actions .mark-all-read:hover {
-                    background: #0056b3;
-                }
-                .notification-panel-actions .clear-all {
-                    background: #f0f4f8;
-                    color: #666;
-                }
-                .notification-panel-actions .clear-all:hover {
-                    background: #e0e4e8;
-                }
-                .notification-list {
-                    max-height: 350px;
-                    overflow-y: auto;
-                }
-                .notification-item {
-                    padding: 20px;
-                    border-bottom: 1px solid #f0f0f0;
-                    display: flex;
-                    gap: 16px;
-                    align-items: start;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                    position: relative;
-                }
-                .notification-item:hover {
-                    background: #f8f9fa;
-                    transform: translateX(4px);
-                }
-                .notification-item.unread {
-                    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
-                    border-left: 4px solid #007bff;
-                }
-                .notification-item .notif-icon {
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 12px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    flex-shrink: 0;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-                }
-                .notification-item .notif-icon.info {
-                    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
-                    color: white;
-                }
-                .notification-item .notif-icon.success {
-                    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-                    color: white;
-                }
-                .notification-item .notif-icon.warning {
-                    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                    color: white;
-                }
-                .notification-item .notif-icon i {
-                    font-size: 18px;
-                }
-                .notification-item .notif-content {
-                    flex: 1;
-                    min-width: 0;
-                }
-                .notification-item .notif-content h5 {
-                    font-size: 15px;
-                    color: #003366;
-                    margin-bottom: 6px;
-                    font-weight: 600;
-                    line-height: 1.3;
-                }
-                .notification-item .notif-content p {
-                    font-size: 13px;
-                    color: #666;
-                    margin-bottom: 8px;
-                    line-height: 1.4;
-                }
-                .notification-item .notif-content .notif-meta {
-                    display: flex;
-                    align-items: center;
-                    gap: 12px;
-                    font-size: 11px;
-                    color: #999;
-                }
-                .notification-item .unread-dot {
-                    width: 10px;
-                    height: 10px;
-                    background: #007bff;
-                    border-radius: 50%;
-                    flex-shrink: 0;
-                    box-shadow: 0 0 0 4px rgba(0,123,255,0.2);
-                    animation: pulse 2s infinite;
-                }
-                @keyframes pulse {
-                    0%,100% { box-shadow: 0 0 0 4px rgba(0,123,255,0.2); }
-                    50% { box-shadow: 0 0 0 8px rgba(0,123,255,0.1); }
-                }
-                .notification-empty {
-                    padding: 60px 20px;
-                    text-align: center;
-                    color: #999;
-                }
-                .notification-empty i {
-                    font-size: 64px;
-                    margin-bottom: 20px;
-                    background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                }
-                .notification-empty h4 {
-                    font-size: 18px;
-                    color: #003366;
-                    margin-bottom: 8px;
-                    font-weight: 600;
-                }
-                .notification-empty p {
-                    font-size: 14px;
-                    color: #999;
-                    line-height: 1.5;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        function updateNotificationBadge() {
-            const badge = document.getElementById('notificationBadge');
-            const notifCountBadge = document.getElementById('notifCountBadge');
-            const unreadCount = notifications.filter(n => !n.read).length;
-            
-            if (unreadCount > 0) {
-                badge.style.display = 'block';
-                badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
-                if (notifCountBadge) notifCountBadge.textContent = unreadCount;
-            } else {
-                badge.style.display = 'none';
-                if (notifCountBadge) notifCountBadge.textContent = '0';
-            }
-        }
-
-        function renderNotifications() {
-            const list = document.getElementById('notificationList');
-            if (!list) return;
-            
-            if (notifications.length === 0) {
-                list.innerHTML = `
-                    <div class="notification-empty">
-                        <i class="fas fa-bell"></i>
-                        <h4>No Notifications</h4>
-                        <p>You're all caught up! Check back later for updates.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            list.innerHTML = notifications.map(notif => {
-                let iconClass = notif.type;
-                let icon = 'fa-info-circle';
-                
-                switch(notif.type) {
-                    case 'success': icon = 'fa-check'; break;
-                    case 'warning': icon = 'fa-exclamation-triangle'; break;
-                    default: icon = 'fa-info-circle';
-                }
-                
-                const timeAgo = getTimeAgo(new Date(notif.timestamp));
-                
-                return `
-                    <div class="notification-item ${notif.read ? '' : 'unread'}" onclick="markAsRead(${notif.id})">
-                        <div class="notif-icon ${iconClass}">
-                            <i class="fas ${icon}"></i>
-                        </div>
-                        <div class="notif-content">
-                            <h5>${notif.title}</h5>
-                            <p>${notif.message}</p>
-                            <div class="notif-meta">
-                                <span><i class="fas fa-clock"></i> ${timeAgo}</span>
-                            </div>
-                        </div>
-                        ${!notif.read ? '<div class="unread-dot"></div>' : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function markAllAsRead() {
-            notifications.forEach(n => n.read = true);
-            const user = JSON.parse(localStorage.getItem('asan_current_user'));
-            localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-            updateNotificationBadge();
-            renderNotifications();
-        }
-
-        function clearAllNotifications() {
-            if (confirm('Are you sure you want to clear all notifications?')) {
-                notifications = [];
-                const user = JSON.parse(localStorage.getItem('asan_current_user'));
-                localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-                updateNotificationBadge();
-                renderNotifications();
-            }
-        }
-
-        function markAsRead(id) {
-            const notif = notifications.find(n => n.id === id);
-            if (notif) {
-                notif.read = true;
-                const user = JSON.parse(localStorage.getItem('asan_current_user'));
-                localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-                updateNotificationBadge();
-                renderNotifications();
-            }
-        }
-
-        function getTimeAgo(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-            if (seconds < 60) return 'Just now';
-            if (seconds < 3600) return Math.floor(seconds / 60) + ' min ago';
-            if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
-            if (seconds < 604800) return Math.floor(seconds / 86400) + ' days ago';
-            return date.toLocaleDateString();
-        }
-
-        function addNotification(title, message, type = 'info') {
-            const user = JSON.parse(localStorage.getItem('asan_current_user'));
-            if (!user) return;
-            
-            const newNotif = {
-                id: Date.now(),
-                title,
-                message,
-                type,
-                read: false,
-                timestamp: new Date().toISOString()
-            };
-            
-            notifications.unshift(newNotif);
-            localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
-            updateNotificationBadge();
-        }
-
-        // Initialize notifications
-        document.addEventListener('DOMContentLoaded', function() {
-            initNotifications();
-        });
-    </script>
-
+      </div>
+    </div><!-- /trkResultArea -->
+
+    <!-- NOT FOUND STATE -->
+    <div class="trk-content" id="trkNotFound" style="display:none;">
+      <div class="trk-not-found">
+        <i class="fas fa-search-minus"></i>
+        <h3>Shipment Not Found</h3>
+        <p>We couldn't find a shipment with that tracking number.<br>Check the number and try again, or <a href="#contact" style="color:var(--ag-blue-600);">contact our support team</a>.</p>
+      </div>
+    </div>
+
+    <footer style="text-align:center;padding:24px;color:var(--ag-text-400);font-size:12px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
+
+<!-- Notification Panel -->
+<aside class="notification-panel" id="notificationPanel" aria-label="Notifications">
+  <div class="notification-panel-header">
+    <h3>Notifications</h3>
+    <span class="notif-count" id="notifCountBadge">0</span>
+    <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
+  </div>
+  <div class="notification-panel-actions">
+    <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+    <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+  </div>
+  <div class="notification-list" id="notificationList"></div>
+</aside>
+
+<!-- Toast region -->
+<div id="trkToastRegion" style="position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:3000;"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script>
+'use strict';
+const esc = v => window.securityUtils?.escapeHtml ? window.securityUtils.escapeHtml(v) : String(v ?? '');
+
+/* ================================================================
+   CONSTANTS
+================================================================ */
+const ALL_STATUSES = [
+  { key:'order_received',     label:'Order Received',      icon:'fa-file-signature',  desc:'Import request received and logged.' },
+  { key:'payment_confirmed',  label:'Payment Confirmed',   icon:'fa-check-circle',    desc:'Payment verified and cleared.' },
+  { key:'processing',         label:'Processing',          icon:'fa-cogs',            desc:'Vehicle details and documents being prepared.' },
+  { key:'purchased',          label:'Purchased',           icon:'fa-handshake',       desc:'Vehicle purchased from source market.' },
+  { key:'packed',             label:'Packed',              icon:'fa-box',             desc:'Vehicle secured and packed for shipment.' },
+  { key:'ready_for_shipment', label:'Ready for Shipment',  icon:'fa-warehouse',       desc:'Vehicle ready at origin port.' },
+  { key:'shipped',            label:'Shipped',             icon:'fa-ship',            desc:'Vehicle loaded on vessel and departed.' },
+  { key:'in_transit',         label:'In Transit',          icon:'fa-route',           desc:'Vehicle in transit on international waters.' },
+  { key:'customs_clearance',  label:'Customs Clearance',   icon:'fa-stamp',           desc:'Customs inspection and documentation processing.' },
+  { key:'arrived_in_ghana',   label:'Arrived in Ghana',    icon:'fa-anchor',          desc:'Vehicle arrived at Tema Port, Ghana.' },
+  { key:'out_for_delivery',   label:'Out for Delivery',    icon:'fa-truck',           desc:'Final delivery in progress.' },
+  { key:'delivered',          label:'Delivered',           icon:'fa-circle-check',    desc:'Vehicle delivered to customer.' }
+];
+
+/* Map status strings from admin to our step keys */
+const STATUS_MAP = {
+  'Pending':            'order_received',
+  'Payment Confirmed':  'payment_confirmed',
+  'Documentation':      'processing',
+  'Processing':         'processing',
+  'Purchased':          'purchased',
+  'Packed':             'packed',
+  'Ready for Shipment': 'ready_for_shipment',
+  'Shipped':            'shipped',
+  'In Transit':         'in_transit',
+  'Customs Clearance':  'customs_clearance',
+  'Arrived in Ghana':   'arrived_in_ghana',
+  'Out for Delivery':   'out_for_delivery',
+  'Delivered':          'delivered'
+};
+
+const STATUS_CSS = {
+  'order_received':'trk-status--pending','payment_confirmed':'trk-status--processing',
+  'processing':'trk-status--processing','purchased':'trk-status--processing',
+  'packed':'trk-status--processing','ready_for_shipment':'trk-status--processing',
+  'shipped':'trk-status--shipped','in_transit':'trk-status--transit',
+  'customs_clearance':'trk-status--customs','arrived_in_ghana':'trk-status--arrived',
+  'out_for_delivery':'trk-status--arrived','delivered':'trk-status--delivered'
+};
+
+const COUNTRY_COORDS = {
+  'Japan':{'lat':35.6762,'lng':139.6503,'city':'Tokyo'},'USA':{'lat':34.0522,'lng':-118.2437,'city':'Los Angeles'},
+  'UK':{'lat':51.5074,'lng':-0.1278,'city':'London'},'Germany':{'lat':53.5753,'lng':10.0153,'city':'Hamburg'},
+  'UAE':{'lat':25.2048,'lng':55.2708,'city':'Dubai'},'South Korea':{'lat':37.5665,'lng':126.9780,'city':'Seoul'},
+  'Ghana':{'lat':5.6037,'lng':-0.1870,'city':'Accra'},'Nigeria':{'lat':6.4541,'lng':3.3947,'city':'Lagos'},
+  'Kenya':{'lat':-4.0435,'lng':39.6682,'city':'Mombasa'},'South Africa':{'lat':-33.9249,'lng':18.4241,'city':'Cape Town'},
+  'China':{'lat':31.2304,'lng':121.4737,'city':'Shanghai'},'France':{'lat':48.8566,'lng':2.3522,'city':'Paris'},
+  'Italy':{'lat':41.9028,'lng':12.4964,'city':'Rome'},'Canada':{'lat':43.6532,'lng':-79.3832,'city':'Toronto'},
+  'Australia':{'lat':-33.8688,'lng':151.2093,'city':'Sydney'}
+};
+
+function getCoords(place) {
+  if (!place) return {lat:0,lng:0,city:'Unknown'};
+  for (const [k,v] of Object.entries(COUNTRY_COORDS)) {
+    if (place.toLowerCase().includes(k.toLowerCase())) return v;
+  }
+  return {lat:5.6037,lng:-0.1870,city:place};
+}
+
+/* ================================================================
+   AUTH + INIT
+================================================================ */
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
+  if (!user) { window.location.href = 'login.html'; return null; }
+  return user;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const user = checkAuth();
+  if (!user) return;
+  document.getElementById('userAvatar').textContent = (user.name||'U').charAt(0).toUpperCase();
+  initChat();
+  initNotifications();
+  seedDemoData();
+
+  // Check URL params
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('tracking') || params.get('ref');
+  if (ref) {
+    document.getElementById('trackingInput').value = ref.trim().toUpperCase();
+    doTrack(ref.trim().toUpperCase());
+  }
+
+  document.getElementById('trackBtn').addEventListener('click', () => {
+    doTrack(document.getElementById('trackingInput').value.trim().toUpperCase());
+  });
+  document.getElementById('trackingInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doTrack(document.getElementById('trackingInput').value.trim().toUpperCase());
+  });
+});
+
+window.addEventListener('storage', e => {
+  if (e.key === 'asan_imports') {
+    const cur = document.getElementById('trackingInput').value.trim().toUpperCase();
+    if (cur) doTrack(cur);
+  }
+});
+
+function loadDemo(num) {
+  document.getElementById('trackingInput').value = num;
+  doTrack(num);
+}
+
+/* ================================================================
+   SEED DEMO DATA
+================================================================ */
+function seedDemoData() {
+  if (localStorage.getItem('asan_imports')) return;
+  localStorage.setItem('asan_imports', JSON.stringify([
+    {id:1,tracking:'ASAN-IMP-001-2024',origin:'Japan',destination:'Ghana',make:'Toyota',model:'Land Cruiser',year:2024,vin:'JTDKN3DU5A0123456',vehicleType:'SUV',customer:'Kwame Asante',value:'$85,000',assignedStaff:'Maria Garcia',importFee:'$3,500',customsFee:'$2,800',status:'Customs Clearance'},
+    {id:2,tracking:'ASAN-IMP-002-2024',origin:'Germany',destination:'Ghana',make:'Mercedes-Benz',model:'S-Class',year:2024,vin:'WDD2221651A0987654',vehicleType:'Sedan',customer:'Sarah Johnson',value:'$115,000',assignedStaff:'James Wilson',importFee:'$5,200',customsFee:'$4,100',status:'Delivered'}
+  ]));
+}
+
+/* ================================================================
+   TRACK
+================================================================ */
+function doTrack(num) {
+  if (!num) { showToast('Please enter a tracking number.', 'error'); return; }
+  const url = new URL(window.location.href);
+  url.searchParams.set('tracking', num);
+  window.history.replaceState({}, '', url.toString());
+
+  const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+  const imp = imports.find(i => (i.tracking||'').toUpperCase() === num.toUpperCase());
+
+  document.getElementById('trkResultArea').style.display = 'none';
+  document.getElementById('trkNotFound').style.display = 'none';
+
+  if (!imp) {
+    document.getElementById('trkNotFound').style.display = '';
+    return;
+  }
+
+  renderTracking(imp);
+  document.getElementById('trkResultArea').style.display = '';
+  document.getElementById('trkResultArea').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ================================================================
+   RENDER TRACKING
+================================================================ */
+function renderTracking(imp) {
+  const statusKey = STATUS_MAP[imp.status] || 'processing';
+  const stepIndex = ALL_STATUSES.findIndex(s => s.key === statusKey);
+  const pct = Math.round(((stepIndex + 1) / ALL_STATUSES.length) * 100);
+
+  // Summary strip
+  document.getElementById('sumVehicle').textContent   = `${imp.make||''} ${imp.model||''} ${imp.year||''}`.trim();
+  document.getElementById('sumLocation').textContent  = imp.status || '—';
+  document.getElementById('sumStaff').textContent     = imp.assignedStaff || 'Unassigned';
+  document.getElementById('sumCarrier').textContent   = 'Maersk / RoRo';
+  document.getElementById('sumWeight').textContent    = imp.vehicleType === 'SUV' ? '~2,400 kg' : (imp.vehicleType === 'Sedan' ? '~1,800 kg' : '~2,000 kg');
+  document.getElementById('sumMethod').textContent    = 'Ocean Freight (RoRo)';
+
+  // ETA
+  const etaDate = new Date(); etaDate.setDate(etaDate.getDate() + (imp.status === 'Delivered' ? 0 : 14));
+  document.getElementById('sumEta').textContent    = imp.status === 'Delivered' ? 'Delivered' : etaDate.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('sumEtaDays').textContent = imp.status === 'Delivered' ? 'Completed' : '~14 days remaining';
+
+  // Status pill
+  const pill = document.getElementById('trkStatusPill');
+  pill.className = `trk-status-pill ${STATUS_CSS[statusKey]||'trk-status--processing'}`;
+  document.getElementById('trkStatusLabel').textContent = imp.status || '—';
+
+  // Progress bar
+  setTimeout(() => {
+    document.getElementById('trkBarFill').style.width = pct + '%';
+    document.getElementById('trkBarPct').textContent = pct + '%';
+  }, 100);
+
+  // Steps
+  renderSteps(stepIndex);
+
+  // Detail card
+  document.getElementById('detTracking').textContent    = imp.tracking || '—';
+  document.getElementById('detVehicle').textContent     = `${imp.make||''} ${imp.model||''}`.trim() || '—';
+  document.getElementById('detYear').textContent        = imp.year || '—';
+  document.getElementById('detVin').textContent         = imp.vin || '—';
+  document.getElementById('detOrigin').textContent      = imp.origin || '—';
+  document.getElementById('detDestination').textContent = imp.destination || '—';
+  document.getElementById('detType').textContent        = imp.vehicleType || '—';
+  document.getElementById('detValue').textContent       = imp.value || '—';
+  document.getElementById('detImportFee').textContent   = imp.importFee || '—';
+  document.getElementById('detCustomsFee').textContent  = imp.customsFee || '—';
+
+  // Sender/receiver
+  document.getElementById('senderAddr').textContent   = imp.origin ? `${imp.origin} Port` : 'Origin Port';
+  document.getElementById('receiverName').textContent  = imp.customer || '—';
+  document.getElementById('receiverAddr').textContent  = imp.destination || '—';
+  document.getElementById('receiverRef').textContent   = `Ref: ${imp.tracking||'—'}`;
+
+  // Fee breakdown
+  document.getElementById('feeImport').textContent  = imp.importFee || '—';
+  document.getElementById('feeCustoms').textContent  = imp.customsFee || '—';
+  const fImport  = parseFloat((imp.importFee||'0').replace(/[^0-9.]/g,''))||0;
+  const fCustoms = parseFloat((imp.customsFee||'0').replace(/[^0-9.]/g,''))||0;
+  document.getElementById('feeTotal').textContent = '$' + (fImport + fCustoms).toLocaleString('en-US');
+
+  // Map
+  renderMap(imp.origin || 'Japan', imp.destination || 'Ghana', statusKey);
+
+  // Updates
+  renderUpdates(imp);
+}
+
+/* ================================================================
+   STEPS TIMELINE
+================================================================ */
+function renderSteps(activeIndex) {
+  const container = document.getElementById('trkSteps');
+  const now = new Date();
+
+  container.innerHTML = ALL_STATUSES.map((s, i) => {
+    let cls = '';
+    if (i < activeIndex)      cls = 'step-done';
+    else if (i === activeIndex) cls = 'step-active';
+
+    const ts = i <= activeIndex
+      ? new Date(now.getTime() - (activeIndex - i) * 2 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB',{day:'numeric',month:'short'})
+      : '';
+
+    return `<div class="trk-step ${cls}">
+      <div class="trk-step-icon"><i class="fas ${s.icon}"></i></div>
+      <div class="trk-step-body">
+        <p class="trk-step-title">${s.label}</p>
+        <p class="trk-step-desc">${s.desc}</p>
+        ${ts ? `<span class="trk-step-time"><i class="fas fa-clock" style="margin-right:4px;"></i>${ts}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ================================================================
+   MAP
+================================================================ */
+let trkMapInstance = null;
+
+function renderMap(origin, destination, statusKey) {
+  const oCoords = getCoords(origin);
+  const dCoords = getCoords(destination);
+  const centerLat = (oCoords.lat + dCoords.lat) / 2;
+  const centerLng = (oCoords.lng + dCoords.lng) / 2;
+
+  if (trkMapInstance) { trkMapInstance.remove(); trkMapInstance = null; }
+
+  trkMapInstance = L.map('trkMap').setView([centerLat, centerLng], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© OpenStreetMap contributors', maxZoom: 18
+  }).addTo(trkMapInstance);
+
+  const mkIcon = (color, label) => L.divIcon({
+    className:'',
+    html:`<div style="background:${color};width:14px;height:14px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);"></div>`,
+    iconSize:[14,14], iconAnchor:[7,7]
+  });
+
+  L.marker([oCoords.lat,oCoords.lng],{icon:mkIcon('#2563eb')}).addTo(trkMapInstance)
+    .bindPopup(`<b>Origin: ${esc(origin)}</b><br>${esc(oCoords.city)}`);
+  L.marker([dCoords.lat,dCoords.lng],{icon:mkIcon('#16a34a')}).addTo(trkMapInstance)
+    .bindPopup(`<b>Destination: ${esc(destination)}</b><br>${esc(dCoords.city)}`);
+
+  // Current position dot
+  const stepIdx = ALL_STATUSES.findIndex(s => s.key === statusKey);
+  const prog = (stepIdx + 1) / ALL_STATUSES.length;
+  const curLat = oCoords.lat + (dCoords.lat - oCoords.lat) * prog;
+  const curLng = oCoords.lng + (dCoords.lng - oCoords.lng) * prog;
+
+  const shipIcon = L.divIcon({
+    className:'',
+    html:`<div style="background:#f59e0b;width:18px;height:18px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 6px rgba(245,158,11,.2);display:grid;place-items:center;font-size:9px;color:#fff;"><i class="fas fa-ship"></i></div>`,
+    iconSize:[18,18], iconAnchor:[9,9]
+  });
+  L.marker([curLat,curLng],{icon:shipIcon}).addTo(trkMapInstance)
+    .bindPopup('<b>Current Position</b>').openPopup();
+
+  L.polyline([[oCoords.lat,oCoords.lng],[dCoords.lat,dCoords.lng]],{
+    color:'#2563eb', weight:2, opacity:.55, dashArray:'8,8'
+  }).addTo(trkMapInstance);
+
+  trkMapInstance.fitBounds([[oCoords.lat,oCoords.lng],[dCoords.lat,dCoords.lng]], {padding:[40,40]});
+  document.getElementById('trkMapBadge').textContent = `${esc(oCoords.city)} → ${esc(dCoords.city)}`;
+}
+
+/* ================================================================
+   UPDATES
+================================================================ */
+function renderUpdates(imp) {
+  const list = document.getElementById('trkUpdateList');
+  const stepIdx = ALL_STATUSES.findIndex(s => s.key === (STATUS_MAP[imp.status]||'processing'));
+  const now = new Date();
+
+  const updates = ALL_STATUSES.slice(0, stepIdx + 1).reverse().map((s, i) => {
+    const t = new Date(now.getTime() - i * 18 * 60 * 60 * 1000);
+    const types = ['success','info','info','warning','location','info','success','info','info','warning','success','success'];
+    return { icon: s.icon, type: types[ALL_STATUSES.indexOf(s)]||'info', msg: `${s.label} — ${s.desc}`, time: t };
+  });
+
+  list.innerHTML = updates.map(u => `
+    <div class="trk-update-item">
+      <div class="trk-update-dot ${u.type}"><i class="fas ${u.icon}" style="font-size:11px;"></i></div>
+      <div class="trk-update-text">
+        <p class="trk-update-msg">${esc(u.msg)}</p>
+        <span class="trk-update-time">${u.time.toLocaleDateString('en-GB',{day:'numeric',month:'short'})} ${u.time.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
+      </div>
+    </div>`).join('');
+}
+
+/* ================================================================
+   CHAT
+================================================================ */
+function initChat() {
+  const form = document.getElementById('trkChatForm');
+  const input = document.getElementById('trkChatInput');
+  const msgs = document.getElementById('trkChatMsgs');
+
+  const stored = JSON.parse(localStorage.getItem('asan_tracking_chat') || '[]');
+  msgs.innerHTML = '';
+  stored.forEach(m => addBubble(m.text, m.sender, false));
+  if (msgs.children.length === 0) addBubble("Hi! Ask me about your shipment — tracking, status, payments, or anything else.", 'bot');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const text = (input.value||'').trim();
+    if (!text) return;
+    addBubble(text, 'user');
+    input.value = '';
+    setTimeout(() => addBubble(getBotReply(text), 'bot'), 420);
+  });
+}
+
+function addBubble(text, sender, save = true) {
+  const msgs = document.getElementById('trkChatMsgs');
+  const d = document.createElement('div');
+  d.className = `trk-bubble ${sender}`;
+  d.textContent = text;
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+  if (save) {
+    const h = JSON.parse(localStorage.getItem('asan_tracking_chat') || '[]');
+    h.push({text, sender});
+    if (h.length > 50) h.splice(0, h.length - 50);
+    localStorage.setItem('asan_tracking_chat', JSON.stringify(h));
+  }
+}
+
+function getBotReply(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('track') || m.includes('where'))  return 'Your shipment location is shown on the map above. The progress bar shows the current import stage.';
+  if (m.includes('status'))                         return 'Your current import status is shown in the progress timeline. Each step is updated in real-time.';
+  if (m.includes('eta') || m.includes('deliver') || m.includes('when')) return 'Estimated delivery is shown in the summary strip above. Allow 14–30 days depending on origin.';
+  if (m.includes('pay'))                            return 'Payment details and fees are shown in the Fee Breakdown card. Visit the Payments page to make a payment.';
+  if (m.includes('document') || m.includes('paper')) return 'Download your Client Agreement Form using the button in the Shipment Details card.';
+  if (m.includes('hello') || m.includes('hi'))      return 'Hello! How can I help you with your vehicle import today?';
+  if (m.includes('staff') || m.includes('agent'))   return 'Your assigned import specialist is listed in the summary strip. They handle everything from sourcing to delivery.';
+  return 'I can help with tracking, status updates, payments, or documents. What do you need?';
+}
+
+/* ================================================================
+   DOWNLOAD REPORT
+================================================================ */
+function downloadReport() {
+  showToast('Generating report… download will begin shortly.', 'info');
+}
+
+/* ================================================================
+   TOAST
+================================================================ */
+function showToast(msg, type = 'info') {
+  const region = document.getElementById('trkToastRegion');
+  const icons = {info:'fa-info-circle', success:'fa-check-circle', error:'fa-exclamation-circle'};
+  const colors = {info:'var(--ag-blue-500)', success:'#16a34a', error:'var(--ag-danger)'};
+  const t = document.createElement('div');
+  t.style.cssText = `display:flex;align-items:center;gap:10px;background:var(--ag-navy-900);color:#fff;padding:13px 18px;border-radius:12px;box-shadow:var(--ag-shadow-lg);font-size:13.5px;min-width:260px;border-left:4px solid ${colors[type]};animation:ag-toast-in .28s ease;`;
+  t.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]};font-size:15px;"></i><span>${esc(msg)}</span>`;
+  region.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(8px)'; t.style.transition='.3s'; setTimeout(()=>t.remove(),320); }, 3200);
+}
+
+/* ================================================================
+   NOTIFICATIONS
+================================================================ */
+let notifications = [];
+
+function initNotifications() {
+  const user = checkAuth(); if (!user) return;
+  notifications = JSON.parse(localStorage.getItem('asan_notifications_'+user.email) || '[]');
+  if (!notifications.length) {
+    notifications = [{id:1,title:'Welcome to Tracking',message:'Track your vehicle imports in real-time. Enter a tracking number above.',type:'info',read:false,timestamp:new Date().toISOString()}];
+    localStorage.setItem('asan_notifications_'+user.email, JSON.stringify(notifications));
+  }
+  updateNotifBadge();
+}
+
+function showNotifications() {
+  document.getElementById('notificationPanel').classList.toggle('active');
+  renderNotifs();
+  notifications.forEach(n=>n.read=true);
+  const user = checkAuth();
+  if (user) localStorage.setItem('asan_notifications_'+user.email, JSON.stringify(notifications));
+  updateNotifBadge();
+}
+function hideNotifications() { document.getElementById('notificationPanel').classList.remove('active'); }
+
+function updateNotifBadge() {
+  const unread = notifications.filter(n=>!n.read).length;
+  const dot = document.getElementById('notificationBadge');
+  const badge = document.getElementById('notifCountBadge');
+  dot.style.display = unread ? 'block' : 'none';
+  if (badge) badge.textContent = unread;
+}
+
+function renderNotifs() {
+  const list = document.getElementById('notificationList');
+  if (!list) return;
+  if (!notifications.length) { list.innerHTML=`<div class="ag-empty"><i class="fas fa-bell"></i><h4>No Notifications</h4><p>You're all caught up!</p></div>`; return; }
+  const icon = {info:'fa-info-circle',success:'fa-check',warning:'fa-exclamation-triangle'};
+  list.innerHTML = notifications.map(n=>`
+    <div class="notification-item${n.read?'':' unread'}" onclick="markNotifRead(${n.id})">
+      <div class="notif-icon ${n.type||'info'}"><i class="fas ${icon[n.type]||'fa-info-circle'}"></i></div>
+      <div class="notif-content"><h5>${esc(n.title)}</h5><p>${esc(n.message)}</p>
+        <div class="notif-meta"><i class="fas fa-clock"></i> ${getTimeAgo(new Date(n.timestamp))}</div>
+      </div>${!n.read?'<div class="unread-dot"></div>':''}
+    </div>`).join('');
+}
+
+function markNotifRead(id) { const n=notifications.find(x=>x.id===id); if(n){n.read=true;} renderNotifs(); updateNotifBadge(); }
+function markAllAsRead()   { notifications.forEach(n=>n.read=true); const u=checkAuth(); if(u) localStorage.setItem('asan_notifications_'+u.email,JSON.stringify(notifications)); updateNotifBadge(); renderNotifs(); }
+function clearAllNotifications() { if(!confirm('Clear all?')) return; notifications=[]; const u=checkAuth(); if(u) localStorage.setItem('asan_notifications_'+u.email,JSON.stringify(notifications)); updateNotifBadge(); renderNotifs(); }
+function getTimeAgo(d) { const s=Math.floor((Date.now()-d)/1000); if(s<60)return'Just now'; if(s<3600)return Math.floor(s/60)+' min ago'; if(s<86400)return Math.floor(s/3600)+' hours ago'; return d.toLocaleDateString(); }
+</script>
 </body>
-
 </html>
