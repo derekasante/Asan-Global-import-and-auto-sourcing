@@ -401,10 +401,8 @@ document.getElementById('importForm').addEventListener('submit', function(e) {
   const user = checkAuth();
   if (!user) return;
 
-  const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
-  const staff = JSON.parse(localStorage.getItem('asan_staff') || '[]');
-  const availableStaff = staff.filter(s => s.role === 'staff' || s.role === 'agent');
-  const assignedStaff = availableStaff.length > 0 ? availableStaff[0].name : 'Unassigned';
+  const make = document.getElementById('make').value;
+  const model = document.getElementById('model').value;
 
   const vehicleValue = parseFloat(document.getElementById('value').value);
   const importFee = Math.round(vehicleValue * 0.05);
@@ -419,8 +417,8 @@ document.getElementById('importForm').addEventListener('submit', function(e) {
   const newImport = {
     id: Date.now(),
     tracking: generateTrackingNumber(),
-    make: document.getElementById('make').value,
-    model: document.getElementById('model').value,
+    make: make,
+    model: model,
     year: document.getElementById('year').value,
     vin: document.getElementById('vin').value,
     origin: document.getElementById('origin').value,
@@ -437,16 +435,17 @@ document.getElementById('importForm').addEventListener('submit', function(e) {
     inspection: document.getElementById('inspection').value,
     notes: document.getElementById('notes').value,
     customer: user.name,
-    assignedStaff: assignedStaff,
+assignedStaff: 'Asan Global Team',
     importFee: importFee,
     customsFee: customsFee,
     shippingFee: shippingFee,
     insuranceCost: insuranceCost,
     totalCost: importFee + customsFee + shippingFee + insuranceCost + 150,
-    status: 'Pending',
+    status: 'pending',
     createdAt: new Date().toISOString()
   };
 
+  const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
   imports.push(newImport);
   localStorage.setItem('asan_imports', JSON.stringify(imports));
 

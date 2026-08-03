@@ -3,535 +3,603 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Asan Global Shipping | Import & Auto Sourcing</title>
-<meta name="description" content="Asan Global Shipping — reliable ocean, air, and road freight with live tracking across 150+ countries.">
-<meta name="theme-color" content="#0051a8">
-
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="ai-assistant.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Asan Global | Premium International Logistics &amp; Auto Import</title>
+<meta name="description" content="Asan Global — premium international logistics, vehicle import & auto sourcing. Ocean/air freight, door-to-door delivery, customs clearance, real-time tracking across 150+ countries.">
+<meta name="theme-color" content="#0b2f6b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="premium.css">
+<link rel="stylesheet" href="ai-assistant.css">
 </head>
-
 <body>
-<div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
 
-<header>
-  <div class="logo">
-    <i class="fas fa-car"></i>
-    <div>
-      <h2>Asan Global</h2>
-      <h4 class="logo-tag">Import &amp; Auto Sourcing</h4>
+<!-- ═══════════ Preloader ═══════════ -->
+<div class="ag-preloader" aria-hidden="true">
+  <div class="ag-preloader__ring"></div>
+  <div class="ag-preloader__mark"><i class="fas fa-ship"></i></div>
+  <div class="ag-preloader__text">Asan Global</div>
+</div>
+
+<!-- ═══════════ Header ═══════════ -->
+<header class="ag-header ag-header--overlay" id="top">
+  <div class="ag-container ag-header__inner">
+    <a href="#" class="ag-logo" aria-label="Asan Global home">
+      <span class="ag-logo__mark"><i class="fas fa-ship"></i></span>
+      <span class="ag-logo__text">
+        <h2>Asan Global</h2>
+        <span>Import &amp; Auto Sourcing</span>
+      </span>
+    </a>
+
+    <nav class="ag-nav" aria-label="Primary navigation">
+      <ul>
+        <li><a href="#top">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#why">Why Us</a></li>
+        <li><a href="#track">Track</a></li>
+        <li><a href="#quote">Quote</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="ag-header__actions">
+      <a href="login.html" class="ag-btn ag-btn--ghost ag-header__cta"><i class="fas fa-user-lock"></i> Login</a>
+      <button class="ag-burger" type="button" aria-label="Open menu"><i class="fas fa-bars"></i></button>
     </div>
   </div>
-
-  <button class="menu-toggle" type="button" aria-label="Open menu">
-    <i class="fas fa-bars"></i>
-  </button>
-
-  <nav>
-    <button class="menu-close" type="button" aria-label="Close menu">
-      <i class="fas fa-times"></i>
-    </button>
-    <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#routes">Routes</a></li>
-      <li><a href="#track">Track</a></li>
-      <li><a href="#quote">Get Quote</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <a href="login.html" class="login-btn">Login</a>
 </header>
 
-<section class="hero">
-  <div class="overlay"></div>
-  <div class="hero-content">
-    <div class="hero-pill"><span class="dot"></span> Global vehicle import • customs + delivery</div>
-    <h1>Your trusted gateway for vehicle import logistics worldwide & home applainces.</h1>
-    <p>From sourcing and documentation to shipment coordination and final clearance, our team handles every step with transparency and precision.</p>
-
-    <div class="hero-note" data-asan-reveal="up">
-      <b>Important:</b> Before you submit your import request, please sign the <a href="client-agreement-form.html">Client Agreement Form</a> to continue.
+<!-- ═══════════ Mobile Nav ═══════════ -->
+<div class="ag-mobile-nav" aria-hidden="true">
+  <div class="ag-mobile-nav__backdrop"></div>
+  <div class="ag-mobile-nav__panel">
+    <div class="ag-mobile-nav__head">
+      <a href="#" class="ag-logo">
+        <span class="ag-logo__mark"><i class="fas fa-ship"></i></span>
+        <span class="ag-logo__text">
+          <h2>Asan Global</h2>
+          <span>Import &amp; Auto Sourcing</span>
+        </span>
+      </a>
+      <button class="ag-mobile-nav__close" type="button" aria-label="Close menu"><i class="fas fa-times"></i></button>
     </div>
-
-    <div class="hero-cta">
-      <a href="#quote" class="hero-btn">Get Free Quote</a>
-      <a href="#track" class="hero-link"><i class="fas fa-location-dot"></i> Track Import</a>
+    <ul class="ag-mobile-nav__links">
+      <li><a href="#top"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="#services"><i class="fas fa-boxes-stacked"></i> Services</a></li>
+      <li><a href="#why"><i class="fas fa-medal"></i> Why Us</a></li>
+      <li><a href="#track"><i class="fas fa-location-dot"></i> Track</a></li>
+      <li><a href="#quote"><i class="fas fa-file-invoice-dollar"></i> Quote</a></li>
+      <li><a href="#faq"><i class="fas fa-circle-question"></i> FAQ</a></li>
+      <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+    <div class="ag-mobile-nav__footer">
+      <a href="login.html" class="ag-btn ag-btn--primary"><i class="fas fa-user-lock"></i> Client Login</a>
+      <a href="#quote" class="ag-btn ag-btn--gold"><i class="fas fa-file-invoice-dollar"></i> Request Quote</a>
     </div>
+  </div>
+</div>
 
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <strong>150+</strong>
-        <span>Countries Served</span>
+<!-- ═══════════ Hero ═══════════ -->
+<section class="ag-hero" id="top">
+  <div class="ag-hero__bg" style="background-image:url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1920&q=80');"></div>
+  <div class="ag-hero__overlay"></div>
+  <div class="ag-hero__dots"></div>
+
+  <!-- Animated shipping elements -->
+  <i class="ag-hero__ship fas fa-ship" aria-hidden="true"></i>
+  <i class="ag-hero__plane fas fa-plane" aria-hidden="true"></i>
+  <div class="ag-hero__container ag-hero__container--1"><i class="fas fa-box"></i></div>
+  <div class="ag-hero__container ag-hero__container--2"><i class="fas fa-cube"></i></div>
+  <div class="ag-hero__container ag-hero__container--3"><i class="fas fa-box-open"></i></div>
+
+  <div class="ag-container">
+    <div class="ag-hero__content">
+      <span class="ag-hero__badge"><span class="dot"></span> Global logistics • 150+ countries • 24/7</span>
+      <h1>Moving the world — <em>premium freight</em> &amp; auto import.</h1>
+      <p class="ag-hero__sub">From vehicle sourcing and documentation to ocean &amp; air freight, customs clearance and final door-to-door delivery — we handle every mile with precision and care.</p>
+      <div class="ag-hero__cta">
+        <a href="#track" class="ag-btn ag-btn--gold ag-btn--lg"><i class="fas fa-location-dot"></i> Track Shipment</a>
+        <a href="#quote" class="ag-btn ag-btn--ghost ag-btn--lg"><i class="fas fa-file-invoice-dollar"></i> Request Quote</a>
       </div>
-      <div class="hero-stat">
-        <strong>24/7</strong>
-        <span>Support</span>
+      <div class="ag-hero__note">
+        <i class="fas fa-file-signature"></i>
+        <span>Before submitting an import request, please sign the <a href="client-agreement-form.html">Client Agreement Form</a> to continue.</span>
       </div>
-      <div class="hero-stat">
-        <strong>98%</strong>
-        <span>On-Time Delivery</span>
+      <div class="ag-hero__stats">
+        <div class="ag-hero__stat"><strong>150+</strong><span>Countries Served</span></div>
+        <div class="ag-hero__stat"><strong>24/7</strong><span>Support</span></div>
+        <div class="ag-hero__stat"><strong>98%</strong><span>On-Time Delivery</span></div>
       </div>
     </div>
   </div>
 
-  <div class="hero-panel" aria-hidden="true">
-    <div class="hero-panel-card">
-      <div class="panel-heading">
-        <p class="panel-kicker">Why clients choose us</p>
-        <h3>End-to-end logistics without the usual friction.</h3>
-      </div>
-      <ul class="panel-list">
-        <li><i class="fas fa-check-circle"></i> Dedicated import specialists</li>
-        <li><i class="fas fa-check-circle"></i> Transparent pricing and updates</li>
-        <li><i class="fas fa-check-circle"></i> Strong partner network across key markets</li>
-      </ul>
-      <div class="panel-footer">
-        <span><i class="fas fa-shield-alt"></i> Insured handling</span>
-        <span><i class="fas fa-globe"></i> Global reach</span>
+  <!-- Floating glass card -->
+  <div class="ag-hero__card" aria-hidden="true">
+    <div class="ag-hero__card-head">
+      <i class="fas fa-award"></i>
+      <div>
+        <h3>Why clients trust us</h3>
+        <p>End-to-end logistics, zero friction</p>
       </div>
     </div>
+    <ul class="ag-hero__card-list">
+      <li><i class="fas fa-check-circle"></i> Dedicated import specialists</li>
+      <li><i class="fas fa-check-circle"></i> Transparent pricing &amp; updates</li>
+      <li><i class="fas fa-check-circle"></i> Global partner network</li>
+    </ul>
   </div>
 
-  <div class="hero-bg" id="heroBackground" style="background-image:url('https://admin.asiashipping.co/upload/blog/05-importacao-automoveis-banner_e414e4c7-a6f0-4b32-963a-d061d614721c.jpg');"></div>
-  <div class="hero-slider-dots" id="heroSliderDots" aria-label="Hero slideshow controls"></div>
+  <svg class="ag-hero__wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0,64 C240,96 480,16 720,40 C960,64 1200,88 1440,48 L1440,90 L0,90 Z"></path></svg>
 </section>
 
-<section class="highlight-strip">
-  <div class="highlight-item">
-    <i class="fas fa-globe-americas"></i>
-    <div><strong>Worldwide routes</strong><span>Ocean, air, and road coordination</span></div>
-  </div>
-  <div class="highlight-item">
-    <i class="fas fa-file-signature"></i>
-    <div><strong>Clear documentation</strong><span>Import paperwork handled with care</span></div>
-  </div>
-  <div class="highlight-item">
-    <i class="fas fa-ship"></i>
-    <div><strong>Reliable partners</strong><span>Trusted carriers and customs networks</span></div>
-  </div>
-</section>
-
-<section id="about" class="about">
-  <div class="section-heading">
-    <p class="section-kicker">About Asan Global</p>
-    <h2>Professional import support for individuals and businesses.</h2>
-    <p>Asan Global connects clients with reliable vehicle sourcing, shipping partners, and customs expertise across major global markets. We focus on clarity, speed, and dependable communication from the first inquiry to the final delivery.</p>
-  </div>
-
-  <div class="about-grid">
-    <div class="about-card about-story">
-      <h3>Built for smooth international vehicle imports</h3>
-      <p>We coordinate with trusted logistics partners and customs professionals so your import journey stays organized, transparent, and stress-free.</p>
-      <div class="about-points">
-        <div><i class="fas fa-users-cog"></i><span>Expert staff support</span></div>
-        <div><i class="fas fa-file-contract"></i><span>Clear documentation</span></div>
-        <div><i class="fas fa-handshake"></i><span>Reliable partnership network</span></div>
+<!-- ═══════════ Feature strip ═══════════ -->
+<section class="ag-section" style="padding-top:0;">
+  <div class="ag-container">
+    <div class="ag-strip">
+      <div class="ag-strip__item" data-ag-reveal>
+        <i class="fas fa-globe-americas"></i>
+        <div><strong>Worldwide routes</strong><span>Ocean, air and road coordination across 150+ countries.</span></div>
       </div>
-    </div>
-
-    <div class="about-boxes">
-      <div class="box">
-        <i class="fas fa-users-cog"></i>
-        <h3>Expert Staff</h3>
-        <p>Dedicated import specialists manage your vehicle import from start to finish.</p>
+      <div class="ag-strip__item" data-ag-reveal>
+        <i class="fas fa-file-signature"></i>
+        <div><strong>Clear documentation</strong><span>Import paperwork, customs forms &amp; permits handled with care.</span></div>
       </div>
-      <div class="box">
-        <i class="fas fa-file-contract"></i>
-        <h3>Full Documentation</h3>
-        <p>We handle all paperwork, customs forms, and import documentation for you.</p>
-      </div>
-      <div class="box">
+      <div class="ag-strip__item" data-ag-reveal>
         <i class="fas fa-handshake"></i>
-        <h3>Trusted Partners</h3>
-        <p>We work with reliable shipping partners and customs brokers worldwide.</p>
+        <div><strong>Reliable partners</strong><span>Trusted carriers &amp; customs networks across key markets.</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="capabilities">
-  <div class="capability-card">
-    <p class="section-kicker">Premium logistics</p>
-    <h2>Global freight, customs, and vehicle sourcing under one trusted partner.</h2>
-    <p>We combine responsive account support, secure shipment coordination, and rapid customs handling to keep every import moving with confidence.</p>
-    <a href="#quote" class="hero-btn small-btn">Book a consultation</a>
-  </div>
-  <div class="capability-grid">
-    <div class="capability-item">
-      <i class="fas fa-ship"></i>
-      <h3>Ocean &amp; Air Freight</h3>
-      <p>Flexible shipping options tailored for speed, cost, and cargo safety.</p>
+<!-- ═══════════ Services ═══════════ -->
+<section class="ag-section ag-section--tint" id="services">
+  <div class="ag-container">
+    <div class="ag-section-head">
+      <span class="ag-eyebrow">Our Services</span>
+      <h2>Premium logistics <em>solutions</em> for every shipment</h2>
+      <p>From a single pallet to a full fleet of vehicles — we move your cargo safely, efficiently and on time.</p>
     </div>
-    <div class="capability-item">
-      <i class="fas fa-map-marked-alt"></i>
-      <h3>Global Network</h3>
-      <p>Coverage across ports, air hubs, and regional transit partners worldwide.</p>
-    </div>
-    <div class="capability-item">
-      <i class="fas fa-lock"></i>
-      <h3>Secure Handling</h3>
-      <p>Protected transport and documentation support from pickup to delivery.</p>
-    </div>
-  </div>
-</section>
-
-<section id="services" class="services">
-  <div class="section-heading">
-    <p class="section-kicker">Our services</p>
-    <h2>Search our import services and logistics support</h2>
-    <p>Use the search bar below to quickly find the service or route that fits your shipment needs.</p>
-  </div>
-  <div class="service-search">
-    <i class="fas fa-search"></i>
-    <input type="search" id="siteSearch" placeholder="Search services, routes, or import topics" autocomplete="off">
-  </div>
-  <div class="search-results" id="searchResults" aria-live="polite"></div>
-  <div class="service-container">
-    <div class="service-card">
-      <i class="fas fa-car"></i>
-      <h3>Vehicle Import</h3>
-      <p>Complete vehicle import service from sourcing to delivery with expert staff guidance.</p>
-    </div>
-    <div class="service-card">
-      <i class="fas fa-search-location"></i>
-      <h3>Vehicle Sourcing</h3>
-      <p>We find and inspect vehicles from USA, Japan, Europe, Korea, and UAE markets.</p>
-    </div>
-    <div class="service-card">
-      <i class="fas fa-file-contract"></i>
-      <h3>Documentation</h3>
-      <p>Our staff handles all import paperwork, customs forms, and legal requirements.</p>
-    </div>
-    <div class="service-card">
-      <i class="fas fa-clipboard-check"></i>
-      <h3>Customs Clearance</h3>
-      <p>Expert customs brokers handle duties, taxes, and regulatory compliance.</p>
-    </div>
-    <div class="service-card">
-      <i class="fas fa-users-cog"></i>
-      <h3>Staff Management</h3>
-      <p>Dedicated import specialists assigned to manage your entire import process.</p>
-    </div>
-    <div class="service-card">
-      <i class="fas fa-shield-alt"></i>
-      <h3>Insurance</h3>
-      <p>Comprehensive coverage for your vehicle during import and transit.</p>
+    <div class="ag-grid ag-grid--3">
+      <article class="ag-card" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-plane"></i></div>
+        <h3>Air Freight</h3>
+        <p>Fast, secure air cargo for time-critical shipments and express delivery across the globe.</p>
+        <a href="#quote" class="ag-card__link">Get a quote <i class="fas fa-arrow-right"></i></a>
+      </article>
+      <article class="ag-card" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-ship"></i></div>
+        <h3>Sea Freight</h3>
+        <p>Cost-effective ocean freight with container and Ro-Ro options for vehicles and bulk cargo.</p>
+        <a href="#quote" class="ag-card__link">Get a quote <i class="fas fa-arrow-right"></i></a>
+      </article>
+      <article class="ag-card ag-card--gold" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-car"></i></div>
+        <h3>Auto Import</h3>
+        <p>Complete vehicle import from sourcing, inspection and purchase to full delivery.</p>
+        <a href="#quote" class="ag-card__link">Get a quote <i class="fas fa-arrow-right"></i></a>
+      </article>
+      <article class="ag-card" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-house-circle-check"></i></div>
+        <h3>Door-to-Door Delivery</h3>
+        <p>Seamless pickup-to-destination delivery with full tracking and proactive updates.</p>
+        <a href="#quote" class="ag-card__link">Get a quote <i class="fas fa-arrow-right"></i></a>
+      </article>
+      <article class="ag-card" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-stamp"></i></div>
+        <h3>Customs Clearance</h3>
+        <p>Expert customs brokers handle duties, taxes, permits and regulatory compliance.</p>
+        <a href="#quote" class="ag-card__link">Get a quote <i class="fas fa-arrow-right"></i></a>
+      </article>
+      <article class="ag-card" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-warehouse"></i></div>
+        <h3>Warehousing</h3>
+        <p>Secure, insured storage and fulfillment for cargo awaiting transit or final delivery.</p>
+        <a href="#quote" class="ag-card__link">Get a quote <i class="fas fa-arrow-right"></i></a>
+      </article>
     </div>
   </div>
 </section>
 
-<section id="process" class="process">
-  <h2>How It Works</h2>
-  <p class="section-lead">From sourcing to delivery — our staff manages your complete vehicle import process.</p>
-  <div class="process-steps">
-    <div class="step">
-      <span class="step-num">1</span>
-      <i class="fas fa-file-signature"></i>
-      <h3>Request Import Quote</h3>
-      <p>Tell us the vehicle you want to import, origin country, and destination. Our staff responds within 24 hours.</p>
+<!-- ═══════════ Why Choose Us ═══════════ -->
+<section class="ag-section ag-why" id="why">
+  <div class="ag-container">
+    <div class="ag-section-head">
+      <span class="ag-eyebrow">Why Choose Us</span>
+      <h2>Built for <em>speed, safety</em> &amp; trust</h2>
+      <p>We combine modern logistics with a human touch — so your cargo is always in safe hands.</p>
     </div>
-    <div class="step">
-      <span class="step-num">2</span>
-      <i class="fas fa-search-location"></i>
-      <h3>Vehicle Sourcing</h3>
-      <p>We find and inspect your vehicle, then our staff handles all purchase documentation and payment coordination.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">3</span>
-      <i class="fas fa-users-cog"></i>
-      <h3>Import Management</h3>
-      <p>Your assigned staff member coordinates shipping, customs documentation, and keeps you updated throughout the process.</p>
-    </div>
-    <div class="step">
-      <span class="step-num">4</span>
-      <i class="fas fa-hand-holding-box"></i>
-      <h3>Clearance &amp; Delivery</h3>
-      <p>Customs clearance, duties payment, and final delivery to your location — handled by our expert team.</p>
-    </div>
-  </div>
-</section>
-
-<section id="routes" class="routes">
-  <h2>Popular Import Routes</h2>
-  <p class="section-lead">Vehicle imports we handle from major automotive markets to your destination.</p>
-  <div class="route-grid">
-    <div class="route-card">
-      <div class="route-flag"><i class="fas fa-car"></i></div>
-      <h3>Japan → Ghana</h3>
-      <p>Toyota, Honda, Nissan · 25–35 days · Ro-Ro shipping</p>
-      <span class="route-tag">Most popular</span>
-    </div>
-    <div class="route-card">
-      <div class="route-flag"><i class="fas fa-car"></i></div>
-      <h3>USA → Ghana</h3>
-      <p>Ford, Chevrolet, Tesla · 20–30 days · Container &amp; Ro-Ro</p>
-      <span class="route-tag">American vehicles</span>
-    </div>
-    <div class="route-card">
-      <div class="route-flag"><i class="fas fa-car"></i></div>
-      <h3>Germany → Ghana</h3>
-      <p>BMW, Mercedes, Audi · 25–35 days · Container shipping</p>
-      <span class="route-tag">European luxury</span>
-    </div>
-    <div class="route-card">
-      <div class="route-flag"><i class="fas fa-car"></i></div>
-      <h3>UAE → Ghana</h3>
-      <p>Luxury SUVs, Sports cars · 15–25 days · Express routes</p>
-      <span class="route-tag">Quick delivery</span>
+    <div class="ag-grid ag-grid--4">
+      <article class="ag-card ag-why__card ag-why__card--glass" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-bolt"></i></div>
+        <h3>Fast Delivery</h3>
+        <p>Optimized routes and express options cut transit times without compromising safety.</p>
+      </article>
+      <article class="ag-card ag-why__card ag-why__card--glass" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-globe"></i></div>
+        <h3>Global Network</h3>
+        <p>Trusted partners in ports, air hubs and regional transit centers worldwide.</p>
+      </article>
+      <article class="ag-card ag-why__card ag-why__card--glass" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-shield-halved"></i></div>
+        <h3>Secure Shipping</h3>
+        <p>Insured handling and protected transport from pickup to final delivery.</p>
+      </article>
+      <article class="ag-card ag-why__card ag-why__card--glass" data-ag-reveal>
+        <div class="ag-card__icon"><i class="fas fa-satellite-dish"></i></div>
+        <h3>Real-time Tracking</h3>
+        <p>Live status, timeline and location updates for total peace of mind.</p>
+      </article>
     </div>
   </div>
-  <p class="routes-note"><a href="schudule.html">View all import routes &rarr;</a></p>
 </section>
 
-<section class="stats" aria-label="Company performance statistics">
-  <div class="stat"><h1 data-count="20" data-suffix="K+">0</h1><p>Happy Clients</p></div>
-  <div class="stat"><h1 data-count="150" data-suffix="+">0</h1><p>Countries Served</p></div>
-  <div class="stat"><h1 data-count="98" data-suffix="%">0</h1><p>Successful Deliveries</p></div>
-  <div class="stat"><h1 data-count="24" data-suffix="/7">0</h1><p>Customer Support</p></div>
-</section>
-
-<section id="track" class="track-section">
-  <h2>Track Your Vehicle Import</h2>
-  <p>Enter your import tracking number to view real-time status, documentation progress, and delivery updates.</p>
-  <form id="trackForm" class="track-form">
-    <input type="text" name="tracking" placeholder="e.g. ASAN-IMP-001-2024" autocomplete="off" required>
-    <button type="submit"><i class="fas fa-search"></i> Track Import</button>
-  </form>
-  <p class="track-hint">Try demo number: <code>ASAN-IMP-001-2024</code></p>
-</section>
-
-<section id="quote" class="quote-section">
-  <div class="quote-inner">
-    <div class="quote-info">
-      <h2>Get a Free Import Quote</h2>
-      <p>Fill in your vehicle details and our staff will send you comprehensive import pricing within 24 hours.</p>
-      <ul class="quote-perks">
-        <li><i class="fas fa-check"></i> No hidden fees — transparent import pricing</li>
-        <li><i class="fas fa-check"></i> Dedicated staff assigned to your import</li>
-        <li><i class="fas fa-check"></i> Vehicle sourcing from USA, UK, Japan, Korea &amp; UAE</li>
-        <li><i class="fas fa-check"></i> Complete customs and documentation handling</li>
-      </ul>
-    </div>
-    <form id="quoteForm" class="quote-form">
-      <input type="text" name="name" placeholder="Full Name" required>
-      <input type="tel" name="phone" placeholder="Phone / WhatsApp (+233...)" required>
-      <input type="email" name="email" placeholder="Email Address">
-      <select name="service" required>
-        <option value="">Select Import Service</option>
-        <option>Vehicle Import / Sourcing</option>
-        <option>Documentation Only</option>
-        <option>Customs Clearance</option>
-        <option>Full Import Package</option>
-      </select>
-      <div class="quote-row">
-        <input type="text" name="origin" placeholder="Origin Country (e.g. Japan)">
-        <input type="text" name="destination" placeholder="Destination (e.g. Accra, Ghana)">
+<!-- ═══════════ Tracking ═══════════ -->
+<section class="ag-section ag-track" id="track">
+  <div class="ag-container">
+    <div class="ag-track__wrap">
+      <div class="ag-track__visual" data-ag-reveal="left">
+        <div class="ag-track__glow"></div>
+        <i class="fas fa-ship-cruise"></i>
       </div>
-      <textarea name="details" rows="4" placeholder="Vehicle details — make, model, year, budget, etc."></textarea>
-      <button type="submit"><i class="fas fa-paper-plane"></i> Request Import Quote</button>
-    </form>
-  </div>
-</section>
-
-<section class="testimonials">
-  <h2>What Our Clients Say</h2>
-  <div class="testimonial-grid">
-    <blockquote>
-      <p>"Asan Global helped me import my Toyota Land Cruiser from Japan. Their staff handled everything from sourcing to customs clearance."</p>
-      <footer>— Kwame A., Accra <span>Vehicle Import Client</span></footer>
-    </blockquote>
-    <blockquote>
-      <p>"Professional service from start to finish. My assigned staff member kept me updated throughout the entire import process."</p>
-      <footer>— Sarah M., Tema <span>BMW Import Client</span></footer>
-    </blockquote>
-    <blockquote>
-      <p>"Best import service for luxury vehicles. They sourced my Mercedes from Germany and handled all documentation perfectly."</p>
-      <footer>— Ibrahim K., Kumasi <span>Luxury Vehicle Import</span></footer>
-    </blockquote>
-  </div>
-</section>
-
-<section id="faq" class="faq">
-  <h2>Frequently Asked Questions</h2>
-  <div class="faq-list">
-    <details class="faq-item" open>
-      <summary>How long does vehicle import take?</summary>
-      <p>Vehicle import typically takes 25–45 days depending on the origin country, shipping method, and customs processing. We provide accurate ETAs once we have your vehicle details.</p>
-    </details>
-    <details class="faq-item">
-      <summary>What documents do I need to import a vehicle?</summary>
-      <p>We handle all required documentation including purchase invoice, bill of lading, export certificate, import permit, and customs declaration. Our staff guides you through the entire process.</p>
-    </details>
-    <details class="faq-item">
-      <summary>How does your staff manage my import?</summary>
-      <p>Each import is assigned a dedicated staff member who coordinates sourcing, documentation, shipping arrangements, customs clearance, and keeps you updated throughout the process.</p>
-    </details>
-    <details class="faq-item">
-      <summary>What import fees should I expect?</summary>
-      <p>Import fees include our service fee, customs duties, shipping costs, and documentation fees. We provide transparent pricing with no hidden costs before you commit.</p>
-    </details>
-    <details class="faq-item">
-      <summary>Can I track my vehicle import in real time?</summary>
-      <p>Yes. Use your import tracking number on our tracking page to see real-time status updates, documentation progress, and delivery milestones.</p>
-    </details>
-  </div>
-</section>
-
-<section id="gallery" class="gallery">
-  <h2>Vehicle Import Gallery</h2>
-  <div class="gallery-container">
-    <img src="cargo cars.jpg" alt="Vehicle import process">
-    <img src="cargo1.jpg" alt="Customs clearance process">
-    <img src="plane.jpg" alt="Vehicle transport">
-    <img src="cargo 4.jpg" alt="Import documentation">
-  </div>
-</section>
-
-<section id="contact" class="contact">
-  <h2>Contact Us</h2>
-  <div class="contact-grid">
-    <div class="contact-info">
-      <h3>Get in Touch</h3>
-      <p>Reach us by phone, WhatsApp, or visit our office near Tema Port for all your vehicle import needs.</p>
-      <ul>
-        <li><i class="fas fa-map-marker-alt"></i> Tema, Greater Accra, Ghana (Near Tema Port)</li>
-        <li><i class="fas fa-phone"></i> <a href="tel:+233245357611">+233 245 357 611</a></li>
-        <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/233245357611" target="_blank" rel="noopener">WhatsApp Us</a></li>
-        <li><i class="fas fa-envelope"></i> <a href="mailto:info@asanglobal.com">info@asanglobal.com</a></li>
-        <li><i class="fas fa-clock"></i> Mon – Sat: 8:00 AM – 6:00 PM · Sun: Emergency only</li>
-      </ul>
-      <div class="contact-badges">
-        <span><i class="fas fa-certificate"></i> Licensed Import Service</span>
-        <span><i class="fas fa-lock"></i> Insured Imports</span>
+      <div data-ag-reveal="right">
+        <span class="ag-eyebrow">Shipment Tracking</span>
+        <h2 style="font-family:var(--ag-font-display);font-size:clamp(1.9rem,4vw,2.9rem);font-weight:800;color:var(--ag-navy-900);margin:18px 0 14px;">Track your shipment <em style="font-style:normal;color:var(--ag-blue-600);">in real time</em></h2>
+        <p style="color:var(--ag-slate);line-height:1.75;margin-bottom:26px;">Enter your Asan Global tracking number to view live status, location, timeline and delivery updates.</p>
+        <form class="ag-track__form" role="search">
+          <i class="fas fa-search"></i>
+          <input type="text" class="ag-track__input" placeholder="e.g. ASG-1712345678901" autocomplete="off" aria-label="Enter tracking number">
+          <button type="submit" class="ag-btn ag-btn--primary"><i class="fas fa-location-dot"></i> Track Now</button>
+        </form>
+        <p class="ag-track__demo">Try a demo: <code data-ref="ASAN-IMP-001-2024">ASAN-IMP-001-2024</code> or <code data-ref="ASG-1785712991559">ASG-1785712991559</code></p>
       </div>
     </div>
-    <form id="contactForm">
-      <input type="text" name="name" placeholder="Full Name" required>
-      <input type="email" name="email" placeholder="Email Address" required>
-      <input type="tel" name="phone" placeholder="Phone Number">
-      <input type="text" name="subject" placeholder="Subject">
-      <textarea name="message" rows="6" placeholder="Tell us about your vehicle import needs..." required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
   </div>
 </section>
 
-<a href="#top" class="back-top" id="backTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></a>
-
-<!-- Floating WhatsApp (prefilled message) -->
-<a class="whatsapp-float float-whatsapp" id="whatsappFloat" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-  <i class="fab fa-whatsapp" aria-hidden="true"></i>
-</a>
-<script>
-  (function () {
-    var btn = document.getElementById('whatsappFloat');
-    if (!btn) return;
-
-    var base = 'https://wa.me/233245357611';
-    var text = 'Hello Asan Global, I would like help with vehicle import. Please contact me.';
-    btn.setAttribute('href', base + '?text=' + encodeURIComponent(text));
-  })();
-</script>
-
-<footer id="top">
-  <div class="footer-grid">
-    <div class="footer-col">
-      <h3><i class="fas fa-car"></i> Asan Global</h3>
-      <p>Professional vehicle import services with expert staff management from sourcing to delivery.</p>
-      <div class="socials">
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="#" aria-label="X"><i class="fab fa-x-twitter"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+<!-- ═══════════ Quote ═══════════ -->
+<section class="ag-section ag-section--tint" id="quote">
+  <div class="ag-container">
+    <div class="ag-section-head">
+      <span class="ag-eyebrow">Request a Quote</span>
+      <h2>Get a <em>free</em> import quote</h2>
+      <p>Fill in your shipment details and our team will send you comprehensive pricing within 24 hours.</p>
+    </div>
+    <div class="ag-forms__grid">
+      <div data-ag-reveal="left">
+        <ul class="ag-perks">
+          <li><i class="fas fa-check"></i> No hidden fees — transparent import pricing</li>
+          <li><i class="fas fa-check"></i> Dedicated staff assigned to your shipment</li>
+          <li><i class="fas fa-check"></i> Vehicle sourcing from USA, UK, Japan, Korea &amp; UAE</li>
+          <li><i class="fas fa-check"></i> Complete customs &amp; documentation handling</li>
+          <li><i class="fas fa-check"></i> Ocean, air &amp; door-to-door options</li>
+        </ul>
       </div>
-    </div>
-    <div class="footer-col">
-      <h4>Quick Links</h4>
-      <a href="#track">Track Import</a>
-      <a href="#quote">Get Quote</a>
-      <a href="import.html">Import Services</a>
-      <a href="schudule.html">Import Schedule</a>
-      <a href="login.html">Client Login</a>
-    </div>
-    <div class="footer-col">
-      <h4>Services</h4>
-      <a href="#services">Vehicle Import</a>
-      <a href="#services">Vehicle Sourcing</a>
-      <a href="#services">Documentation</a>
-      <a href="#services">Customs Clearance</a>
-      <a href="payment.html">Payments</a>
-    </div>
-    <div class="footer-col">
-      <h4>Contact</h4>
-      <a href="tel:+233245357611"><i class="fas fa-phone"></i> +233 245 357 611</a>
-      <a href="https://wa.me/233245357611"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-      <a href="mailto:info@asanglobal.com"><i class="fas fa-envelope"></i> info@asanglobal.com</a>
-      <p class="footer-hours">Mon–Sat 8AM–6PM</p>
+      <form id="quoteForm" class="ag-form" data-ag-reveal="right">
+        <div class="ag-form__row">
+          <div class="ag-field">
+            <label for="q-name">Full Name *</label>
+            <input type="text" id="q-name" name="name" placeholder="John Doe" required>
+          </div>
+          <div class="ag-field">
+            <label for="q-phone">Phone / WhatsApp</label>
+            <input type="tel" id="q-phone" name="phone" placeholder="+233 000 000 000">
+          </div>
+        </div>
+        <div class="ag-field">
+          <label for="q-email">Email Address *</label>
+          <input type="email" id="q-email" name="email" placeholder="you@email.com" required>
+        </div>
+        <div class="ag-field">
+          <label for="q-service">Import Service *</label>
+          <select id="q-service" name="service" required>
+            <option value="">Select a service</option>
+            <option>Air Freight</option>
+            <option>Sea Freight</option>
+            <option>Auto Import / Sourcing</option>
+            <option>Door-to-Door Delivery</option>
+            <option>Customs Clearance</option>
+            <option>Warehousing</option>
+            <option>Full Import Package</option>
+          </select>
+        </div>
+        <div class="ag-form__row">
+          <div class="ag-field">
+            <label for="q-origin">Origin Country</label>
+            <input type="text" id="q-origin" name="origin" placeholder="e.g. Japan">
+          </div>
+          <div class="ag-field">
+            <label for="q-dest">Destination</label>
+            <input type="text" id="q-dest" name="destination" placeholder="e.g. Accra, Ghana">
+          </div>
+        </div>
+        <div class="ag-field">
+          <label for="q-details">Vehicle / Shipment Details</label>
+          <textarea id="q-details" name="details" rows="4" placeholder="Make, model, year, weight, budget, etc."></textarea>
+        </div>
+        <button type="submit" class="ag-btn ag-btn--primary ag-btn--lg"><i class="fas fa-paper-plane"></i> Request Quote</button>
+      </form>
     </div>
   </div>
-  <div class="footer-bottom">
-    <p>&copy; 2026 Asan Global. All Rights Reserved.</p>
-    <div class="footer-actions">
-      <a class="footer-btn" href="#track"><i class="fas fa-location-dot"></i> Track</a>
-      <a class="footer-btn" href="#quote"><i class="fas fa-file-invoice"></i> Get Quote</a>
-      <a class="footer-phone" href="tel:+233245357611"><i class="fas fa-phone-alt"></i> Call Now</a>
+</section>
+
+<!-- ═══════════ Stats ═══════════ -->
+<section class="ag-section ag-stats">
+  <div class="ag-container">
+    <div class="ag-stats__grid">
+      <div class="ag-stat" data-ag-reveal>
+        <div class="ag-stat__num" data-count="50000" data-suffix="+">0</div>
+        <div class="ag-stat__label">Shipments Delivered</div>
+      </div>
+      <div class="ag-stat" data-ag-reveal>
+        <div class="ag-stat__num" data-count="150" data-suffix="+">0</div>
+        <div class="ag-stat__label">Countries Served</div>
+      </div>
+      <div class="ag-stat" data-ag-reveal>
+        <div class="ag-stat__num" data-count="20000" data-suffix="+">0</div>
+        <div class="ag-stat__label">Happy Clients</div>
+      </div>
+      <div class="ag-stat" data-ag-reveal>
+        <div class="ag-stat__num" data-count="15" data-suffix="+">0</div>
+        <div class="ag-stat__label">Years Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Testimonials ═══════════ -->
+<section class="ag-section ag-section--tint" id="testimonials">
+  <div class="ag-container">
+    <div class="ag-section-head">
+      <span class="ag-eyebrow">Testimonials</span>
+      <h2>What our <em>clients</em> say</h2>
+      <p>Real stories from individuals and businesses who trust Asan Global with their cargo.</p>
+    </div>
+    <div class="ag-testi">
+      <article class="ag-testi__card" data-ag-reveal>
+        <div class="ag-testi__stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="ag-testi__text">Asan Global helped me import my Toyota Land Cruiser from Japan. Their team handled everything from sourcing to customs clearance seamlessly.</p>
+        <div class="ag-testi__person">
+          <div class="ag-testi__avatar">K</div>
+          <div><strong>Kwame A.</strong><span>Vehicle Import · Accra</span></div>
+        </div>
+      </article>
+      <article class="ag-testi__card" data-ag-reveal>
+        <div class="ag-testi__stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="ag-testi__text">Professional service from start to finish. My assigned staff member kept me updated throughout the entire import process.</p>
+        <div class="ag-testi__person">
+          <div class="ag-testi__avatar">S</div>
+          <div><strong>Sarah M.</strong><span>BMW Import · Tema</span></div>
+        </div>
+      </article>
+      <article class="ag-testi__card" data-ag-reveal>
+        <div class="ag-testi__stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+        <p class="ag-testi__text">Best import service for luxury vehicles. They sourced my Mercedes from Germany and handled all documentation perfectly.</p>
+        <div class="ag-testi__person">
+          <div class="ag-testi__avatar">I</div>
+          <div><strong>Ibrahim K.</strong><span>Luxury Vehicle Import · Kumasi</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FAQ ═══════════ -->
+<section class="ag-section" id="faq">
+  <div class="ag-container">
+    <div class="ag-section-head">
+      <span class="ag-eyebrow">FAQ</span>
+      <h2>Frequently asked <em>questions</em></h2>
+      <p>Everything you need to know about importing with Asan Global.</p>
+    </div>
+    <div class="ag-faq">
+      <div class="ag-faq__item" data-ag-reveal>
+        <button class="ag-faq__q" type="button">How long does vehicle import take?<span><i class="fas fa-plus"></i></span></button>
+        <div class="ag-faq__a"><p>Vehicle import typically takes 25–45 days depending on the origin country, shipping method and customs processing. We provide accurate ETAs once we have your vehicle details.</p></div>
+      </div>
+      <div class="ag-faq__item" data-ag-reveal>
+        <button class="ag-faq__q" type="button">What documents do I need to import a vehicle?<span><i class="fas fa-plus"></i></span></button>
+        <div class="ag-faq__a"><p>We handle all required documentation including purchase invoice, bill of lading, export certificate, import permit and customs declaration. Our staff guides you through the entire process.</p></div>
+      </div>
+      <div class="ag-faq__item" data-ag-reveal>
+        <button class="ag-faq__q" type="button">How does your staff manage my import?<span><i class="fas fa-plus"></i></span></button>
+        <div class="ag-faq__a"><p>Each import is assigned a dedicated staff member who coordinates sourcing, documentation, shipping, customs clearance and keeps you updated throughout.</p></div>
+      </div>
+      <div class="ag-faq__item" data-ag-reveal>
+        <button class="ag-faq__q" type="button">What import fees should I expect?<span><i class="fas fa-plus"></i></span></button>
+        <div class="ag-faq__a"><p>Import fees include our service fee, customs duties, shipping costs and documentation fees. We provide transparent pricing with no hidden costs before you commit.</p></div>
+      </div>
+      <div class="ag-faq__item" data-ag-reveal>
+        <button class="ag-faq__q" type="button">Can I track my shipment in real time?<span><i class="fas fa-plus"></i></span></button>
+        <div class="ag-faq__a"><p>Yes. Use your tracking number on our tracking page to see real-time status updates, documentation progress and delivery milestones.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA banner ═══════════ -->
+<section class="ag-section" style="padding-top:0;">
+  <div class="ag-container">
+    <div class="ag-cta" data-ag-reveal="zoom">
+      <div>
+        <h2>Ready to move your <em>cargo</em>?</h2>
+        <p>Get a free, no-obligation quote today. Our logistics experts respond within 24 hours.</p>
+      </div>
+      <div class="ag-cta__actions">
+        <a href="#quote" class="ag-btn ag-btn--gold ag-btn--lg"><i class="fas fa-file-invoice-dollar"></i> Request Quote</a>
+        <a href="tel:+233245357611" class="ag-btn ag-btn--ghost ag-btn--lg"><i class="fas fa-phone"></i> Call Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Contact ═══════════ -->
+<section class="ag-section ag-section--tint" id="contact">
+  <div class="ag-container">
+    <div class="ag-section-head">
+      <span class="ag-eyebrow">Contact Us</span>
+      <h2>Get in <em>touch</em></h2>
+      <p>Reach us by phone, WhatsApp or email — we're here to help 24/7.</p>
+    </div>
+    <div class="ag-forms__grid">
+      <div class="ag-contact__info" data-ag-reveal="left">
+        <div class="ag-contact__card">
+          <i class="fas fa-map-marker-alt"></i>
+          <div><h4>Visit Us</h4><p>Tema, Greater Accra, Ghana (Near Tema Port)</p></div>
+        </div>
+        <div class="ag-contact__card">
+          <i class="fas fa-phone"></i>
+          <div><h4>Call Us</h4><a href="tel:+233245357611">+233 245 357 611</a></div>
+        </div>
+        <div class="ag-contact__card">
+          <i class="fab fa-whatsapp"></i>
+          <div><h4>WhatsApp</h4><a href="https://wa.me/233245357611" target="_blank" rel="noopener">Chat with us</a></div>
+        </div>
+        <div class="ag-contact__card">
+          <i class="fas fa-envelope"></i>
+          <div><h4>Email</h4><a href="mailto:info@asanglobal.com">info@asanglobal.com</a></div>
+        </div>
+        <div class="ag-contact__card">
+          <i class="fas fa-clock"></i>
+          <div><h4>Hours</h4><p>Mon – Sat: 8:00 AM – 6:00 PM · Sun: Emergency only</p></div>
+        </div>
+      </div>
+      <form id="contactForm" class="ag-form" data-ag-reveal="right">
+        <div class="ag-form__row">
+          <div class="ag-field">
+            <label for="c-name">Full Name *</label>
+            <input type="text" id="c-name" name="name" placeholder="John Doe" required>
+          </div>
+          <div class="ag-field">
+            <label for="c-email">Email Address *</label>
+            <input type="email" id="c-email" name="email" placeholder="you@email.com" required>
+          </div>
+        </div>
+        <div class="ag-form__row">
+          <div class="ag-field">
+            <label for="c-phone">Phone Number</label>
+            <input type="tel" id="c-phone" name="phone" placeholder="+233 000 000 000">
+          </div>
+          <div class="ag-field">
+            <label for="c-subject">Subject *</label>
+            <input type="text" id="c-subject" name="subject" placeholder="How can we help?" required>
+          </div>
+        </div>
+        <div class="ag-field">
+          <label for="c-message">Message *</label>
+          <textarea id="c-message" name="message" rows="5" placeholder="Tell us about your shipment needs..." required></textarea>
+        </div>
+        <button type="submit" class="ag-btn ag-btn--primary ag-btn--lg"><i class="fas fa-paper-plane"></i> Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ Footer ═══════════ -->
+<footer class="ag-footer">
+  <div class="ag-container">
+    <div class="ag-footer__grid">
+      <div class="ag-footer__brand">
+        <a href="#" class="ag-logo ag-footer__logo">
+          <span class="ag-logo__mark"><i class="fas fa-ship"></i></span>
+          <span class="ag-logo__text"><h2>Asan Global</h2><span>Import &amp; Auto Sourcing</span></span>
+        </a>
+        <p>Premium international logistics and vehicle import services — from sourcing and documentation to final delivery, handled with expert staff and transparent communication.</p>
+        <div class="ag-footer__socials">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+          <a href="#" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="ag-footer__col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#track"><i class="fas fa-location-dot"></i> Track Shipment</a></li>
+          <li><a href="#quote"><i class="fas fa-file-invoice-dollar"></i> Request Quote</a></li>
+          <li><a href="import.html"><i class="fas fa-box"></i> Import Services</a></li>
+          <li><a href="schudule.html"><i class="fas fa-calendar"></i> Import Schedule</a></li>
+          <li><a href="login.html"><i class="fas fa-user-lock"></i> Client Login</a></li>
+        </ul>
+      </div>
+      <div class="ag-footer__col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services"><i class="fas fa-plane"></i> Air Freight</a></li>
+          <li><a href="#services"><i class="fas fa-ship"></i> Sea Freight</a></li>
+          <li><a href="#services"><i class="fas fa-car"></i> Auto Import</a></li>
+          <li><a href="#services"><i class="fas fa-stamp"></i> Customs Clearance</a></li>
+          <li><a href="payment.html"><i class="fas fa-credit-card"></i> Payments</a></li>
+        </ul>
+      </div>
+      <div class="ag-footer__col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+233245357611"><i class="fas fa-phone"></i> +233 245 357 611</a></li>
+          <li><a href="https://wa.me/233245357611" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+          <li><a href="mailto:info@asanglobal.com"><i class="fas fa-envelope"></i> info@asanglobal.com</a></li>
+          <li><a href="#contact"><i class="fas fa-map-marker-alt"></i> Tema, Ghana</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ag-footer__bottom">
+      <span>© <span class="ag-footer__year">2026</span> Asan Global. All rights reserved.</span>
+      <div class="ag-footer__bottom-links">
+        <a href="client-agreement-form.html">Client Agreement</a>
+        <a href="#faq">Privacy</a>
+        <a href="#faq">Terms</a>
+      </div>
     </div>
   </div>
 </footer>
 
-<!-- AI Assistant Chat Widget -->
-<div id="aiAssistant" class="ai-assistant" aria-live="polite">
-
-    <div class="ai-chat-button" id="aiChatToggle" role="button" tabindex="0" aria-label="Open AI assistant">
-        <i class="fas fa-robot" aria-hidden="true"></i>
-        <span>AI Assistant</span>
-    </div>
-
-    <div class="ai-chat-window" id="aiChatWindow" aria-label="AI assistant chat window">
-        <div class="ai-chat-header">
-            <div class="ai-header-content">
-                <i class="fas fa-robot" aria-hidden="true"></i>
-                <div>
-                    <h3>Asan AI Assistant</h3>
-                    <p>Online • Ready to help</p>
-                </div>
-            </div>
-            <button class="ai-close-btn" id="aiChatClose" aria-label="Close AI assistant"><i class="fas fa-times" aria-hidden="true"></i></button>
-        </div>
-
-        <div class="ai-chat-messages" id="aiChatMessages">
-            <div class="ai-message ai-bot">
-                <div class="ai-avatar"><i class="fas fa-robot" aria-hidden="true"></i></div>
-                <div class="ai-message-content">
-                    <p>Hi! I’m your Asan Global AI assistant — real help, no stress. I can help you with:</p>
-                    <ul>
-                        <li>Vehicle import processes</li>
-                        <li>Tracking your imports</li>
-                        <li>Payment information</li>
-                        <li>Website navigation</li>
-                        <li>General import questions</li>
-                    </ul>
-                    <p>Tell me what you need — tracking, import steps, payments, or documents.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="ai-chat-input">
-            <input type="text" id="aiInput" placeholder="Type your question..." autocomplete="off" aria-label="Type your question" />
-            <button id="aiSend" aria-label="Send message" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
-        </div>
-    </div>
+<!-- ═══════════ Floating buttons ═══════════ -->
+<div class="ag-floats">
+  <button class="ag-back-top" type="button" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+  <a class="ag-whatsapp" href="#" aria-label="Chat on WhatsApp" data-message="Hello Asan Global, I would like help with vehicle import. Please contact me."><i class="fab fa-whatsapp"></i></a>
 </div>
 
+<!-- ═══════════ AI Assistant ═══════════ -->
+<div id="aiAssistant" class="ai-assistant" aria-live="polite">
+  <div class="ai-chat-button" id="aiChatToggle" role="button" tabindex="0" aria-label="Open AI assistant">
+    <i class="fas fa-robot" aria-hidden="true"></i>
+    <span>AI Assistant</span>
+  </div>
+  <div class="ai-chat-window" id="aiChatWindow" aria-label="AI assistant chat window">
+    <div class="ai-chat-header">
+      <div class="ai-header-content">
+        <i class="fas fa-robot" aria-hidden="true"></i>
+        <div><h3>Asan AI Assistant</h3><p>Online • Ready to help</p></div>
+      </div>
+      <button class="ai-close-btn" id="aiChatClose" aria-label="Close AI assistant"><i class="fas fa-times" aria-hidden="true"></i></button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="ai-message ai-bot">
+        <div class="ai-avatar"><i class="fas fa-robot" aria-hidden="true"></i></div>
+        <div class="ai-message-content">
+          <p>Hi! I'm your Asan Global AI assistant. I can help you with:</p>
+          <ul>
+            <li>Vehicle import processes</li>
+            <li>Tracking your imports</li>
+            <li>Payment information</li>
+            <li>Website navigation</li>
+            <li>General logistics questions</li>
+          </ul>
+          <p>Tell me what you need — tracking, import steps, payments, or documents.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ai-chat-input">
+      <input type="text" id="aiInput" placeholder="Type your question..." autocomplete="off" aria-label="Type your question">
+      <button id="aiSend" aria-label="Send message" type="button"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</div>
+
+<script src="premium.js"></script>
 <script src="ai-assistant.js"></script>
-
-
-<script src="index.js"></script>
 </body>
 </html>

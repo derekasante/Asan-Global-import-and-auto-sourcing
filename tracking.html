@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 <link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="pdf-documents.css">
 <style>
 /* ============================================================
    TRACKING PAGE — Professional Logistics Experience
@@ -271,6 +272,260 @@
 @media (max-width: 640px)  { .trk-content { padding: 14px; } .trk-search-hero { padding: 32px 16px 44px; } .trk-summary-strip { grid-template-columns: 1fr 1fr; } }
 </style>
 
+<style>
+/* ============================================================
+   PREMIUM TRACKING TIMELINE — DHL/FedEx-style — v2
+   Glassmorphism · blue · white · gold
+   ============================================================ */
+
+/* ---- Timeline progress indicator ---- */
+.trk-premium-progress {
+  display: flex; align-items: center; gap: 10px;
+  padding: 4px 0 22px;
+}
+.trk-premium-progress .trk-pp-bar {
+  flex: 1; height: 6px; border-radius: 999px;
+  background: rgba(255,255,255,.35);
+  overflow: hidden; position: relative;
+}
+.trk-premium-progress .trk-pp-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--ag-blue-600), var(--ag-gold-400));
+  border-radius: 999px;
+  transition: width 1.4s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 0 12px rgba(255,213,79,.6);
+}
+.trk-premium-progress .trk-pp-pct {
+  font-size: 12.5px; font-weight: 800; color: var(--ag-navy-800);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+
+/* ---- Timeline container (glass) ---- */
+.trk-timeline {
+  position: relative;
+  padding: 6px 4px 4px 10px;
+  max-height: 620px;
+  overflow-y: auto;
+}
+.trk-timeline::before {
+  content:''; position: absolute; left: 30px; top: 10px; bottom: 10px;
+  width: 3px; border-radius: 999px;
+  background: linear-gradient(to bottom, var(--ag-blue-600), var(--ag-blue-100));
+  opacity: .55;
+}
+
+/* ---- Timeline item ---- */
+.trk-tl-item {
+  position: relative; display: flex; gap: 18px; padding: 0 0 10px 0;
+}
+.trk-tl-item:last-child { padding-bottom: 2px; }
+
+.trk-tl-icon {
+  position: relative; z-index: 2;
+  width: 46px; height: 46px; flex-shrink: 0;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 15px;
+  background: rgba(255,255,255,.85);
+  border: 2px solid var(--ag-blue-100);
+  color: var(--ag-blue-600);
+  box-shadow: 0 6px 18px rgba(37,99,235,.14);
+  transition: transform var(--ag-transition-fast);
+}
+.trk-tl-item.done .trk-tl-icon,
+.trk-tl-item.active .trk-tl-icon {
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  border-color: var(--ag-blue-600); color: #fff;
+}
+.trk-tl-item.active .trk-tl-icon {
+  box-shadow: 0 0 0 7px rgba(37,99,235,.14), 0 8px 24px rgba(37,99,235,.28);
+}
+.trk-tl-item.active .trk-tl-icon i { animation: trk-icon-pulse 2s ease-in-out infinite; }
+.trk-tl-item.done .trk-tl-icon::after {
+  content:''; position: absolute; inset: -4px; border-radius: 50%;
+  border: 2px solid var(--ag-blue-600); opacity: .5;
+  animation: trk-ring-pulse 2.4s ease-out infinite;
+}
+
+@keyframes trk-icon-pulse {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.14); }
+}
+@keyframes trk-ring-pulse {
+  0%   { transform: scale(.85); opacity: .6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Vertical connector (gold for done, blue gradient for active) */
+.trk-tl-item:not(:last-child)::after {
+  content:''; position: absolute; left: 22px; top: 50px; bottom: -6px;
+  width: 3px; border-radius: 999px; z-index: 1;
+  background: var(--ag-blue-100);
+}
+.trk-tl-item.done:not(:last-child)::after,
+.trk-tl-item.active:not(:last-child)::after {
+  background: linear-gradient(to bottom, var(--ag-blue-600), var(--ag-gold-400));
+  opacity: .65;
+}
+
+.trk-tl-body {
+  flex: 1; min-width: 0;
+  background: rgba(255,255,255,.68);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: var(--ag-radius-md);
+  padding: 14px 18px;
+  box-shadow: 0 6px 22px rgba(15,23,42,.06);
+  transition: transform var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+}
+.trk-tl-item.active .trk-tl-body {
+  background: rgba(255,255,255,.92);
+  border-color: rgba(37,99,235,.35);
+  box-shadow: 0 10px 30px rgba(37,99,235,.12);
+}
+.trk-tl-item:hover .trk-tl-body { transform: translateX(4px); }
+
+.trk-tl-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 10px; flex-wrap: wrap; margin-bottom: 4px;
+}
+.trk-tl-status { font-size: 13.5px; font-weight: 800; color: var(--ag-navy-900); margin: 0; }
+.trk-tl-item.active .trk-tl-status { color: var(--ag-blue-600); }
+.trk-tl-date {
+  font-size: 11.5px; font-weight: 700; color: var(--ag-text-600);
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(37,99,235,.08); padding: 3px 10px; border-radius: 999px;
+  white-space: nowrap;
+}
+.trk-tl-item.active .trk-tl-date {
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  color: #fff;
+}
+.trk-tl-loc {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--ag-blue-600); margin: 2px 0 6px;
+}
+.trk-tl-loc i { font-size: 11px; }
+.trk-tl-desc { font-size: 12.5px; color: var(--ag-text-600); line-height: 1.55; margin: 0; }
+
+/* ---- Timeline empty state ---- */
+.trk-tl-empty {
+  text-align: center; padding: 60px 20px;
+}
+.trk-tl-empty i { font-size: 52px; color: var(--ag-blue-500); opacity: .4; margin-bottom: 14px; display: block; }
+.trk-tl-empty h4 { font-size: 17px; color: var(--ag-navy-900); margin: 0 0 6px; }
+.trk-tl-empty p  { font-size: 13px; color: var(--ag-text-400); margin: 0; }
+
+/* ---- Tracking loader ---- */
+.trk-loader-wrap {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; padding: 80px 20px;
+}
+.trk-loader {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 4px solid rgba(37,99,235,.16);
+  border-top-color: var(--ag-blue-600);
+  animation: trk-spin .7s linear infinite;
+  position: relative;
+}
+.trk-loader::after {
+  content:''; position: absolute; inset: -12px; border-radius: 50%;
+  border: 2px solid rgba(255,213,79,.4);
+  border-top-color: var(--ag-gold-400);
+  animation: trk-spin 1.3s linear infinite reverse;
+}
+@keyframes trk-spin { to { transform: rotate(360deg); } }
+.trk-loader-text { font-size: 13.5px; font-weight: 600; color: var(--ag-text-600); letter-spacing: .02em; }
+
+/* ---- Tracking error card ---- */
+.trk-error-card {
+  background: rgba(255,255,255,.7);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(220,38,38,.2);
+  border-radius: var(--ag-radius-lg);
+  padding: 40px 24px; text-align: center;
+  box-shadow: var(--ag-shadow-sm);
+}
+.trk-error-card i { font-size: 46px; color: var(--ag-danger); opacity: .7; margin-bottom: 12px; display: block; }
+.trk-error-card h3 { font-size: 17px; color: var(--ag-navy-900); margin: 0 0 6px; }
+.trk-error-card p  { font-size: 13px; color: var(--ag-text-600); margin: 0 0 18px; line-height: 1.5; }
+
+/* ---- Glass summary card ---- */
+.trk-glass-card {
+  background: rgba(255,255,255,.62);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: var(--ag-radius-lg);
+  box-shadow: 0 10px 34px rgba(15,23,42,.08);
+}
+.trk-summary-card.trk-glass-card {
+  background: rgba(255,255,255,.62);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.8);
+}
+.trk-detail-card.trk-glass-card,
+.trk-progress-card.trk-glass-card {
+  background: rgba(255,255,255,.74);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.85);
+  box-shadow: 0 12px 34px rgba(15,23,42,.08);
+}
+
+/* ---- Shipment hero detail card ---- */
+.trk-ship-hero {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  gap: 16px; padding: 22px 24px; margin-bottom: 22px;
+  background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,.6) 100%);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: var(--ag-radius-lg);
+  box-shadow: 0 12px 34px rgba(15,23,42,.08);
+}
+.trk-ship-hero-ic {
+  width: 60px; height: 60px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  display: grid; place-items: center; color: #fff; font-size: 26px;
+  box-shadow: 0 10px 24px rgba(37,99,235,.3);
+}
+.trk-ship-hero h2 { margin: 0 0 3px; font-size: 18px; font-weight: 800; color: var(--ag-navy-900); }
+.trk-ship-hero p  { margin: 0; font-size: 13px; color: var(--ag-text-600); }
+.trk-ship-hero .trk-ship-hero-badge {
+  font-weight: 800; font-size: 12px; letter-spacing: .04em;
+}
+.trk-tracking-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(37,99,235,.1); color: var(--ag-blue-600);
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 700; font-family: monospace;
+  margin-top: 6px;
+}
+
+/* ---- Gold accent line ---- */
+.trk-gold-bar {
+  height: 3px; width: 56px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--ag-gold-400), var(--ag-blue-600));
+  margin: 6px 0 0;
+}
+
+/* ---- Timeline title with icon ---- */
+.trk-timeline-section h3 {
+  display: flex; align-items: center; gap: 9px;
+  margin: 0; font-size: 15px; font-weight: 800; color: var(--ag-navy-900);
+}
+.trk-timeline-section h3 i { color: var(--ag-blue-600); }
+
+/* ---- Mobile responsive ---- */
+@media (max-width: 640px) {
+  .trk-ship-hero { grid-template-columns: auto 1fr; }
+  .trk-ship-hero .trk-ship-hero-badge { grid-column: 1 / -1; justify-self: start; }
+  .trk-timeline::before { left: 25px; }
+  .trk-tl-item:not(:last-child)::after { left: 18px; }
+  .trk-tl-icon { width: 40px; height: 40px; font-size: 13px; }
+  .trk-tl-body { padding: 12px 14px; }
+  .trk-tl-head { flex-direction: column; gap: 6px; }
+}
+</style>
+
 </head>
 <body data-ag-page="tracking">
 <div class="ag-app-shell">
@@ -352,8 +607,8 @@
       <!-- Main 2-col: progress + detail -->
       <div class="trk-main-grid">
 
-        <!-- Progress / Timeline -->
-        <div class="trk-progress-card">
+<!-- Progress / Timeline -->
+        <div class="trk-progress-card trk-glass-card">
           <div class="trk-progress-header">
             <h3><i class="fas fa-route" style="margin-right:8px;color:var(--ag-blue-600);"></i>Import Progress</h3>
             <span id="trkStatusPill" class="trk-status-pill trk-status--processing">
@@ -365,10 +620,29 @@
             <div class="trk-bar-pct" id="trkBarPct">0%</div>
           </div>
           <div class="trk-steps" id="trkSteps"></div>
+
+          <!-- Premium tracking timeline -->
+          <div class="trk-timeline-section" style="padding:6px 24px 24px;border-top:1px solid var(--ag-surface-muted);">
+            <h3 style="padding:18px 0 12px;"><i class="fas fa-clock-rotate-left"></i> Tracking Timeline</h3>
+            <div class="trk-premium-progress">
+              <div class="trk-pp-bar"><div class="trk-pp-fill" id="trkPremiumFill"></div></div>
+              <span class="trk-pp-pct" id="trkPremiumPct">0%</span>
+            </div>
+            <div class="trk-loader-wrap" id="trkTimelineLoader" style="display:none;padding:48px 8px;">
+              <div class="trk-loader"></div>
+              <span class="trk-loader-text">Loading tracking timeline…</span>
+            </div>
+            <div class="trk-timeline" id="trkTimeline"></div>
+            <div class="trk-tl-empty" id="trkTimelineEmpty" style="display:none;">
+              <i class="fas fa-route"></i>
+              <h4>No tracking events yet</h4>
+              <p>We'll post live updates here as soon as your shipment starts moving.</p>
+            </div>
+          </div>
         </div>
 
         <!-- Shipment details -->
-        <div class="trk-detail-card">
+        <div class="trk-detail-card trk-glass-card">
           <div class="trk-detail-header">
             <h3><i class="fas fa-file-lines" style="margin-right:8px;color:var(--ag-blue-600);"></i>Shipment Details</h3>
           </div>
@@ -512,6 +786,7 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="sidebar.js"></script>
 <script src="security-utils.js"></script>
+<script src="pdf-documents.js"></script>
 <script>
 'use strict';
 const esc = v => window.securityUtils?.escapeHtml ? window.securityUtils.escapeHtml(v) : String(v ?? '');
@@ -644,26 +919,75 @@ function doTrack(num) {
   url.searchParams.set('tracking', num);
   window.history.replaceState({}, '', url.toString());
 
-  const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
-  const imp = imports.find(i => (i.tracking||'').toUpperCase() === num.toUpperCase());
-
   document.getElementById('trkResultArea').style.display = 'none';
   document.getElementById('trkNotFound').style.display = 'none';
 
-  if (!imp) {
-    document.getElementById('trkNotFound').style.display = '';
-    return;
-  }
+  // Reset premium timeline
+  resetTimeline();
 
-  renderTracking(imp);
-  document.getElementById('trkResultArea').style.display = '';
-  document.getElementById('trkResultArea').scrollIntoView({ behavior:'smooth', block:'start' });
+  // Try the real backend first
+  const API_BASE = 'http://localhost:5000';
+  fetch(API_BASE + '/api/shipments/' + encodeURIComponent(num.toUpperCase()))
+    .then(function (resp) { return resp.json(); })
+    .then(function (json) {
+      if (json.success && json.shipment) {
+        // Map backend row to the fields the tracking UI expects
+        const s = json.shipment;
+        const imp = {
+          id: s.id,
+          tracking: s.tracking_number || num,
+          make: (s.item_description || '').split(' ')[0] || 'Vehicle',
+          model: (s.item_description || ''),
+          year: '—',
+          vin: '—',
+          origin: s.origin || '—',
+          destination: s.destination || '—',
+          vehicleType: '—',
+          customer: s.customer_name || '—',
+          value: '—',
+          assignedStaff: 'Asan Global Team',
+          importFee: '—',
+          customsFee: '—',
+          status: s.status || 'pending'
+        };
+        renderTracking(imp);
+        // Show premium timeline while loading events
+        showTimelineLoader(true);
+        loadTimelineEvents(imp.id);
+        document.getElementById('trkResultArea').style.display = '';
+        document.getElementById('trkResultArea').scrollIntoView({ behavior:'smooth', block:'start' });
+        return;
+      }
+      // Fallback to localStorage demo data
+      const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+      const imp = imports.find(i => (i.tracking||'').toUpperCase() === num.toUpperCase());
+      if (!imp) {
+        document.getElementById('trkNotFound').style.display = '';
+        return;
+      }
+      renderTracking(imp);
+      document.getElementById('trkResultArea').style.display = '';
+      document.getElementById('trkResultArea').scrollIntoView({ behavior:'smooth', block:'start' });
+    })
+    .catch(function () {
+      // Backend unreachable — fall back to localStorage demo data
+      const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+      const imp = imports.find(i => (i.tracking||'').toUpperCase() === num.toUpperCase());
+      if (!imp) {
+        document.getElementById('trkNotFound').style.display = '';
+        return;
+      }
+      renderTracking(imp);
+      document.getElementById('trkResultArea').style.display = '';
+      document.getElementById('trkResultArea').scrollIntoView({ behavior:'smooth', block:'start' });
+    });
 }
 
 /* ================================================================
    RENDER TRACKING
 ================================================================ */
 function renderTracking(imp) {
+  window.asanActiveShipment = imp;
   const statusKey = STATUS_MAP[imp.status] || 'processing';
   const stepIndex = ALL_STATUSES.findIndex(s => s.key === statusKey);
   const pct = Math.round(((stepIndex + 1) / ALL_STATUSES.length) * 100);
@@ -725,6 +1049,11 @@ function renderTracking(imp) {
 
   // Updates
   renderUpdates(imp);
+
+  // Premium timeline — render synthesized events immediately based on current status.
+  // If the real backend is available, loadTimelineEvents() replaces these with DB events.
+  showTimelineLoader(false);
+  renderTimelineForStatus(imp.status);
 }
 
 /* ================================================================
@@ -752,6 +1081,141 @@ function renderSteps(activeIndex) {
       </div>
     </div>`;
   }).join('');
+}
+
+/* ================================================================
+   PREMIUM TRACKING TIMELINE (DHL/FedEx-style)
+================================================================ */
+function showTimelineLoader(show) {
+  const loader = document.getElementById('trkTimelineLoader');
+  if (loader) loader.style.display = show ? 'flex' : 'none';
+}
+
+function resetTimeline() {
+  const container = document.getElementById('trkTimeline');
+  const empty = document.getElementById('trkTimelineEmpty');
+  const loader = document.getElementById('trkTimelineLoader');
+  const fill = document.getElementById('trkPremiumFill');
+  const pctEl = document.getElementById('trkPremiumPct');
+  if (container) container.innerHTML = '';
+  if (empty) empty.style.display = 'none';
+  if (loader) loader.style.display = 'none';
+  if (fill) fill.style.width = '0%';
+  if (pctEl) pctEl.textContent = '0%';
+}
+
+function statusToKey(status) {
+  const s = String(status || '').toLowerCase().trim();
+  if (STATUS_MAP[status]) return STATUS_MAP[status];
+  const found = ALL_STATUSES.find(x => x.key === s || x.label.toLowerCase() === s);
+  return found ? found.key : null;
+}
+
+function statusToIcon(status) {
+  const key = statusToKey(status);
+  const found = ALL_STATUSES.find(s => s.key === key);
+  return found ? found.icon : 'fa-circle-info';
+}
+
+function statusToLabel(status) {
+  const key = statusToKey(status);
+  const found = ALL_STATUSES.find(s => s.key === key);
+  return found ? found.label : (status || 'Shipment Update');
+}
+
+function formatTlDate(isoStr) {
+  const d = new Date(isoStr);
+  if (isNaN(d.getTime())) return '';
+  const datePart = d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  const timePart = d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  return datePart + ' · ' + timePart;
+}
+
+function animatePremiumBar(pct) {
+  const fill = document.getElementById('trkPremiumFill');
+  const pctEl = document.getElementById('trkPremiumPct');
+  if (fill) {
+    fill.style.width = '0%';
+    setTimeout(() => { fill.style.width = pct + '%'; }, 90);
+  }
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+
+function renderTimelineEvents(events) {
+  window.asanActiveTimeline = events;
+  const container = document.getElementById('trkTimeline');
+  const empty = document.getElementById('trkTimelineEmpty');
+  if (!container) return;
+
+  let maxIdx = 0;
+  const sorted = [...events].sort((a, b) => new Date(a.created_at || 0) - new Date(b.created_at || 0));
+  sorted.forEach(e => {
+    const key = statusToKey(e.status);
+    const idx = ALL_STATUSES.findIndex(s => s.key === key);
+    if (idx > maxIdx) maxIdx = idx;
+  });
+
+  const pct = Math.min(100, Math.round(((maxIdx + 1) / ALL_STATUSES.length) * 100));
+  animatePremiumBar(pct);
+
+  container.innerHTML = sorted.map((e, i) => {
+    const key = statusToKey(e.status);
+    const idx = ALL_STATUSES.findIndex(s => s.key === key);
+    const cls = idx < maxIdx ? 'done' : (idx === maxIdx ? 'active' : '');
+    const icon = statusToIcon(e.status);
+    const loc = e.location ? `<div class="trk-tl-loc"><i class="fas fa-location-dot"></i>${esc(e.location)}</div>` : '';
+    const dateStr = formatTlDate(e.created_at);
+    const date = dateStr ? `<span class="trk-tl-date"><i class="fas fa-calendar-day"></i>${dateStr}</span>` : '';
+    return `<div class="trk-tl-item ${cls}">
+      <div class="trk-tl-icon"><i class="fas ${icon}"></i></div>
+      <div class="trk-tl-body">
+        <div class="trk-tl-head">
+          <p class="trk-tl-status">${esc(statusToLabel(e.status))}</p>
+          ${date}
+        </div>
+        ${loc}
+        <p class="trk-tl-desc">${esc(e.description || 'Shipment update recorded.')}</p>
+      </div>
+    </div>`;
+  }).join('');
+
+  if (empty) empty.style.display = 'none';
+}
+
+function renderTimelineForStatus(status) {
+  // Synthesized timeline used when real backend events are unavailable (demo/localStorage).
+  const key = statusToKey(status) || 'order_received';
+  const idx = Math.max(0, ALL_STATUSES.findIndex(s => s.key === key));
+  const events = ALL_STATUSES.slice(0, idx + 1).map((s, i) => {
+    let location = '';
+    if (i === 0) location = 'Asan Global Operations';
+    else if (s.key.includes('arrived') || s.key === 'out_for_delivery' || s.key === 'delivered') location = 'Tema, Ghana';
+    else if (s.key.includes('ship') || s.key.includes('transit')) location = 'International Waters';
+    else if (s.key.includes('ready_for_shipment') || s.key.includes('packed')) location = `${'Origin'} Port`;
+    return {
+      status: s.label,
+      location,
+      description: s.desc,
+      created_at: new Date(Date.now() - (idx - i) * 2 * 24 * 60 * 60 * 1000).toISOString()
+    };
+  });
+  renderTimelineEvents(events);
+}
+
+function loadTimelineEvents(shipmentId) {
+  if (!shipmentId) { showTimelineLoader(false); renderTimelineForStatus('Order Received'); return; }
+  fetch('http://localhost:5000/api/tracking-events/' + encodeURIComponent(shipmentId))
+    .then(function (resp) { return resp.json(); })
+    .then(function (json) {
+      showTimelineLoader(false);
+      const events = (json && Array.isArray(json.events)) ? json.events : [];
+      if (events.length) renderTimelineEvents(events);
+      else renderTimelineForStatus('Order Received');
+    })
+    .catch(function () {
+      showTimelineLoader(false);
+      renderTimelineForStatus('Order Received');
+    });
 }
 
 /* ================================================================
@@ -883,7 +1347,11 @@ function getBotReply(msg) {
    DOWNLOAD REPORT
 ================================================================ */
 function downloadReport() {
-  showToast('Generating report… download will begin shortly.', 'info');
+  if (!window.asanActiveShipment) {
+    showToast('Track a shipment before creating a summary.', 'error');
+    return;
+  }
+  window.AsanDocuments?.previewShipment(window.asanActiveShipment, window.asanActiveTimeline || []);
 }
 
 /* ================================================================
