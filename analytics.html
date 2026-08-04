@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics &amp; Reporting | Asan Global</title>
+<meta name="description" content="Premium analytics and reporting dashboard for the Asan Global logistics platform — KPIs, charts, exports, and filters.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="analytics.css">
+</head>
+<body data-ag-page="analytics">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+
+    <!-- TOPBAR -->
+    <header class="an-topbar">
+      <div class="an-topbar-left">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="an-eyebrow">Business Intelligence</p>
+          <h1><i class="fas fa-chart-line" style="color:var(--ag-blue-600);margin-right:8px;"></i>Analytics &amp; Reporting</h1>
+        </div>
+      </div>
+      <div class="an-topbar-actions">
+        <span class="an-live-chip demo" id="anBackendChip"><i class="fas fa-plug" style="font-size:10px;"></i><span>Checking backend…</span></span>
+        <div class="an-avatar" id="anAvatar">A</div>
+      </div>
+    </header>
+
+    <div class="an-content">
+
+      <!-- HERO -->
+      <section class="an-hero">
+        <div class="an-hero-body">
+          <h2>Platform Performance Overview</h2>
+          <p>Shipments, revenue, customers and growth — with date, service and status filters. All charts are dependency-free and responsive.</p>
+        </div>
+        <div class="an-hero-meta">
+          <div class="an-hero-stat"><strong id="metaShipments">—</strong><span>Shipments</span></div>
+          <div class="an-hero-stat"><strong id="metaRevenue">—</strong><span>Revenue</span></div>
+          <div class="an-hero-stat"><strong id="metaCustomers">—</strong><span>Customers</span></div>
+          <div class="an-hero-stat"><strong id="metaQuotes">—</strong><span>Quotes</span></div>
+        </div>
+      </section>
+
+      <!-- FILTERS -->
+      <section class="an-filters" aria-label="Analytics filters">
+        <div class="ag-field ag-field--auto">
+          <label for="fRange">Time range</label>
+          <select class="ag-select" id="fRange">
+            <option value="30d">Last 30 days</option>
+            <option value="90d" selected>Last 90 days</option>
+            <option value="12m">Last 12 months</option>
+            <option value="all">All time</option>
+          </select>
+        </div>
+        <div class="ag-field ag-field--auto">
+          <label for="fStart">From date</label>
+          <input type="date" class="ag-input" id="fStart">
+        </div>
+        <div class="ag-field ag-field--auto">
+          <label for="fEnd">To date</label>
+          <input type="date" class="ag-input" id="fEnd">
+        </div>
+        <div class="ag-field ag-field--auto">
+          <label for="fService">Service</label>
+          <select class="ag-select" id="fService">
+            <option value="All">All Services</option>
+          </select>
+        </div>
+        <div class="ag-field ag-field--auto">
+          <label for="fStatus">Status</label>
+          <select class="ag-select" id="fStatus">
+            <option value="All">All Statuses</option>
+          </select>
+        </div>
+        <div class="ag-field ag-field--auto">
+          <label>&nbsp;</label>
+          <button class="ag-btn ag-btn-secondary" id="fReset" style="white-space:nowrap;"><i class="fas fa-rotate-left"></i> Reset</button>
+        </div>
+      </section>
+
+      <!-- KPI CARDS -->
+      <section class="an-kpi-grid">
+        <div class="an-kpi blue">
+          <div class="an-kpi-head">
+            <div class="an-kpi-icon blue"><i class="fas fa-ship"></i></div>
+            <span class="an-kpi-trend neu" id="trendShipments">Total</span>
+          </div>
+          <div class="an-kpi-value" id="kpiShipments">0</div>
+          <div class="an-kpi-label">Total Shipments</div>
+          <div class="an-kpi-note">Matches current filters</div>
+        </div>
+        <div class="an-kpi green">
+          <div class="an-kpi-head">
+            <div class="an-kpi-icon green"><i class="fas fa-circle-check"></i></div>
+            <span class="an-kpi-trend neu" id="trendDelivered">Completed</span>
+          </div>
+          <div class="an-kpi-value" id="kpiDelivered">0</div>
+          <div class="an-kpi-label">Delivered</div>
+          <div class="an-kpi-note">Successfully delivered</div>
+        </div>
+        <div class="an-kpi amber">
+          <div class="an-kpi-head">
+            <div class="an-kpi-icon amber"><i class="fas fa-route"></i></div>
+            <span class="an-kpi-trend neu" id="trendTransit">Moving</span>
+          </div>
+          <div class="an-kpi-value" id="kpiTransit">0</div>
+          <div class="an-kpi-label">In Transit</div>
+          <div class="an-kpi-note">Shipped to Out for Delivery</div>
+        </div>
+        <div class="an-kpi purple">
+          <div class="an-kpi-head">
+            <div class="an-kpi-icon purple"><i class="fas fa-file-signature"></i></div>
+            <span class="an-kpi-trend neu">Requests</span>
+          </div>
+          <div class="an-kpi-value" id="kpiQuotes">0</div>
+          <div class="an-kpi-label">Pending Quotes</div>
+          <div class="an-kpi-note">Quote requests in range</div>
+        </div>
+        <div class="an-kpi teal">
+          <div class="an-kpi-head">
+            <div class="an-kpi-icon teal"><i class="fas fa-sack-dollar"></i></div>
+            <span class="an-kpi-trend neu" id="trendRevenue">Collected</span>
+          </div>
+          <div class="an-kpi-value" id="kpiRevenue">$0</div>
+          <div class="an-kpi-label">Revenue</div>
+          <div class="an-kpi-note">From succeeded payments</div>
+        </div>
+        <div class="an-kpi indigo">
+          <div class="an-kpi-head">
+            <div class="an-kpi-icon indigo"><i class="fas fa-users"></i></div>
+            <span class="an-kpi-trend neu">Unique</span>
+          </div>
+          <div class="an-kpi-value" id="kpiCustomers">0</div>
+          <div class="an-kpi-label">Customers</div>
+          <div class="an-kpi-note">Distinct customers</div>
+        </div>
+        <div class="an-kpi rose">
+          <div class="an-kpi-head">
+            <div class="an-kpi-icon rose"><i class="fas fa-comments"></i></div>
+            <span class="an-kpi-trend neu">Total</span>
+          </div>
+          <div class="an-kpi-value" id="kpiMessages">0</div>
+          <div class="an-kpi-label">Messages</div>
+          <div class="an-kpi-note">Contact messages</div>
+        </div>
+        <div class="an-kpi gold">
+          <div class="an-kpi-head">
+            <div class="an-kpi-icon gold"><i class="fas fa-arrow-trend-up"></i></div>
+            <span class="an-kpi-trend neu" id="trendGrowth">Growth</span>
+          </div>
+          <div class="an-kpi-value" id="kpiGrowth">0%</div>
+          <div class="an-kpi-label">Growth</div>
+          <div class="an-kpi-note">Last 30d vs prior 30d</div>
+        </div>
+      </section>
+
+      <!-- CHARTS -->
+      <section class="an-chart-grid">
+        <div class="an-chart-card an-chart-card--wide">
+          <div class="an-chart-head">
+            <h3><i class="fas fa-chart-column"></i>Monthly Shipments</h3>
+            <span class="ag-badge ag-badge-info">Filtered</span>
+          </div>
+          <div class="an-chart-body" id="chartMonthlyShipments"></div>
+        </div>
+
+        <div class="an-chart-card an-chart-card--wide">
+          <div class="an-chart-head">
+            <h3><i class="fas fa-chart-line"></i>Monthly Revenue</h3>
+            <span class="ag-badge ag-badge-success">Succeeded payments</span>
+          </div>
+          <div class="an-chart-body" id="chartMonthlyRevenue"></div>
+        </div>
+
+        <div class="an-chart-card">
+          <div class="an-chart-head">
+            <h3><i class="fas fa-chart-pie"></i>Shipment Status</h3>
+            <div class="an-chart-legend" id="legendStatus"></div>
+          </div>
+          <div class="an-chart-body" id="chartStatus"></div>
+        </div>
+
+        <div class="an-chart-card">
+          <div class="an-chart-head">
+            <h3><i class="fas fa-chart-pie"></i>Services</h3>
+            <div class="an-chart-legend" id="legendServices"></div>
+          </div>
+          <div class="an-chart-body">
+            <div id="chartServices"></div>
+            <div class="ag-divider"></div>
+            <div id="listServices" class="an-hbar-list"></div>
+          </div>
+        </div>
+
+        <div class="an-chart-card">
+          <div class="an-chart-head">
+            <h3><i class="fas fa-earth-africa"></i>Top Destinations</h3>
+            <span class="ag-badge ag-badge-neutral">Top 10</span>
+          </div>
+          <div class="an-chart-body">
+            <div id="listDestinations" class="an-hbar-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORTS / EXPORTS -->
+      <section class="an-chart-card" style="margin-bottom:24px;">
+        <div class="an-chart-head">
+          <h3><i class="fas fa-file-export"></i>Reports &amp; Export</h3>
+          <div class="an-report-row">
+            <button class="ag-btn ag-btn-primary an-export-btn" id="exportCsv"><i class="fas fa-file-csv"></i> Export CSV</button>
+            <button class="ag-btn ag-btn-secondary an-export-btn" id="exportExcel"><i class="fas fa-file-excel"></i> Excel</button>
+            <button class="ag-btn ag-btn-secondary an-export-btn" id="exportPdf"><i class="fas fa-file-pdf"></i> PDF</button>
+            <button class="ag-btn ag-btn-ghost an-export-btn" id="exportPrint"><i class="fas fa-print"></i> Print</button>
+          </div>
+        </div>
+        <div class="an-chart-body">
+<p style="font-size:13px;color:var(--ag-text-600);margin:0 0 14px;">
+            Exports respect the current filters. CSV is generated client-side; Excel writes a real, openable
+            <code>.xls</code> file (SpreadsheetML); PDF opens a print-friendly report window — choose "Save as PDF"
+            in the print dialog. A future backend reporting endpoint could make these authoritative
+            (see <em>Future Backend APIs</em> below).
+          </p>
+          <div class="ag-table-wrap">
+            <table class="ag-table">
+              <thead>
+                <tr><th>Shipment Status</th><th>Count</th></tr>
+              </thead>
+              <tbody id="anSummaryBody"></tbody>
+              <tfoot>
+                <tr>
+                  <th style="text-align:right;">Total shipments</th>
+                  <th style="text-align:right;" id="anSummaryTotal">—</th>
+                </tr>
+                <tr>
+                  <th style="text-align:right;">Collected revenue</th>
+                  <th style="text-align:right;" id="anSummaryRevenue">$0</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- BACKEND / FUTURE COMMENTS -->
+      <div class="an-note">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <strong>Data source:</strong>&nbsp;analytics reads the same localStorage stores used across the app
+          (<code>asan_imports</code>, <code>asan_quotes</code>, <code>asan_messages</code>, <code>asan_payments</code>,
+          <code>asan_invoices</code>). When the backend is online, created shipments are written through the verified
+          <code>POST /api/shipments</code> endpoint and appear here automatically. No analytics endpoint is invented.
+        </div>
+      </div>
+
+      <details class="an-collapse">
+        <summary><i class="fas fa-code-branch"></i> Future Backend Integration Points (documented, not implemented)</summary>
+        <div class="an-collapse-body">
+          <div class="an-doc-card">
+            <p style="font-size:13px;color:var(--ag-text-600);margin:0 0 12px;">
+              These endpoints <strong>do not exist yet</strong> and are <strong>never called</strong> by this module.
+              They are the recommended additions to make analytics authoritative across all historical data.
+            </p>
+            <div class="an-doc-table-wrap">
+              <table class="an-doc-table">
+                <thead><tr><th>Endpoint</th><th>Purpose</th><th>Used by</th></tr></thead>
+                <tbody id="futureApisBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </details>
+
+    </div><!-- /.an-content -->
+
+    <footer style="text-align:center;padding:20px;color:var(--ag-text-400);font-size:12px;">
+      © 2026 Asan Global Import Services — Analytics &amp; Reporting
+    </footer>
+  </main>
+</div>
+
+<!-- Toast region -->
+<div id="anToastRegion"></div>
+
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script src="analytics.js"></script>
+</body>
+</html>

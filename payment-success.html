@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Successful | Asan Global</title>
+<meta name="description" content="Your payment was successful. Thank you!" >
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="payments.css">
+<link rel="stylesheet" href="pdf-documents.css">
+</head>
+<body data-ag-page="payment">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+    <header class="pay-topbar">
+      <div class="title-group">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Transactions &amp; billing</p>
+          <h1>Payment Confirmation</h1>
+        </div>
+      </div>
+      <div class="pay-topbar-actions">
+        <a href="payment-history.html" class="ag-btn ag-btn-ghost" style="font-size:13px;"><i class="fas fa-clock-rotate-left"></i> History</a>
+        <div class="pay-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <div class="pay-content">
+      <div class="pay-success">
+        <div class="pay-success-icon"><i class="fas fa-check"></i></div>
+        <h2>Payment Successful</h2>
+        <p>Thank you for your payment. Your invoice has been marked as paid and your shipment will continue on schedule. A confirmation has been recorded on your account.</p>
+
+        <div class="pay-success-ref">
+          <div style="text-align:left;">
+            <div class="lbl">Payment Reference</div>
+            <div class="num" id="refNumber">—</div>
+          </div>
+        </div>
+
+        <div class="pay-success-actions">
+          <a href="invoice.html?id=INV" id="viewInvoiceLink" class="ag-btn ag-btn-primary" style="text-decoration:none;"><i class="fas fa-file-invoice"></i> View Invoice</a>
+          <button type="button" class="ag-btn ag-btn-secondary" id="receiptPreviewBtn"><i class="fas fa-file-pdf"></i> Preview Receipt</button>
+          <a href="payment-history.html" class="ag-btn ag-btn-secondary" style="text-decoration:none;"><i class="fas fa-clock-rotate-left"></i> Payment History</a>
+          <a href="tracking.html" class="ag-btn ag-btn-ghost" style="text-decoration:none;"><i class="fas fa-location-dot"></i> Track Shipment</a>
+        </div>
+      </div>
+    </div>
+
+    <footer style="text-align:center; padding: 20px; color: var(--ag-text-400); font-size: 12.5px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
+
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script src="payments.js"></script>
+<script src="pdf-documents.js"></script>
+<script>
+'use strict';
+(function () {
+  const user = window.AsanPayments?.currentUser();
+  if (!user) { window.location.href = 'login.html'; return; }
+  const avatarEl = document.getElementById('userAvatar');
+  if (avatarEl) avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('reference') || '—';
+  const invId = params.get('invoice') || '';
+  const amount = params.get('amount');
+
+  document.getElementById('refNumber').textContent = ref;
+
+  const link = document.getElementById('viewInvoiceLink');
+  if (invId) link.href = 'invoice.html?id=' + encodeURIComponent(invId);
+  else link.style.display = 'none';
+
+  const payment = window.AsanPayments.getPayments().find(p => p.reference === ref || p.id === ref);
+  const receiptBtn = document.getElementById('receiptPreviewBtn');
+  if (payment) receiptBtn.addEventListener('click', () => window.AsanDocuments?.previewReceipt(payment));
+  else receiptBtn.style.display = 'none';
+})();
+</script>
+</body>
+</html>

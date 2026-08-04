@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment History | Asan Global</title>
+<meta name="description" content="View all invoices, payments and billing history for your Asan Global shipments.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="payments.css">
+<link rel="stylesheet" href="pdf-documents.css">
+</head>
+<body data-ag-page="payment">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+    <header class="pay-topbar">
+      <div class="title-group">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Transactions &amp; billing</p>
+          <h1>Payment History</h1>
+        </div>
+      </div>
+      <div class="pay-topbar-actions">
+        <a href="payment.html" class="ag-btn ag-btn-primary" style="font-size:13px;"><i class="fas fa-lock"></i> Make a Payment</a>
+        <div class="pay-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <div class="pay-content">
+      <!-- Provider note -->
+      <div class="pay-provider-note">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <strong>Local billing store:</strong> invoices and payments are stored in this browser (localStorage) via the
+          provider-agnostic <code>payments.js</code> module. A future backend API (<code>GET /api/invoices</code>,
+          <code>GET /api/payments</code>) would replace this store for shared, server-side records.
+        </div>
+      </div>
+
+      <section class="ag-card ag-reveal">
+        <div class="pay-panel-head">
+          <h4><i class="fas fa-file-invoice"></i>Invoices</h4>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <div class="adm-search" style="flex:1;min-width:220px;">
+              <i class="fas fa-search"></i>
+              <input type="search" id="invoiceSearch" placeholder="Search invoice #, customer, tracking…" autocomplete="off">
+            </div>
+            <select id="statusFilter" class="ag-select" style="width:180px;" aria-label="Filter by status">
+              <option value="All">All Statuses</option>
+              <option value="paid">Paid</option>
+              <option value="pending">Pending</option>
+              <option value="overdue">Overdue</option>
+              <option value="partial">Partially Paid</option>
+              <option value="refunded">Refunded</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ag-table-wrap">
+          <table class="ag-table">
+            <thead>
+              <tr><th>Invoice#</th><th>Customer</th><th>Tracking</th><th>Issued</th><th>Due</th><th>Total</th><th>Due</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="invoiceTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="ag-card ag-reveal" style="margin-top:24px;">
+        <div class="pay-panel-head">
+          <h4><i class="fas fa-receipt"></i>Payment Transactions</h4>
+        </div>
+        <div class="ag-table-wrap">
+          <table class="ag-table">
+            <thead>
+              <tr><th>Date</th><th>Reference</th><th>Invoice</th><th>Tracking</th><th>Method</th><th>Provider</th><th>Amount</th><th>Status</th><th>Receipt</th></tr>
+            </thead>
+            <tbody id="paymentsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <footer style="text-align:center; padding: 20px; color: var(--ag-text-400); font-size: 12.5px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
+
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script src="payments.js"></script>
+<script src="pdf-documents.js"></script>
+<script>
+'use strict';
+const esc = v => window.AsanPayments?.esc ? window.AsanPayments.esc(v) : String(v ?? '');
+const P = () => window.AsanPayments;
+
+/* ================================================================
+   AUTH
+================================================================ */
+(function () {
+  const user = P()?.currentUser();
+  if (!user) { window.location.href = 'login.html'; return; }
+  const avatarEl = document.getElementById('userAvatar');
+  if (avatarEl) avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
+})();
+
+/* ================================================================
+   FILTERS
+================================================================ */
+let searchTerm = '';
+let statusFilter = 'All';
+
+function statusBadge(status) {
+  const cls = P().STATUS_BADGE[status] || 'pay-badge pending';
+  const label = P().STATUS_LABEL[status] || 'Pending';
+  return `<span class="${cls}">${esc(label)}</span>`;
+}
+
+function visibleInvoices() {
+  const u = P().currentUser();
+  let list = P().getInvoices().filter(i => P().isAdmin() || i.customer === u.name);
+  const q = searchTerm.toLowerCase();
+  if (q) list = list.filter(i => [i.number, i.customer, i.tracking, i.email].join(' ').toLowerCase().includes(q));
+  if (statusFilter !== 'All') list = list.filter(i => i.status === statusFilter);
+  return list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+}
+
+function renderInvoices() {
+  const tbody = document.getElementById('invoiceTableBody');
+  const list = visibleInvoices();
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="ag-empty"><i class="fas fa-file-invoice"></i>No invoices found.</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(i => `
+    <tr>
+      <td><strong>${esc(i.number)}</strong></td>
+      <td>${esc(i.customer)}</td>
+      <td style="font-size:12.5px;">${esc(i.tracking || '—')}</td>
+      <td>${P().fmtDate(i.created_at)}</td>
+      <td>${P().fmtDate(i.due_at)}</td>
+      <td><strong>${P().money(i.total)}</strong></td>
+      <td>${P().money(i.amount_due)}</td>
+      <td>${statusBadge(i.status)}</td>
+      <td>
+        <div class="adm-row-actions">
+          <a class="icon-btn" title="View invoice" href="invoice.html?id=${encodeURIComponent(i.id)}"><i class="fas fa-eye"></i></a>
+          ${i.status !== 'paid' && i.status !== 'refunded' ? `<a class="icon-btn" title="Pay now" href="payment.html?invoice=${encodeURIComponent(i.id)}" style="color:var(--ag-success);"><i class="fas fa-credit-card"></i></a>` : ''}
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function renderPayments() {
+  const tbody = document.getElementById('paymentsTableBody');
+  const u = P().currentUser();
+  let list = P().getPayments();
+  if (!P().isAdmin()) list = list.filter(p => p.customer === u.name);
+
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="ag-empty"><i class="fas fa-receipt"></i>No payment transactions yet.</div></td></tr>`;
+    return;
+  }
+  const badge = (p) => {
+    const cls = p.status === 'succeeded' ? 'ag-badge-success' : p.status === 'pending' ? 'ag-badge-warning' : 'ag-badge-danger';
+    return `<span class="ag-badge ${cls}">${esc(p.status)}</span>`;
+  };
+  tbody.innerHTML = list.slice(0, 20).map(p => `
+    <tr>
+      <td>${P().fmtDate(p.created_at)}</td>
+      <td><strong style="font-family:monospace;font-size:12px;">${esc(p.reference || '—')}</strong></td>
+      <td>${esc(p.invoice_number || '—')}</td>
+      <td style="font-size:12.5px;">${esc(p.tracking || '—')}</td>
+      <td>${esc(p.method_label || p.method || '—')}</td>
+      <td>${esc(p.provider || '—')}</td>
+      <td><strong>${P().money(p.amount)}</strong></td>
+      <td>${badge(p)}</td>
+      <td><button class="icon-btn" type="button" title="Preview receipt" onclick="previewReceiptById('${esc(p.id)}')"><i class="fas fa-file-pdf"></i></button></td>
+    </tr>`).join('');
+}
+
+function previewReceiptById(id) {
+  const payment = P().getPayments().find(p => p.id === id);
+  if (payment) window.AsanDocuments?.previewReceipt(payment);
+}
+
+/* ================================================================
+   INIT
+================================================================ */
+document.getElementById('invoiceSearch').addEventListener('input', e => { searchTerm = e.target.value; renderInvoices(); });
+document.getElementById('statusFilter').addEventListener('change', e => { statusFilter = e.target.value; renderInvoices(); });
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderInvoices();
+  renderPayments();
+});
+</script>
+</body>
+</html>

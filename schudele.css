@@ -1,0 +1,199 @@
+/* =========================
+   ASAN GLOBAL SHIPPING
+   GLOBAL STYLE.CSS
+========================= */
+
+:root{
+    --primary:#007bff;
+    --dark:#003366;
+    --light:#ffffff;
+    --bg:#eef4fb;
+    --shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+body{
+    background:var(--bg);
+    color:#222;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+    width:240px;
+    height:100vh;
+    position:fixed;
+    left:0;
+    top:0;
+    background:linear-gradient(180deg,#003366,#0059b3);
+    color:#fff;
+    padding:20px;
+    overflow-y:auto;
+}
+
+.sidebar h2{
+    text-align:center;
+    margin-bottom:30px;
+    letter-spacing:2px;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#fff;
+    text-decoration:none;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    transition:0.3s;
+}
+
+.sidebar a:hover{
+    background:rgba(255,255,255,0.2);
+    transform:translateX(5px);
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main{
+    margin-left:240px;
+    padding:25px;
+}
+
+/* =========================
+   CARDS (Finance + Tracking)
+========================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.card{
+    background:#fff;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:var(--shadow);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.card h3{
+    color:var(--dark);
+}
+
+.card p{
+    font-size:20px;
+    font-weight:bold;
+    color:var(--primary);
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+    background:#fff;
+    margin-top:20px;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:var(--shadow);
+}
+
+.section h2{
+    margin-bottom:10px;
+    color:var(--dark);
+}
+
+/* =========================
+   TABLES
+========================= */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#f1f6ff;
+}
+
+table th, table td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+    background:var(--primary);
+    color:#fff;
+    border:none;
+    padding:10px 15px;
+    border-radius:10px;
+    cursor:pointer;
+    margin-top:10px;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#0056b3;
+    transform:translateY(-3px);
+}
+
+/* =========================
+   TEXT STYLES
+========================= */
+
+h1,h2,h3{
+    color:var(--dark);
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media(max-width:1000px){
+
+.grid{
+    grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:600px){
+
+.sidebar{
+    display:none;
+}
+
+.main{
+    margin-left:0;
+}
+
+.grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+/* =========================
+   END
+========================= */

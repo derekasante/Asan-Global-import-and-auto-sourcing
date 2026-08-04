@@ -1,0 +1,379 @@
+/* ===========================
+   ASAN GLOBAL LOGIN DESIGN
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    background:linear-gradient(135deg,#001f4d,#005eff,#00b4ff);
+    overflow:hidden;
+}
+
+/* Animated Background */
+
+.background{
+    position:absolute;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(30px);
+    animation:float 8s ease-in-out infinite;
+}
+
+.circle.one{
+    width:350px;
+    height:350px;
+    background:#00b4ff;
+    top:-120px;
+    left:-100px;
+}
+
+.circle.two{
+    width:450px;
+    height:450px;
+    background:#005eff;
+    bottom:-180px;
+    right:-120px;
+    animation-delay:3s;
+}
+
+@keyframes float{
+
+0%,100%{
+transform:translateY(0px);
+}
+
+50%{
+transform:translateY(-30px);
+}
+
+}
+
+/* Login Card */
+
+.login-box{
+
+    width:420px;
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.25);
+
+    border-radius:25px;
+
+    padding:45px;
+
+    color:white;
+
+    z-index:100;
+
+    box-shadow:0 15px 45px rgba(0,0,0,.35);
+
+}
+
+/* Logo */
+
+.logo{
+
+text-align:center;
+margin-bottom:35px;
+
+}
+
+.logo i{
+
+font-size:70px;
+
+color:#fff;
+
+margin-bottom:15px;
+
+}
+
+.logo h1{
+
+font-size:32px;
+
+font-weight:700;
+
+}
+
+.logo p{
+
+margin-top:8px;
+
+opacity:.8;
+
+}
+
+/* Input */
+
+.input-box{
+
+position:relative;
+
+margin:20px 0;
+
+}
+
+.input-box i{
+
+position:absolute;
+
+left:18px;
+
+top:18px;
+
+color:white;
+
+}
+
+.input-box input{
+
+width:100%;
+
+padding:16px 18px 16px 50px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
+
+background:rgba(255,255,255,.12);
+
+color:white;
+
+font-size:16px;
+
+transition:.3s;
+
+}
+
+.input-box input::placeholder{
+
+color:#ddd;
+
+}
+
+.input-box input:focus{
+
+background:rgba(255,255,255,.22);
+
+}
+
+/* Eye Icon */
+
+#togglePassword{
+
+position:absolute;
+
+right:18px;
+
+top:18px;
+
+cursor:pointer;
+
+}
+
+/* Remember */
+
+.options{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-top:10px;
+
+font-size:14px;
+
+}
+
+.options a{
+
+text-decoration:none;
+
+color:white;
+
+}
+
+.options input{
+
+margin-right:5px;
+
+}
+
+/* Login Button */
+
+button{
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+border-radius:12px;
+
+font-size:17px;
+
+font-weight:600;
+
+margin-top:25px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+button:hover{
+
+transform:translateY(-3px);
+
+}
+
+/* Main Button */
+
+form button{
+
+background:white;
+
+color:#005eff;
+
+}
+
+form button:hover{
+
+background:#e8e8e8;
+
+}
+
+/* Divider */
+
+.divider{
+
+display:flex;
+
+align-items:center;
+
+margin:28px 0;
+
+}
+
+.divider::before,
+.divider::after{
+
+content:"";
+
+flex:1;
+
+height:1px;
+
+background:rgba(255,255,255,.4);
+
+}
+
+.divider span{
+
+padding:0 12px;
+
+font-size:14px;
+
+}
+
+/* Google */
+
+.google{
+
+background:white;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:12px;
+
+color:#222;
+
+}
+
+.google img{
+
+width:22px;
+
+}
+
+.google:hover{
+
+background:#f3f3f3;
+
+}
+
+/* Sign Up */
+
+.signup{
+
+text-align:center;
+
+margin-top:25px;
+
+font-size:14px;
+
+}
+
+.signup a{
+
+color:white;
+
+font-weight:bold;
+
+text-decoration:none;
+
+}
+
+.signup a:hover{
+
+text-decoration:underline;
+
+}
+
+/* Mobile */
+
+@media(max-width:500px){
+
+.login-box{
+
+width:90%;
+
+padding:30px;
+
+}
+
+.logo h1{
+
+font-size:26px;
+
+}
+
+}

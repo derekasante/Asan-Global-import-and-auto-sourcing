@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Client Agreement Form - Asan Global Import &amp; Auto Sourcing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="design-system.css">
+  <style>
+    body {
+      background: var(--ag-page-gradient);
+      font-family: var(--ag-font);
+      color: var(--ag-text-900);
+      margin: 0;
+    }
+
+    /* Screen wrapper with top toolbar */
+    .doc-toolbar {
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--ag-border);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: var(--ag-shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .doc-toolbar .toolbar-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ag-text-900);
+    }
+    .doc-toolbar .toolbar-sub {
+      font-size: 12.5px;
+      color: var(--ag-text-600);
+      margin-top: 2px;
+    }
+    .doc-toolbar-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    /* Page wrapper */
+    .doc-page-wrap {
+      padding: 36px 24px 60px;
+    }
+
+    /* Override ag-document for A4-like appearance on screen */
+    .ag-document {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Document header branding */
+    .ag-document-header .ag-logo-mark h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--ag-navy-900);
+    }
+    .ag-document-header .ag-logo-mark span {
+      display: block;
+      font-size: 12px;
+      color: var(--ag-text-600);
+      margin-top: 2px;
+    }
+
+    /* Section headings */
+    .doc-section { margin-top: 24px; }
+    .doc-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ag-navy-800);
+      margin: 0 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--ag-border);
+    }
+
+    /* Field grids */
+    .doc-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .doc-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Individual field box */
+    .doc-field {
+      border: 1px solid var(--ag-border);
+      border-radius: var(--ag-radius-sm);
+      padding: 10px 12px;
+      min-height: 58px;
+      background: var(--ag-surface);
+    }
+    .doc-field-label {
+      font-size: 10.5px;
+      color: var(--ag-text-400);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .doc-field-value {
+      font-size: 13.5px;
+      font-weight: 600;
+      min-height: 18px;
+      color: var(--ag-text-900);
+      border-bottom: 1px solid var(--ag-border);
+      padding-bottom: 4px;
+    }
+
+    /* Horizontal rule */
+    .doc-rule { border: none; border-top: 1px solid var(--ag-border); margin: 20px 0; }
+
+    /* Terms box */
+    .doc-terms {
+      border: 1px solid var(--ag-border);
+      border-radius: var(--ag-radius-md);
+      padding: 16px 18px;
+      color: var(--ag-text-600);
+      font-size: 12.5px;
+      line-height: 1.65;
+      background: var(--ag-surface-muted);
+    }
+    .doc-terms strong { color: var(--ag-text-900); }
+
+    /* Signature row */
+    .doc-sign-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .doc-sign-box {
+      border: 1px solid var(--ag-border);
+      border-radius: var(--ag-radius-md);
+      padding: 16px;
+      min-height: 170px;
+      background: var(--ag-surface);
+    }
+    .doc-sign-box h3 {
+      margin: 0 0 12px;
+      font-size: 13px;
+      color: var(--ag-navy-800);
+    }
+    .doc-sig-line {
+      border-top: 1px solid var(--ag-border);
+      margin-top: 28px;
+      padding-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--ag-text-400);
+      line-height: 1.3;
+    }
+
+    /* Footer note */
+    .doc-footer-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: var(--ag-text-400);
+      line-height: 1.5;
+    }
+
+    /* Spacing helper */
+    .doc-gap { height: 10px; }
+
+    @media (max-width: 640px) {
+      .doc-grid-2, .doc-grid-3, .doc-sign-row { grid-template-columns: 1fr; }
+      .ag-document { padding: 28px 20px; }
+      .doc-toolbar { padding: 14px 18px; }
+    }
+
+    @media print {
+      .ag-no-print { display: none !important; }
+      .doc-toolbar  { display: none !important; }
+      body { background: #fff !important; }
+      .doc-page-wrap { padding: 0; }
+      .ag-document {
+        box-shadow: none !important;
+        border: none !important;
+        max-width: none;
+        margin: 0;
+        padding: 18mm 14mm;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Toolbar — hidden on print via ag-no-print -->
+  <div class="doc-toolbar ag-no-print">
+    <div>
+      <div class="toolbar-title"><i class="fas fa-file-contract" style="color:var(--ag-blue-600); margin-right:8px;"></i>Client Agreement Form</div>
+      <div class="toolbar-sub">Asan Global Import &amp; Auto Sourcing — printable document</div>
+    </div>
+    <div class="doc-toolbar-actions">
+      <a href="index.html" class="ag-btn ag-btn-ghost"><i class="fas fa-arrow-left"></i> Back</a>
+      <button type="button" class="ag-btn ag-btn-secondary" onclick="window.print()"><i class="fas fa-download"></i> Download PDF</button>
+      <button type="button" class="ag-btn ag-btn-primary" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+    </div>
+  </div>
+
+  <div class="doc-page-wrap">
+    <div class="ag-document" role="document" aria-label="Client Agreement Form">
+
+      <!-- Document header -->
+      <div class="ag-document-header">
+        <div class="ag-logo-mark">
+          <i class="fas fa-ship"></i>
+          <div>
+            <h2>Asan Global Import &amp; Auto Sourcing</h2>
+            <span>Client Agreement Form (Service Provider Document)</span>
+          </div>
+        </div>
+        <div class="ag-document-meta">
+          <div><strong>Document:</strong> Asan/CA/01</div>
+          <div><strong>Date:</strong> ____________</div>
+          <div><strong>Tracking Ref:</strong> ____________</div>
+        </div>
+      </div>
+
+      <!-- Section 1: Client Information -->
+      <section class="doc-section">
+        <h2 class="doc-section-title">1) Client Information</h2>
+
+        <div class="doc-grid-2">
+          <div class="doc-field">
+            <div class="doc-field-label">Full Name</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+          <div class="doc-field">
+            <div class="doc-field-label">Company Name (If applicable)</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+        </div>
+
+        <div class="doc-gap"></div>
+
+        <div class="doc-grid-2">
+          <div class="doc-field">
+            <div class="doc-field-label">Phone Number</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+          <div class="doc-field">
+            <div class="doc-field-label">National ID / Passport No.</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+        </div>
+
+        <div class="doc-gap"></div>
+
+        <div class="doc-grid-2">
+          <div class="doc-field">
+            <div class="doc-field-label">Email Address</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+          <div class="doc-field">
+            <div class="doc-field-label">Residential / Business Address</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+        </div>
+
+        <div class="doc-gap"></div>
+
+        <div class="doc-grid-2">
+          <div class="doc-field">
+            <div class="doc-field-label">Country</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+          <div class="doc-field">
+            <div class="doc-field-label">Service Type (Import / Sourcing / Documentation)</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="doc-rule">
+
+      <!-- Section 2: Authorized Representative -->
+      <section class="doc-section">
+        <h2 class="doc-section-title">2) Authorized Representative (for Asan Global Import &amp; Auto Sourcing)</h2>
+        <div class="doc-grid-3">
+          <div class="doc-field">
+            <div class="doc-field-label">Name</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+          <div class="doc-field">
+            <div class="doc-field-label">Position</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+          <div class="doc-field">
+            <div class="doc-field-label">Date</div>
+            <div class="doc-field-value">______________________________</div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="doc-rule">
+
+      <!-- Section 3: Agreement -->
+      <section class="doc-section">
+        <h2 class="doc-section-title">3) Service Provider Acceptance &amp; Agreement</h2>
+        <div class="doc-terms">
+          <strong>Agreement Summary:</strong> By signing this form, the client agrees to appoint <strong>Asan Global Import &amp; Auto Sourcing</strong>
+          as the service provider for the vehicle import/sourcing process.
+          <br/><br/>
+          The service provider will coordinate sourcing, documentation, and shipping arrangements (through trusted partners where applicable).
+          The client agrees to provide accurate information and necessary documents.
+          <br/><br/>
+          <strong>Important:</strong> Timelines depend on origin conditions, shipping schedules, customs clearance, and documentation processing.
+          <br/><br/>
+          Any agreed fees, responsibilities, and timelines will be confirmed by the service provider before processing.
+        </div>
+      </section>
+
+      <!-- Signature section -->
+      <div class="doc-sign-row">
+        <div class="doc-sign-box">
+          <h3>4) Client Signature</h3>
+          <div class="doc-field-label">Client Name</div>
+          <div class="doc-field-value" style="margin-bottom:16px;">______________________________</div>
+          <div class="doc-field-label">Signature</div>
+          <div class="doc-sig-line">
+            <div>______________________________</div>
+            <div>Date: __________________________</div>
+          </div>
+        </div>
+
+        <div class="doc-sign-box">
+          <h3>5) Authorized Asan Global Representative Signature</h3>
+          <div class="doc-field-label">Name</div>
+          <div class="doc-field-value" style="margin-bottom:10px;">______________________________</div>
+          <div class="doc-field-label">Position</div>
+          <div class="doc-field-value" style="margin-bottom:10px;">______________________________</div>
+          <div class="doc-field-label">Signature</div>
+          <div class="doc-sig-line">
+            <div>______________________________</div>
+            <div>Date: __________________________</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="doc-footer-note">
+        Client agreement acceptance is required before processing. Keep a copy for your records.
+      </p>
+
+      <!-- Document footer -->
+      <div class="ag-document-footer">
+        <span>Asan Global Import &amp; Auto Sourcing</span>
+        <span>Confidential — Client Copy</span>
+        <span>Document Ref: Asan/CA/01</span>
+      </div>
+
+    </div><!-- /.ag-document -->
+  </div><!-- /.doc-page-wrap -->
+
+</body>
+</html>

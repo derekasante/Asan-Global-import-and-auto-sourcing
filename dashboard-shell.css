@@ -1,0 +1,236 @@
+:root {
+  --dashboard-bg: #f4f8ff;
+  --dashboard-surface: #ffffff;
+  --dashboard-surface-2: #f8fbff;
+  --dashboard-sidebar: linear-gradient(180deg, #0f172a 0%, #1e3a8a 100%);
+  --dashboard-accent: #667eea;
+  --dashboard-accent-2: #764ba2;
+  --dashboard-text: #0f172a;
+  --dashboard-muted: #64748b;
+  --dashboard-border: #e2e8f0;
+  --dashboard-shadow: 0 14px 40px rgba(15, 23, 42, 0.10);
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #eef4ff 0%, #f9fbff 100%);
+  color: var(--dashboard-text);
+}
+
+.sidebar {
+  width: 280px;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--dashboard-sidebar);
+  color: #fff;
+  padding: 28px 20px;
+  box-shadow: 12px 0 35px rgba(15, 23, 42, 0.20);
+  z-index: 1000;
+}
+
+.sidebar .logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 34px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.14);
+}
+
+.sidebar .logo i {
+  font-size: 30px;
+  color: #ffd54f;
+}
+
+.sidebar .logo h2,
+.sidebar .logo span {
+  margin: 0;
+}
+
+.sidebar .logo h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sidebar .logo span {
+  font-size: 12px;
+  color: #c7d2fe;
+  display: block;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin: 6px 0;
+}
+
+.sidebar a,
+.sidebar nav a {
+  color: rgba(255,255,255,0.86);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  font-size: 15px;
+}
+
+.sidebar a:hover,
+.sidebar a.active,
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background: rgba(255,255,255,0.16);
+  color: #fff;
+  transform: translateX(4px);
+}
+
+.main,
+.main-content,
+main {
+  margin-left: 280px;
+  min-height: 100vh;
+  width: calc(100% - 280px);
+  background: transparent;
+}
+
+.topbar {
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px);
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--dashboard-border);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+
+.topbar h1,
+.topbar h2 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--dashboard-text);
+  font-weight: 700;
+}
+
+.topbar .user-info,
+.topbar .top-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar .user-avatar,
+.topbar .avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--dashboard-accent) 0%, var(--dashboard-accent-2) 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.content,
+.stats,
+.pricing-section,
+.pricing-hero,
+.finance-section,
+.payment-methods,
+.schedule-grid,
+.module-grid,
+.secondary-grid,
+.executive-grid,
+.dashboard-grid {
+  padding: 28px;
+}
+
+.stat-card,
+.card,
+.schedule-card,
+.finance-section,
+.payment-methods,
+.pricing-section,
+.pricing-hero,
+.panel,
+.module-card,
+.plan-card,
+.team-item,
+.customer-card,
+.info-card {
+  background: linear-gradient(135deg, var(--dashboard-surface) 0%, var(--dashboard-surface-2) 100%);
+  border: 1px solid var(--dashboard-border);
+  border-radius: 22px;
+  box-shadow: var(--dashboard-shadow);
+}
+
+.stat-card,
+.card,
+.schedule-card,
+.panel,
+.module-card {
+  padding: 22px;
+}
+
+.stat-card h3,
+.card h3,
+.schedule-card h3,
+.panel h4,
+.module-card h4 {
+  color: var(--dashboard-text);
+}
+
+.badge,
+.status,
+.pill {
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge.success,
+.status.completed,
+.pill {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #166534;
+}
+
+.badge.warn,
+.status.inprogress {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+}
+
+.badge,
+.status.pending {
+  background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+  color: #3730a3;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    position: static;
+  }
+
+  .main,
+  .main-content,
+  main {
+    margin-left: 0;
+    width: 100%;
+  }
+}

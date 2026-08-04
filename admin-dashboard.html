@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Asan Global</title>
+<meta name="description" content="Premium operations dashboard for the Asan Global logistics platform — shipments, tracking, quotes, and messages.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ============================================================
+   ASAN GLOBAL — PREMIUM ADMIN DASHBOARD
+   Blue · White · Gold design system (reuses design-system.css)
+   ============================================================ */
+
+/* ---- Topbar ---- */
+.adm-topbar {
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  background:#fff; padding:0 28px; border-bottom:1px solid var(--ag-border);
+  position:sticky; top:0; z-index:900; height:66px;
+  box-shadow:0 1px 3px rgba(15,23,42,.06);
+}
+.adm-topbar-left  { display:flex; align-items:center; gap:14px; }
+.adm-topbar-right { display:flex; align-items:center; gap:12px; }
+.adm-eyebrow { font-size:10.5px; font-weight:700; color:var(--ag-blue-600); text-transform:uppercase; letter-spacing:.14em; margin:0 0 1px; }
+.adm-topbar h1  { margin:0; font-size:20px; font-weight:700; color:var(--ag-text-900); }
+.adm-live-chip {
+  display:inline-flex; align-items:center; gap:7px;
+  border-radius:999px; padding:6px 13px; font-size:11.5px; font-weight:700;
+}
+.adm-live-chip.live { background:#dcfce7; color:#15803d; }
+.adm-live-chip.demo { background:#fef3c7; color:#92400e; }
+.adm-live-chip.off  { background:#fee2e2; color:#dc2626; }
+.adm-live-chip::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
+
+.adm-name-chip {
+  display:flex; align-items:center; gap:10px;
+  background:var(--ag-surface-muted); border:1px solid var(--ag-border);
+  border-radius:var(--ag-radius-pill); padding:6px 14px 6px 8px;
+}
+.adm-name-chip .avatar {
+  width:30px; height:30px; border-radius:50%;
+  background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700));
+  color:#fff; font-size:13px; font-weight:700; display:grid; place-items:center;
+}
+.adm-name-chip .name  { font-size:13px; font-weight:700; color:var(--ag-text-900); }
+.adm-name-chip .badge { font-size:10px; font-weight:700; background:#fee2e2; color:#dc2626; padding:2px 7px; border-radius:999px; }
+
+/* ---- Content ---- */
+.adm-content { padding:28px; max-width:1500px; margin:0 auto; }
+
+/* ---- Analytics banner ---- */
+.adm-analytics {
+  background:linear-gradient(135deg,var(--ag-navy-950) 0%,var(--ag-navy-800) 45%,var(--ag-blue-600) 100%);
+  border-radius:var(--ag-radius-lg); padding:30px 34px; margin-bottom:22px;
+  display:grid; grid-template-columns:1fr auto; gap:26px; align-items:center;
+  position:relative; overflow:hidden; box-shadow:var(--ag-shadow-lg);
+}
+.adm-analytics::before {
+  content:''; position:absolute; inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.adm-analytics-blob { position:absolute; border-radius:50%; filter:blur(70px); opacity:.16; pointer-events:none; }
+.adm-analytics-blob-1 { width:300px; height:300px; background:#2563eb; top:-80px; right:260px; }
+.adm-analytics-blob-2 { width:220px; height:220px; background:#ffd54f; bottom:-60px; right:40px; opacity:.12; }
+.adm-analytics-body { position:relative; z-index:1; }
+.adm-analytics-body h2 { color:#fff; font-size:clamp(1.2rem,2vw,1.7rem); font-weight:800; margin:0 0 6px; }
+.adm-analytics-body p  { color:rgba(255,255,255,.68); font-size:13.5px; margin:0; line-height:1.6; }
+.adm-analytics-meta { position:relative; z-index:1; display:flex; gap:14px; flex-wrap:wrap; }
+.adm-meta-stat { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:var(--ag-radius-md); padding:12px 18px; text-align:center; min-width:104px; }
+.adm-meta-stat strong { display:block; font-size:1.4rem; font-weight:800; color:#fff; line-height:1; }
+.adm-meta-stat span { font-size:11px; color:rgba(255,255,255,.6); display:block; margin-top:3px; }
+
+/* ---- KPI grid ---- */
+.adm-kpi-grid { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:14px; margin-bottom:24px; }
+.adm-kpi {
+  background:#fff; border:1px solid var(--ag-border); border-radius:var(--ag-radius-lg);
+  padding:18px 16px; box-shadow:var(--ag-shadow-sm); position:relative; overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.adm-kpi:hover { transform:translateY(-3px); box-shadow:var(--ag-shadow-md); }
+.adm-kpi::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; border-radius:0 0 var(--ag-radius-lg) var(--ag-radius-lg); }
+.adm-kpi.blue::after { background:linear-gradient(90deg,#2563eb,#00d4ff); }
+.adm-kpi.green::after { background:linear-gradient(90deg,#16a34a,#4ade80); }
+.adm-kpi.amber::after { background:linear-gradient(90deg,#f59e0b,#fcd34d); }
+.adm-kpi.purple::after { background:linear-gradient(90deg,#7c3aed,#a78bfa); }
+.adm-kpi.rose::after { background:linear-gradient(90deg,#e11d48,#fb7185); }
+.adm-kpi.teal::after { background:linear-gradient(90deg,#0891b2,#22d3ee); }
+.adm-kpi-icon { width:38px; height:38px; border-radius:10px; display:grid; place-items:center; font-size:16px; color:#fff; margin-bottom:12px; }
+.adm-kpi-icon.blue { background:linear-gradient(135deg,#2563eb,#1e4a82); }
+.adm-kpi-icon.green { background:linear-gradient(135deg,#16a34a,#15803d); }
+.adm-kpi-icon.amber { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.adm-kpi-icon.purple { background:linear-gradient(135deg,#7c3aed,#5b21b6); }
+.adm-kpi-icon.rose { background:linear-gradient(135deg,#e11d48,#be123c); }
+.adm-kpi-icon.teal { background:linear-gradient(135deg,#0891b2,#0e7490); }
+.adm-kpi-val { font-size:24px; font-weight:800; color:var(--ag-text-900); line-height:1; margin-bottom:3px; }
+.adm-kpi-label { font-size:11.5px; color:var(--ag-text-600); font-weight:500; }
+.adm-kpi-trend { font-size:11px; font-weight:700; padding:2px 7px; border-radius:999px; margin-top:6px; display:inline-block; }
+.adm-kpi-trend.up { background:#dcfce7; color:#15803d; }
+.adm-kpi-trend.down { background:#fee2e2; color:#dc2626; }
+.adm-kpi-trend.neu { background:#f1f5f9; color:#64748b; }
+
+/* ---- Tabs ---- */
+.adm-tabs {
+  display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;
+  background:#fff; border:1px solid var(--ag-border); border-radius:var(--ag-radius-pill);
+  padding:6px; box-shadow:var(--ag-shadow-sm); width:fit-content; max-width:100%;
+}
+.adm-tab {
+  display:inline-flex; align-items:center; gap:8px;
+  background:transparent; border:none; cursor:pointer;
+  font-family:var(--ag-font); font-size:13px; font-weight:600; color:var(--ag-text-600);
+  padding:9px 18px; border-radius:var(--ag-radius-pill);
+  transition:background .18s,color .18s,box-shadow .18s,transform .18s;
+}
+.adm-tab i { color:var(--ag-blue-500); font-size:13px; }
+.adm-tab:hover { background:var(--ag-surface-muted); color:var(--ag-text-900); }
+.adm-tab.active {
+  background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700));
+  color:#fff; box-shadow:0 8px 20px rgba(37,99,235,.28);
+}
+.adm-tab.active i { color:var(--ag-gold-400); }
+
+/* ---- Panels ---- */
+.adm-panel { display:none; }
+.adm-panel.active { display:block; animation:adm-fade .35s var(--ag-ease); }
+@keyframes adm-fade { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+
+/* ---- Section cards ---- */
+.adm-card {
+  background:#fff; border:1px solid var(--ag-border); border-radius:var(--ag-radius-lg);
+  box-shadow:var(--ag-shadow-sm); overflow:hidden; margin-bottom:22px;
+}
+.adm-card-head {
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding:18px 22px 14px; border-bottom:1px solid var(--ag-border); flex-wrap:wrap;
+}
+.adm-card-head h3 { margin:0; font-size:15px; font-weight:700; color:var(--ag-text-900); }
+.adm-card-head h3 i { margin-right:8px; color:var(--ag-blue-600); }
+.adm-card-body { padding:18px 22px; }
+.adm-card-sub { font-size:12.5px; color:var(--ag-text-600); margin:4px 0 0; line-height:1.5; }
+
+/* ---- Toolbars & filters ---- */
+.adm-toolbar { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+.adm-search {
+  display:flex; align-items:center; gap:8px; flex:1; min-width:220px;
+  background:var(--ag-surface-muted); border:1.5px solid var(--ag-border);
+  border-radius:var(--ag-radius-pill); padding:9px 16px;
+}
+.adm-search:focus-within { border-color:var(--ag-blue-500); box-shadow:0 0 0 4px rgba(59,130,246,.1); }
+.adm-search i { color:var(--ag-text-400); font-size:13px; }
+.adm-search input { border:none; outline:none; background:transparent; font-family:var(--ag-font); font-size:13px; color:var(--ag-text-900); width:100%; }
+
+/* ---- Overview layout ---- */
+.adm-ov-grid { display:grid; grid-template-columns:1fr 360px; gap:22px; }
+.adm-status-bars { display:flex; flex-direction:column; gap:12px; }
+.adm-status-bar-row { display:flex; align-items:center; gap:10px; }
+.adm-status-bar-row .lbl { width:150px; font-size:12px; font-weight:600; color:var(--ag-text-600); flex-shrink:0; }
+.adm-status-bar-row .bar { flex:1; height:9px; background:var(--ag-surface-muted); border-radius:999px; overflow:hidden; }
+.adm-status-bar-row .fill { height:100%; border-radius:999px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
+.adm-status-bar-row .val { width:34px; text-align:right; font-size:12px; font-weight:800; color:var(--ag-text-900); }
+
+.adm-activity-list { display:flex; flex-direction:column; }
+.adm-activity-item {
+  display:flex; align-items:flex-start; gap:12px; padding:12px 0;
+  border-bottom:1px solid var(--ag-surface-muted);
+}
+.adm-activity-item:last-child { border-bottom:none; }
+.adm-activity-ic { width:36px; height:36px; border-radius:10px; display:grid; place-items:center; color:#fff; font-size:14px; flex-shrink:0; }
+.adm-activity-ic.ship  { background:linear-gradient(135deg,#2563eb,#1e4a82); }
+.adm-activity-ic.quote { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.adm-activity-ic.msg   { background:linear-gradient(135deg,#7c3aed,#5b21b6); }
+.adm-activity-txt { flex:1; min-width:0; }
+.adm-activity-txt strong { font-size:13.5px; color:var(--ag-text-900); display:block; }
+.adm-activity-txt p { font-size:12.5px; color:var(--ag-text-600); margin:1px 0 3px; }
+.adm-activity-txt span { font-size:11px; color:var(--ag-text-400); }
+
+/* ---- Timeline (tracking panel) ---- */
+.adm-timeline { position:relative; padding:6px 4px 4px 10px; max-height:560px; overflow-y:auto; }
+.adm-timeline::before {
+  content:''; position:absolute; left:26px; top:10px; bottom:10px; width:3px; border-radius:999px;
+  background:linear-gradient(to bottom,var(--ag-blue-600),var(--ag-blue-100)); opacity:.5;
+}
+.adm-tl-item { position:relative; display:flex; gap:16px; padding-bottom:4px; }
+.adm-tl-icon {
+  position:relative; z-index:2; width:44px; height:44px; flex-shrink:0; border-radius:50%;
+  display:grid; place-items:center; font-size:14px; background:rgba(255,255,255,.9);
+  border:2px solid var(--ag-blue-100); color:var(--ag-blue-600);
+  box-shadow:0 6px 18px rgba(37,99,235,.14);
+}
+.adm-tl-item.done .adm-tl-icon, .adm-tl-item.active .adm-tl-icon {
+  background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700));
+  border-color:var(--ag-blue-600); color:#fff;
+}
+.adm-tl-item.active .adm-tl-icon { box-shadow:0 0 0 6px rgba(37,99,235,.14),0 8px 24px rgba(37,99,235,.28); }
+.adm-tl-item:not(:last-child)::after {
+  content:''; position:absolute; left:20px; top:46px; bottom:-2px; width:3px; border-radius:999px;
+  background:var(--ag-blue-100); z-index:1;
+}
+.adm-tl-item.done:not(:last-child)::after, .adm-tl-item.active:not(:last-child)::after {
+  background:linear-gradient(to bottom,var(--ag-blue-600),var(--ag-gold-400)); opacity:.65;
+}
+.adm-tl-body { flex:1; min-width:0; background:var(--ag-surface-muted); border:1px solid var(--ag-border); border-radius:var(--ag-radius-md); padding:12px 16px; }
+.adm-tl-item.active .adm-tl-body { background:var(--ag-blue-100); border-color:rgba(37,99,235,.35); }
+.adm-tl-head { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; margin-bottom:3px; }
+.adm-tl-status { font-size:13px; font-weight:800; color:var(--ag-navy-900); margin:0; }
+.adm-tl-item.active .adm-tl-status { color:var(--ag-blue-600); }
+.adm-tl-date { font-size:11px; font-weight:700; color:var(--ag-text-600); background:#fff; border:1px solid var(--ag-border); padding:3px 9px; border-radius:999px; white-space:nowrap; }
+.adm-tl-desc { font-size:12px; color:var(--ag-text-600); line-height:1.5; margin:0; }
+.adm-tl-loc { font-size:11.5px; font-weight:600; color:var(--ag-blue-600); margin:2px 0 4px; }
+
+/* ---- Tracking select & status row ---- */
+.adm-ship-picker { display:grid; grid-template-columns:1fr auto; gap:14px; align-items:end; margin-bottom:20px; }
+
+/* ---- Quote/message item cards ---- */
+.adm-msg-item {
+  display:flex; align-items:flex-start; gap:14px; padding:14px 0; border-bottom:1px solid var(--ag-surface-muted);
+}
+.adm-msg-item:last-child { border-bottom:none; }
+.adm-msg-avatar {
+  width:40px; height:40px; border-radius:50%; flex-shrink:0;
+  background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700)); color:#fff;
+  display:grid; place-items:center; font-size:14px; font-weight:700;
+}
+.adm-msg-body { flex:1; min-width:0; }
+.adm-msg-body h5 { margin:0 0 3px; font-size:14px; color:var(--ag-text-900); }
+.adm-msg-body h5 .unread-mark { color:var(--ag-blue-600); font-size:11px; margin-left:6px; }
+.adm-msg-body p { margin:0; font-size:12.5px; color:var(--ag-text-600); line-height:1.5; }
+.adm-msg-meta { font-size:11px; color:var(--ag-text-400); margin-top:4px; display:flex; gap:10px; flex-wrap:wrap; }
+.adm-msg-actions { display:flex; gap:6px; flex-shrink:0; }
+.adm-msg-actions .icon-btn {
+  width:34px; height:34px; border-radius:var(--ag-radius-sm); border:1px solid var(--ag-border);
+  background:#fff; color:var(--ag-text-600); cursor:pointer; font-size:13px;
+  display:grid; place-items:center; transition:all .18s;
+}
+.adm-msg-actions .icon-btn:hover { border-color:var(--ag-blue-500); color:var(--ag-blue-600); }
+.adm-msg-actions .icon-btn.resolve { color:var(--ag-success); }
+.adm-msg-actions .icon-btn.resolve:hover { background:var(--ag-success-bg); border-color:var(--ag-success); }
+
+/* ---- Data rows (detail modal) ---- */
+.adm-detail-row { display:flex; justify-content:space-between; gap:12px; padding:11px 0; border-bottom:1px solid var(--ag-surface-muted); font-size:13px; }
+.adm-detail-row:last-child { border-bottom:none; }
+.adm-detail-row .lbl { color:var(--ag-text-400); font-weight:500; white-space:nowrap; }
+.adm-detail-row .val { color:var(--ag-text-900); font-weight:600; text-align:right; word-break:break-word; }
+
+/* ---- Backend-required notice ---- */
+.adm-note {
+  display:flex; align-items:flex-start; gap:10px;
+  background:var(--ag-info-bg); color:var(--ag-info);
+  border:1px solid rgba(29,78,216,.2); border-radius:var(--ag-radius-md);
+  padding:11px 16px; font-size:12.5px; line-height:1.5; margin-bottom:16px;
+}
+.adm-note i { margin-top:2px; }
+.adm-note code { background:rgba(29,78,216,.08); padding:1px 5px; border-radius:5px; font-size:11.5px; }
+
+/* ---- Icon button (table actions) ---- */
+.adm-row-actions { display:flex; gap:6px; }
+.adm-row-actions .icon-btn {
+  width:32px; height:32px; border-radius:var(--ag-radius-sm); border:1px solid var(--ag-border);
+  background:#fff; color:var(--ag-text-600); cursor:pointer; font-size:12px;
+  display:grid; place-items:center; transition:all .18s;
+}
+.adm-row-actions .icon-btn:hover { border-color:var(--ag-blue-500); color:var(--ag-blue-600); }
+.adm-row-actions .icon-btn.danger:hover { border-color:var(--ag-danger); color:var(--ag-danger); background:var(--ag-danger-bg); }
+
+/* ---- Responsive ---- */
+@media (max-width:1300px){ .adm-kpi-grid{ grid-template-columns:repeat(3,1fr); } .adm-ov-grid{ grid-template-columns:1fr; } }
+@media (max-width:1000px){ .adm-analytics{ grid-template-columns:1fr; } }
+@media (max-width:700px) {
+  .adm-content{ padding:14px; }
+  .adm-kpi-grid{ grid-template-columns:repeat(2,1fr); }
+  .adm-tabs{ width:100%; justify-content:center; }
+  .adm-ship-picker{ grid-template-columns:1fr; }
+  .adm-toolbar{ flex-direction:column; align-items:stretch; }
+  .adm-search{ flex:none; }
+  .adm-msg-actions{ flex-direction:column; }
+}
+</style>
+</head>
+<body data-ag-page="admin">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+
+    <!-- ===================== TOPBAR ===================== -->
+    <header class="adm-topbar">
+      <div class="adm-topbar-left">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="adm-eyebrow">Operations Control Center</p>
+          <h1><i class="fas fa-user-shield" style="color:var(--ag-blue-600);margin-right:8px;"></i>Admin Dashboard</h1>
+        </div>
+      </div>
+      <div class="adm-topbar-right">
+        <span class="adm-live-chip demo" id="admBackendChip"><i class="fas fa-plug" style="font-size:10px;"></i><span>Checking backend…</span></span>
+        <div class="adm-name-chip">
+          <div class="avatar" id="adminAvatar">A</div>
+          <div>
+            <div class="name" id="adminName">Admin</div>
+            <div class="badge">ADMIN</div>
+          </div>
+        </div>
+        <button class="ag-btn ag-btn-danger" onclick="logout()" style="font-size:13px;padding:9px 16px;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="adm-content">
+
+      <!-- ===================== ANALYTICS BANNER ===================== -->
+      <section class="adm-analytics">
+        <div class="adm-analytics-blob adm-analytics-blob-1"></div>
+        <div class="adm-analytics-blob adm-analytics-blob-2"></div>
+        <div class="adm-analytics-body">
+          <h2>Premium Logistics Operations</h2>
+          <p>Shipments, live tracking, quote requests and customer messages — all in one high-velocity control center.</p>
+        </div>
+        <div class="adm-analytics-meta">
+          <div class="adm-meta-stat"><strong id="metaShipments">—</strong><span>Shipments</span></div>
+          <div class="adm-meta-stat"><strong id="metaTransit">—</strong><span>In Transit</span></div>
+          <div class="adm-meta-stat"><strong id="metaQuotes">—</strong><span>Quotes</span></div>
+          <div class="adm-meta-stat"><strong id="metaMessages">—</strong><span>Messages</span></div>
+        </div>
+      </section>
+
+      <!-- ===================== KPI CARDS ===================== -->
+      <section class="adm-kpi-grid">
+        <div class="adm-kpi blue">
+          <div class="adm-kpi-icon blue"><i class="fas fa-ship"></i></div>
+          <div class="adm-kpi-val" id="kpiShipments">0</div>
+          <div class="adm-kpi-label">Total Shipments</div>
+          <div class="adm-kpi-trend neu" id="kpiShipmentsTrend">All time</div>
+        </div>
+        <div class="adm-kpi amber">
+          <div class="adm-kpi-icon amber"><i class="fas fa-route"></i></div>
+          <div class="adm-kpi-val" id="kpiTransit">0</div>
+          <div class="adm-kpi-label">In Transit</div>
+          <div class="adm-kpi-trend up">Active moving</div>
+        </div>
+        <div class="adm-kpi green">
+          <div class="adm-kpi-icon green"><i class="fas fa-circle-check"></i></div>
+          <div class="adm-kpi-val" id="kpiDelivered">0</div>
+          <div class="adm-kpi-label">Delivered</div>
+          <div class="adm-kpi-trend up">Completed</div>
+        </div>
+        <div class="adm-kpi purple">
+          <div class="adm-kpi-icon purple"><i class="fas fa-file-signature"></i></div>
+          <div class="adm-kpi-val" id="kpiQuotes">0</div>
+          <div class="adm-kpi-label">Quote Requests</div>
+          <div class="adm-kpi-trend neu">All time</div>
+        </div>
+        <div class="adm-kpi rose">
+          <div class="adm-kpi-icon rose"><i class="fas fa-comments"></i></div>
+          <div class="adm-kpi-val" id="kpiMessages">0</div>
+          <div class="adm-kpi-label">Contact Messages</div>
+          <div class="adm-kpi-trend neu">All time</div>
+        </div>
+        <div class="adm-kpi teal">
+          <div class="adm-kpi-icon teal"><i class="fas fa-inbox"></i></div>
+          <div class="adm-kpi-val" id="kpiPending">0</div>
+          <div class="adm-kpi-label">Unresolved</div>
+          <div class="adm-kpi-trend down" id="kpiPendingTrend">Needs action</div>
+        </div>
+      </section>
+
+      <!-- ===================== TAB NAVIGATION ===================== -->
+      <nav class="adm-tabs" aria-label="Dashboard sections">
+        <button class="adm-tab active" data-tab="overview"><i class="fas fa-th-large"></i>Overview</button>
+        <button class="adm-tab" data-tab="shipments"><i class="fas fa-ship"></i>Shipments</button>
+        <button class="adm-tab" data-tab="tracking"><i class="fas fa-location-crosshairs"></i>Tracking</button>
+        <button class="adm-tab" data-tab="quotes"><i class="fas fa-file-signature"></i>Quotes</button>
+        <button class="adm-tab" data-tab="messages"><i class="fas fa-comments"></i>Messages</button>
+      </nav>
+
+      <!-- =============================================================
+           PANEL 1 — OVERVIEW
+           ============================================================= -->
+      <section class="adm-panel active" id="panel-overview">
+        <div class="adm-ov-grid">
+          <div style="display:flex;flex-direction:column;gap:22px;">
+            <div class="adm-card">
+              <div class="adm-card-head">
+                <h3><i class="fas fa-chart-pie"></i>Shipment Status Overview</h3>
+                <span class="ag-badge ag-badge-info" id="ovStatusTotal">0 total</span>
+              </div>
+              <div class="adm-card-body">
+                <div class="adm-status-bars" id="ovStatusBars"></div>
+              </div>
+            </div>
+            <div class="adm-card">
+              <div class="adm-card-head">
+                <h3><i class="fas fa-inbox"></i>Latest Shipments</h3>
+                <button class="ag-btn ag-btn-ghost" style="font-size:12px;padding:5px 12px;" onclick="switchTab('shipments')">View All</button>
+              </div>
+              <div class="adm-card-body" style="padding:10px 22px;">
+                <div id="ovRecentShipments"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="adm-card">
+            <div class="adm-card-head">
+              <h3><i class="fas fa-bolt"></i>Recent Activity</h3>
+            </div>
+            <div class="adm-card-body" style="padding-top:10px;">
+              <div class="adm-activity-list" id="ovActivity"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           PANEL 2 — SHIPMENT MANAGEMENT
+           ============================================================= -->
+      <section class="adm-panel" id="panel-shipments">
+        <div class="adm-card">
+          <div class="adm-card-head">
+            <h3><i class="fas fa-ship"></i>Shipment Management</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="ag-btn ag-btn-primary" style="font-size:12.5px;padding:8px 14px;" onclick="openShipmentModal()">
+                <i class="fas fa-plus"></i> New Shipment
+              </button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12.5px;padding:8px 14px;" onclick="renderShipmentTable()">
+                <i class="fas fa-rotate"></i> Refresh
+              </button>
+            </div>
+          </div>
+          <div class="adm-card-body">
+            <div class="adm-toolbar">
+              <div class="adm-search">
+                <i class="fas fa-search"></i>
+                <input type="search" id="shpSearch" placeholder="Search tracking, customer, item, route…" autocomplete="off">
+              </div>
+              <select class="ag-select" id="shpStatusFilter" style="width:200px;" aria-label="Filter by status">
+                <option value="All">All Statuses</option>
+              </select>
+              <span class="ag-badge ag-badge-neutral" id="shpCount">0 shipments</span>
+            </div>
+            <div class="ag-table-wrap">
+              <table class="ag-table">
+                <thead>
+                  <tr>
+                    <th>Tracking</th>
+                    <th>Customer</th>
+                    <th>Item</th>
+                    <th>Route</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="shpTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-note">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <strong>Backend:</strong>&nbsp;<code>POST /api/shipments</code> (port 5000) is used to create new shipments, and
+            <code>GET /api/shipments/:trackingNumber</code> is used for verification lookups. Listing, editing and status
+            changes persist locally because no public admin list/edit API exists (the admin API on port 3001 requires a
+            Supabase JWT which this localStorage admin account does not hold).
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           PANEL 3 — TRACKING EVENTS
+           ============================================================= -->
+      <section class="adm-panel" id="panel-tracking">
+        <div class="adm-card">
+          <div class="adm-card-head">
+            <h3><i class="fas fa-location-crosshairs"></i>Tracking Events &amp; Timeline</h3>
+            <span class="ag-badge ag-badge-success" id="trkLiveBadge">Live</span>
+          </div>
+          <div class="adm-card-body">
+            <div class="adm-ship-picker">
+              <div class="ag-field" style="margin-bottom:0;">
+                <label for="trkShipmentSelect">Select shipment</label>
+                <select class="ag-select" id="trkShipmentSelect"></select>
+              </div>
+              <div class="ag-field" style="margin-bottom:0;">
+                <label for="trkStatusUpdate">Update status</label>
+                <div style="display:flex;gap:8px;">
+                  <select class="ag-select" id="trkStatusUpdate" style="min-width:170px;"></select>
+                  <button class="ag-btn ag-btn-primary" onclick="updateShipmentStatusFromTracking()" style="white-space:nowrap;"><i class="fas fa-check"></i> Update</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="trkSelectedInfo" style="display:none;margin-bottom:18px;padding:14px 16px;background:linear-gradient(135deg,var(--ag-surface-muted),#fff);border:1px solid var(--ag-border);border-radius:var(--ag-radius-md);">
+              <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div style="font-size:13px;font-weight:800;color:var(--ag-navy-900);"><i class="fas fa-box" style="color:var(--ag-blue-600);margin-right:6px;"></i><span id="trkInfoTitle">—</span></div>
+                <div id="trkInfoStatus"></div>
+                <div style="margin-left:auto;font-size:12px;color:var(--ag-text-400);" id="trkInfoRoute">—</div>
+              </div>
+            </div>
+
+            <h4 style="font-size:14px;font-weight:700;color:var(--ag-text-900);margin:0 0 10px;"><i class="fas fa-clock-rotate-left" style="color:var(--ag-blue-600);margin-right:6px;"></i>Shipment Timeline</h4>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:14px 16px;background:var(--ag-surface-muted);border:1px solid var(--ag-border);border-radius:var(--ag-radius-md);">
+              <div class="ag-field" style="margin-bottom:0;flex:1;min-width:150px;">
+                <label for="trkEventStatus">Event status</label>
+                <select class="ag-select" id="trkEventStatus"></select>
+              </div>
+              <div class="ag-field" style="margin-bottom:0;flex:1;min-width:150px;">
+                <label for="trkEventLocation">Location</label>
+                <input type="text" id="trkEventLocation" class="ag-input" placeholder="e.g. Tema Port, Ghana">
+              </div>
+              <div class="ag-field" style="margin-bottom:0;flex:1.5;min-width:220px;">
+                <label for="trkEventDesc">Description</label>
+                <input type="text" id="trkEventDesc" class="ag-input" placeholder="e.g. Customs inspection completed">
+              </div>
+              <div style="display:flex;align-items:flex-end;">
+                <button class="ag-btn ag-btn-primary" onclick="addTrackingEvent()"><i class="fas fa-plus"></i> Add Event</button>
+              </div>
+            </div>
+
+            <div class="adm-timeline" id="admTimeline"></div>
+            <div class="ag-empty" id="trkEmpty" style="display:none;">
+              <i class="fas fa-route"></i>
+              <p>Select a shipment to view its tracking timeline.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-note">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <strong>Backend:</strong>&nbsp;<code>GET /api/tracking-events/:shipmentId</code> and
+            <code>POST /api/tracking-events</code> (port 5000) are used for real database events when the selected shipment
+            was created through the backend (has a real UUID). Demo/local shipments use built-in synthesized events.
+            Public status <em>update</em> on the shipment record itself has no public endpoint — status changes are persisted
+            locally and recorded as a tracking event.
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           PANEL 4 — QUOTE MANAGEMENT
+           ============================================================= -->
+      <section class="adm-panel" id="panel-quotes">
+        <div class="adm-card">
+          <div class="adm-card-head">
+            <h3><i class="fas fa-file-signature"></i>Quote Requests</h3>
+            <span class="ag-badge ag-badge-neutral" id="quoteCount">0 requests</span>
+          </div>
+          <div class="adm-card-body">
+            <div class="adm-toolbar">
+              <div class="adm-search">
+                <i class="fas fa-search"></i>
+                <input type="search" id="qSearch" placeholder="Search name, email, origin, destination…" autocomplete="off">
+              </div>
+              <select class="ag-select" id="qServiceFilter" style="width:200px;" aria-label="Filter by service">
+                <option value="All">All Services</option>
+              </select>
+            </div>
+            <div class="ag-table-wrap">
+              <table class="ag-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Service</th>
+                    <th>Route</th>
+                    <th>Vehicle Details</th>
+                    <th>Received</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="quoteTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="adm-note">
+          <i class="fas fa-exclamation-circle"></i>
+          <div>
+            <strong>Missing backend API:</strong>&nbsp;only <code>POST /api/quotes</code> exists publicly — there is no
+            <code>GET /api/admin/quotes</code> or <code>GET /api/quotes</code> listing endpoint. Quote requests below are
+            rendered from a local/demo store. A read endpoint is required to show real submissions in this section.
+          </div>
+        </div>
+      </section>
+
+      <!-- =============================================================
+           PANEL 5 — MESSAGE MANAGEMENT
+           ============================================================= -->
+      <section class="adm-panel" id="panel-messages">
+        <div class="adm-card">
+          <div class="adm-card-head">
+            <h3><i class="fas fa-comments"></i>Contact Messages</h3>
+            <span class="ag-badge ag-badge-neutral" id="msgCount">0 messages</span>
+          </div>
+          <div class="adm-card-body">
+            <div class="adm-toolbar">
+              <div class="adm-search">
+                <i class="fas fa-search"></i>
+                <input type="search" id="mSearch" placeholder="Search name, email, subject…" autocomplete="off">
+              </div>
+              <select class="ag-select" id="mStatusFilter" style="width:200px;" aria-label="Filter by status">
+                <option value="All">All Statuses</option>
+                <option value="New">New</option>
+                <option value="Read">Read</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+            <div id="messageList"></div>
+          </div>
+        </div>
+
+        <div class="adm-note">
+          <i class="fas fa-exclamation-circle"></i>
+          <div>
+            <strong>Missing backend API:</strong>&nbsp;only <code>POST /api/messages</code> exists publicly — the listing
+            endpoint (<code>GET /api/admin/messages</code>) and resolve endpoint (<code>PATCH /api/admin/messages/:id</code>)
+            live on the port-3001 admin API and require a Supabase admin JWT, which the localStorage admin account does not
+            hold. Messages are shown from a local/demo store; marking resolved persists locally.
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /.adm-content -->
+
+    <footer style="text-align:center;padding:20px;color:var(--ag-text-400);font-size:12px;">
+      © 2026 Asan Global Import Services — Premium Admin Dashboard
+    </footer>
+  </main>
+</div>
+
+<!-- ===================== SHIPMENT MODAL (create/edit) ===================== -->
+<div id="modalShipment" class="ag-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalShipmentTitle">
+  <div class="ag-modal" style="width:min(640px,94vw);max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <h3 id="modalShipmentTitle" style="margin:0;font-size:18px;color:var(--ag-text-900);"><i class="fas fa-ship" style="color:var(--ag-blue-600);margin-right:8px;"></i>New Shipment</h3>
+      <button class="ag-btn ag-btn-ghost" onclick="closeModal('modalShipment')" style="padding:8px 12px;" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    <p class="adm-card-sub" id="shipmentModalNote" style="margin-bottom:14px;"></p>
+    <div class="ag-modal-form">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 14px;">
+        <div class="ag-field">
+          <label>Customer Name *</label>
+          <input type="text" id="smCustomer" class="ag-input" placeholder="e.g. Kwame Asante">
+        </div>
+        <div class="ag-field">
+          <label>Customer Email</label>
+          <input type="email" id="smEmail" class="ag-input" placeholder="customer@email.com">
+        </div>
+        <div class="ag-field">
+          <label>Customer Phone</label>
+          <input type="text" id="smPhone" class="ag-input" placeholder="+233 24 000 0000">
+        </div>
+        <div class="ag-field">
+          <label>Service Type</label>
+          <select id="smService" class="ag-select">
+            <option>Vehicle Import</option>
+            <option>Vehicle Sourcing</option>
+            <option>Appliances</option>
+            <option>General Cargo</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="ag-field" style="grid-column:1 / -1;">
+          <label>Item Description *</label>
+          <input type="text" id="smItem" class="ag-input" placeholder="e.g. 2024 Toyota Land Cruiser">
+        </div>
+        <div class="ag-field">
+          <label>Origin *</label>
+          <input type="text" id="smOrigin" class="ag-input" placeholder="e.g. Japan">
+        </div>
+        <div class="ag-field">
+          <label>Destination *</label>
+          <input type="text" id="smDestination" class="ag-input" placeholder="e.g. Ghana">
+        </div>
+        <div class="ag-field">
+          <label>Status</label>
+          <select id="smStatus" class="ag-select"></select>
+        </div>
+        <div class="ag-field">
+          <label>Declared Value</label>
+          <input type="text" id="smValue" class="ag-input" placeholder="e.g. $85,000">
+        </div>
+        <div class="ag-field" style="grid-column:1 / -1;">
+          <label>Assigned Staff</label>
+          <input type="text" id="smStaff" class="ag-input" placeholder="e.g. Maria Garcia">
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;">
+      <button class="ag-btn ag-btn-primary" style="flex:1;" onclick="saveShipment()"><i class="fas fa-save"></i> Save Shipment</button>
+      <button class="ag-btn ag-btn-secondary" style="flex:1;" onclick="closeModal('modalShipment')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== QUOTE DETAIL MODAL ===================== -->
+<div id="modalQuote" class="ag-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalQuoteTitle">
+  <div class="ag-modal" style="width:min(520px,92vw);max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 id="modalQuoteTitle" style="margin:0;font-size:18px;color:var(--ag-text-900);"><i class="fas fa-file-signature" style="color:var(--ag-blue-600);margin-right:8px;"></i>Quote Details</h3>
+      <button class="ag-btn ag-btn-ghost" onclick="closeModal('modalQuote')" style="padding:8px 12px;" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="quoteDetailBody"></div>
+  </div>
+</div>
+
+<!-- ===================== MESSAGE DETAIL MODAL ===================== -->
+<div id="modalMessage" class="ag-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalMessageTitle">
+  <div class="ag-modal" style="width:min(520px,92vw);max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 id="modalMessageTitle" style="margin:0;font-size:18px;color:var(--ag-text-900);"><i class="fas fa-comments" style="color:var(--ag-blue-600);margin-right:8px;"></i>Message Details</h3>
+      <button class="ag-btn ag-btn-ghost" onclick="closeModal('modalMessage')" style="padding:8px 12px;" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="messageDetailBody"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;">
+      <button class="ag-btn ag-btn-primary" style="flex:1;" onclick="resolveMessageFromModal()"><i class="fas fa-check-circle"></i> Mark Resolved</button>
+      <button class="ag-btn ag-btn-secondary" style="flex:1;" onclick="closeModal('modalMessage')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast region -->
+<div id="admToastRegion" style="position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:3000;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="auth.js"></script>
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script>
+'use strict';
+const esc = v => window.securityUtils?.escapeHtml ? window.securityUtils.escapeHtml(v) : String(v ?? '');
+
+/* ================================================================
+   CONSTANTS
+================================================================ */
+const API_BASE = 'http://localhost:5000';
+const ADMIN_API_BASE = 'http://localhost:3001';
+
+const ALL_STATUSES = [
+  { key:'order_received',     label:'Order Received',     icon:'fa-file-signature' },
+  { key:'payment_confirmed',  label:'Payment Confirmed',  icon:'fa-check-circle' },
+  { key:'processing',         label:'Processing',         icon:'fa-cogs' },
+  { key:'purchased',          label:'Purchased',          icon:'fa-handshake' },
+  { key:'packed',             label:'Packed',             icon:'fa-box' },
+  { key:'ready_for_shipment', label:'Ready for Shipment', icon:'fa-warehouse' },
+  { key:'shipped',            label:'Shipped',            icon:'fa-ship' },
+  { key:'in_transit',         label:'In Transit',         icon:'fa-route' },
+  { key:'customs_clearance',  label:'Customs Clearance',  icon:'fa-stamp' },
+  { key:'arrived_in_ghana',   label:'Arrived in Ghana',   icon:'fa-anchor' },
+  { key:'out_for_delivery',   label:'Out for Delivery',   icon:'fa-truck' },
+  { key:'delivered',          label:'Delivered',          icon:'fa-circle-check' }
+];
+
+const STATUS_MAP = {
+  'Pending':'Pending','Payment Confirmed':'Payment Confirmed','Documentation':'Processing',
+  'Processing':'Processing','Purchased':'Purchased','Packed':'Packed',
+  'Ready for Shipment':'Ready for Shipment','Shipped':'Shipped','In Transit':'In Transit',
+  'Customs Clearance':'Customs Clearance','Arrived in Ghana':'Arrived in Ghana',
+  'Out for Delivery':'Out for Delivery','Delivered':'Delivered'
+};
+
+const STATUS_CSS = {
+  'Pending':'st-pending','Payment Confirmed':'st-processing','Processing':'st-processing',
+  'Purchased':'st-processing','Packed':'st-processing','Ready for Shipment':'st-processing',
+  'Shipped':'st-processing','In Transit':'st-transit','Customs Clearance':'st-customs',
+  'Arrived in Ghana':'st-arrived','Out for Delivery':'st-arrived','Delivered':'st-delivered'
+};
+
+const STATUS_ICON = {
+  'Pending':'fa-file-signature','Payment Confirmed':'fa-check-circle','Processing':'fa-cogs',
+  'Purchased':'fa-handshake','Packed':'fa-box','Ready for Shipment':'fa-warehouse',
+  'Shipped':'fa-ship','In Transit':'fa-route','Customs Clearance':'fa-stamp',
+  'Arrived in Ghana':'fa-anchor','Out for Delivery':'fa-truck','Delivered':'fa-circle-check'
+};
+
+/* ================================================================
+   AUTH (Supabase — admin only)
+================================================================ */
+let adminProfile = null;
+let adminUser = null;
+
+async function requireAdminAuth() {
+  const auth = await window.AsanAuth.requireAuth('admin');
+  if (!auth) return false; // redirect handled by requireAuth
+  adminUser = auth.user;
+  adminProfile = auth.profile;
+  const name = (adminProfile && adminProfile.full_name) || (adminUser && adminUser.email) || 'Admin';
+  document.getElementById('adminName').textContent = name;
+  document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+  return true;
+}
+
+/* ================================================================
+   DATA STORE (localStorage + demo seed)
+================================================================ */
+function getStore(key, fallback) {
+  const raw = localStorage.getItem(key);
+  return raw ? JSON.parse(raw) : fallback;
+}
+function setStore(key, val) {
+  localStorage.setItem(key, JSON.stringify(val));
+}
+
+function seedData() {
+  if (!localStorage.getItem('asan_imports')) {
+    setStore('asan_imports', [
+      {id:1, tracking:'ASAN-IMP-001-2024', customer:'Kwame Asante', email:'kwame@email.com', phone:'+233 24 000 0001', item:'2024 Toyota Land Cruiser', origin:'Japan', destination:'Ghana', serviceType:'Vehicle Import', status:'Customs Clearance', value:'$85,000', staff:'Maria Garcia', created:new Date(Date.now()-3*864e5).toISOString()},
+      {id:2, tracking:'ASAN-IMP-002-2024', customer:'Sarah Johnson', email:'sarah@email.com', phone:'+233 24 000 0002', item:'2024 Mercedes-Benz S-Class', origin:'Germany', destination:'Ghana', serviceType:'Vehicle Import', status:'Delivered', value:'$115,000', staff:'James Wilson', created:new Date(Date.now()-6*864e5).toISOString()},
+      {id:3, tracking:'ASAN-IMP-003-2024', customer:'Mike Chen', email:'mike@email.com', phone:'+233 24 000 0003', item:'2024 Hyundai Ioniq 5', origin:'South Korea', destination:'Ghana', serviceType:'Vehicle Import', status:'In Transit', value:'$52,000', staff:'Emily Brown', created:new Date(Date.now()-1*864e5).toISOString()},
+      {id:4, tracking:'ASAN-IMP-004-2024', customer:'Ahmed Al-Rashid', email:'ahmed@email.com', phone:'+233 24 000 0004', item:'2024 Ford F-150', origin:'USA', destination:'Ghana', serviceType:'Vehicle Import', status:'Processing', value:'$65,000', staff:'David Lee', created:new Date(Date.now()-10*864e5).toISOString()},
+      {id:5, tracking:'ASAN-IMP-005-2024', customer:'William Thompson', email:'william@email.com', phone:'+233 24 000 0005', item:'2024 Rolls-Royce Phantom', origin:'UK', destination:'Ghana', serviceType:'Vehicle Import', status:'Shipped', value:'$450,000', staff:'Sophie Martin', created:new Date(Date.now()-2*864e5).toISOString()}
+    ]);
+  }
+  if (!localStorage.getItem('asan_quotes')) {
+    setStore('asan_quotes', [
+      {id:1, name:'John Mensah', email:'john@email.com', phone:'+233 24 111 1111', service:'Vehicle Import', origin:'Japan', destination:'Ghana', vehicleDetails:'Toyota RAV4 2023', created:new Date(Date.now()-2*864e5).toISOString()},
+      {id:2, name:'Ama Osei', email:'ama@email.com', phone:'+233 24 222 2222', service:'Vehicle Sourcing', origin:'USA', destination:'Ghana', vehicleDetails:'Chevrolet Suburban', created:new Date(Date.now()-1*864e5).toISOString()},
+      {id:3, name:'Kofi Boateng', email:'kofi@email.com', phone:'+233 24 333 3333', service:'Appliances', origin:'China', destination:'Ghana', vehicleDetails:'Double-door refrigerator', created:new Date().toISOString()}
+    ]);
+  }
+  if (!localStorage.getItem('asan_messages')) {
+    setStore('asan_messages', [
+      {id:1, name:'John Mensah', email:'john@email.com', phone:'+233 24 111 1111', subject:'Tracking query', body:'Where is my shipment ASAN-IMP-001-2024? Has it cleared customs yet?', status:'New', created:new Date(Date.now()-1*864e5).toISOString()},
+      {id:2, name:'Ama Osei', email:'ama@email.com', phone:'+233 24 222 2222', subject:'Payment confirmation', body:'I have completed the payment for my import. Please confirm.', status:'New', created:new Date(Date.now()-5*864e5).toISOString()},
+      {id:3, name:'Kofi Boateng', email:'kofi@email.com', phone:'+233 24 333 3333', subject:'Quote follow-up', body:'Do you offer door-to-door delivery for appliances?', status:'Read', created:new Date(Date.now()-8*864e5).toISOString()},
+      {id:4, name:'Sarah Johnson', email:'sarah@email.com', phone:'+233 24 444 4444', subject:'Delivery received', body:'My S-Class arrived perfectly. Thank you for the great service!', status:'Resolved', created:new Date(Date.now()-12*864e5).toISOString()}
+    ]);
+  }
+  if (!localStorage.getItem('asan_tracking_events')) {
+    setStore('asan_tracking_events', {});
+  }
+}
+seedData();
+
+/* ================================================================
+   BACKEND CONNECTIVITY CHECK
+================================================================ */
+let backendOnline = false;
+function checkBackend() {
+  const chip = document.getElementById('admBackendChip');
+  fetch(API_BASE + '/health').then(r => r.json()).then(() => {
+    backendOnline = true;
+    chip.className = 'adm-live-chip live';
+    chip.innerHTML = '<i class="fas fa-plug" style="font-size:10px;"></i><span>Backend online</span>';
+  }).catch(() => {
+    chip.className = 'adm-live-chip demo';
+    chip.innerHTML = '<i class="fas fa-plug" style="font-size:10px;"></i><span>Demo mode</span>';
+  });
+}
+
+/* ================================================================
+   HELPERS
+================================================================ */
+function statusBadge(status) {
+  const cls = STATUS_CSS[status] || 'st-pending';
+  return `<span class="st-badge ${cls}"><span class="dot"></span>${esc(status || 'Pending')}</span>`;
+}
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+}
+function fmtDateTime(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) + ' · ' +
+         d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+}
+function timeAgo(iso) {
+  if (!iso) return '';
+  const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + ' min ago';
+  if (s < 86400) return Math.floor(s/3600) + ' hr ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+function initials(name) {
+  return (name || '?').split(' ').map(p => p[0]).slice(0,2).join('').toUpperCase();
+}
+function toast(msg, type) {
+  const region = document.getElementById('admToastRegion');
+  const icons = {info:'fa-info-circle', success:'fa-check-circle', error:'fa-exclamation-circle'};
+  const colors = {info:'var(--ag-blue-500)', success:'#16a34a', error:'var(--ag-danger)'};
+  const t = document.createElement('div');
+  t.style.cssText = `display:flex;align-items:center;gap:10px;background:var(--ag-navy-900);color:#fff;padding:13px 18px;border-radius:12px;box-shadow:var(--ag-shadow-lg);font-size:13.5px;min-width:260px;border-left:4px solid ${colors[type]||'var(--ag-blue-500)'};`;
+  t.innerHTML = `<i class="fas ${icons[type]||'fa-info-circle'}" style="color:${colors[type]||'var(--ag-blue-500)'};font-size:15px;"></i><span>${esc(msg)}</span>`;
+  region.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(8px)'; t.style.transition='.3s'; setTimeout(()=>t.remove(),320); }, 3500);
+}
+function openModal(id) { document.getElementById(id).classList.add('ag-open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('ag-open'); }
+function logout() {
+  localStorage.removeItem('asan_current_user');
+  if (window.AsanAuth && window.AsanAuth.logout) {
+    window.AsanAuth.logout().then(() => { window.location.href = 'login.html'; });
+  } else {
+    window.location.href = 'login.html';
+  }
+}
+
+/* ================================================================
+   TAB NAVIGATION
+================================================================ */
+function switchTab(name) {
+  document.querySelectorAll('.adm-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.querySelectorAll('.adm-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+  if (name === 'quotes') renderQuoteTable();
+  if (name === 'messages') renderMessageList();
+  if (name === 'tracking') populateTrackingSelect();
+  if (name === 'shipments') refreshShipmentFilterOptions();
+}
+document.querySelectorAll('.adm-tab').forEach(b => {
+  b.addEventListener('click', () => switchTab(b.dataset.tab));
+});
+
+/* ================================================================
+   OVERVIEW
+================================================================ */
+function renderOverview() {
+  const shipments = getStore('asan_imports', []);
+  const quotes = getStore('asan_quotes', []);
+  const messages = getStore('asan_messages', []);
+
+  const delivered = shipments.filter(s => s.status === 'Delivered').length;
+  const transit = shipments.filter(s => ['In Transit','Shipped','Customs Clearance','Out for Delivery'].includes(s.status)).length;
+  const unresolved = messages.filter(m => m.status !== 'Resolved').length;
+
+  // Meta
+  document.getElementById('metaShipments').textContent = shipments.length;
+  document.getElementById('metaTransit').textContent = transit;
+  document.getElementById('metaQuotes').textContent = quotes.length;
+  document.getElementById('metaMessages').textContent = messages.length;
+
+  // KPIs
+  document.getElementById('kpiShipments').textContent = shipments.length;
+  document.getElementById('kpiTransit').textContent = transit;
+  document.getElementById('kpiDelivered').textContent = delivered;
+  document.getElementById('kpiQuotes').textContent = quotes.length;
+  document.getElementById('kpiMessages').textContent = messages.length;
+  document.getElementById('kpiPending').textContent = unresolved;
+  document.getElementById('kpiPendingTrend').textContent = unresolved + ' needs action';
+  document.getElementById('kpiShipmentsTrend').textContent = shipments.length + ' total';
+
+  // Status bars
+  const counts = {};
+  shipments.forEach(s => { counts[s.status || 'Pending'] = (counts[s.status || 'Pending'] || 0) + 1; });
+  const order = ALL_STATUSES.map(s => s.label);
+  const bars = document.getElementById('ovStatusBars');
+  const max = Math.max(1, ...Object.values(counts));
+  bars.innerHTML = order.map(label => {
+    const c = counts[label] || 0;
+    const pct = Math.round((c / max) * 100);
+    const color = label === 'Delivered' ? '#16a34a' : label === 'In Transit' ? '#f59e0b' : label === 'Customs Clearance' ? '#ec4899' : '#2563eb';
+    return `<div class="adm-status-bar-row">
+      <span class="lbl">${esc(label)}</span>
+      <div class="bar"><div class="fill" style="background:${color};" data-w="${pct}"></div></div>
+      <span class="val">${c}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('ovStatusTotal').textContent = shipments.length + ' total';
+  setTimeout(() => { bars.querySelectorAll('.fill').forEach(f => f.style.width = f.dataset.w + '%'); }, 120);
+
+  // Recent shipments
+  const recent = [...shipments].sort((a,b) => new Date(b.created||0) - new Date(a.created||0)).slice(0,5);
+  const recentEl = document.getElementById('ovRecentShipments');
+  recentEl.innerHTML = recent.length ? `<div class="adm-msg-list">` + recent.map(s => `
+    <div class="adm-msg-item">
+      <div class="adm-msg-avatar">${esc(initials(s.customer))}</div>
+      <div class="adm-msg-body">
+        <h5>${esc(s.item || 'Shipment')} <span class="ag-status ag-status--${(s.status||'').toLowerCase().replace(/ /g,'-')}">${esc(s.status||'Pending')}</span></h5>
+        <p><strong>${esc(s.tracking||'—')}</strong> · ${esc(s.origin||'—')} → ${esc(s.destination||'—')}</p>
+        <div class="adm-msg-meta"><span>${esc(s.customer||'—')}</span><span>${timeAgo(s.created)}</span></div>
+      </div>
+    </div>`).join('') + `</div>` : `<div class="ag-empty"><i class="fas fa-inbox"></i><p>No shipments yet.</p></div>`;
+
+  // Activity feed
+  const activity = [];
+  shipments.slice(0,3).forEach(s => activity.push({ type:'ship', icon:'fa-ship', title:'Shipment ' + s.status, text:s.tracking + ' · ' + (s.item||''), time:s.created }));
+  quotes.slice(0,2).forEach(q => activity.push({ type:'quote', icon:'fa-file-signature', title:'New quote request', text:q.name + ' — ' + (q.service||''), time:q.created }));
+  messages.slice(0,2).forEach(m => activity.push({ type:'msg', icon:'fa-comments', title:'Message: ' + m.subject, text:m.name + ' — ' + (m.body||'').slice(0,60), time:m.created }));
+  activity.sort((a,b) => new Date(b.time||0) - new Date(a.time||0));
+  const actEl = document.getElementById('ovActivity');
+  actEl.innerHTML = activity.length ? activity.slice(0,6).map(a => `
+    <div class="adm-activity-item">
+      <div class="adm-activity-ic ${a.type}"><i class="fas ${a.icon}"></i></div>
+      <div class="adm-activity-txt">
+        <strong>${esc(a.title)}</strong>
+        <p>${esc(a.text)}</p>
+        <span>${timeAgo(a.time)}</span>
+      </div>
+    </div>`).join('') : `<div class="ag-empty"><i class="fas fa-bolt"></i><p>No activity yet.</p></div>`;
+}
+
+/* ================================================================
+   SHIPMENT MANAGEMENT
+================================================================ */
+let shpSearchTerm = '';
+let shpStatusFilter = 'All';
+
+function refreshShipmentFilterOptions() {
+  const shipments = getStore('asan_imports', []);
+  const sel = document.getElementById('shpStatusFilter');
+  const current = sel.value;
+  const statuses = [...new Set(shipments.map(s => s.status || 'Pending'))];
+  sel.innerHTML = '<option value="All">All Statuses</option>' + statuses.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  if (statuses.includes(current)) sel.value = current;
+}
+
+function renderShipmentTable() {
+  const shipments = getStore('asan_imports', []);
+  const q = shpSearchTerm.toLowerCase();
+  let rows = shipments.filter(s => {
+    const matchQ = !q || [s.tracking, s.customer, s.item, s.origin, s.destination, s.serviceType].join(' ').toLowerCase().includes(q);
+    const matchS = shpStatusFilter === 'All' || s.status === shpStatusFilter;
+    return matchQ && matchS;
+  });
+  rows.sort((a,b) => new Date(b.created||0) - new Date(a.created||0));
+
+  const tbody = document.getElementById('shpTableBody');
+  document.getElementById('shpCount').textContent = rows.length + ' shipments';
+
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--ag-text-400);">No shipments found.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(s => `
+    <tr>
+      <td><strong style="font-family:monospace;font-size:12px;color:var(--ag-blue-600);">${esc(s.tracking||'—')}</strong>
+        ${s.backendId ? '<span class="ag-badge ag-badge-success" style="font-size:9px;margin-left:4px;">API</span>' : ''}</td>
+      <td>${esc(s.customer||'—')}<br><small style="color:var(--ag-text-400);">${esc(s.email||'')}</small></td>
+      <td>${esc(s.item||'—')}</td>
+      <td style="font-size:12px;color:var(--ag-text-600);">${esc(s.origin||'—')} → ${esc(s.destination||'—')}</td>
+      <td>${esc(s.serviceType||'—')}</td>
+      <td>${statusBadge(s.status)}</td>
+      <td style="font-size:12px;color:var(--ag-text-600);">${fmtDate(s.created)}</td>
+      <td>
+        <div class="adm-row-actions">
+          <button class="icon-btn" title="Track" onclick="goTrack('${esc(s.tracking)}')"><i class="fas fa-location-dot"></i></button>
+          <button class="icon-btn" title="Edit" onclick="openShipmentModal(${s.id})"><i class="fas fa-edit"></i></button>
+          <button class="icon-btn danger" title="Delete" onclick="deleteShipment(${s.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function goTrack(tracking) {
+  window.open('tracking.html?tracking=' + encodeURIComponent(tracking), '_blank');
+}
+
+function openShipmentModal(id) {
+  const shipments = getStore('asan_imports', []);
+  const item = id ? shipments.find(s => s.id === id) : null;
+  document.getElementById('modalShipmentTitle').innerHTML = `<i class="fas fa-ship" style="color:var(--ag-blue-600);margin-right:8px;"></i>${item ? 'Edit Shipment' : 'New Shipment'}`;
+  document.getElementById('shipmentModalNote').textContent = item
+    ? 'Editing persists locally. New backend shipments are created via POST /api/shipments.'
+    : 'New shipments are created via POST /api/shipments (port 5000) when the backend is online, otherwise stored locally.';
+
+  // Status options
+  const statusSel = document.getElementById('smStatus');
+  statusSel.innerHTML = ALL_STATUSES.map(s => `<option>${s.label}</option>`).join('');
+
+  // Fill form
+  document.getElementById('smCustomer').value = item ? item.customer || '' : '';
+  document.getElementById('smEmail').value = item ? item.email || '' : '';
+  document.getElementById('smPhone').value = item ? item.phone || '' : '';
+  document.getElementById('smService').value = item ? item.serviceType || 'Vehicle Import' : 'Vehicle Import';
+  document.getElementById('smItem').value = item ? item.item || '' : '';
+  document.getElementById('smOrigin').value = item ? item.origin || '' : '';
+  document.getElementById('smDestination').value = item ? item.destination || '' : '';
+  document.getElementById('smStatus').value = item ? item.status || 'Pending' : 'Pending';
+  document.getElementById('smValue').value = item ? item.value || '' : '';
+  document.getElementById('smStaff').value = item ? item.staff || '' : '';
+
+  window._editingShipmentId = item ? item.id : null;
+  openModal('modalShipment');
+}
+
+function collectShipmentForm() {
+  const customer = document.getElementById('smCustomer').value.trim();
+  const item = document.getElementById('smItem').value.trim();
+  const origin = document.getElementById('smOrigin').value.trim();
+  const destination = document.getElementById('smDestination').value.trim();
+  if (!customer || !item || !origin || !destination) {
+    toast('Please fill in all required fields (customer, item, origin, destination).', 'error');
+    return null;
+  }
+  return {
+    customer_name: customer,
+    customer_email: document.getElementById('smEmail').value.trim() || null,
+    customer_phone: document.getElementById('smPhone').value.trim() || null,
+    item_description: item,
+    origin,
+    destination,
+    service_type: document.getElementById('smService').value,
+    status: document.getElementById('smStatus').value.toLowerCase()
+  };
+}
+
+function saveShipment() {
+  const payload = collectShipmentForm();
+  if (!payload) return;
+
+  if (window._editingShipmentId) {
+    // Local edit
+    const shipments = getStore('asan_imports', []);
+    const idx = shipments.findIndex(s => s.id === window._editingShipmentId);
+    if (idx !== -1) {
+      shipments[idx] = Object.assign({}, shipments[idx], {
+        customer: payload.customer_name, email: payload.customer_email, phone: payload.customer_phone,
+        item: payload.item_description, origin: payload.origin, destination: payload.destination,
+        serviceType: payload.service_type, status: payload.status.charAt(0).toUpperCase() + payload.status.slice(1)
+      });
+      setStore('asan_imports', shipments);
+      closeModal('modalShipment');
+      renderEverything();
+      toast('Shipment updated (local).', 'success');
+    }
+    return;
+  }
+
+  // Create: try backend, fall back to local
+  const smBtn = document.querySelector('#modalShipment .ag-btn-primary');
+  const orig = smBtn.innerHTML;
+  smBtn.disabled = true; smBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating…';
+
+  fetch(API_BASE + '/api/shipments', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(r => r.json()).then(json => {
+    if (json.success && json.shipment) {
+      const s = json.shipment;
+      const shipments = getStore('asan_imports', []);
+      shipments.push({
+        id: Date.now(), tracking: s.tracking_number, customer: s.customer_name, email: s.customer_email,
+        phone: s.customer_phone, item: s.item_description, origin: s.origin, destination: s.destination,
+        serviceType: s.service_type, status: (s.status||'pending').replace(/\b\w/g, c => c.toUpperCase()),
+        value: '', staff: 'Asan Global Team', created: new Date().toISOString(), backendId: s.id
+      });
+      setStore('asan_imports', shipments);
+      closeModal('modalShipment');
+      renderEverything();
+      toast('Shipment created via backend API!', 'success');
+    } else {
+      throw new Error(json.error || 'Create failed');
+    }
+  }).catch(() => {
+    // Offline fallback — create locally
+    const shipments = getStore('asan_imports', []);
+    const tracking = 'ASAN-IMP-' + String(Date.now()).slice(-6) + '-' + new Date().getFullYear();
+    shipments.push({
+      id: Date.now(), tracking, customer: payload.customer_name, email: payload.customer_email,
+      phone: payload.customer_phone, item: payload.item_description, origin: payload.origin,
+      destination: payload.destination, serviceType: payload.service_type,
+      status: payload.status.charAt(0).toUpperCase() + payload.status.slice(1),
+      value: '', staff: 'Unassigned', created: new Date().toISOString()
+    });
+    setStore('asan_imports', shipments);
+    closeModal('modalShipment');
+    renderEverything();
+    toast('Backend offline — shipment saved locally.', 'info');
+  }).finally(() => {
+    smBtn.disabled = false; smBtn.innerHTML = orig;
+  });
+}
+
+function deleteShipment(id) {
+  if (!confirm('Delete this shipment?')) return;
+  const shipments = getStore('asan_imports', []).filter(s => s.id !== id);
+  setStore('asan_imports', shipments);
+  renderEverything();
+  toast('Shipment deleted.', 'success');
+}
+
+/* ================================================================
+   TRACKING EVENTS
+================================================================ */
+function getEventStatuses() {
+  return ALL_STATUSES.map(s => s.label);
+}
+function populateTrackingSelect() {
+  const shipments = getStore('asan_imports', []);
+  const sel = document.getElementById('trkShipmentSelect');
+  const current = sel.value;
+  sel.innerHTML = shipments.map(s => `<option value="${s.id}">${esc(s.tracking)} — ${esc(s.customer||'')}</option>`).join('');
+  if (current && shipments.some(s => s.id == current)) sel.value = current;
+  else if (shipments.length) sel.value = shipments[0].id;
+  renderTimeline();
+}
+function renderTimeline() {
+  const sel = document.getElementById('trkShipmentSelect');
+  const id = sel.value;
+  const shipments = getStore('asan_imports', []);
+  const shipment = shipments.find(s => s.id == id);
+  const timeline = document.getElementById('admTimeline');
+  const empty = document.getElementById('trkEmpty');
+  const info = document.getElementById('trkSelectedInfo');
+
+  if (!shipment) {
+    timeline.innerHTML = '';
+    empty.style.display = 'block';
+    info.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  info.style.display = 'block';
+  document.getElementById('trkInfoTitle').textContent = shipment.tracking + ' — ' + (shipment.item || '');
+  document.getElementById('trkInfoStatus').innerHTML = statusBadge(shipment.status);
+  document.getElementById('trkInfoRoute').textContent = shipment.origin + ' → ' + shipment.destination;
+
+  // Status update select
+  const statusSel = document.getElementById('trkStatusUpdate');
+  statusSel.innerHTML = getEventStatuses().map(s => `<option>${s}</option>`).join('');
+  statusSel.value = shipment.status || 'Pending';
+  // Event status select
+  const evtSel = document.getElementById('trkEventStatus');
+  evtSel.innerHTML = getEventStatuses().map(s => `<option>${s}</option>`).join('');
+
+  loadTimelineFor(shipment);
+}
+function loadTimelineFor(shipment) {
+  const timeline = document.getElementById('admTimeline');
+  // If this is a backend shipment (backendId), fetch real events
+  if (shipment.backendId) {
+    fetch(API_BASE + '/api/tracking-events/' + encodeURIComponent(shipment.backendId))
+      .then(r => r.json()).then(json => {
+        if (json.success && Array.isArray(json.events) && json.events.length) {
+          renderTimelineEvents(json.events);
+        } else {
+          renderSynthesizedTimeline(shipment);
+        }
+      }).catch(() => renderSynthesizedTimeline(shipment));
+  } else {
+    renderSynthesizedTimeline(shipment);
+  }
+}
+function renderTimelineEvents(events) {
+  const timeline = document.getElementById('admTimeline');
+  const sorted = [...events].sort((a,b) => new Date(a.created_at||0) - new Date(b.created_at||0));
+  const maxIdx = Math.max(0, ...sorted.map(e => {
+    const idx = getEventStatuses().indexOf(e.status);
+    return idx >= 0 ? idx : 0;
+  }));
+  timeline.innerHTML = sorted.map((e, i) => {
+    const idx = getEventStatuses().indexOf(e.status);
+    const cls = idx < maxIdx ? 'done' : (idx === maxIdx ? 'active' : '');
+    const icon = STATUS_ICON[e.status] || 'fa-circle-info';
+    const loc = e.location ? `<div class="adm-tl-loc"><i class="fas fa-location-dot"></i>${esc(e.location)}</div>` : '';
+    return `<div class="adm-tl-item ${cls}">
+      <div class="adm-tl-icon"><i class="fas ${icon}"></i></div>
+      <div class="adm-tl-body">
+        <div class="adm-tl-head"><p class="adm-tl-status">${esc(e.status)}</p><span class="adm-tl-date">${fmtDateTime(e.created_at)}</span></div>
+        ${loc}
+        <p class="adm-tl-desc">${esc(e.description || 'Shipment update recorded.')}</p>
+      </div>
+    </div>`;
+  }).join('');
+}
+function renderSynthesizedTimeline(shipment) {
+  const idx = Math.max(0, getEventStatuses().indexOf(shipment.status || 'Pending'));
+  const events = ALL_STATUSES.slice(0, idx + 1).map((s, i) => {
+    let location = '';
+    if (i === 0) location = 'Asan Global Operations';
+    else if (s.label === 'Arrived in Ghana' || s.label === 'Out for Delivery' || s.label === 'Delivered') location = 'Tema, Ghana';
+    else if (s.label === 'Shipped' || s.label === 'In Transit') location = 'International Waters';
+    else if (s.label === 'Ready for Shipment' || s.label === 'Packed') location = (shipment.origin || 'Origin') + ' Port';
+    return { status: s.label, location, description: s.label + ' — recorded for this shipment.', created_at: new Date(Date.now() - (idx - i) * 2 * 864e5).toISOString() };
+  });
+  renderTimelineEvents(events);
+}
+function addTrackingEvent() {
+  const sel = document.getElementById('trkShipmentSelect');
+  const id = sel.value;
+  const shipments = getStore('asan_imports', []);
+  const shipment = shipments.find(s => s.id == id);
+  if (!shipment) { toast('Select a shipment first.', 'error'); return; }
+
+  const status = document.getElementById('trkEventStatus').value;
+  const location = document.getElementById('trkEventLocation').value.trim();
+  const description = document.getElementById('trkEventDesc').value.trim();
+
+  // Update local shipment status to match
+  shipment.status = status;
+  setStore('asan_imports', shipments);
+
+  // If backend shipment, POST to backend
+  if (shipment.backendId) {
+    fetch(API_BASE + '/api/tracking-events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ shipment_id: shipment.backendId, status, location, description })
+    }).then(r => r.json()).then(json => {
+      if (json.success) toast('Tracking event added via backend.', 'success');
+      else toast('Event added locally (backend error).', 'info');
+    }).catch(() => toast('Backend offline — event saved locally.', 'info'));
+  } else {
+    toast('Tracking event added (local).', 'success');
+  }
+
+  document.getElementById('trkEventLocation').value = '';
+  document.getElementById('trkEventDesc').value = '';
+  renderEverything();
+  renderTimeline();
+}
+function updateShipmentStatusFromTracking() {
+  const sel = document.getElementById('trkShipmentSelect');
+  const id = sel.value;
+  const shipments = getStore('asan_imports', []);
+  const shipment = shipments.find(s => s.id == id);
+  if (!shipment) { toast('Select a shipment first.', 'error'); return; }
+  const newStatus = document.getElementById('trkStatusUpdate').value;
+  shipment.status = newStatus;
+  setStore('asan_imports', shipments);
+
+  // If backend shipment, record as a tracking event via POST
+  if (shipment.backendId) {
+    fetch(API_BASE + '/api/tracking-events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ shipment_id: shipment.backendId, status: newStatus, location: '', description: 'Status updated to ' + newStatus })
+    }).then(r => r.json()).then(json => {
+      if (json.success) toast('Status updated & recorded via backend.', 'success');
+      else toast('Status updated locally.', 'info');
+    }).catch(() => toast('Status updated locally (backend offline).', 'info'));
+  } else {
+    toast('Status updated. Note: no public status-update endpoint exists for local shipments.', 'info');
+  }
+  renderEverything();
+  renderTimeline();
+}
+
+/* ================================================================
+   QUOTE MANAGEMENT
+================================================================ */
+let qSearchTerm = '';
+let qServiceFilter = 'All';
+function renderQuoteTable() {
+  const quotes = getStore('asan_quotes', []);
+  const q = qSearchTerm.toLowerCase();
+  let rows = quotes.filter(qi => {
+    const matchQ = !q || [qi.name, qi.email, qi.phone, qi.service, qi.origin, qi.destination, qi.vehicleDetails].join(' ').toLowerCase().includes(q);
+    const matchS = qServiceFilter === 'All' || qi.service === qServiceFilter;
+    return matchQ && matchS;
+  });
+  rows.sort((a,b) => new Date(b.created||0) - new Date(a.created||0));
+
+  document.getElementById('quoteCount').textContent = rows.length + ' requests';
+  const tbody = document.getElementById('quoteTableBody');
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--ag-text-400);">No quote requests found.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(q => `
+    <tr>
+      <td><strong>${esc(q.name)}</strong></td>
+      <td style="font-size:12px;color:var(--ag-text-600);">${esc(q.email||'—')}<br>${esc(q.phone||'')}</td>
+      <td>${esc(q.service||'—')}</td>
+      <td style="font-size:12px;color:var(--ag-text-600);">${esc(q.origin||'—')} → ${esc(q.destination||'—')}</td>
+      <td style="font-size:12px;color:var(--ag-text-600);">${esc(q.vehicleDetails||'—')}</td>
+      <td style="font-size:12px;color:var(--ag-text-600);">${fmtDate(q.created)}</td>
+      <td>
+        <div class="adm-row-actions">
+          <button class="icon-btn" title="View" onclick="viewQuote(${q.id})"><i class="fas fa-eye"></i></button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+function viewQuote(id) {
+  const q = getStore('asan_quotes', []).find(x => x.id === id);
+  if (!q) return;
+  document.getElementById('quoteDetailBody').innerHTML = `
+    <div class="adm-detail-row"><span class="lbl">Name</span><span class="val">${esc(q.name)}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Email</span><span class="val">${esc(q.email)}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Phone</span><span class="val">${esc(q.phone||'—')}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Service</span><span class="val">${esc(q.service||'—')}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Origin</span><span class="val">${esc(q.origin||'—')}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Destination</span><span class="val">${esc(q.destination||'—')}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Vehicle Details</span><span class="val">${esc(q.vehicleDetails||'—')}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Received</span><span class="val">${fmtDateTime(q.created)}</span></div>`;
+  openModal('modalQuote');
+}
+
+/* ================================================================
+   MESSAGE MANAGEMENT
+================================================================ */
+let mSearchTerm = '';
+let mStatusFilter = 'All';
+let _messageFromModal = null;
+
+function renderMessageList() {
+  const messages = getStore('asan_messages', []);
+  const q = mSearchTerm.toLowerCase();
+  let rows = messages.filter(m => {
+    const matchQ = !q || [m.name, m.email, m.subject, m.body].join(' ').toLowerCase().includes(q);
+    const matchS = mStatusFilter === 'All' || m.status === mStatusFilter;
+    return matchQ && matchS;
+  });
+  rows.sort((a,b) => new Date(b.created||0) - new Date(a.created||0));
+
+  document.getElementById('msgCount').textContent = rows.length + ' messages';
+  const list = document.getElementById('messageList');
+  if (!rows.length) {
+    list.innerHTML = `<div class="ag-empty"><i class="fas fa-inbox"></i><p>No messages found.</p></div>`;
+    return;
+  }
+  list.innerHTML = rows.map(m => `
+    <div class="adm-msg-item">
+      <div class="adm-msg-avatar">${esc(initials(m.name))}</div>
+      <div class="adm-msg-body">
+        <h5>${esc(m.name)} <span class="ag-badge ${m.status==='Resolved'?'ag-badge-success':m.status==='Read'?'ag-badge-info':'ag-badge-warning'}" style="font-size:10px;">${esc(m.status)}</span></h5>
+        <p><strong>${esc(m.subject)}</strong> — ${esc((m.body||'').slice(0,80))}${(m.body||'').length>80?'…':''}</p>
+        <div class="adm-msg-meta"><span>${esc(m.email)}</span><span>${timeAgo(m.created)}</span></div>
+      </div>
+      <div class="adm-msg-actions">
+        <button class="icon-btn" title="View" onclick="viewMessage(${m.id})"><i class="fas fa-eye"></i></button>
+        ${m.status !== 'Resolved' ? `<button class="icon-btn resolve" title="Mark resolved" onclick="resolveMessage(${m.id})"><i class="fas fa-check"></i></button>` : ''}
+      </div>
+    </div>`).join('');
+}
+function viewMessage(id) {
+  const m = getStore('asan_messages', []).find(x => x.id === id);
+  if (!m) return;
+  _messageFromModal = m;
+
+  // Mark as Read if it's currently New
+  if (m.status === 'New') {
+    const messages = getStore('asan_messages', []);
+    const idx = messages.findIndex(x => x.id === id);
+    if (idx !== -1) { messages[idx].status = 'Read'; setStore('asan_messages', messages); }
+  }
+
+  document.getElementById('messageDetailBody').innerHTML = `
+    <div class="adm-detail-row"><span class="lbl">Name</span><span class="val">${esc(m.name)}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Email</span><span class="val">${esc(m.email)}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Phone</span><span class="val">${esc(m.phone||'—')}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Subject</span><span class="val">${esc(m.subject||'—')}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Status</span><span class="val">${esc(m.status)}</span></div>
+    <div class="adm-detail-row"><span class="lbl">Received</span><span class="val">${fmtDateTime(m.created)}</span></div>
+    <div style="margin-top:14px;">
+      <span style="font-size:12px;color:var(--ag-text-400);font-weight:500;">Message</span>
+      <p style="margin:6px 0 0;font-size:13.5px;color:var(--ag-text-900);line-height:1.6;background:var(--ag-surface-muted);padding:14px;border-radius:var(--ag-radius-sm);">${esc(m.body||'—')}</p>
+    </div>`;
+  openModal('modalMessage');
+  renderMessageList();
+}
+
+function resolveMessage(id) {
+  const messages = getStore('asan_messages', []);
+  const idx = messages.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  messages[idx].status = 'Resolved';
+  setStore('asan_messages', messages);
+  renderMessageList();
+  renderOverview();
+  toast('Message marked as resolved.', 'success');
+}
+
+function resolveMessageFromModal() {
+  if (!_messageFromModal) return;
+  resolveMessage(_messageFromModal.id);
+  closeModal('modalMessage');
+}
+
+/* ================================================================
+   RENDER ALL + EVENT BINDINGS
+================================================================ */
+function renderEverything() {
+  renderOverview();
+  renderShipmentTable();
+  refreshShipmentFilterOptions();
+  renderQuoteTable();
+  renderMessageList();
+}
+
+document.getElementById('shpSearch').addEventListener('input', function(){
+  shpSearchTerm = this.value.trim();
+  renderShipmentTable();
+});
+document.getElementById('shpStatusFilter').addEventListener('change', function(){
+  shpStatusFilter = this.value;
+  renderShipmentTable();
+});
+
+document.getElementById('qSearch').addEventListener('input', function(){
+  qSearchTerm = this.value.trim();
+  renderQuoteTable();
+});
+document.getElementById('qServiceFilter').addEventListener('change', function(){
+  qServiceFilter = this.value;
+  renderQuoteTable();
+});
+
+document.getElementById('mSearch').addEventListener('input', function(){
+  mSearchTerm = this.value.trim();
+  renderMessageList();
+});
+document.getElementById('mStatusFilter').addEventListener('change', function(){
+  mStatusFilter = this.value;
+  renderMessageList();
+});
+
+document.getElementById('trkShipmentSelect').addEventListener('change', renderTimeline);
+
+/* ================================================================
+   INIT
+================================================================ */
+async function initAdmin() {
+  const ok = await requireAdminAuth();
+  if (!ok) return;
+  checkBackend();
+  renderEverything();
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAdmin);
+} else {
+  initAdmin();
+}
+</script>
+</body>
+</html>

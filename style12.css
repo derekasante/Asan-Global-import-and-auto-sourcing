@@ -1,0 +1,73 @@
+.schedule-table{
+
+margin-top:30px;
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.schedule-table table{
+
+width:100%;
+
+margin-top:20px;
+
+border-collapse:collapse;
+
+}
+
+.schedule-table th{
+
+background:#0057d8;
+
+color:white;
+
+padding:15px;
+
+}
+
+.schedule-table td{
+
+padding:15px;
+
+border-bottom:1px solid #ddd;
+
+}
+
+.tasks{
+
+margin-top:30px;
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.task{
+
+padding:18px;
+
+font-size:16px;
+
+border-bottom:1px solid #eee;
+
+}
+
+.task input{
+
+margin-right:12px;
+
+transform:scale(1.3);
+
+}

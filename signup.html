@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' https: 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https: data:; connect-src 'self' https:;" />
+    <title>Create Account | Asan Global</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="design-system.css" />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        font-family: var(--ag-font);
+        overflow: hidden;
+      }
+
+      /* ---- Left branding panel ---- */
+      .signup-mural {
+        position: relative;
+        background: linear-gradient(160deg, #071224 0%, #0f2440 40%, #1e4a82 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 52px 52px 44px;
+        overflow: hidden;
+      }
+      .mural-blob { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.28; animation: blobFloat 8s ease-in-out infinite alternate; }
+      .mural-blob-1 { width: 380px; height: 380px; background: #2563eb; top: -80px; left: -80px; }
+      .mural-blob-2 { width: 280px; height: 280px; background: #00b7ff; bottom: 60px; right: -40px; animation-delay: -3s; }
+      .mural-blob-3 { width: 200px; height: 200px; background: #ffd54f; top: 50%; left: 60%; animation-delay: -6s; opacity: 0.14; }
+      @keyframes blobFloat { from { transform: translateY(0) scale(1); } to { transform: translateY(-28px) scale(1.06); } }
+      .mural-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; }
+
+      .mural-brand { position: relative; z-index: 2; display: flex; align-items: center; gap: 16px; }
+      .mural-brand-text h2 { color: #fff; font-size: 22px; font-weight: 800; margin: 0; }
+      .mural-brand-text span { color: rgba(255,255,255,0.6); font-size: 12px; font-weight: 500; }
+
+      .mural-centre { position: relative; z-index: 2; text-align: center; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
+
+      .mural-headline { color: #fff; font-size: clamp(1.5rem, 2.4vw, 2.1rem); font-weight: 800; line-height: 1.15; max-width: 380px; }
+      .mural-headline span { color: #00d4ff; }
+      .mural-sub { color: rgba(255,255,255,0.65); font-size: 14px; line-height: 1.7; max-width: 340px; }
+
+      .mural-badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 8px; }
+      .mural-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.16); border-radius: 999px; padding: 8px 14px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.88); backdrop-filter: blur(6px); }
+      .mural-badge i { color: #00d4ff; }
+
+      .mural-stats { position: relative; z-index: 2; display: flex; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 28px; }
+      .mural-stat { flex: 1; text-align: center; padding: 0 12px; border-right: 1px solid rgba(255,255,255,0.10); }
+      .mural-stat:last-child { border-right: none; }
+      .mural-stat strong { display: block; color: #fff; font-size: 1.5rem; font-weight: 800; margin-bottom: 3px; }
+      .mural-stat span { color: rgba(255,255,255,0.55); font-size: 11.5px; }
+
+      /* ---- Right form panel ---- */
+      .signup-panel {
+        background: #f5f8fc;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 52px 44px;
+        overflow-y: auto;
+        min-height: 100vh;
+      }
+      .signup-box { width: 100%; max-width: 420px; }
+
+      .mobile-logo { display: none; align-items: center; gap: 12px; margin-bottom: 28px; justify-content: center; }
+      .mobile-logo-text h2 { font-size: 20px; font-weight: 800; color: #0f2440; margin: 0; }
+      .mobile-logo-text span { font-size: 11px; color: #64748b; }
+
+      .signup-box h1 { font-size: 26px; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
+      .subtitle { color: #64748b; font-size: 14px; margin-bottom: 32px; }
+
+      .form-group { margin-bottom: 18px; }
+      .form-group label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 600; color: #374151; }
+      .input-wrapper { position: relative; display: flex; align-items: center; }
+      .input-wrapper .input-icon { position: absolute; left: 14px; color: #94a3b8; font-size: 14px; pointer-events: none; transition: color 0.18s; }
+      .input-wrapper:focus-within .input-icon { color: #2563eb; }
+      .input-wrapper input {
+        width: 100%;
+        padding: 13px 14px 13px 42px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 14.5px;
+        font-family: var(--ag-font);
+        background: #fff;
+        color: #0f172a;
+        transition: border-color 0.18s, box-shadow 0.18s;
+      }
+      .input-wrapper input::placeholder { color: #94a3b8; }
+      .input-wrapper input:focus { border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37,99,235,0.12); outline: none; }
+
+      .toggle-password { position: absolute; right: 12px; background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 14px; padding: 6px 8px; display: flex; align-items: center; transition: color 0.18s; }
+      .toggle-password:hover { color: #2563eb; }
+
+      .password-hint { font-size: 12px; color: #94a3b8; margin-top: 6px; line-height: 1.5; }
+
+      .signup-btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #2563eb 0%, #1e4a82 100%);
+        color: #fff;
+        font-size: 15px;
+        font-family: var(--ag-font);
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-decoration: none;
+        transition: transform 0.18s, box-shadow 0.18s;
+        box-shadow: 0 8px 20px rgba(37,99,235,0.30);
+      }
+      .signup-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(37,99,235,0.38); }
+      .signup-btn:active { transform: translateY(0); }
+
+      .terms-note { margin-top: 16px; text-align: center; font-size: 12px; color: #94a3b8; line-height: 1.6; }
+
+      .footer-links { margin-top: 22px; text-align: center; font-size: 13px; color: #64748b; display: flex; flex-direction: column; gap: 12px; }
+      .footer-links a { color: #2563eb; font-weight: 600; text-decoration: none; }
+      .footer-links a:hover { text-decoration: underline; }
+      .back-link { display: inline-flex; align-items: center; gap: 6px; color: #64748b; font-size: 13px; text-decoration: none; transition: color 0.18s; }
+      .back-link:hover { color: #2563eb; }
+
+      @media (max-width: 860px) {
+        body { grid-template-columns: 1fr; overflow: auto; }
+        .signup-mural { display: none; }
+        .signup-panel { padding: 44px 24px; min-height: 100vh; }
+        .mobile-logo { display: flex; }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- ======================== LEFT — BRANDING MURAL ======================== -->
+    <aside class="signup-mural" aria-hidden="true">
+      <div class="mural-blob mural-blob-1"></div>
+      <div class="mural-blob mural-blob-2"></div>
+      <div class="mural-blob mural-blob-3"></div>
+      <div class="mural-dots"></div>
+
+      <div class="mural-brand">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Asan Global car logo">
+          <rect width="48" height="48" rx="12" fill="url(#logoGrad)"/>
+          <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#2563eb"/><stop offset="1" stop-color="#0f2440"/></linearGradient></defs>
+          <path d="M8 30h32v3a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-3z" fill="#fff" opacity="0.9"/>
+          <path d="M10 30l4-9h20l4 9H10z" fill="#fff" opacity="0.9"/>
+          <path d="M16 21l3-5h10l3 5H16z" fill="#00d4ff"/>
+          <path d="M17.5 21l2.2-3.5h4.3v3.5h-6.5z" fill="#0f2440" opacity="0.6"/>
+          <path d="M24 17.5h4.3l2.2 3.5H24v-3.5z" fill="#0f2440" opacity="0.6"/>
+          <circle cx="15" cy="31" r="4" fill="#0f2440"/><circle cx="15" cy="31" r="2" fill="#00d4ff"/>
+          <circle cx="33" cy="31" r="4" fill="#0f2440"/><circle cx="33" cy="31" r="2" fill="#00d4ff"/>
+          <rect x="38" y="27" width="3" height="2" rx="1" fill="#ffd54f"/><rect x="7" y="27" width="3" height="2" rx="1" fill="#ffd54f"/>
+        </svg>
+        <div class="mural-brand-text">
+          <h2>Asan Global</h2>
+          <span>Import &amp; Auto Sourcing</span>
+        </div>
+      </div>
+
+      <div class="mural-centre">
+        <p class="mural-headline">Track every import with <span>complete transparency</span>.</p>
+        <p class="mural-sub">Create your customer account to submit shipments, follow live tracking updates, and manage your import history in one place.</p>
+        <div class="mural-badges">
+          <span class="mural-badge"><i class="fas fa-shield-alt"></i> Secure sign-up</span>
+          <span class="mural-badge"><i class="fas fa-ship"></i> Live tracking</span>
+          <span class="mural-badge"><i class="fas fa-clock"></i> 24/7 support</span>
+        </div>
+      </div>
+
+      <div class="mural-stats">
+        <div class="mural-stat"><strong>20K+</strong><span>Happy Clients</span></div>
+        <div class="mural-stat"><strong>98%</strong><span>On-Time Delivery</span></div>
+        <div class="mural-stat"><strong>8+</strong><span>Years Experience</span></div>
+      </div>
+    </aside>
+
+    <!-- ======================== RIGHT — FORM ======================== -->
+    <main class="signup-panel">
+      <div class="signup-box">
+
+        <div class="mobile-logo">
+          <svg width="44" height="44" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="48" height="48" rx="12" fill="#2563eb"/>
+            <path d="M8 30h32v3a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-3z" fill="#fff" opacity="0.9"/>
+            <path d="M10 30l4-9h20l4 9H10z" fill="#fff" opacity="0.9"/>
+            <path d="M16 21l3-5h10l3 5H16z" fill="#00d4ff"/>
+            <circle cx="15" cy="31" r="4" fill="#0f2440"/><circle cx="33" cy="31" r="4" fill="#0f2440"/>
+          </svg>
+          <div class="mobile-logo-text">
+            <h2>Asan Global</h2>
+            <span>Import &amp; Auto Sourcing</span>
+          </div>
+        </div>
+
+        <h1>Create your account</h1>
+        <p class="subtitle">Join Asan Global to manage your imports and track shipments.</p>
+
+        <form id="signupForm" novalidate>
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <div class="input-wrapper">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="fullName" name="fullName" placeholder="John Doe" autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-wrapper">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="password" name="password" placeholder="Create a strong password" autocomplete="new-password" />
+              <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password visibility">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            <p class="password-hint">At least 6 characters. Use a mix of letters, numbers and symbols.</p>
+          </div>
+
+          <button type="submit" class="signup-btn">
+            <i class="fas fa-user-plus"></i> Create Account
+          </button>
+        </form>
+
+        <p class="terms-note">By creating an account you agree to our <a href="#" style="color:var(--ag-blue-600);font-weight:600;">Terms of Service</a> and <a href="#" style="color:var(--ag-blue-600);font-weight:600;">Privacy Policy</a>.</p>
+
+        <div class="footer-links">
+          <span>Already have an account? <a href="login.html">Sign in</a></span>
+          <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to website</a>
+        </div>
+
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="security-utils.js"></script>
+    <script>
+      (function () {
+        'use strict';
+
+        // Password visibility toggle
+        var toggle = document.getElementById('togglePassword');
+        var passwordInput = document.getElementById('password');
+        toggle.addEventListener('click', function () {
+          var isText = passwordInput.type === 'text';
+          passwordInput.type = isText ? 'password' : 'text';
+          toggle.querySelector('i').className = isText ? 'fas fa-eye' : 'fas fa-eye-slash';
+        });
+
+        function showToast(message, type) {
+          var types = { error: ['#dc2626', 'fa-exclamation-circle'], success: ['#16a34a', 'fa-check-circle'], info: ['#2563eb', 'fa-info-circle'] };
+          var props = types[type] || types.info;
+          var container = document.getElementById('asanToastContainer');
+          if (!container) {
+            container = document.createElement('div');
+            container.id = 'asanToastContainer';
+            container.style.cssText = 'position:fixed;right:18px;bottom:86px;z-index:10003;display:flex;flex-direction:column;gap:10px;pointer-events:none;';
+            document.body.appendChild(container);
+          }
+          var t = document.createElement('div');
+          t.style.cssText = 'pointer-events:auto;background:rgba(255,255,255,.97);border:1px solid rgba(0,0,0,.08);border-left:4px solid ' + props[0] + ';box-shadow:0 14px 40px rgba(0,0,0,.14);border-radius:12px;padding:12px 16px;color:#0f172a;font-weight:600;font-size:13.5px;max-width:340px;display:flex;align-items:center;gap:10px;';
+          t.innerHTML = '<i class="fas ' + props[1] + '" style="color:' + props[0] + ';font-size:15px;"></i><span>' + escapeHtml(message) + '</span>';
+          container.appendChild(t);
+          setTimeout(function () { t.style.opacity = '0'; t.style.transition = 'opacity .25s'; setTimeout(function () { t.remove(); }, 260); }, 4200);
+        }
+
+        function escapeHtml(str) {
+          return String(str == null ? '' : str).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '<', '>': '>', '"': '"', "'": '&#39;' }[c];
+          });
+        }
+
+        var form = document.getElementById('signupForm');
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          var name = document.getElementById('fullName').value.trim();
+          var email = document.getElementById('email').value.trim().toLowerCase();
+          var password = document.getElementById('password').value.trim();
+
+          if (!name) { showToast('Please enter your full name.', 'error'); return; }
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address.', 'error'); return; }
+          if (password.length < 6) { showToast('Password must be at least 6 characters.', 'error'); return; }
+
+          var btn = form.querySelector('button[type="submit"]');
+          var original = btn.innerHTML;
+          btn.disabled = true;
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account…';
+
+          try {
+            var result = await window.AsanAuth.signup(email, password, name);
+            if (result.error) {
+              showToast(result.error, 'error');
+              return;
+            }
+            if (result.needsEmailConfirmation) {
+              showToast('Account created! Check your email to confirm, then sign in.', 'success');
+              setTimeout(function () { window.location.href = 'login.html'; }, 2200);
+            } else {
+              localStorage.setItem('asan_current_user', JSON.stringify({ email: result.user.email, name: name, role: 'customer' }));
+              localStorage.setItem('asan_user_name', name);
+              showToast('Account created! Redirecting to your dashboard…', 'success');
+              setTimeout(function () { window.location.href = 'customer-dashboard.html'; }, 1200);
+            }
+          } catch (err) {
+            showToast(err.message || 'Unable to create account.', 'error');
+          } finally {
+            btn.disabled = false;
+            btn.innerHTML = original;
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
+

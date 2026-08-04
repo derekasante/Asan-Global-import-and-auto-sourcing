@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asan Global | Shipment Tracking</title>
+<meta name="description" content="Track your vehicle import in real-time — status, location, timeline, and delivery details.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="pdf-documents.css">
+<style>
+/* ============================================================
+   TRACKING PAGE — Professional Logistics Experience
+   ============================================================ */
+
+/* ---- Top bar ---- */
+.trk-topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: #fff; padding: 0 28px; border-bottom: 1px solid var(--ag-border);
+  position: sticky; top: 0; z-index: 900; height: 66px;
+  box-shadow: 0 1px 3px rgba(15,23,42,.06);
+}
+.trk-topbar-left  { display: flex; align-items: center; gap: 14px; }
+.trk-topbar-right { display: flex; align-items: center; gap: 12px; }
+.trk-eyebrow { font-size: 10.5px; font-weight: 700; color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: .14em; margin: 0 0 1px; }
+.trk-topbar h1  { margin: 0; font-size: 20px; font-weight: 700; color: var(--ag-text-900); }
+
+/* ---- Search hero ---- */
+.trk-search-hero {
+  background: linear-gradient(135deg, var(--ag-navy-950) 0%, var(--ag-navy-800) 50%, var(--ag-blue-600) 100%);
+  padding: 44px 32px 56px; position: relative; overflow: hidden;
+}
+.trk-search-hero::before {
+  content:''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.trk-search-hero-blob {
+  position: absolute; border-radius: 50%; filter: blur(70px); opacity: .18; pointer-events: none;
+}
+.trk-blob-1 { width: 350px; height: 350px; background: #2563eb; top: -80px; right: 80px; }
+.trk-blob-2 { width: 250px; height: 250px; background: #00b7ff; bottom: -50px; left: 60px; }
+
+.trk-search-hero-content { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; text-align: center; }
+.trk-search-hero-content h2 { color: #fff; font-size: clamp(1.5rem, 2.8vw, 2.2rem); font-weight: 800; margin: 0 0 8px; }
+.trk-search-hero-content p  { color: rgba(255,255,255,.72); font-size: 14.5px; margin: 0 0 28px; }
+
+.trk-search-bar {
+  display: flex; gap: 0; background: #fff; border-radius: var(--ag-radius-pill);
+  overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,.24);
+  border: 2px solid transparent; transition: border-color var(--ag-transition-fast);
+}
+.trk-search-bar:focus-within { border-color: var(--ag-blue-500); }
+.trk-search-bar i { padding: 0 16px 0 20px; color: var(--ag-text-400); font-size: 16px; display: flex; align-items: center; flex-shrink: 0; }
+.trk-search-bar input {
+  flex: 1; padding: 16px 8px; border: none; outline: none;
+  font-family: var(--ag-font); font-size: 15px; color: var(--ag-text-900); background: transparent;
+}
+.trk-search-bar input::placeholder { color: var(--ag-text-400); }
+.trk-search-btn {
+  padding: 0 28px; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  color: #fff; border: none; font-family: var(--ag-font); font-size: 14.5px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; gap: 9px; white-space: nowrap;
+  transition: opacity var(--ag-transition-fast);
+}
+.trk-search-btn:hover { opacity: .88; }
+
+.trk-demo-links { margin-top: 14px; font-size: 13px; color: rgba(255,255,255,.6); }
+.trk-demo-links button {
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25);
+  color: rgba(255,255,255,.9); border-radius: var(--ag-radius-pill); padding: 5px 14px;
+  font-size: 12px; font-weight: 600; cursor: pointer; margin: 0 4px;
+  transition: background var(--ag-transition-fast); font-family: var(--ag-font);
+}
+.trk-demo-links button:hover { background: rgba(255,255,255,.25); }
+
+/* ---- Content container ---- */
+.trk-content { padding: 28px; max-width: 1300px; margin: 0 auto; }
+
+/* ---- Status badge pill ---- */
+.trk-status-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: var(--ag-radius-pill); padding: 8px 18px;
+  font-size: 13px; font-weight: 700; letter-spacing: .03em;
+}
+.trk-status-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+.trk-status--pending    { background: #f1f5f9; color: #475569; }
+.trk-status--processing { background: #dbeafe; color: #1d4ed8; }
+.trk-status--shipped    { background: #e0f2fe; color: #0369a1; }
+.trk-status--transit    { background: #fef3c7; color: #92400e; }
+.trk-status--customs    { background: #fce7f3; color: #9d174d; }
+.trk-status--arrived    { background: #d1fae5; color: #065f46; }
+.trk-status--delivered  { background: #dcfce7; color: #15803d; }
+.trk-status--pending    .dot { background: #94a3b8; }
+.trk-status--processing .dot { background: #2563eb; animation: pulse-dot 2s infinite; }
+.trk-status--shipped    .dot { background: #0ea5e9; animation: pulse-dot 2s infinite; }
+.trk-status--transit    .dot { background: #f59e0b; animation: pulse-dot 2s infinite; }
+.trk-status--customs    .dot { background: #ec4899; animation: pulse-dot 2s infinite; }
+.trk-status--arrived    .dot { background: #10b981; animation: pulse-dot 2s infinite; }
+.trk-status--delivered  .dot { background: #16a34a; }
+@keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 0 currentColor;opacity:1;} 50%{box-shadow:0 0 0 5px rgba(0,0,0,0);opacity:.7;} }
+
+/* ---- Summary strip (below hero) ---- */
+.trk-summary-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px; margin-bottom: 24px;
+}
+.trk-summary-card {
+  background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-md);
+  padding: 18px 20px; display: flex; align-items: flex-start; gap: 14px;
+  box-shadow: var(--ag-shadow-sm); transition: transform var(--ag-transition-fast);
+}
+.trk-summary-card:hover { transform: translateY(-2px); }
+.trk-summary-icon {
+  width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+  font-size: 17px; color: #fff; flex-shrink: 0;
+}
+.trk-summary-icon.blue   { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700)); }
+.trk-summary-icon.green  { background: linear-gradient(135deg, #16a34a, #15803d); }
+.trk-summary-icon.amber  { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.trk-summary-icon.purple { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.trk-summary-icon.teal   { background: linear-gradient(135deg, #0891b2, #0e7490); }
+.trk-summary-icon.rose   { background: linear-gradient(135deg, #e11d48, #be123c); }
+.trk-summary-text { min-width: 0; }
+.trk-summary-text .label { font-size: 11.5px; font-weight: 600; color: var(--ag-text-400); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.trk-summary-text .value { font-size: 15px; font-weight: 700; color: var(--ag-text-900); line-height: 1.3; }
+.trk-summary-text .sub   { font-size: 12px; color: var(--ag-text-400); margin-top: 2px; }
+
+/* ---- Two-column layout ---- */
+.trk-main-grid { display: grid; grid-template-columns: 1fr 380px; gap: 22px; margin-bottom: 24px; }
+
+/* ---- Progress section ---- */
+.trk-progress-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); }
+.trk-progress-header { padding: 22px 24px 18px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.trk-progress-header h3 { margin: 0; font-size: 16px; font-weight: 700; color: var(--ag-text-900); }
+
+/* Animated progress bar */
+.trk-bar-wrap { padding: 20px 24px 8px; }
+.trk-bar-track { height: 8px; background: var(--ag-surface-muted); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+.trk-bar-fill  { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--ag-blue-600), #00d4ff); width: 0%; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+.trk-bar-pct   { text-align: right; font-size: 12px; font-weight: 700; color: var(--ag-blue-600); }
+
+/* Timeline steps */
+.trk-steps { padding: 4px 24px 24px; }
+.trk-step {
+  display: flex; gap: 16px; position: relative; padding-bottom: 0;
+}
+.trk-step:not(:last-child)::before {
+  content: ''; position: absolute; left: 19px; top: 38px;
+  width: 2px; bottom: -8px; background: var(--ag-border);
+}
+.trk-step.step-done::before   { background: var(--ag-blue-600); }
+.trk-step.step-active::before { background: linear-gradient(to bottom, var(--ag-blue-600), var(--ag-border)); }
+
+.trk-step-icon {
+  width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--ag-border);
+  background: var(--ag-surface-muted); display: grid; place-items: center;
+  font-size: 14px; color: var(--ag-text-400); flex-shrink: 0; position: relative; z-index: 1;
+  transition: all var(--ag-transition);
+}
+.trk-step.step-done .trk-step-icon   { background: var(--ag-blue-600); border-color: var(--ag-blue-600); color: #fff; }
+.trk-step.step-active .trk-step-icon { background: #fff; border-color: var(--ag-blue-600); color: var(--ag-blue-600); box-shadow: 0 0 0 5px rgba(37,99,235,.12); }
+.trk-step.step-active .trk-step-icon i { animation: icon-pulse 2s ease-in-out infinite; }
+@keyframes icon-pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+
+.trk-step-body { flex: 1; padding: 8px 0 20px; }
+.trk-step-title { font-size: 14px; font-weight: 700; color: var(--ag-text-400); margin: 0 0 2px; transition: color var(--ag-transition); }
+.trk-step.step-done .trk-step-title   { color: var(--ag-text-900); }
+.trk-step.step-active .trk-step-title { color: var(--ag-blue-600); }
+.trk-step-desc { font-size: 12.5px; color: var(--ag-text-400); margin: 0 0 4px; line-height: 1.5; }
+.trk-step.step-done .trk-step-desc  { color: var(--ag-text-600); }
+.trk-step.step-active .trk-step-desc{ color: var(--ag-text-600); }
+.trk-step-time { font-size: 11.5px; color: var(--ag-text-400); font-weight: 500; }
+.trk-step.step-done .trk-step-time  { color: var(--ag-blue-600); }
+</style>
+
+<style>
+/* ---- Shipment details card ---- */
+.trk-detail-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); }
+.trk-detail-header { padding: 20px 22px 16px; border-bottom: 1px solid var(--ag-border); }
+.trk-detail-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+
+.trk-detail-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 12px 22px; border-bottom: 1px solid var(--ag-surface-muted); }
+.trk-detail-row:last-child { border-bottom: none; }
+.trk-detail-row .lbl { font-size: 12.5px; color: var(--ag-text-400); font-weight: 500; white-space: nowrap; }
+.trk-detail-row .val { font-size: 13px; font-weight: 700; color: var(--ag-text-900); text-align: right; }
+
+/* ---- Sender / Receiver ---- */
+.trk-parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 24px; }
+.trk-party-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); padding: 22px; box-shadow: var(--ag-shadow-sm); }
+.trk-party-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.trk-party-avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-size: 18px; color: #fff; flex-shrink: 0; }
+.trk-party-avatar.sender   { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700)); }
+.trk-party-avatar.receiver { background: linear-gradient(135deg, #16a34a, #15803d); }
+.trk-party-header h4 { margin: 0 0 2px; font-size: 14px; font-weight: 700; color: var(--ag-text-900); }
+.trk-party-header span { font-size: 11.5px; color: var(--ag-text-400); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.trk-party-info { display: flex; flex-direction: column; gap: 8px; }
+.trk-party-info div { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; color: var(--ag-text-600); }
+.trk-party-info i { color: var(--ag-blue-600); margin-top: 1px; width: 14px; flex-shrink: 0; }
+
+/* ---- Map ---- */
+.trk-map-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); margin-bottom: 24px; }
+.trk-map-header { padding: 18px 22px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.trk-map-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+#trkMap { height: 340px; }
+
+/* ---- Updates + Chat grid ---- */
+.trk-bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; margin-bottom: 24px; }
+
+/* ---- Updates ---- */
+.trk-updates-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); }
+.trk-updates-header { padding: 18px 20px 14px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; }
+.trk-updates-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+.trk-live-badge { display: inline-flex; align-items: center; gap: 6px; background: #dcfce7; color: #15803d; border-radius: 999px; padding: 4px 10px; font-size: 11px; font-weight: 700; }
+.trk-live-badge::before { content:''; width: 7px; height: 7px; border-radius: 50%; background: #16a34a; display: block; animation: pulse-dot 1.5s infinite; }
+.trk-update-list { padding: 8px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 0; }
+.trk-update-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px; border-radius: var(--ag-radius-sm); transition: background var(--ag-transition-fast); }
+.trk-update-item:hover { background: var(--ag-surface-muted); }
+.trk-update-dot { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; color: #fff; flex-shrink: 0; }
+.trk-update-dot.info    { background: var(--ag-blue-600); }
+.trk-update-dot.success { background: #16a34a; }
+.trk-update-dot.warning { background: #f59e0b; }
+.trk-update-dot.location{ background: #7c3aed; }
+.trk-update-text  { flex: 1; min-width: 0; }
+.trk-update-msg   { font-size: 13px; font-weight: 600; color: var(--ag-text-900); margin: 0 0 2px; line-height: 1.4; }
+.trk-update-time  { font-size: 11.5px; color: var(--ag-text-400); }
+
+/* ---- Chat ---- */
+.trk-chat-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); display: flex; flex-direction: column; }
+.trk-chat-header { padding: 16px 20px; border-bottom: 1px solid var(--ag-border); display: flex; align-items: center; gap: 12px; }
+.trk-chat-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700)); display: grid; place-items: center; color: #fff; font-size: 16px; flex-shrink: 0; }
+.trk-chat-header h3  { margin: 0 0 1px; font-size: 14px; font-weight: 700; color: var(--ag-text-900); }
+.trk-chat-header span{ font-size: 11.5px; color: #16a34a; font-weight: 600; }
+.trk-chat-msgs { flex: 1; padding: 12px; overflow-y: auto; max-height: 240px; display: flex; flex-direction: column; gap: 10px; background: var(--ag-surface-muted); }
+.trk-bubble { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.5; }
+.trk-bubble.bot  { background: linear-gradient(135deg, var(--ag-navy-900), var(--ag-blue-600)); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.trk-bubble.user { background: #fff; border: 1px solid var(--ag-border); color: var(--ag-text-900); align-self: flex-start; border-bottom-left-radius: 4px; }
+.trk-chat-form { display: flex; border-top: 1px solid var(--ag-border); }
+.trk-chat-form input { flex: 1; padding: 13px 16px; border: none; outline: none; font-family: var(--ag-font); font-size: 13.5px; background: #fff; color: var(--ag-text-900); }
+.trk-chat-form button { padding: 0 18px; background: var(--ag-blue-600); color: #fff; border: none; cursor: pointer; font-size: 15px; transition: background var(--ag-transition-fast); }
+.trk-chat-form button:hover { background: var(--ag-navy-700); }
+
+/* ---- Import fee breakdown card ---- */
+.trk-fee-card { background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg); overflow: hidden; box-shadow: var(--ag-shadow-sm); }
+.trk-fee-header { padding: 18px 20px 14px; border-bottom: 1px solid var(--ag-border); display: flex; justify-content: space-between; align-items: center; }
+.trk-fee-header h3 { margin: 0; font-size: 15px; font-weight: 700; color: var(--ag-text-900); }
+.trk-fee-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 20px; border-bottom: 1px solid var(--ag-surface-muted); font-size: 13.5px; color: var(--ag-text-600); }
+.trk-fee-row.total { font-weight: 800; font-size: 15px; color: var(--ag-text-900); border-top: 2px solid var(--ag-blue-600); border-bottom: none; padding-top: 14px; }
+.trk-fee-row.total span:last-child { color: var(--ag-blue-600); }
+.trk-fee-actions { padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
+
+/* ---- Skeleton loader ---- */
+.trk-skeleton { animation: shimmer 1.5s ease infinite; background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 37%, #f1f5f9 63%); background-size: 400% 100%; border-radius: 6px; }
+
+/* ---- Not-found state ---- */
+.trk-not-found { text-align: center; padding: 80px 20px; }
+.trk-not-found i { font-size: 64px; color: var(--ag-text-400); opacity: .3; margin-bottom: 18px; }
+.trk-not-found h3 { font-size: 20px; color: var(--ag-text-900); margin-bottom: 8px; }
+.trk-not-found p  { color: var(--ag-text-600); font-size: 14px; }
+
+/* ---- Notification dot on bell ---- */
+.trk-notif-btn { position: relative; border: none; background: var(--ag-surface-muted); color: var(--ag-blue-600); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 15px; display: grid; place-items: center; transition: background var(--ag-transition-fast); }
+.trk-notif-btn:hover { background: var(--ag-blue-100); }
+.trk-notif-dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--ag-danger); border: 2px solid #fff; display: none; }
+.ag-avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); color: #fff; font-weight: 700; font-size: 15px; }
+
+/* ---- Responsive ---- */
+@media (max-width: 1100px) { .trk-main-grid  { grid-template-columns: 1fr; } }
+@media (max-width: 900px)  { .trk-bottom-grid { grid-template-columns: 1fr; } .trk-parties-grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px)  { .trk-content { padding: 14px; } .trk-search-hero { padding: 32px 16px 44px; } .trk-summary-strip { grid-template-columns: 1fr 1fr; } }
+</style>
+
+<style>
+/* ============================================================
+   PREMIUM TRACKING TIMELINE — DHL/FedEx-style — v2
+   Glassmorphism · blue · white · gold
+   ============================================================ */
+
+/* ---- Timeline progress indicator ---- */
+.trk-premium-progress {
+  display: flex; align-items: center; gap: 10px;
+  padding: 4px 0 22px;
+}
+.trk-premium-progress .trk-pp-bar {
+  flex: 1; height: 6px; border-radius: 999px;
+  background: rgba(255,255,255,.35);
+  overflow: hidden; position: relative;
+}
+.trk-premium-progress .trk-pp-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--ag-blue-600), var(--ag-gold-400));
+  border-radius: 999px;
+  transition: width 1.4s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 0 12px rgba(255,213,79,.6);
+}
+.trk-premium-progress .trk-pp-pct {
+  font-size: 12.5px; font-weight: 800; color: var(--ag-navy-800);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+
+/* ---- Timeline container (glass) ---- */
+.trk-timeline {
+  position: relative;
+  padding: 6px 4px 4px 10px;
+  max-height: 620px;
+  overflow-y: auto;
+}
+.trk-timeline::before {
+  content:''; position: absolute; left: 30px; top: 10px; bottom: 10px;
+  width: 3px; border-radius: 999px;
+  background: linear-gradient(to bottom, var(--ag-blue-600), var(--ag-blue-100));
+  opacity: .55;
+}
+
+/* ---- Timeline item ---- */
+.trk-tl-item {
+  position: relative; display: flex; gap: 18px; padding: 0 0 10px 0;
+}
+.trk-tl-item:last-child { padding-bottom: 2px; }
+
+.trk-tl-icon {
+  position: relative; z-index: 2;
+  width: 46px; height: 46px; flex-shrink: 0;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 15px;
+  background: rgba(255,255,255,.85);
+  border: 2px solid var(--ag-blue-100);
+  color: var(--ag-blue-600);
+  box-shadow: 0 6px 18px rgba(37,99,235,.14);
+  transition: transform var(--ag-transition-fast);
+}
+.trk-tl-item.done .trk-tl-icon,
+.trk-tl-item.active .trk-tl-icon {
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  border-color: var(--ag-blue-600); color: #fff;
+}
+.trk-tl-item.active .trk-tl-icon {
+  box-shadow: 0 0 0 7px rgba(37,99,235,.14), 0 8px 24px rgba(37,99,235,.28);
+}
+.trk-tl-item.active .trk-tl-icon i { animation: trk-icon-pulse 2s ease-in-out infinite; }
+.trk-tl-item.done .trk-tl-icon::after {
+  content:''; position: absolute; inset: -4px; border-radius: 50%;
+  border: 2px solid var(--ag-blue-600); opacity: .5;
+  animation: trk-ring-pulse 2.4s ease-out infinite;
+}
+
+@keyframes trk-icon-pulse {
+  0%,100% { transform: scale(1); }
+  50%     { transform: scale(1.14); }
+}
+@keyframes trk-ring-pulse {
+  0%   { transform: scale(.85); opacity: .6; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Vertical connector (gold for done, blue gradient for active) */
+.trk-tl-item:not(:last-child)::after {
+  content:''; position: absolute; left: 22px; top: 50px; bottom: -6px;
+  width: 3px; border-radius: 999px; z-index: 1;
+  background: var(--ag-blue-100);
+}
+.trk-tl-item.done:not(:last-child)::after,
+.trk-tl-item.active:not(:last-child)::after {
+  background: linear-gradient(to bottom, var(--ag-blue-600), var(--ag-gold-400));
+  opacity: .65;
+}
+
+.trk-tl-body {
+  flex: 1; min-width: 0;
+  background: rgba(255,255,255,.68);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: var(--ag-radius-md);
+  padding: 14px 18px;
+  box-shadow: 0 6px 22px rgba(15,23,42,.06);
+  transition: transform var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+}
+.trk-tl-item.active .trk-tl-body {
+  background: rgba(255,255,255,.92);
+  border-color: rgba(37,99,235,.35);
+  box-shadow: 0 10px 30px rgba(37,99,235,.12);
+}
+.trk-tl-item:hover .trk-tl-body { transform: translateX(4px); }
+
+.trk-tl-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 10px; flex-wrap: wrap; margin-bottom: 4px;
+}
+.trk-tl-status { font-size: 13.5px; font-weight: 800; color: var(--ag-navy-900); margin: 0; }
+.trk-tl-item.active .trk-tl-status { color: var(--ag-blue-600); }
+.trk-tl-date {
+  font-size: 11.5px; font-weight: 700; color: var(--ag-text-600);
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(37,99,235,.08); padding: 3px 10px; border-radius: 999px;
+  white-space: nowrap;
+}
+.trk-tl-item.active .trk-tl-date {
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  color: #fff;
+}
+.trk-tl-loc {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--ag-blue-600); margin: 2px 0 6px;
+}
+.trk-tl-loc i { font-size: 11px; }
+.trk-tl-desc { font-size: 12.5px; color: var(--ag-text-600); line-height: 1.55; margin: 0; }
+
+/* ---- Timeline empty state ---- */
+.trk-tl-empty {
+  text-align: center; padding: 60px 20px;
+}
+.trk-tl-empty i { font-size: 52px; color: var(--ag-blue-500); opacity: .4; margin-bottom: 14px; display: block; }
+.trk-tl-empty h4 { font-size: 17px; color: var(--ag-navy-900); margin: 0 0 6px; }
+.trk-tl-empty p  { font-size: 13px; color: var(--ag-text-400); margin: 0; }
+
+/* ---- Tracking loader ---- */
+.trk-loader-wrap {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px; padding: 80px 20px;
+}
+.trk-loader {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 4px solid rgba(37,99,235,.16);
+  border-top-color: var(--ag-blue-600);
+  animation: trk-spin .7s linear infinite;
+  position: relative;
+}
+.trk-loader::after {
+  content:''; position: absolute; inset: -12px; border-radius: 50%;
+  border: 2px solid rgba(255,213,79,.4);
+  border-top-color: var(--ag-gold-400);
+  animation: trk-spin 1.3s linear infinite reverse;
+}
+@keyframes trk-spin { to { transform: rotate(360deg); } }
+.trk-loader-text { font-size: 13.5px; font-weight: 600; color: var(--ag-text-600); letter-spacing: .02em; }
+
+/* ---- Tracking error card ---- */
+.trk-error-card {
+  background: rgba(255,255,255,.7);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(220,38,38,.2);
+  border-radius: var(--ag-radius-lg);
+  padding: 40px 24px; text-align: center;
+  box-shadow: var(--ag-shadow-sm);
+}
+.trk-error-card i { font-size: 46px; color: var(--ag-danger); opacity: .7; margin-bottom: 12px; display: block; }
+.trk-error-card h3 { font-size: 17px; color: var(--ag-navy-900); margin: 0 0 6px; }
+.trk-error-card p  { font-size: 13px; color: var(--ag-text-600); margin: 0 0 18px; line-height: 1.5; }
+
+/* ---- Glass summary card ---- */
+.trk-glass-card {
+  background: rgba(255,255,255,.62);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: var(--ag-radius-lg);
+  box-shadow: 0 10px 34px rgba(15,23,42,.08);
+}
+.trk-summary-card.trk-glass-card {
+  background: rgba(255,255,255,.62);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.8);
+}
+.trk-detail-card.trk-glass-card,
+.trk-progress-card.trk-glass-card {
+  background: rgba(255,255,255,.74);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.85);
+  box-shadow: 0 12px 34px rgba(15,23,42,.08);
+}
+
+/* ---- Shipment hero detail card ---- */
+.trk-ship-hero {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  gap: 16px; padding: 22px 24px; margin-bottom: 22px;
+  background: linear-gradient(135deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,.6) 100%);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: var(--ag-radius-lg);
+  box-shadow: 0 12px 34px rgba(15,23,42,.08);
+}
+.trk-ship-hero-ic {
+  width: 60px; height: 60px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  display: grid; place-items: center; color: #fff; font-size: 26px;
+  box-shadow: 0 10px 24px rgba(37,99,235,.3);
+}
+.trk-ship-hero h2 { margin: 0 0 3px; font-size: 18px; font-weight: 800; color: var(--ag-navy-900); }
+.trk-ship-hero p  { margin: 0; font-size: 13px; color: var(--ag-text-600); }
+.trk-ship-hero .trk-ship-hero-badge {
+  font-weight: 800; font-size: 12px; letter-spacing: .04em;
+}
+.trk-tracking-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(37,99,235,.1); color: var(--ag-blue-600);
+  padding: 6px 14px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 700; font-family: monospace;
+  margin-top: 6px;
+}
+
+/* ---- Gold accent line ---- */
+.trk-gold-bar {
+  height: 3px; width: 56px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--ag-gold-400), var(--ag-blue-600));
+  margin: 6px 0 0;
+}
+
+/* ---- Timeline title with icon ---- */
+.trk-timeline-section h3 {
+  display: flex; align-items: center; gap: 9px;
+  margin: 0; font-size: 15px; font-weight: 800; color: var(--ag-navy-900);
+}
+.trk-timeline-section h3 i { color: var(--ag-blue-600); }
+
+/* ---- Mobile responsive ---- */
+@media (max-width: 640px) {
+  .trk-ship-hero { grid-template-columns: auto 1fr; }
+  .trk-ship-hero .trk-ship-hero-badge { grid-column: 1 / -1; justify-self: start; }
+  .trk-timeline::before { left: 25px; }
+  .trk-tl-item:not(:last-child)::after { left: 18px; }
+  .trk-tl-icon { width: 40px; height: 40px; font-size: 13px; }
+  .trk-tl-body { padding: 12px 14px; }
+  .trk-tl-head { flex-direction: column; gap: 6px; }
+}
+</style>
+
+</head>
+<body data-ag-page="tracking">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+
+    <!-- TOP BAR -->
+    <header class="trk-topbar">
+      <div class="trk-topbar-left">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="trk-eyebrow">Real-time logistics</p>
+          <h1>Shipment Tracking</h1>
+        </div>
+      </div>
+      <div class="trk-topbar-right">
+        <button class="trk-notif-btn" onclick="showNotifications()" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="trk-notif-dot" id="notificationBadge"></span>
+        </button>
+        <div class="ag-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <!-- SEARCH HERO -->
+    <section class="trk-search-hero">
+      <div class="trk-search-hero-blob trk-blob-1"></div>
+      <div class="trk-search-hero-blob trk-blob-2"></div>
+      <div class="trk-search-hero-content">
+        <h2>Track Your Shipment</h2>
+        <p>Enter your Asan Global tracking number to get real-time status, location, and delivery updates.</p>
+        <div class="trk-search-bar" role="search">
+          <i class="fas fa-search"></i>
+          <input type="text" id="trackingInput" placeholder="e.g. ASAN-IMP-001-2024" autocomplete="off" aria-label="Enter tracking number">
+          <button class="trk-search-btn" id="trackBtn" aria-label="Track shipment">
+            <i class="fas fa-location-dot"></i> Track Now
+          </button>
+        </div>
+        <div class="trk-demo-links">
+          Try a demo: <button onclick="loadDemo('ASAN-IMP-001-2024')">ASAN-IMP-001-2024</button>
+          <button onclick="loadDemo('ASAN-IMP-002-2024')">ASAN-IMP-002-2024</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN TRACKING CONTENT (hidden until a search is made) -->
+    <div class="trk-content" id="trkResultArea" style="display:none;">
+
+      <!-- Summary strip -->
+      <div class="trk-summary-strip" id="trkSummaryStrip">
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon blue"><i class="fas fa-car"></i></div>
+          <div class="trk-summary-text"><div class="label">Vehicle</div><div class="value" id="sumVehicle">—</div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon amber"><i class="fas fa-location-dot"></i></div>
+          <div class="trk-summary-text"><div class="label">Current Location</div><div class="value" id="sumLocation">—</div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon green"><i class="fas fa-calendar-check"></i></div>
+          <div class="trk-summary-text"><div class="label">Est. Delivery</div><div class="value" id="sumEta">—</div><div class="sub" id="sumEtaDays"></div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon purple"><i class="fas fa-weight-hanging"></i></div>
+          <div class="trk-summary-text"><div class="label">Weight / Method</div><div class="value" id="sumWeight">—</div><div class="sub" id="sumMethod">—</div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon teal"><i class="fas fa-user-tie"></i></div>
+          <div class="trk-summary-text"><div class="label">Assigned Staff</div><div class="value" id="sumStaff">—</div></div>
+        </div>
+        <div class="trk-summary-card">
+          <div class="trk-summary-icon rose"><i class="fas fa-ship"></i></div>
+          <div class="trk-summary-text"><div class="label">Carrier</div><div class="value" id="sumCarrier">—</div></div>
+        </div>
+      </div>
+
+      <!-- Main 2-col: progress + detail -->
+      <div class="trk-main-grid">
+
+<!-- Progress / Timeline -->
+        <div class="trk-progress-card trk-glass-card">
+          <div class="trk-progress-header">
+            <h3><i class="fas fa-route" style="margin-right:8px;color:var(--ag-blue-600);"></i>Import Progress</h3>
+            <span id="trkStatusPill" class="trk-status-pill trk-status--processing">
+              <span class="dot"></span> <span id="trkStatusLabel">Processing</span>
+            </span>
+          </div>
+          <div class="trk-bar-wrap">
+            <div class="trk-bar-track"><div class="trk-bar-fill" id="trkBarFill"></div></div>
+            <div class="trk-bar-pct" id="trkBarPct">0%</div>
+          </div>
+          <div class="trk-steps" id="trkSteps"></div>
+
+          <!-- Premium tracking timeline -->
+          <div class="trk-timeline-section" style="padding:6px 24px 24px;border-top:1px solid var(--ag-surface-muted);">
+            <h3 style="padding:18px 0 12px;"><i class="fas fa-clock-rotate-left"></i> Tracking Timeline</h3>
+            <div class="trk-premium-progress">
+              <div class="trk-pp-bar"><div class="trk-pp-fill" id="trkPremiumFill"></div></div>
+              <span class="trk-pp-pct" id="trkPremiumPct">0%</span>
+            </div>
+            <div class="trk-loader-wrap" id="trkTimelineLoader" style="display:none;padding:48px 8px;">
+              <div class="trk-loader"></div>
+              <span class="trk-loader-text">Loading tracking timeline…</span>
+            </div>
+            <div class="trk-timeline" id="trkTimeline"></div>
+            <div class="trk-tl-empty" id="trkTimelineEmpty" style="display:none;">
+              <i class="fas fa-route"></i>
+              <h4>No tracking events yet</h4>
+              <p>We'll post live updates here as soon as your shipment starts moving.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipment details -->
+        <div class="trk-detail-card trk-glass-card">
+          <div class="trk-detail-header">
+            <h3><i class="fas fa-file-lines" style="margin-right:8px;color:var(--ag-blue-600);"></i>Shipment Details</h3>
+          </div>
+          <div class="trk-detail-row"><span class="lbl">Tracking #</span><span class="val" id="detTracking">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Make / Model</span><span class="val" id="detVehicle">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Year</span><span class="val" id="detYear">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">VIN</span><span class="val" id="detVin" style="font-family:monospace;font-size:11px;">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Origin</span><span class="val" id="detOrigin">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Destination</span><span class="val" id="detDestination">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Vehicle Type</span><span class="val" id="detType">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Declared Value</span><span class="val" id="detValue">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Import Fee</span><span class="val" id="detImportFee">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Customs Fee</span><span class="val" id="detCustomsFee">—</span></div>
+          <div class="trk-detail-row"><span class="lbl">Payment Status</span><span class="val"><span class="ag-badge ag-badge-success" style="font-size:11px;">Paid</span></span></div>
+          <div style="padding:14px 20px;">
+            <a href="client-agreement-form.html" target="_blank" class="ag-btn ag-btn-secondary" style="width:100%;justify-content:center;font-size:13px;">
+              <i class="fas fa-file-download"></i> Client Agreement Form
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sender / Receiver -->
+      <div class="trk-parties-grid">
+        <div class="trk-party-card">
+          <div class="trk-party-header">
+            <div class="trk-party-avatar sender"><i class="fas fa-building"></i></div>
+            <div><h4 id="senderName">Asan Global Logistics</h4><span>Sender / Shipper</span></div>
+          </div>
+          <div class="trk-party-info">
+            <div><i class="fas fa-map-marker-alt"></i><span id="senderAddr">Tokyo Automotive Port, Japan</span></div>
+            <div><i class="fas fa-phone"></i><span>+81 3-1234-5678</span></div>
+            <div><i class="fas fa-envelope"></i><span>shipping@asanglobal.com</span></div>
+          </div>
+        </div>
+        <div class="trk-party-card">
+          <div class="trk-party-header">
+            <div class="trk-party-avatar receiver"><i class="fas fa-user"></i></div>
+            <div><h4 id="receiverName">—</h4><span>Receiver / Customer</span></div>
+          </div>
+          <div class="trk-party-info">
+            <div><i class="fas fa-map-marker-alt"></i><span id="receiverAddr">—</span></div>
+            <div><i class="fas fa-phone"></i><span id="receiverPhone">Contact via Asan Global</span></div>
+            <div><i class="fas fa-id-badge"></i><span id="receiverRef">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map -->
+      <div class="trk-map-card">
+        <div class="trk-map-header">
+          <h3><i class="fas fa-map" style="margin-right:8px;color:var(--ag-blue-600);"></i>Live Route Map</h3>
+          <span class="ag-badge ag-badge-info" id="trkMapBadge">Route visualization</span>
+        </div>
+        <div id="trkMap"></div>
+      </div>
+
+      <!-- Updates + Chat + Fees -->
+      <div class="trk-bottom-grid">
+
+        <!-- Recent Updates -->
+        <div class="trk-updates-card">
+          <div class="trk-updates-header">
+            <h3>Recent Updates</h3>
+            <span class="trk-live-badge">Live</span>
+          </div>
+          <div class="trk-update-list" id="trkUpdateList"></div>
+        </div>
+
+        <!-- Chat -->
+        <div class="trk-chat-card">
+          <div class="trk-chat-header">
+            <div class="trk-chat-avatar"><i class="fas fa-headset"></i></div>
+            <div>
+              <h3>Support Chat</h3>
+              <span><i class="fas fa-circle" style="font-size:7px;"></i> Online</span>
+            </div>
+          </div>
+          <div class="trk-chat-msgs" id="trkChatMsgs"></div>
+          <form class="trk-chat-form" id="trkChatForm">
+            <input type="text" id="trkChatInput" placeholder="Ask about your shipment…" autocomplete="off">
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+
+        <!-- Fee Breakdown -->
+        <div class="trk-fee-card">
+          <div class="trk-fee-header">
+            <h3><i class="fas fa-receipt" style="margin-right:8px;color:var(--ag-blue-600);"></i>Fee Breakdown</h3>
+            <span class="ag-badge ag-badge-success">Paid</span>
+          </div>
+          <div class="trk-fee-row"><span>Import Service Fee</span><span id="feeImport">—</span></div>
+          <div class="trk-fee-row"><span>Customs &amp; Duties</span><span id="feeCustoms">—</span></div>
+          <div class="trk-fee-row"><span>Documentation</span><span>Included</span></div>
+          <div class="trk-fee-row"><span>Insurance</span><span>Included</span></div>
+          <div class="trk-fee-row total"><span>Total Cost</span><span id="feeTotal">—</span></div>
+          <div class="trk-fee-actions">
+            <button class="ag-btn ag-btn-primary" onclick="downloadReport()" style="font-size:13px;">
+              <i class="fas fa-download"></i> Download Report
+            </button>
+            <a href="payment.html" class="ag-btn ag-btn-secondary" style="font-size:13px;text-decoration:none;justify-content:center;">
+              <i class="fas fa-credit-card"></i> Make Payment
+            </a>
+          </div>
+        </div>
+      </div>
+    </div><!-- /trkResultArea -->
+
+    <!-- NOT FOUND STATE -->
+    <div class="trk-content" id="trkNotFound" style="display:none;">
+      <div class="trk-not-found">
+        <i class="fas fa-search-minus"></i>
+        <h3>Shipment Not Found</h3>
+        <p>We couldn't find a shipment with that tracking number.<br>Check the number and try again, or <a href="#contact" style="color:var(--ag-blue-600);">contact our support team</a>.</p>
+      </div>
+    </div>
+
+    <footer style="text-align:center;padding:24px;color:var(--ag-text-400);font-size:12px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
+
+<!-- Notification Panel -->
+<aside class="notification-panel" id="notificationPanel" aria-label="Notifications">
+  <div class="notification-panel-header">
+    <h3>Notifications</h3>
+    <span class="notif-count" id="notifCountBadge">0</span>
+    <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
+  </div>
+  <div class="notification-panel-actions">
+    <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+    <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+  </div>
+  <div class="notification-list" id="notificationList"></div>
+</aside>
+
+<!-- Toast region -->
+<div id="trkToastRegion" style="position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:3000;"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script src="pdf-documents.js"></script>
+<script>
+'use strict';
+const esc = v => window.securityUtils?.escapeHtml ? window.securityUtils.escapeHtml(v) : String(v ?? '');
+
+/* ================================================================
+   CONSTANTS
+================================================================ */
+const ALL_STATUSES = [
+  { key:'order_received',     label:'Order Received',      icon:'fa-file-signature',  desc:'Import request received and logged.' },
+  { key:'payment_confirmed',  label:'Payment Confirmed',   icon:'fa-check-circle',    desc:'Payment verified and cleared.' },
+  { key:'processing',         label:'Processing',          icon:'fa-cogs',            desc:'Vehicle details and documents being prepared.' },
+  { key:'purchased',          label:'Purchased',           icon:'fa-handshake',       desc:'Vehicle purchased from source market.' },
+  { key:'packed',             label:'Packed',              icon:'fa-box',             desc:'Vehicle secured and packed for shipment.' },
+  { key:'ready_for_shipment', label:'Ready for Shipment',  icon:'fa-warehouse',       desc:'Vehicle ready at origin port.' },
+  { key:'shipped',            label:'Shipped',             icon:'fa-ship',            desc:'Vehicle loaded on vessel and departed.' },
+  { key:'in_transit',         label:'In Transit',          icon:'fa-route',           desc:'Vehicle in transit on international waters.' },
+  { key:'customs_clearance',  label:'Customs Clearance',   icon:'fa-stamp',           desc:'Customs inspection and documentation processing.' },
+  { key:'arrived_in_ghana',   label:'Arrived in Ghana',    icon:'fa-anchor',          desc:'Vehicle arrived at Tema Port, Ghana.' },
+  { key:'out_for_delivery',   label:'Out for Delivery',    icon:'fa-truck',           desc:'Final delivery in progress.' },
+  { key:'delivered',          label:'Delivered',           icon:'fa-circle-check',    desc:'Vehicle delivered to customer.' }
+];
+
+/* Map status strings from admin to our step keys */
+const STATUS_MAP = {
+  'Pending':            'order_received',
+  'Payment Confirmed':  'payment_confirmed',
+  'Documentation':      'processing',
+  'Processing':         'processing',
+  'Purchased':          'purchased',
+  'Packed':             'packed',
+  'Ready for Shipment': 'ready_for_shipment',
+  'Shipped':            'shipped',
+  'In Transit':         'in_transit',
+  'Customs Clearance':  'customs_clearance',
+  'Arrived in Ghana':   'arrived_in_ghana',
+  'Out for Delivery':   'out_for_delivery',
+  'Delivered':          'delivered'
+};
+
+const STATUS_CSS = {
+  'order_received':'trk-status--pending','payment_confirmed':'trk-status--processing',
+  'processing':'trk-status--processing','purchased':'trk-status--processing',
+  'packed':'trk-status--processing','ready_for_shipment':'trk-status--processing',
+  'shipped':'trk-status--shipped','in_transit':'trk-status--transit',
+  'customs_clearance':'trk-status--customs','arrived_in_ghana':'trk-status--arrived',
+  'out_for_delivery':'trk-status--arrived','delivered':'trk-status--delivered'
+};
+
+const COUNTRY_COORDS = {
+  'Japan':{'lat':35.6762,'lng':139.6503,'city':'Tokyo'},'USA':{'lat':34.0522,'lng':-118.2437,'city':'Los Angeles'},
+  'UK':{'lat':51.5074,'lng':-0.1278,'city':'London'},'Germany':{'lat':53.5753,'lng':10.0153,'city':'Hamburg'},
+  'UAE':{'lat':25.2048,'lng':55.2708,'city':'Dubai'},'South Korea':{'lat':37.5665,'lng':126.9780,'city':'Seoul'},
+  'Ghana':{'lat':5.6037,'lng':-0.1870,'city':'Accra'},'Nigeria':{'lat':6.4541,'lng':3.3947,'city':'Lagos'},
+  'Kenya':{'lat':-4.0435,'lng':39.6682,'city':'Mombasa'},'South Africa':{'lat':-33.9249,'lng':18.4241,'city':'Cape Town'},
+  'China':{'lat':31.2304,'lng':121.4737,'city':'Shanghai'},'France':{'lat':48.8566,'lng':2.3522,'city':'Paris'},
+  'Italy':{'lat':41.9028,'lng':12.4964,'city':'Rome'},'Canada':{'lat':43.6532,'lng':-79.3832,'city':'Toronto'},
+  'Australia':{'lat':-33.8688,'lng':151.2093,'city':'Sydney'}
+};
+
+function getCoords(place) {
+  if (!place) return {lat:0,lng:0,city:'Unknown'};
+  for (const [k,v] of Object.entries(COUNTRY_COORDS)) {
+    if (place.toLowerCase().includes(k.toLowerCase())) return v;
+  }
+  return {lat:5.6037,lng:-0.1870,city:place};
+}
+
+/* ================================================================
+   AUTH + INIT
+================================================================ */
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
+  if (!user) { window.location.href = 'login.html'; return null; }
+  return user;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const user = checkAuth();
+  if (!user) return;
+  document.getElementById('userAvatar').textContent = (user.name||'U').charAt(0).toUpperCase();
+  initChat();
+  initNotifications();
+  seedDemoData();
+
+  // Check URL params
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('tracking') || params.get('ref');
+  if (ref) {
+    document.getElementById('trackingInput').value = ref.trim().toUpperCase();
+    doTrack(ref.trim().toUpperCase());
+  }
+
+  document.getElementById('trackBtn').addEventListener('click', () => {
+    doTrack(document.getElementById('trackingInput').value.trim().toUpperCase());
+  });
+  document.getElementById('trackingInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doTrack(document.getElementById('trackingInput').value.trim().toUpperCase());
+  });
+});
+
+window.addEventListener('storage', e => {
+  if (e.key === 'asan_imports') {
+    const cur = document.getElementById('trackingInput').value.trim().toUpperCase();
+    if (cur) doTrack(cur);
+  }
+});
+
+function loadDemo(num) {
+  document.getElementById('trackingInput').value = num;
+  doTrack(num);
+}
+
+/* ================================================================
+   SEED DEMO DATA
+================================================================ */
+function seedDemoData() {
+  if (localStorage.getItem('asan_imports')) return;
+  localStorage.setItem('asan_imports', JSON.stringify([
+    {id:1,tracking:'ASAN-IMP-001-2024',origin:'Japan',destination:'Ghana',make:'Toyota',model:'Land Cruiser',year:2024,vin:'JTDKN3DU5A0123456',vehicleType:'SUV',customer:'Kwame Asante',value:'$85,000',assignedStaff:'Maria Garcia',importFee:'$3,500',customsFee:'$2,800',status:'Customs Clearance'},
+    {id:2,tracking:'ASAN-IMP-002-2024',origin:'Germany',destination:'Ghana',make:'Mercedes-Benz',model:'S-Class',year:2024,vin:'WDD2221651A0987654',vehicleType:'Sedan',customer:'Sarah Johnson',value:'$115,000',assignedStaff:'James Wilson',importFee:'$5,200',customsFee:'$4,100',status:'Delivered'}
+  ]));
+}
+
+/* ================================================================
+   TRACK
+================================================================ */
+function doTrack(num) {
+  if (!num) { showToast('Please enter a tracking number.', 'error'); return; }
+  const url = new URL(window.location.href);
+  url.searchParams.set('tracking', num);
+  window.history.replaceState({}, '', url.toString());
+
+  document.getElementById('trkResultArea').style.display = 'none';
+  document.getElementById('trkNotFound').style.display = 'none';
+
+  // Reset premium timeline
+  resetTimeline();
+
+  // Try the real backend first
+  const API_BASE = 'http://localhost:5000';
+  fetch(API_BASE + '/api/shipments/' + encodeURIComponent(num.toUpperCase()))
+    .then(function (resp) { return resp.json(); })
+    .then(function (json) {
+      if (json.success && json.shipment) {
+        // Map backend row to the fields the tracking UI expects
+        const s = json.shipment;
+        const imp = {
+          id: s.id,
+          tracking: s.tracking_number || num,
+          make: (s.item_description || '').split(' ')[0] || 'Vehicle',
+          model: (s.item_description || ''),
+          year: '—',
+          vin: '—',
+          origin: s.origin || '—',
+          destination: s.destination || '—',
+          vehicleType: '—',
+          customer: s.customer_name || '—',
+          value: '—',
+          assignedStaff: 'Asan Global Team',
+          importFee: '—',
+          customsFee: '—',
+          status: s.status || 'pending'
+        };
+        renderTracking(imp);
+        // Show premium timeline while loading events
+        showTimelineLoader(true);
+        loadTimelineEvents(imp.id);
+        document.getElementById('trkResultArea').style.display = '';
+        document.getElementById('trkResultArea').scrollIntoView({ behavior:'smooth', block:'start' });
+        return;
+      }
+      // Fallback to localStorage demo data
+      const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+      const imp = imports.find(i => (i.tracking||'').toUpperCase() === num.toUpperCase());
+      if (!imp) {
+        document.getElementById('trkNotFound').style.display = '';
+        return;
+      }
+      renderTracking(imp);
+      document.getElementById('trkResultArea').style.display = '';
+      document.getElementById('trkResultArea').scrollIntoView({ behavior:'smooth', block:'start' });
+    })
+    .catch(function () {
+      // Backend unreachable — fall back to localStorage demo data
+      const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+      const imp = imports.find(i => (i.tracking||'').toUpperCase() === num.toUpperCase());
+      if (!imp) {
+        document.getElementById('trkNotFound').style.display = '';
+        return;
+      }
+      renderTracking(imp);
+      document.getElementById('trkResultArea').style.display = '';
+      document.getElementById('trkResultArea').scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+}
+
+/* ================================================================
+   RENDER TRACKING
+================================================================ */
+function renderTracking(imp) {
+  window.asanActiveShipment = imp;
+  const statusKey = STATUS_MAP[imp.status] || 'processing';
+  const stepIndex = ALL_STATUSES.findIndex(s => s.key === statusKey);
+  const pct = Math.round(((stepIndex + 1) / ALL_STATUSES.length) * 100);
+
+  // Summary strip
+  document.getElementById('sumVehicle').textContent   = `${imp.make||''} ${imp.model||''} ${imp.year||''}`.trim();
+  document.getElementById('sumLocation').textContent  = imp.status || '—';
+  document.getElementById('sumStaff').textContent     = imp.assignedStaff || 'Unassigned';
+  document.getElementById('sumCarrier').textContent   = 'Maersk / RoRo';
+  document.getElementById('sumWeight').textContent    = imp.vehicleType === 'SUV' ? '~2,400 kg' : (imp.vehicleType === 'Sedan' ? '~1,800 kg' : '~2,000 kg');
+  document.getElementById('sumMethod').textContent    = 'Ocean Freight (RoRo)';
+
+  // ETA
+  const etaDate = new Date(); etaDate.setDate(etaDate.getDate() + (imp.status === 'Delivered' ? 0 : 14));
+  document.getElementById('sumEta').textContent    = imp.status === 'Delivered' ? 'Delivered' : etaDate.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('sumEtaDays').textContent = imp.status === 'Delivered' ? 'Completed' : '~14 days remaining';
+
+  // Status pill
+  const pill = document.getElementById('trkStatusPill');
+  pill.className = `trk-status-pill ${STATUS_CSS[statusKey]||'trk-status--processing'}`;
+  document.getElementById('trkStatusLabel').textContent = imp.status || '—';
+
+  // Progress bar
+  setTimeout(() => {
+    document.getElementById('trkBarFill').style.width = pct + '%';
+    document.getElementById('trkBarPct').textContent = pct + '%';
+  }, 100);
+
+  // Steps
+  renderSteps(stepIndex);
+
+  // Detail card
+  document.getElementById('detTracking').textContent    = imp.tracking || '—';
+  document.getElementById('detVehicle').textContent     = `${imp.make||''} ${imp.model||''}`.trim() || '—';
+  document.getElementById('detYear').textContent        = imp.year || '—';
+  document.getElementById('detVin').textContent         = imp.vin || '—';
+  document.getElementById('detOrigin').textContent      = imp.origin || '—';
+  document.getElementById('detDestination').textContent = imp.destination || '—';
+  document.getElementById('detType').textContent        = imp.vehicleType || '—';
+  document.getElementById('detValue').textContent       = imp.value || '—';
+  document.getElementById('detImportFee').textContent   = imp.importFee || '—';
+  document.getElementById('detCustomsFee').textContent  = imp.customsFee || '—';
+
+  // Sender/receiver
+  document.getElementById('senderAddr').textContent   = imp.origin ? `${imp.origin} Port` : 'Origin Port';
+  document.getElementById('receiverName').textContent  = imp.customer || '—';
+  document.getElementById('receiverAddr').textContent  = imp.destination || '—';
+  document.getElementById('receiverRef').textContent   = `Ref: ${imp.tracking||'—'}`;
+
+  // Fee breakdown
+  document.getElementById('feeImport').textContent  = imp.importFee || '—';
+  document.getElementById('feeCustoms').textContent  = imp.customsFee || '—';
+  const fImport  = parseFloat((imp.importFee||'0').replace(/[^0-9.]/g,''))||0;
+  const fCustoms = parseFloat((imp.customsFee||'0').replace(/[^0-9.]/g,''))||0;
+  document.getElementById('feeTotal').textContent = '$' + (fImport + fCustoms).toLocaleString('en-US');
+
+  // Map
+  renderMap(imp.origin || 'Japan', imp.destination || 'Ghana', statusKey);
+
+  // Updates
+  renderUpdates(imp);
+
+  // Premium timeline — render synthesized events immediately based on current status.
+  // If the real backend is available, loadTimelineEvents() replaces these with DB events.
+  showTimelineLoader(false);
+  renderTimelineForStatus(imp.status);
+}
+
+/* ================================================================
+   STEPS TIMELINE
+================================================================ */
+function renderSteps(activeIndex) {
+  const container = document.getElementById('trkSteps');
+  const now = new Date();
+
+  container.innerHTML = ALL_STATUSES.map((s, i) => {
+    let cls = '';
+    if (i < activeIndex)      cls = 'step-done';
+    else if (i === activeIndex) cls = 'step-active';
+
+    const ts = i <= activeIndex
+      ? new Date(now.getTime() - (activeIndex - i) * 2 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB',{day:'numeric',month:'short'})
+      : '';
+
+    return `<div class="trk-step ${cls}">
+      <div class="trk-step-icon"><i class="fas ${s.icon}"></i></div>
+      <div class="trk-step-body">
+        <p class="trk-step-title">${s.label}</p>
+        <p class="trk-step-desc">${s.desc}</p>
+        ${ts ? `<span class="trk-step-time"><i class="fas fa-clock" style="margin-right:4px;"></i>${ts}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ================================================================
+   PREMIUM TRACKING TIMELINE (DHL/FedEx-style)
+================================================================ */
+function showTimelineLoader(show) {
+  const loader = document.getElementById('trkTimelineLoader');
+  if (loader) loader.style.display = show ? 'flex' : 'none';
+}
+
+function resetTimeline() {
+  const container = document.getElementById('trkTimeline');
+  const empty = document.getElementById('trkTimelineEmpty');
+  const loader = document.getElementById('trkTimelineLoader');
+  const fill = document.getElementById('trkPremiumFill');
+  const pctEl = document.getElementById('trkPremiumPct');
+  if (container) container.innerHTML = '';
+  if (empty) empty.style.display = 'none';
+  if (loader) loader.style.display = 'none';
+  if (fill) fill.style.width = '0%';
+  if (pctEl) pctEl.textContent = '0%';
+}
+
+function statusToKey(status) {
+  const s = String(status || '').toLowerCase().trim();
+  if (STATUS_MAP[status]) return STATUS_MAP[status];
+  const found = ALL_STATUSES.find(x => x.key === s || x.label.toLowerCase() === s);
+  return found ? found.key : null;
+}
+
+function statusToIcon(status) {
+  const key = statusToKey(status);
+  const found = ALL_STATUSES.find(s => s.key === key);
+  return found ? found.icon : 'fa-circle-info';
+}
+
+function statusToLabel(status) {
+  const key = statusToKey(status);
+  const found = ALL_STATUSES.find(s => s.key === key);
+  return found ? found.label : (status || 'Shipment Update');
+}
+
+function formatTlDate(isoStr) {
+  const d = new Date(isoStr);
+  if (isNaN(d.getTime())) return '';
+  const datePart = d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  const timePart = d.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+  return datePart + ' · ' + timePart;
+}
+
+function animatePremiumBar(pct) {
+  const fill = document.getElementById('trkPremiumFill');
+  const pctEl = document.getElementById('trkPremiumPct');
+  if (fill) {
+    fill.style.width = '0%';
+    setTimeout(() => { fill.style.width = pct + '%'; }, 90);
+  }
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+
+function renderTimelineEvents(events) {
+  window.asanActiveTimeline = events;
+  const container = document.getElementById('trkTimeline');
+  const empty = document.getElementById('trkTimelineEmpty');
+  if (!container) return;
+
+  let maxIdx = 0;
+  const sorted = [...events].sort((a, b) => new Date(a.created_at || 0) - new Date(b.created_at || 0));
+  sorted.forEach(e => {
+    const key = statusToKey(e.status);
+    const idx = ALL_STATUSES.findIndex(s => s.key === key);
+    if (idx > maxIdx) maxIdx = idx;
+  });
+
+  const pct = Math.min(100, Math.round(((maxIdx + 1) / ALL_STATUSES.length) * 100));
+  animatePremiumBar(pct);
+
+  container.innerHTML = sorted.map((e, i) => {
+    const key = statusToKey(e.status);
+    const idx = ALL_STATUSES.findIndex(s => s.key === key);
+    const cls = idx < maxIdx ? 'done' : (idx === maxIdx ? 'active' : '');
+    const icon = statusToIcon(e.status);
+    const loc = e.location ? `<div class="trk-tl-loc"><i class="fas fa-location-dot"></i>${esc(e.location)}</div>` : '';
+    const dateStr = formatTlDate(e.created_at);
+    const date = dateStr ? `<span class="trk-tl-date"><i class="fas fa-calendar-day"></i>${dateStr}</span>` : '';
+    return `<div class="trk-tl-item ${cls}">
+      <div class="trk-tl-icon"><i class="fas ${icon}"></i></div>
+      <div class="trk-tl-body">
+        <div class="trk-tl-head">
+          <p class="trk-tl-status">${esc(statusToLabel(e.status))}</p>
+          ${date}
+        </div>
+        ${loc}
+        <p class="trk-tl-desc">${esc(e.description || 'Shipment update recorded.')}</p>
+      </div>
+    </div>`;
+  }).join('');
+
+  if (empty) empty.style.display = 'none';
+}
+
+function renderTimelineForStatus(status) {
+  // Synthesized timeline used when real backend events are unavailable (demo/localStorage).
+  const key = statusToKey(status) || 'order_received';
+  const idx = Math.max(0, ALL_STATUSES.findIndex(s => s.key === key));
+  const events = ALL_STATUSES.slice(0, idx + 1).map((s, i) => {
+    let location = '';
+    if (i === 0) location = 'Asan Global Operations';
+    else if (s.key.includes('arrived') || s.key === 'out_for_delivery' || s.key === 'delivered') location = 'Tema, Ghana';
+    else if (s.key.includes('ship') || s.key.includes('transit')) location = 'International Waters';
+    else if (s.key.includes('ready_for_shipment') || s.key.includes('packed')) location = `${'Origin'} Port`;
+    return {
+      status: s.label,
+      location,
+      description: s.desc,
+      created_at: new Date(Date.now() - (idx - i) * 2 * 24 * 60 * 60 * 1000).toISOString()
+    };
+  });
+  renderTimelineEvents(events);
+}
+
+function loadTimelineEvents(shipmentId) {
+  if (!shipmentId) { showTimelineLoader(false); renderTimelineForStatus('Order Received'); return; }
+  fetch('http://localhost:5000/api/tracking-events/' + encodeURIComponent(shipmentId))
+    .then(function (resp) { return resp.json(); })
+    .then(function (json) {
+      showTimelineLoader(false);
+      const events = (json && Array.isArray(json.events)) ? json.events : [];
+      if (events.length) renderTimelineEvents(events);
+      else renderTimelineForStatus('Order Received');
+    })
+    .catch(function () {
+      showTimelineLoader(false);
+      renderTimelineForStatus('Order Received');
+    });
+}
+
+/* ================================================================
+   MAP
+================================================================ */
+let trkMapInstance = null;
+
+function renderMap(origin, destination, statusKey) {
+  const oCoords = getCoords(origin);
+  const dCoords = getCoords(destination);
+  const centerLat = (oCoords.lat + dCoords.lat) / 2;
+  const centerLng = (oCoords.lng + dCoords.lng) / 2;
+
+  if (trkMapInstance) { trkMapInstance.remove(); trkMapInstance = null; }
+
+  trkMapInstance = L.map('trkMap').setView([centerLat, centerLng], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution:'© OpenStreetMap contributors', maxZoom: 18
+  }).addTo(trkMapInstance);
+
+  const mkIcon = (color, label) => L.divIcon({
+    className:'',
+    html:`<div style="background:${color};width:14px;height:14px;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.3);"></div>`,
+    iconSize:[14,14], iconAnchor:[7,7]
+  });
+
+  L.marker([oCoords.lat,oCoords.lng],{icon:mkIcon('#2563eb')}).addTo(trkMapInstance)
+    .bindPopup(`<b>Origin: ${esc(origin)}</b><br>${esc(oCoords.city)}`);
+  L.marker([dCoords.lat,dCoords.lng],{icon:mkIcon('#16a34a')}).addTo(trkMapInstance)
+    .bindPopup(`<b>Destination: ${esc(destination)}</b><br>${esc(dCoords.city)}`);
+
+  // Current position dot
+  const stepIdx = ALL_STATUSES.findIndex(s => s.key === statusKey);
+  const prog = (stepIdx + 1) / ALL_STATUSES.length;
+  const curLat = oCoords.lat + (dCoords.lat - oCoords.lat) * prog;
+  const curLng = oCoords.lng + (dCoords.lng - oCoords.lng) * prog;
+
+  const shipIcon = L.divIcon({
+    className:'',
+    html:`<div style="background:#f59e0b;width:18px;height:18px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 6px rgba(245,158,11,.2);display:grid;place-items:center;font-size:9px;color:#fff;"><i class="fas fa-ship"></i></div>`,
+    iconSize:[18,18], iconAnchor:[9,9]
+  });
+  L.marker([curLat,curLng],{icon:shipIcon}).addTo(trkMapInstance)
+    .bindPopup('<b>Current Position</b>').openPopup();
+
+  L.polyline([[oCoords.lat,oCoords.lng],[dCoords.lat,dCoords.lng]],{
+    color:'#2563eb', weight:2, opacity:.55, dashArray:'8,8'
+  }).addTo(trkMapInstance);
+
+  trkMapInstance.fitBounds([[oCoords.lat,oCoords.lng],[dCoords.lat,dCoords.lng]], {padding:[40,40]});
+  document.getElementById('trkMapBadge').textContent = `${esc(oCoords.city)} → ${esc(dCoords.city)}`;
+}
+
+/* ================================================================
+   UPDATES
+================================================================ */
+function renderUpdates(imp) {
+  const list = document.getElementById('trkUpdateList');
+  const stepIdx = ALL_STATUSES.findIndex(s => s.key === (STATUS_MAP[imp.status]||'processing'));
+  const now = new Date();
+
+  const updates = ALL_STATUSES.slice(0, stepIdx + 1).reverse().map((s, i) => {
+    const t = new Date(now.getTime() - i * 18 * 60 * 60 * 1000);
+    const types = ['success','info','info','warning','location','info','success','info','info','warning','success','success'];
+    return { icon: s.icon, type: types[ALL_STATUSES.indexOf(s)]||'info', msg: `${s.label} — ${s.desc}`, time: t };
+  });
+
+  list.innerHTML = updates.map(u => `
+    <div class="trk-update-item">
+      <div class="trk-update-dot ${u.type}"><i class="fas ${u.icon}" style="font-size:11px;"></i></div>
+      <div class="trk-update-text">
+        <p class="trk-update-msg">${esc(u.msg)}</p>
+        <span class="trk-update-time">${u.time.toLocaleDateString('en-GB',{day:'numeric',month:'short'})} ${u.time.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
+      </div>
+    </div>`).join('');
+}
+
+/* ================================================================
+   CHAT
+================================================================ */
+function initChat() {
+  const form = document.getElementById('trkChatForm');
+  const input = document.getElementById('trkChatInput');
+  const msgs = document.getElementById('trkChatMsgs');
+
+  const stored = JSON.parse(localStorage.getItem('asan_tracking_chat') || '[]');
+  msgs.innerHTML = '';
+  stored.forEach(m => addBubble(m.text, m.sender, false));
+  if (msgs.children.length === 0) addBubble("Hi! Ask me about your shipment — tracking, status, payments, or anything else.", 'bot');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const text = (input.value||'').trim();
+    if (!text) return;
+    addBubble(text, 'user');
+    input.value = '';
+    setTimeout(() => addBubble(getBotReply(text), 'bot'), 420);
+  });
+}
+
+function addBubble(text, sender, save = true) {
+  const msgs = document.getElementById('trkChatMsgs');
+  const d = document.createElement('div');
+  d.className = `trk-bubble ${sender}`;
+  d.textContent = text;
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+  if (save) {
+    const h = JSON.parse(localStorage.getItem('asan_tracking_chat') || '[]');
+    h.push({text, sender});
+    if (h.length > 50) h.splice(0, h.length - 50);
+    localStorage.setItem('asan_tracking_chat', JSON.stringify(h));
+  }
+}
+
+function getBotReply(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('track') || m.includes('where'))  return 'Your shipment location is shown on the map above. The progress bar shows the current import stage.';
+  if (m.includes('status'))                         return 'Your current import status is shown in the progress timeline. Each step is updated in real-time.';
+  if (m.includes('eta') || m.includes('deliver') || m.includes('when')) return 'Estimated delivery is shown in the summary strip above. Allow 14–30 days depending on origin.';
+  if (m.includes('pay'))                            return 'Payment details and fees are shown in the Fee Breakdown card. Visit the Payments page to make a payment.';
+  if (m.includes('document') || m.includes('paper')) return 'Download your Client Agreement Form using the button in the Shipment Details card.';
+  if (m.includes('hello') || m.includes('hi'))      return 'Hello! How can I help you with your vehicle import today?';
+  if (m.includes('staff') || m.includes('agent'))   return 'Your assigned import specialist is listed in the summary strip. They handle everything from sourcing to delivery.';
+  return 'I can help with tracking, status updates, payments, or documents. What do you need?';
+}
+
+/* ================================================================
+   DOWNLOAD REPORT
+================================================================ */
+function downloadReport() {
+  if (!window.asanActiveShipment) {
+    showToast('Track a shipment before creating a summary.', 'error');
+    return;
+  }
+  window.AsanDocuments?.previewShipment(window.asanActiveShipment, window.asanActiveTimeline || []);
+}
+
+/* ================================================================
+   TOAST
+================================================================ */
+function showToast(msg, type = 'info') {
+  const region = document.getElementById('trkToastRegion');
+  const icons = {info:'fa-info-circle', success:'fa-check-circle', error:'fa-exclamation-circle'};
+  const colors = {info:'var(--ag-blue-500)', success:'#16a34a', error:'var(--ag-danger)'};
+  const t = document.createElement('div');
+  t.style.cssText = `display:flex;align-items:center;gap:10px;background:var(--ag-navy-900);color:#fff;padding:13px 18px;border-radius:12px;box-shadow:var(--ag-shadow-lg);font-size:13.5px;min-width:260px;border-left:4px solid ${colors[type]};animation:ag-toast-in .28s ease;`;
+  t.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]};font-size:15px;"></i><span>${esc(msg)}</span>`;
+  region.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(8px)'; t.style.transition='.3s'; setTimeout(()=>t.remove(),320); }, 3200);
+}
+
+/* ================================================================
+   NOTIFICATIONS
+================================================================ */
+let notifications = [];
+
+function initNotifications() {
+  const user = checkAuth(); if (!user) return;
+  notifications = JSON.parse(localStorage.getItem('asan_notifications_'+user.email) || '[]');
+  if (!notifications.length) {
+    notifications = [{id:1,title:'Welcome to Tracking',message:'Track your vehicle imports in real-time. Enter a tracking number above.',type:'info',read:false,timestamp:new Date().toISOString()}];
+    localStorage.setItem('asan_notifications_'+user.email, JSON.stringify(notifications));
+  }
+  updateNotifBadge();
+}
+
+function showNotifications() {
+  document.getElementById('notificationPanel').classList.toggle('active');
+  renderNotifs();
+  notifications.forEach(n=>n.read=true);
+  const user = checkAuth();
+  if (user) localStorage.setItem('asan_notifications_'+user.email, JSON.stringify(notifications));
+  updateNotifBadge();
+}
+function hideNotifications() { document.getElementById('notificationPanel').classList.remove('active'); }
+
+function updateNotifBadge() {
+  const unread = notifications.filter(n=>!n.read).length;
+  const dot = document.getElementById('notificationBadge');
+  const badge = document.getElementById('notifCountBadge');
+  dot.style.display = unread ? 'block' : 'none';
+  if (badge) badge.textContent = unread;
+}
+
+function renderNotifs() {
+  const list = document.getElementById('notificationList');
+  if (!list) return;
+  if (!notifications.length) { list.innerHTML=`<div class="ag-empty"><i class="fas fa-bell"></i><h4>No Notifications</h4><p>You're all caught up!</p></div>`; return; }
+  const icon = {info:'fa-info-circle',success:'fa-check',warning:'fa-exclamation-triangle'};
+  list.innerHTML = notifications.map(n=>`
+    <div class="notification-item${n.read?'':' unread'}" onclick="markNotifRead(${n.id})">
+      <div class="notif-icon ${n.type||'info'}"><i class="fas ${icon[n.type]||'fa-info-circle'}"></i></div>
+      <div class="notif-content"><h5>${esc(n.title)}</h5><p>${esc(n.message)}</p>
+        <div class="notif-meta"><i class="fas fa-clock"></i> ${getTimeAgo(new Date(n.timestamp))}</div>
+      </div>${!n.read?'<div class="unread-dot"></div>':''}
+    </div>`).join('');
+}
+
+function markNotifRead(id) { const n=notifications.find(x=>x.id===id); if(n){n.read=true;} renderNotifs(); updateNotifBadge(); }
+function markAllAsRead()   { notifications.forEach(n=>n.read=true); const u=checkAuth(); if(u) localStorage.setItem('asan_notifications_'+u.email,JSON.stringify(notifications)); updateNotifBadge(); renderNotifs(); }
+function clearAllNotifications() { if(!confirm('Clear all?')) return; notifications=[]; const u=checkAuth(); if(u) localStorage.setItem('asan_notifications_'+u.email,JSON.stringify(notifications)); updateNotifBadge(); renderNotifs(); }
+function getTimeAgo(d) { const s=Math.floor((Date.now()-d)/1000); if(s<60)return'Just now'; if(s<3600)return Math.floor(s/60)+' min ago'; if(s<86400)return Math.floor(s/3600)+' hours ago'; return d.toLocaleDateString(); }
+</script>
+</body>
+</html>

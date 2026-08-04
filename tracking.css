@@ -1,0 +1,8 @@
+/*
+ * tracking.css — Asan Global
+ * The tracking page (tracking.html) now uses design-system.css + scoped
+ * <style> blocks for all its styling.  This file is kept as a safe fallback
+ * so any external link to tracking.css does not produce a 404.
+ *
+ * Do not add new rules here.  All tracking-page styles live in tracking.html.
+ */

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice | Asan Global</title>
+<meta name="description" content="View your Asan Global invoice, download a PDF copy, and pay securely.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<link rel="stylesheet" href="payments.css">
+<link rel="stylesheet" href="pdf-documents.css">
+</head>
+<body data-ag-page="payment">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+    <header class="pay-topbar">
+      <div class="title-group">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Billing &amp; Invoices</p>
+          <h1>Invoice</h1>
+        </div>
+      </div>
+      <div class="pay-topbar-actions">
+        <a href="payment-history.html" class="ag-btn ag-btn-ghost" style="font-size:13px;"><i class="fas fa-clock-rotate-left"></i> History</a>
+        <div class="pay-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <div class="pay-content">
+
+      <!-- Provider note (visible until a real gateway is connected) -->
+      <div class="pay-provider-note" id="providerNote" style="max-width:900px;margin:0 auto 18px;">
+        <i class="fas fa-info-circle"></i>
+        <div>
+          <strong>Sandbox payment mode:</strong> no real payment gateway is connected yet. Paying will use the
+          <code>demo</code> provider and record the payment locally. A future gateway (Hubtel, Paystack,
+          Flutterwave, Stripe, PayPal) plugs into <code>AsanPayments.registerProvider()</code>.
+        </div>
+      </div>
+
+      <div id="invoiceRoot">
+        <div class="ag-loading-overlay" id="invoiceLoading" style="position:static;background:transparent;padding:80px 0;">
+          <div class="ag-spinner lg"></div>
+          <p>Loading invoice…</p>
+        </div>
+      </div>
+
+    </div>
+
+    <footer style="text-align:center; padding: 20px; color: var(--ag-text-400); font-size: 12.5px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
+
+<!-- PDF print placeholder region (the .pay-invoice element is cloned here at print time) -->
+<div id="printInvoiceRegion" style="display:none;"></div>
+
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script src="payments.js"></script>
+<script src="pdf-documents.js"></script>
+<script>
+'use strict';
+const esc = v => window.AsanPayments?.esc ? window.AsanPayments.esc(v) : String(v ?? '');
+
+/* ================================================================
+   AUTH
+================================================================ */
+(function () {
+  const user = window.AsanPayments?.currentUser();
+  if (!user) { window.location.href = 'login.html'; return; }
+  const avatarEl = document.getElementById('userAvatar');
+  if (avatarEl) avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
+})();
+
+/* ================================================================
+   RENDER INVOICE
+================================================================ */
+function statusBadge(status) {
+  const cls = window.AsanPayments.STATUS_BADGE[status] || 'pay-badge pending';
+  const label = window.AsanPayments.STATUS_LABEL[status] || 'Pending';
+  return `<span class="${cls}">${esc(label)}</span>`;
+}
+
+function renderInvoice(inv) {
+  const P = window.AsanPayments;
+  const root = document.getElementById('invoiceRoot');
+  const loading = document.getElementById('invoiceLoading');
+  if (loading) loading.style.display = 'none';
+
+  const items = (inv.line_items || []).map(item => `
+    <tr>
+      <td>${esc(item.label)}</td>
+      <td style="text-align:right;">${P.money(item.amount)}</td>
+    </tr>`).join('');
+
+  const isPaidOrRefunded = inv.status === 'paid' || inv.status === 'refunded';
+  const payBtn = isPaidOrRefunded
+    ? `<span class="ag-badge ag-badge-success" style="font-size:13px;"><i class="fas fa-check-circle"></i> ${esc(P.STATUS_LABEL[inv.status])}</span>`
+    : `<a class="ag-btn ag-btn-primary" href="payment.html?invoice=${encodeURIComponent(inv.id)}" style="text-decoration:none;">
+         <i class="fas fa-lock"></i> Pay Now — ${P.money(inv.amount_due)}
+       </a>`;
+
+  root.innerHTML = `
+    <div class="pay-invoice">
+      <div class="pay-invoice-head">
+        <div class="pay-invoice-brand">
+          <i class="fas fa-file-invoice-dollar"></i>
+          <div>
+            <h2>Asan Global</h2>
+            <span>Import &amp; Shipping Services · Invoice</span>
+          </div>
+        </div>
+        <div class="pay-invoice-meta">
+          <div class="row"><span class="lbl">Invoice#</span><span class="val">${esc(inv.number)}</span></div>
+          <div class="row"><span class="lbl">Issued</span><span class="val">${P.fmtDate(inv.created_at)}</span></div>
+          <div class="row"><span class="lbl">Due</span><span class="val">${P.fmtDate(inv.due_at)}</span></div>
+          <div class="row"><span class="lbl">Status</span><span class="val">${statusBadge(inv.status)}</span></div>
+        </div>
+      </div>
+
+      <div class="pay-invoice-body">
+        <div class="pay-invoice-parties">
+          <div class="pay-invoice-party">
+            <h5>Billed To</h5>
+            <p><strong>${esc(inv.customer)}</strong>${inv.email ? esc(' · ' + inv.email) : ''}</p>
+          </div>
+          <div class="pay-invoice-party">
+            <h5>Shipment</h5>
+            <p><strong>${esc(inv.tracking || '—')}</strong></p>
+            <p style="font-size:13px;color:var(--ag-text-600);">${esc(inv.description)}</p>
+          </div>
+        </div>
+
+        <div class="ag-table-wrap">
+          <table class="ag-table">
+            <thead>
+              <tr><th>Description</th><th style="text-align:right;">Amount</th></tr>
+            </thead>
+            <tbody>
+              ${items}
+              <tr>
+                <td><strong>Total Due</strong></td>
+                <td style="text-align:right;"><strong>${P.money(inv.total)}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pay-invoice-totals">
+          <div class="pay-total-row"><span>Subtotal</span><span>${P.money(inv.total)}</span></div>
+          <div class="pay-total-row"><span>Amount Paid</span><span>${P.money(inv.amount_paid || 0)}</span></div>
+          <div class="pay-total-row grand"><span>Amount Due</span><span>${P.money(inv.amount_due)}</span></div>
+        </div>
+      </div>
+
+      <div class="pay-invoice-actions">
+        ${payBtn}
+        <button class="ag-btn ag-btn-secondary" onclick="printInvoice()"><i class="fas fa-file-pdf"></i> Preview PDF</button>
+        <a class="ag-btn ag-btn-ghost" href="payment-history.html" style="text-decoration:none;"><i class="fas fa-clock-rotate-left"></i> Payment History</a>
+      </div>
+    </div>
+
+    <div class="pay-provider-note" style="max-width:900px;margin:20px auto 0;">
+      <i class="fas fa-info-circle"></i>
+      <div>
+        <strong>PDF invoice:</strong> preview the document before opening your browser's print dialog (Save as PDF).
+        A true server-generated PDF endpoint
+        (<code>GET /api/invoices/:id/pdf</code>) is a future backend item.
+      </div>
+    </div>`;
+}
+
+function loadInvoice() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (!id) { document.getElementById('invoiceRoot').innerHTML = '<div class="ag-empty" style="padding:80px 0;"><i class="fas fa-file-invoice"></i><p>No invoice specified. <a href="payment-history.html">View invoices</a></p></div>'; return; }
+  const inv = window.AsanPayments.getInvoice(id);
+  if (!inv) { document.getElementById('invoiceRoot').innerHTML = '<div class="ag-empty" style="padding:80px 0;"><i class="fas fa-file-invoice"></i><p>Invoice not found. <a href="payment-history.html">View invoices</a></p></div>'; return; }
+  renderInvoice(inv);
+}
+
+/* ================================================================
+   PDF PRINT PLACEHOLDER
+================================================================ */
+function printInvoice() {
+  const inv = window.AsanPayments.getInvoice(new URLSearchParams(window.location.search).get('id'));
+  if (!inv) return;
+  if (window.AsanDocuments) {
+    window.AsanDocuments.previewInvoice(inv);
+    return;
+  }
+  const P = window.AsanPayments;
+
+  const html = `
+    <div class="pay-invoice" style="max-width:850px;margin:0 auto;background:#fff;padding:48px;">
+      <div class="pay-invoice-head" style="display:flex;justify-content:space-between;gap:20px;padding-bottom:20px;margin-bottom:28px;border-bottom:3px solid var(--ag-navy-800);">
+        <div class="pay-invoice-brand" style="display:flex;align-items:center;gap:12px;">
+          <i class="fas fa-file-invoice-dollar" style="font-size:34px;color:var(--ag-blue-600);"></i>
+          <div><h2 style="margin:0;font-size:20px;color:var(--ag-navy-900);">Asan Global</h2><span style="font-size:12px;color:var(--ag-text-600);">Import &amp; Shipping Services</span></div>
+        </div>
+        <div style="text-align:right;font-size:12.5px;color:var(--ag-text-600);">
+          <div><strong>Invoice#:</strong> ${esc(inv.number)}</div>
+          <div><strong>Issued:</strong> ${P.fmtDate(inv.created_at)}</div>
+          <div><strong>Due:</strong> ${P.fmtDate(inv.due_at)}</div>
+          <div><strong>Status:</strong> ${esc(P.STATUS_LABEL[inv.status])}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;">
+        <div><div style="font-size:12px;font-weight:700;color:var(--ag-text-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Billed To</div>
+          <div style="font-size:14px;color:var(--ag-text-900);"><strong>${esc(inv.customer)}</strong>${inv.email ? esc(' · ' + inv.email) : ''}</div></div>
+        <div><div style="font-size:12px;font-weight:700;color:var(--ag-text-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">Shipment</div>
+          <div style="font-size:14px;color:var(--ag-text-900);"><strong>${esc(inv.tracking || '—')}</strong></div>
+          <div style="font-size:13px;color:var(--ag-text-600);">${esc(inv.description)}</div></div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead><tr style="background:var(--ag-surface-muted);">
+          <th style="text-align:left;padding:12px 16px;">Description</th>
+          <th style="text-align:right;padding:12px 16px;">Amount</th></tr></thead>
+        <tbody>
+          ${(inv.line_items || []).map(it => `<tr style="border-top:1px solid var(--ag-border);">
+            <td style="padding:12px 16px;">${esc(it.label)}</td>
+            <td style="padding:12px 16px;text-align:right;">${P.money(it.amount)}</td></tr>`).join('')}
+          <tr style="border-top:1px solid var(--ag-border);">
+            <td style="padding:12px 16px;"><strong>Total Due</strong></td>
+            <td style="padding:12px 16px;text-align:right;"><strong>${P.money(inv.total)}</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:24px;font-size:14px;text-align:right;">
+        <div style="padding:6px 0;"><span style="color:var(--ag-text-600);">Amount Due:&nbsp;</span><strong style="font-size:16px;color:var(--ag-blue-600);">${P.money(inv.amount_due)}</strong></div>
+      </div>
+      <div style="margin-top:32px;padding-top:16px;border-top:1px solid var(--ag-border);font-size:11.5px;color:var(--ag-text-400);display:flex;justify-content:space-between;">
+        <span>Asan Global Import Services · Tema, Ghana</span>
+        <span>Generated ${P.fmtDate(new Date().toISOString())}</span>
+      </div>
+    </div>`;
+
+  /* Inject into a hidden region, then print the page (sidebar/topbar hidden by print CSS). */
+  const region = document.getElementById('printInvoiceRegion');
+  region.innerHTML = html;
+  region.style.display = 'block';
+
+  /* Move it into viewport for print, hide app chrome. */
+  document.body.classList.add('ag-printing-invoice');
+  const styleId = 'ag-invoice-print-css';
+  let style = document.getElementById(styleId);
+  if (!style) {
+    style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      @media print {
+        .ag-app-shell .pay-topbar,
+        .ag-app-shell .pay-content { display:none !important; }
+        .ag-app-shell footer { display:none !important; }
+        #printInvoiceRegion { display:block !important; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  window.print();
+
+  /* Restore after print (some browsers block this during sync; use timeout). */
+  setTimeout(() => {
+    region.style.display = 'none';
+    document.body.classList.remove('ag-printing-invoice');
+    if (style) style.remove();
+  }, 400);
+}
+
+/* ================================================================
+   INIT
+================================================================ */
+document.addEventListener('DOMContentLoaded', loadInvoice);
+</script>
+</body>
+</html>
+

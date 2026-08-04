@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asan Global | Pricing</title>
+<meta name="description" content="Asan Global — import services pricing and service fee structure for vehicle imports and sourcing.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+.price-topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(10px);
+  padding: 18px 28px; border-bottom: 1px solid var(--ag-border);
+  box-shadow: var(--ag-shadow-sm); position: sticky; top: 0; z-index: 900;
+}
+.price-topbar .title-group { display: flex; align-items: center; gap: 14px; }
+.price-topbar h1 { margin: 0; font-size: 22px; color: var(--ag-text-900); }
+.price-topbar .eyebrow { color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 700; margin: 0 0 2px; }
+.price-topbar-actions { display: flex; align-items: center; gap: 14px; }
+.ag-avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); color: #fff; font-weight: 700; font-size: 16px; }
+
+.price-content { padding: 28px; max-width: 1300px; margin: 0 auto; }
+
+.price-hero {
+  background: linear-gradient(135deg, var(--ag-navy-900) 0%, var(--ag-blue-600) 100%);
+  color: #fff; border-radius: var(--ag-radius-lg); padding: 36px 40px;
+  margin-bottom: 28px; box-shadow: var(--ag-shadow-lg);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 28px; flex-wrap: wrap;
+}
+.price-hero .hero-left { flex: 1; min-width: 260px; }
+.price-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--ag-radius-pill); padding: 8px 14px;
+  font-size: 12.5px; font-weight: 600; margin-bottom: 16px; color: var(--ag-gold-400);
+}
+.price-kicker .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ag-gold-400); }
+.price-hero h1 { font-size: 36px; line-height: 1.15; margin: 0 0 10px; color: #fff; }
+.price-hero p { font-size: 15px; color: rgba(255,255,255,0.82); line-height: 1.7; margin: 0 0 22px; max-width: 540px; }
+.price-hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.price-note {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--ag-radius-md); padding: 14px 16px; margin-top: 18px;
+  font-size: 13.5px; color: rgba(255,255,255,0.92);
+}
+.price-note i { color: var(--ag-gold-400); font-size: 18px; margin-top: 2px; }
+.price-note b { color: #fff; }
+
+.price-section-head { margin-bottom: 20px; }
+.price-section-head h2 { font-size: 24px; color: var(--ag-text-900); margin: 0 0 6px; }
+.price-section-head p { font-size: 14px; color: var(--ag-text-600); margin: 0; }
+.price-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+.price-footer-cta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: center; margin-top: 22px; padding: 20px 0; }
+.price-footer-cta p { font-size: 13px; color: var(--ag-text-400); margin: 0; }
+
+@media (max-width: 900px) { .price-hero h1 { font-size: 28px; } .price-hero { padding: 26px 24px; } }
+@media (max-width: 640px) { .price-content { padding: 16px; } .price-hero-cta { flex-direction: column; } }
+</style>
+</head>
+<body data-ag-page="price">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+    <header class="price-topbar">
+      <div class="title-group">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Fee structure &amp; rates</p>
+          <h1>Pricing</h1>
+        </div>
+      </div>
+      <div class="price-topbar-actions">
+        <div class="ag-avatar" id="userAvatar">U</div>
+      </div>
+    </header>
+
+    <div class="price-content">
+      <!-- Hero Banner -->
+      <section class="price-hero ag-reveal">
+        <div class="hero-left">
+          <div class="price-kicker"><span class="dot"></span> Import Services</div>
+          <h1>Transparent Pricing for Vehicle Import &amp; Sourcing</h1>
+          <p>Explore our service structure. If you need a quick estimate, request a quote and our staff will respond within 24 hours.</p>
+          <div class="price-hero-cta">
+            <a class="ag-btn ag-btn-secondary" href="import.html"><i class="fas fa-file-invoice"></i> Request a Quote</a>
+            <a class="ag-btn ag-btn-ghost" href="payment.html" style="color:#fff; border-color:rgba(255,255,255,0.4);"><i class="fas fa-wallet"></i> View Payments</a>
+          </div>
+          <div class="price-note">
+            <i class="fas fa-shield-halved"></i>
+            <div><b>Client note:</b> Before submitting your request, sign the <b>Client Agreement Form</b> to proceed.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing Table -->
+      <section class="ag-card ag-reveal">
+        <div class="price-section-head">
+          <h2>Import Services &amp; Pricing</h2>
+          <p>Service fees are based on scope, shipment details, and agreed terms. Your final quote depends on vehicle value, shipping route, and required documentation.</p>
+          <div class="price-badges">
+            <span class="ag-badge ag-badge-info"><i class="fas fa-check"></i> Staff-managed</span>
+            <span class="ag-badge ag-badge-info"><i class="fas fa-check"></i> Documentation support</span>
+            <span class="ag-badge ag-badge-info"><i class="fas fa-check"></i> Clearance assistance</span>
+          </div>
+        </div>
+
+        <div class="ag-table-wrap">
+          <table class="ag-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Description</th>
+                <th>Pricing Structure</th>
+                <th>Estimated Charges</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><i class="fas fa-car ag-icon-brand"></i> Vehicle Sourcing</td>
+                <td>Finding and negotiating vehicle purchases from overseas dealers.</td>
+                <td>Commission</td>
+                <td><strong>5% – 10% of Vehicle Value</strong></td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-lightbulb ag-icon-brand"></i> Auto Accessories Import</td>
+                <td>Importation of lights, audio systems, body kits, tyres, rims, and other accessories.</td>
+                <td>Profit Margin</td>
+                <td><strong>15% – 30%</strong></td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-globe ag-icon-brand"></i> General Product Sourcing</td>
+                <td>Sourcing products from China, Dubai, USA, and other international markets.</td>
+                <td>Service Fee</td>
+                <td><strong>GHS 300 – GHS 2,000</strong></td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-clipboard-list ag-icon-brand"></i> Supplier Verification</td>
+                <td>Checking supplier credibility, business legitimacy, and product quality.</td>
+                <td>Per Supplier</td>
+                <td><strong>GHS 500 – GHS 1,500</strong></td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-truck-loading ag-icon-brand"></i> Shipping Coordination</td>
+                <td>Managing shipping arrangements, freight forwarding, and logistics.</td>
+                <td>Handling Fee</td>
+                <td><strong>5% – 8% of Shipment Cost</strong></td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-file-signature ag-icon-brand"></i> Customs Clearance Assistance</td>
+                <td>Documentation support and customs clearance assistance.</td>
+                <td>Service Charge</td>
+                <td><strong>Based on Shipment</strong></td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-magnifying-glass ag-icon-brand"></i> Inspection Service</td>
+                <td>Product inspection and quality checks before shipment.</td>
+                <td>Per Inspection</td>
+                <td><strong>GHS 400 – GHS 1,200</strong></td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-layer-group ag-icon-brand"></i> Bulk Procurement</td>
+                <td>Corporate and institutional product sourcing services.</td>
+                <td>Negotiable</td>
+                <td><strong>Custom Quotation</strong></td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-comments ag-icon-brand"></i> Import Consultation</td>
+                <td>Professional guidance on the importation process.</td>
+                <td>Per Session</td>
+                <td><strong>GHS 200 – GHS 500</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="price-footer-cta">
+          <a class="ag-btn ag-btn-primary" href="import.html"><i class="fas fa-paper-plane"></i> Tap to Request a Quote</a>
+          <p>If you're on mobile, this will jump you to the import form for the next step.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer style="text-align:center; padding: 20px; color: var(--ag-text-400); font-size: 12.5px;">
+      © 2026 Asan Global Vehicle Import Services
+    </footer>
+  </main>
+</div>
+
+<script src="sidebar.js"></script>
+<script>
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('asan_current_user'));
+  if (!user) { window.location.href = 'login.html'; return false; }
+  return user;
+}
+
+function logout() {
+  localStorage.removeItem('asan_current_user');
+  window.location.href = 'login.html';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const user = checkAuth();
+  if (user) {
+    document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+  }
+});
+</script>
+</body>
+</html>

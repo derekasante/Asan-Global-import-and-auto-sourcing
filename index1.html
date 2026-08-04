@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login - Asan Global Shipping</title>
+
+<link rel="stylesheet" href="style1.css">
+<link rel="stylesheet" href="style2.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>Welcome Back</h1>
+
+<p>Sign in to continue</p>
+
+<div class="social">
+
+<button class="google" onclick="login()">
+<i class="fab fa-google"></i>
+Continue with Google
+</button>
+
+<button class="microsoft">
+<i class="fab fa-microsoft"></i>
+Continue with Microsoft
+</button>
+
+<button class="github">
+<i class="fab fa-github"></i>
+Continue with GitHub
+</button>
+
+<button class="apple">
+<i class="fab fa-apple"></i>
+Continue with Apple
+</button>
+
+</div>
+
+
+<div class="divider">
+<span>OR</span>
+</div>
+
+<form id="loginForm" novalidate>
+	<input id="email" type="email" placeholder="Email">
+	<div class="error" id="emailError"></div>
+
+	<div class="password-row">
+		<input id="password" type="password" placeholder="Password" aria-describedby="passwordError passwordStrengthText">
+		<button type="button" id="togglePassword" class="password-toggle" aria-pressed="false">Show</button>
+	</div>
+	<div class="strength-meter" id="passwordStrength"><div class="strength-bar" id="strengthBar"></div></div>
+	<div class="strength-text" id="passwordStrengthText"></div>
+	<div class="error" id="passwordError"></div>
+
+	<button class="login-btn" type="submit">
+		Login
+	</button>
+</form>
+
+<p class="register">
+
+Don't have an account?
+
+<a href="#">Register</a>
+
+</p>
+
+</div>
+
+</div>
+
+<script src="javs.js"></script>
+
+</body>
+</html>

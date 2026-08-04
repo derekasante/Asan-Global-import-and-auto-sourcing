@@ -1,0 +1,29 @@
+{
+  "name": "asan-global-backend",
+  "version": "1.0.0",
+  "description": "Production backend for Asan Global Import & Auto Sourcing — user accounts and shipment management",
+  "main": "backend/server.js",
+ "scripts": {
+  "start": "node backend/server.js",
+  "dev": "node --watch backend/server.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["express", "supabase", "shipping", "logistics"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "zod": "^3.24.2"
+  }
+}
+

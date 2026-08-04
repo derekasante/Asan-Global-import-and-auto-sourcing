@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Server Error | Asan Global</title>
+<meta name="robots" content="noindex,nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:var(--ag-font);
+    min-height:100vh;
+    background:linear-gradient(135deg,#1a0a0a 0%,#2d0f0f 45%,#4a1e1e 100%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:32px 20px;overflow:hidden;position:relative;
+  }
+
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.18;pointer-events:none;}
+  .blob-1{width:480px;height:480px;background:#dc2626;top:-100px;left:-100px;animation:blobDrift 11s ease-in-out infinite alternate;}
+  .blob-2{width:320px;height:320px;background:#f59e0b;bottom:-60px;right:-60px;animation:blobDrift 14s ease-in-out infinite alternate-reverse;}
+  .blob-3{width:220px;height:220px;background:#7c3aed;top:40%;left:50%;opacity:.12;animation:blobDrift 9s ease-in-out infinite alternate;}
+  @keyframes blobDrift{from{transform:translateY(0) scale(1);}to{transform:translateY(-28px) scale(1.05);}}
+
+  .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;}
+
+  .err-card{
+    position:relative;z-index:1;
+    background:rgba(255,255,255,.07);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:28px;
+    padding:60px 52px 52px;
+    text-align:center;
+    max-width:560px;width:100%;
+    box-shadow:0 32px 80px rgba(0,0,0,.40);
+    animation:cardIn .55s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes cardIn{from{opacity:0;transform:translateY(24px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+  .err-code{
+    font-size:clamp(5rem,14vw,9rem);
+    font-weight:800;line-height:1;
+    background:linear-gradient(135deg,#fff 0%,#fca5a5 55%,#ef4444 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin-bottom:12px;letter-spacing:-4px;
+  }
+
+  .err-icon{
+    width:72px;height:72px;border-radius:50%;
+    background:linear-gradient(135deg,#dc2626,#7f1d1d);
+    border:2px solid rgba(255,255,255,.18);
+    display:inline-grid;place-items:center;
+    font-size:30px;color:#fca5a5;
+    margin-bottom:22px;
+    box-shadow:0 0 0 10px rgba(220,38,38,.15);
+  }
+
+  /* Pulse animation on the warning icon */
+  .err-icon i{animation:iconPulse 2.5s ease-in-out infinite;}
+  @keyframes iconPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+
+  .err-title{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;color:#fff;margin-bottom:10px;}
+  .err-sub{font-size:15px;color:rgba(255,255,255,.60);line-height:1.7;margin-bottom:32px;max-width:420px;margin-left:auto;margin-right:auto;}
+
+  /* Status strip */
+  .err-status-strip{
+    display:inline-flex;align-items:center;gap:9px;
+    background:rgba(220,38,38,.18);border:1px solid rgba(220,38,38,.35);
+    border-radius:999px;padding:8px 18px;
+    font-size:12.5px;font-weight:700;color:#fca5a5;
+    margin-bottom:28px;
+  }
+  .err-status-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;animation:dotPulse 1.5s ease-in-out infinite;}
+  @keyframes dotPulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+  .err-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+  .err-btn-primary{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:14px 26px;border-radius:999px;border:none;cursor:pointer;
+    background:linear-gradient(135deg,#dc2626,#7f1d1d);
+    color:#fff;font-family:var(--ag-font);font-size:14.5px;font-weight:700;
+    text-decoration:none;
+    box-shadow:0 10px 24px rgba(220,38,38,.35);
+    transition:transform .18s,box-shadow .18s;
+  }
+  .err-btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(220,38,38,.45);}
+  .err-btn-secondary{
+    display:inline-flex;align-items:center;gap:9px;
+    padding:14px 26px;border-radius:999px;cursor:pointer;
+    background:rgba(255,255,255,.10);border:1.5px solid rgba(255,255,255,.22);
+    color:rgba(255,255,255,.88);font-family:var(--ag-font);font-size:14.5px;font-weight:600;
+    text-decoration:none;transition:background .18s,border-color .18s,transform .18s;
+  }
+  .err-btn-secondary:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4);transform:translateY(-2px);}
+
+  /* Support contact block */
+  .err-support{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:16px;
+    padding:20px 24px;
+    text-align:left;
+  }
+  .err-support p{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:12px;line-height:1.6;}
+  .err-support-links{display:flex;flex-direction:column;gap:8px;}
+  .err-support-link{
+    display:flex;align-items:center;gap:12px;
+    padding:10px 14px;border-radius:10px;
+    background:rgba(255,255,255,.06);
+    text-decoration:none;color:rgba(255,255,255,.75);font-size:13.5px;font-weight:600;
+    transition:background .18s,color .18s;
+  }
+  .err-support-link:hover{background:rgba(255,255,255,.14);color:#fff;}
+  .err-support-link i{width:16px;color:#f87171;flex-shrink:0;}
+  .err-support-link span{font-size:12px;color:rgba(255,255,255,.45);margin-left:auto;}
+
+  .err-brand{
+    position:relative;z-index:1;
+    margin-top:36px;display:flex;align-items:center;gap:12px;
+    color:rgba(255,255,255,.35);font-size:13px;
+  }
+  .err-brand svg{opacity:.55;}
+  .err-brand a{color:rgba(255,255,255,.35);text-decoration:none;transition:color .18s;}
+  .err-brand a:hover{color:rgba(255,255,255,.75);}
+</style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="dots"></div>
+
+  <main class="err-card" role="main">
+    <div class="err-icon" aria-hidden="true"><i class="fas fa-triangle-exclamation"></i></div>
+    <div class="err-code" aria-label="Error 500">500</div>
+
+    <div class="err-status-strip">
+      <span class="err-status-dot"></span>
+      Service Temporarily Unavailable
+    </div>
+
+    <h1 class="err-title">Something Went Wrong</h1>
+    <p class="err-sub">
+      Our server encountered an unexpected error. Our team has been
+      notified and is working to fix it. Please try again in a few minutes.
+    </p>
+
+    <div class="err-actions">
+      <button onclick="location.reload()" class="err-btn-primary">
+        <i class="fas fa-rotate-right"></i> Try Again
+      </button>
+      <a href="index.html" class="err-btn-secondary">
+        <i class="fas fa-home"></i> Home Page
+      </a>
+    </div>
+
+    <div class="err-support">
+      <p>If the problem continues, please contact our support team directly:</p>
+      <div class="err-support-links">
+        <a href="https://wa.me/233245357611" target="_blank" rel="noopener" class="err-support-link">
+          <i class="fab fa-whatsapp"></i> WhatsApp Support
+          <span>Fastest response</span>
+        </a>
+        <a href="tel:+233245357611" class="err-support-link">
+          <i class="fas fa-phone"></i> +233 245 357 611
+          <span>Mon–Sat 8AM–6PM</span>
+        </a>
+        <a href="mailto:info@asanglobal.com" class="err-support-link">
+          <i class="fas fa-envelope"></i> info@asanglobal.com
+          <span>24–48 hr reply</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="err-brand">
+    <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect width="48" height="48" rx="10" fill="#dc2626" opacity=".45"/>
+      <path d="M8 30h32v3a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-3z" fill="#fff" opacity=".7"/>
+      <path d="M10 30l4-9h20l4 9H10z" fill="#fff" opacity=".7"/>
+      <path d="M16 21l3-5h10l3 5H16z" fill="#fca5a5" opacity=".9"/>
+      <circle cx="15" cy="31" r="4" fill="#7f1d1d"/><circle cx="15" cy="31" r="2" fill="#fca5a5"/>
+      <circle cx="33" cy="31" r="4" fill="#7f1d1d"/><circle cx="33" cy="31" r="2" fill="#fca5a5"/>
+    </svg>
+    <span>© 2026 <a href="index.html">Asan Global</a> · Import &amp; Auto Sourcing</span>
+  </footer>
+</body>
+</html>

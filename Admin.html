@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel | Asan Global</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ============================================================
+   ADMIN PANEL — Professional Logistics Management System
+   ============================================================ */
+
+/* ---- Topbar ---- */
+.admin-topbar {
+  display:flex; justify-content:space-between; align-items:center; gap:16px;
+  background:#fff; padding:0 28px; border-bottom:1px solid var(--ag-border);
+  position:sticky; top:0; z-index:900; height:66px;
+  box-shadow:0 1px 3px rgba(15,23,42,.06);
+}
+.admin-topbar-left  { display:flex; align-items:center; gap:14px; }
+.admin-topbar-right { display:flex; align-items:center; gap:12px; }
+.admin-eyebrow { font-size:10.5px; font-weight:700; color:var(--ag-blue-600); text-transform:uppercase; letter-spacing:.14em; margin:0 0 1px; }
+.admin-topbar h1 { margin:0; font-size:20px; font-weight:700; color:var(--ag-text-900); }
+.admin-name-chip {
+  display:flex; align-items:center; gap:10px;
+  background:var(--ag-surface-muted); border:1px solid var(--ag-border);
+  border-radius:var(--ag-radius-pill); padding:6px 14px 6px 8px;
+}
+.admin-name-chip .avatar {
+  width:30px; height:30px; border-radius:50%;
+  background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700));
+  color:#fff; font-size:13px; font-weight:700; display:grid; place-items:center;
+}
+.admin-name-chip .name  { font-size:13px; font-weight:700; color:var(--ag-text-900); }
+.admin-name-chip .badge { font-size:10px; font-weight:700; background:#fee2e2; color:#dc2626; padding:2px 7px; border-radius:999px; }
+
+/* ---- Search bar ---- */
+.admin-search-bar {
+  display:flex; align-items:center; gap:8px;
+  background:var(--ag-surface-muted); border:1.5px solid var(--ag-border);
+  border-radius:var(--ag-radius-pill); padding:8px 16px; width:min(260px,30vw);
+  transition:border-color .18s,box-shadow .18s;
+}
+.admin-search-bar:focus-within { border-color:var(--ag-blue-500); box-shadow:0 0 0 4px rgba(59,130,246,.1); }
+.admin-search-bar i { color:var(--ag-text-400); font-size:13px; }
+.admin-search-bar input { border:none; outline:none; background:transparent; font-family:var(--ag-font); font-size:13px; color:var(--ag-text-900); width:100%; }
+
+/* ---- Content ---- */
+.admin-content { padding:28px; max-width:1500px; margin:0 auto; }
+
+/* ---- Analytics banner ---- */
+.admin-analytics {
+  background:linear-gradient(135deg,var(--ag-navy-950) 0%,var(--ag-navy-800) 45%,var(--ag-blue-600) 100%);
+  border-radius:var(--ag-radius-lg); padding:32px 36px; margin-bottom:24px;
+  display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center;
+  position:relative; overflow:hidden; box-shadow:var(--ag-shadow-lg);
+}
+.admin-analytics::before {
+  content:''; position:absolute; inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.admin-analytics-blob { position:absolute; border-radius:50%; filter:blur(70px); opacity:.18; pointer-events:none; }
+.admin-analytics-blob-1 { width:300px; height:300px; background:#2563eb; top:-80px; right:260px; }
+.admin-analytics-blob-2 { width:220px; height:220px; background:#ffd54f; bottom:-60px; right:40px; opacity:.12; }
+.admin-analytics-body { position:relative; z-index:1; }
+.admin-analytics-body h2 { color:#fff; font-size:clamp(1.2rem,2vw,1.7rem); font-weight:800; margin:0 0 6px; }
+.admin-analytics-body p  { color:rgba(255,255,255,.68); font-size:13.5px; margin:0; line-height:1.6; }
+.admin-analytics-meta { position:relative; z-index:1; display:flex; gap:16px; flex-wrap:wrap; }
+.admin-meta-stat { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18); border-radius:var(--ag-radius-md); padding:14px 20px; text-align:center; min-width:110px; }
+.admin-meta-stat strong { display:block; font-size:1.5rem; font-weight:800; color:#fff; line-height:1; }
+.admin-meta-stat span   { font-size:11.5px; color:rgba(255,255,255,.6); display:block; margin-top:3px; }
+
+/* ---- Stat cards (6-grid) ---- */
+.admin-stats-grid { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:14px; margin-bottom:24px; }
+.admin-kpi {
+  background:#fff; border:1px solid var(--ag-border); border-radius:var(--ag-radius-lg);
+  padding:18px 16px; box-shadow:var(--ag-shadow-sm); position:relative; overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.admin-kpi:hover { transform:translateY(-3px); box-shadow:var(--ag-shadow-md); }
+.admin-kpi::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; border-radius:0 0 var(--ag-radius-lg) var(--ag-radius-lg); }
+.admin-kpi.blue::after   { background:linear-gradient(90deg,#2563eb,#00d4ff); }
+.admin-kpi.green::after  { background:linear-gradient(90deg,#16a34a,#4ade80); }
+.admin-kpi.amber::after  { background:linear-gradient(90deg,#f59e0b,#fcd34d); }
+.admin-kpi.purple::after { background:linear-gradient(90deg,#7c3aed,#a78bfa); }
+.admin-kpi.rose::after   { background:linear-gradient(90deg,#e11d48,#fb7185); }
+.admin-kpi.teal::after   { background:linear-gradient(90deg,#0891b2,#22d3ee); }
+.admin-kpi-icon { width:38px; height:38px; border-radius:10px; display:grid; place-items:center; font-size:16px; color:#fff; margin-bottom:12px; }
+.admin-kpi-icon.blue   { background:linear-gradient(135deg,#2563eb,#1e4a82); }
+.admin-kpi-icon.green  { background:linear-gradient(135deg,#16a34a,#15803d); }
+.admin-kpi-icon.amber  { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.admin-kpi-icon.purple { background:linear-gradient(135deg,#7c3aed,#5b21b6); }
+.admin-kpi-icon.rose   { background:linear-gradient(135deg,#e11d48,#be123c); }
+.admin-kpi-icon.teal   { background:linear-gradient(135deg,#0891b2,#0e7490); }
+.admin-kpi-val   { font-size:24px; font-weight:800; color:var(--ag-text-900); line-height:1; margin-bottom:3px; }
+.admin-kpi-label { font-size:11.5px; color:var(--ag-text-600); font-weight:500; }
+.admin-kpi-trend { font-size:11px; font-weight:700; padding:2px 7px; border-radius:999px; margin-top:6px; display:inline-block; }
+.admin-kpi-trend.up   { background:#dcfce7; color:#15803d; }
+.admin-kpi-trend.down { background:#fee2e2; color:#dc2626; }
+.admin-kpi-trend.neu  { background:#f1f5f9; color:#64748b; }
+</style>
+
+<style>
+/* ---- Main two-column grid ---- */
+.admin-main-grid { display:grid; grid-template-columns:1fr 340px; gap:22px; margin-bottom:24px; }
+
+/* ---- Section card ---- */
+.admin-section-card {
+  background:#fff; border:1px solid var(--ag-border); border-radius:var(--ag-radius-lg);
+  box-shadow:var(--ag-shadow-sm); overflow:hidden;
+}
+.admin-section-head {
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding:18px 22px 14px; border-bottom:1px solid var(--ag-border); flex-wrap:wrap;
+}
+.admin-section-head h3 { margin:0; font-size:15px; font-weight:700; color:var(--ag-text-900); }
+.admin-section-body    { padding:18px 22px; }
+
+/* ---- Shipment management table ---- */
+.admin-table { width:100%; border-collapse:collapse; font-size:13px; }
+.admin-table th {
+  text-align:left; padding:10px 12px; background:var(--ag-surface-muted);
+  color:var(--ag-text-600); font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em; border-bottom:1px solid var(--ag-border);
+}
+.admin-table td { padding:12px; border-bottom:1px solid var(--ag-border); color:var(--ag-text-900); vertical-align:middle; }
+.admin-table tr:last-child td { border-bottom:none; }
+.admin-table tr:hover td { background:var(--ag-surface-muted); }
+.admin-table-wrap { overflow-x:auto; max-height:480px; overflow-y:auto; }
+
+/* ---- Status select inside table ---- */
+.status-select {
+  border:1.5px solid var(--ag-border); border-radius:var(--ag-radius-sm);
+  padding:5px 8px; font-family:var(--ag-font); font-size:12px;
+  background:#fff; color:var(--ag-text-900); cursor:pointer;
+  transition:border-color .18s;
+}
+.status-select:focus { border-color:var(--ag-blue-500); outline:none; }
+
+/* ---- Revenue chart (bar chart) ---- */
+.admin-chart-bars {
+  display:flex; align-items:flex-end; gap:8px; height:140px;
+  padding:0 8px; margin-bottom:8px;
+}
+.admin-chart-bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.admin-chart-bar-wrap { flex:1; display:flex; flex-direction:column; justify-content:flex-end; width:100%; }
+.admin-chart-bar {
+  background:linear-gradient(to top, var(--ag-blue-600), #60a5fa);
+  border-radius:4px 4px 0 0; width:100%; transition:height 1s cubic-bezier(.4,0,.2,1);
+  min-height:4px; position:relative;
+}
+.admin-chart-bar:hover::after {
+  content:attr(data-label); position:absolute; top:-28px; left:50%; transform:translateX(-50%);
+  background:var(--ag-navy-900); color:#fff; font-size:11px; padding:3px 8px;
+  border-radius:6px; white-space:nowrap; pointer-events:none; font-family:var(--ag-font);
+}
+.admin-chart-bar-label { font-size:10.5px; color:var(--ag-text-400); font-weight:600; }
+.admin-chart-x { display:flex; justify-content:space-between; padding:0 8px; }
+.admin-chart-x span { font-size:10.5px; color:var(--ag-text-400); }
+
+/* ---- Recent orders mini-list ---- */
+.admin-order-list { display:flex; flex-direction:column; }
+.admin-order-item {
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding:11px 22px; border-bottom:1px solid var(--ag-border);
+  transition:background .18s;
+}
+.admin-order-item:last-child { border-bottom:none; }
+.admin-order-item:hover { background:var(--ag-surface-muted); }
+.admin-order-left { display:flex; align-items:center; gap:10px; }
+.admin-order-icon { width:34px; height:34px; border-radius:10px; display:grid; place-items:center; font-size:13px; color:#fff; flex-shrink:0; }
+.admin-order-icon.transit { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.admin-order-icon.customs { background:linear-gradient(135deg,#ec4899,#be185d); }
+.admin-order-icon.arrived { background:linear-gradient(135deg,#10b981,#059669); }
+.admin-order-icon.done    { background:linear-gradient(135deg,#16a34a,#15803d); }
+.admin-order-icon.proc    { background:linear-gradient(135deg,#2563eb,#1e4a82); }
+.admin-order-name { font-size:13.5px; font-weight:700; color:var(--ag-text-900); }
+.admin-order-ref  { font-size:11.5px; color:var(--ag-text-400); }
+.admin-order-amount { font-size:14px; font-weight:800; color:var(--ag-navy-800); }
+
+/* ---- Status badge pills ---- */
+.st-badge { display:inline-flex; align-items:center; gap:5px; border-radius:999px; padding:4px 10px; font-size:11px; font-weight:700; white-space:nowrap; }
+.st-badge .dot { width:6px; height:6px; border-radius:50%; }
+.st-pending    { background:#f1f5f9; color:#475569; } .st-pending .dot    { background:#94a3b8; }
+.st-processing { background:#dbeafe; color:#1d4ed8; } .st-processing .dot { background:#2563eb; animation:stpulse 2s infinite; }
+.st-transit    { background:#fef3c7; color:#92400e; } .st-transit .dot    { background:#f59e0b; animation:stpulse 2s infinite; }
+.st-customs    { background:#fce7f3; color:#9d174d; } .st-customs .dot    { background:#ec4899; animation:stpulse 2s infinite; }
+.st-arrived    { background:#d1fae5; color:#065f46; } .st-arrived .dot    { background:#10b981; animation:stpulse 2s infinite; }
+.st-delivered  { background:#dcfce7; color:#15803d; } .st-delivered .dot  { background:#16a34a; }
+@keyframes stpulse { 0%,100%{opacity:1;} 50%{opacity:.45;} }
+
+/* ---- Customer table ---- */
+.admin-customer-table { width:100%; border-collapse:collapse; font-size:13px; }
+.admin-customer-table th { text-align:left; padding:10px 14px; background:var(--ag-surface-muted); color:var(--ag-text-600); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; border-bottom:1px solid var(--ag-border); }
+.admin-customer-table td { padding:12px 14px; border-bottom:1px solid var(--ag-border); color:var(--ag-text-900); vertical-align:middle; }
+.admin-customer-table tr:last-child td { border-bottom:none; }
+.admin-customer-table tr:hover td { background:var(--ag-surface-muted); }
+.admin-customer-avatar { width:32px; height:32px; border-radius:50%; display:grid; place-items:center; background:linear-gradient(135deg,var(--ag-blue-600),var(--ag-navy-700)); color:#fff; font-size:13px; font-weight:700; flex-shrink:0; }
+
+/* ---- Admin action cards ---- */
+.admin-card-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-bottom:24px; }
+.admin-mgmt-card {
+  background:#fff; border:1.5px solid var(--ag-border); border-radius:var(--ag-radius-lg);
+  padding:20px 16px; text-align:center; box-shadow:var(--ag-shadow-sm);
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+}
+.admin-mgmt-card:hover { transform:translateY(-4px); box-shadow:var(--ag-shadow-md); border-color:var(--ag-blue-500); }
+.admin-mgmt-icon { width:48px; height:48px; border-radius:14px; display:grid; place-items:center; font-size:20px; color:#fff; margin:0 auto 12px; }
+.admin-mgmt-icon.blue   { background:linear-gradient(135deg,#2563eb,#1e4a82); }
+.admin-mgmt-icon.green  { background:linear-gradient(135deg,#16a34a,#15803d); }
+.admin-mgmt-icon.amber  { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.admin-mgmt-icon.purple { background:linear-gradient(135deg,#7c3aed,#5b21b6); }
+.admin-mgmt-icon.teal   { background:linear-gradient(135deg,#0891b2,#0e7490); }
+.admin-mgmt-icon.rose   { background:linear-gradient(135deg,#e11d48,#be123c); }
+.admin-mgmt-icon.navy   { background:linear-gradient(135deg,var(--ag-navy-800),var(--ag-navy-900)); }
+.admin-mgmt-icon.indigo { background:linear-gradient(135deg,#4f46e5,#3730a3); }
+.admin-mgmt-icon.cyan   { background:linear-gradient(135deg,#06b6d4,#0891b2); }
+.admin-mgmt-icon.lime   { background:linear-gradient(135deg,#65a30d,#4d7c0f); }
+.admin-mgmt-label { font-size:13px; font-weight:700; color:var(--ag-text-900); margin:0 0 6px; }
+.admin-mgmt-desc  { font-size:11.5px; color:var(--ag-text-400); margin-bottom:14px; line-height:1.4; }
+.admin-mgmt-btns  { display:flex; flex-direction:column; gap:6px; }
+
+/* ---- Chat section ---- */
+.chat-panel { display:grid; grid-template-columns:1.3fr 0.7fr; gap:18px; align-items:start; margin-top:18px; }
+.chat-messages {
+  background:var(--ag-surface-muted); border-radius:var(--ag-radius-md);
+  border:1px solid var(--ag-border); padding:16px;
+  min-height:280px; max-height:360px; overflow-y:auto;
+  display:flex; flex-direction:column; gap:10px;
+}
+.chat-bubble { max-width:85%; padding:10px 14px; border-radius:var(--ag-radius-md); font-size:13.5px; line-height:1.45; }
+.chat-bubble.bot  { background:linear-gradient(135deg,var(--ag-navy-900),var(--ag-blue-600)); color:#fff; align-self:flex-end; border-bottom-right-radius:4px; }
+.chat-bubble.user { background:var(--ag-surface); border:1px solid var(--ag-border); color:var(--ag-text-900); align-self:flex-start; border-bottom-left-radius:4px; }
+.chat-bubble > div:first-child { font-weight:700; font-size:11.5px; margin-bottom:4px; opacity:.82; }
+
+/* ---- Reports stats row ---- */
+.report-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+.report-stat { padding:18px; border-radius:var(--ag-radius-md); text-align:center; color:#fff; }
+.report-stat h3 { margin:0 0 4px; font-size:28px; font-weight:800; }
+.report-stat p  { margin:0; font-size:12px; opacity:.85; }
+.report-stat.blue   { background:linear-gradient(135deg,#2563eb,var(--ag-navy-800)); }
+.report-stat.green  { background:linear-gradient(135deg,#16a34a,#15803d); }
+.report-stat.orange { background:linear-gradient(135deg,#f59e0b,#d97706); }
+.report-stat.teal   { background:linear-gradient(135deg,#0891b2,#0e7490); }
+
+/* ---- Data list (view modal) ---- */
+.data-list { margin-top:10px; max-height:340px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
+.data-item { background:var(--ag-surface-muted); padding:14px 16px; border-radius:var(--ag-radius-sm); border-left:4px solid var(--ag-blue-500); }
+.data-item h4 { margin:0 0 6px; color:var(--ag-navy-800); font-size:14px; }
+.data-item p  { margin:3px 0; color:var(--ag-text-600); font-size:12.5px; }
+.data-item .actions { margin-top:10px; display:flex; gap:8px; }
+
+/* ---- Notification toast ---- */
+.notification-badge {
+  position:fixed; top:80px; right:20px;
+  background:var(--ag-navy-900); color:#fff;
+  padding:13px 18px; border-radius:var(--ag-radius-md);
+  box-shadow:var(--ag-shadow-lg); z-index:4000;
+  display:flex; align-items:center; gap:10px;
+  font-size:13.5px; border-left:4px solid var(--ag-success);
+  animation:ag-toast-in .3s var(--ag-ease) forwards;
+  font-family:var(--ag-font); max-width:340px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width:1300px) { .admin-stats-grid { grid-template-columns:repeat(3,1fr); } .admin-main-grid { grid-template-columns:1fr; } }
+@media (max-width:1000px) { .admin-card-grid { grid-template-columns:repeat(3,1fr); } .admin-stats-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:700px)  { .admin-card-grid { grid-template-columns:repeat(2,1fr); } .admin-stats-grid { grid-template-columns:repeat(2,1fr); } .chat-panel { grid-template-columns:1fr; } .admin-content { padding:14px; } .report-stats { grid-template-columns:repeat(2,1fr); } .admin-search-bar { display:none; } .admin-analytics { grid-template-columns:1fr; } }
+</style>
+
+</head>
+<body data-ag-page="admin">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="admin-eyebrow">System Administration</p>
+          <h1><i class="fas fa-user-shield" style="color:var(--ag-blue-600);margin-right:8px;"></i>Admin Control Panel</h1>
+        </div>
+      </div>
+      <div class="admin-topbar-right">
+        <div class="admin-search-bar">
+          <i class="fas fa-search"></i>
+          <input type="search" id="adminSearch" placeholder="Search imports, customers…" autocomplete="off">
+        </div>
+        <div class="admin-name-chip">
+          <div class="avatar" id="adminAvatar">A</div>
+          <div>
+            <div class="name" id="adminName">Admin</div>
+            <div class="badge">ADMIN</div>
+          </div>
+        </div>
+        <button class="ag-btn ag-btn-danger" onclick="logout()" style="font-size:13px;padding:9px 16px;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- ===================== ANALYTICS BANNER ===================== -->
+      <section class="admin-analytics ag-reveal">
+        <div class="admin-analytics-blob admin-analytics-blob-1"></div>
+        <div class="admin-analytics-blob admin-analytics-blob-2"></div>
+        <div class="admin-analytics-body">
+          <h2>Logistics Control Center</h2>
+          <p>Manage all vehicle imports, staff, finances, inventory, and customer accounts from one secure dashboard.</p>
+        </div>
+        <div class="admin-analytics-meta">
+          <div class="admin-meta-stat"><strong id="metaTotal">—</strong><span>Total Imports</span></div>
+          <div class="admin-meta-stat"><strong id="metaDelivered">—</strong><span>Delivered</span></div>
+          <div class="admin-meta-stat"><strong id="metaRevenue">—</strong><span>Revenue</span></div>
+          <div class="admin-meta-stat"><strong id="metaCustomers">—</strong><span>Customers</span></div>
+        </div>
+      </section>
+
+      <!-- ===================== KPI CARDS ===================== -->
+      <section class="admin-stats-grid ag-reveal">
+        <div class="admin-kpi blue">
+          <div class="admin-kpi-icon blue"><i class="fas fa-car"></i></div>
+          <div class="admin-kpi-val" id="kpiImports">0</div>
+          <div class="admin-kpi-label">Total Imports</div>
+          <div class="admin-kpi-trend neu" id="kpiImportsTrend">All time</div>
+        </div>
+        <div class="admin-kpi green">
+          <div class="admin-kpi-icon green"><i class="fas fa-check-circle"></i></div>
+          <div class="admin-kpi-val" id="kpiDelivered">0</div>
+          <div class="admin-kpi-label">Delivered</div>
+          <div class="admin-kpi-trend up" id="kpiDeliveredTrend">Completed</div>
+        </div>
+        <div class="admin-kpi amber">
+          <div class="admin-kpi-icon amber"><i class="fas fa-clock"></i></div>
+          <div class="admin-kpi-val" id="kpiPending">0</div>
+          <div class="admin-kpi-label">Active / Pending</div>
+          <div class="admin-kpi-trend neu">In Progress</div>
+        </div>
+        <div class="admin-kpi purple">
+          <div class="admin-kpi-icon purple"><i class="fas fa-users"></i></div>
+          <div class="admin-kpi-val" id="kpiUsers">0</div>
+          <div class="admin-kpi-label">Registered Users</div>
+          <div class="admin-kpi-trend up">Customers</div>
+        </div>
+        <div class="admin-kpi rose">
+          <div class="admin-kpi-icon rose"><i class="fas fa-wallet"></i></div>
+          <div class="admin-kpi-val" id="kpiRevenue">$0</div>
+          <div class="admin-kpi-label">Total Fees Collected</div>
+          <div class="admin-kpi-trend up">Finance Records</div>
+        </div>
+        <div class="admin-kpi teal">
+          <div class="admin-kpi-icon teal"><i class="fas fa-user-tie"></i></div>
+          <div class="admin-kpi-val" id="kpiStaff">0</div>
+          <div class="admin-kpi-label">Active Staff</div>
+          <div class="admin-kpi-trend neu">Specialists</div>
+        </div>
+      </section>
+
+      <!-- ===================== MAIN GRID: TABLE + SIDEBAR ===================== -->
+      <div class="admin-main-grid ag-reveal">
+
+        <!-- LEFT: Shipment management table -->
+        <div class="admin-section-card">
+          <div class="admin-section-head">
+            <h3><i class="fas fa-ship" style="margin-right:8px;color:var(--ag-blue-600);"></i>Shipment Management</h3>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="ag-btn ag-btn-primary" style="font-size:12.5px;padding:8px 14px;" onclick="openModal('imports')">
+                <i class="fas fa-plus"></i> Add Import
+              </button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12.5px;padding:8px 14px;" onclick="refreshShipmentTable()">
+                <i class="fas fa-refresh"></i> Refresh
+              </button>
+            </div>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Tracking</th>
+                  <th>Vehicle</th>
+                  <th>Customer</th>
+                  <th>Route</th>
+                  <th>Status</th>
+                  <th>Value</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="shipmentTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- RIGHT: Revenue chart + recent orders -->
+        <div style="display:flex;flex-direction:column;gap:22px;">
+
+          <!-- Revenue bar chart -->
+          <div class="admin-section-card">
+            <div class="admin-section-head">
+              <h3><i class="fas fa-chart-bar" style="margin-right:8px;color:var(--ag-blue-600);"></i>Revenue Overview</h3>
+              <span class="ag-badge ag-badge-info">Last 7 months</span>
+            </div>
+            <div class="admin-section-body" style="padding-top:14px;">
+              <div class="admin-chart-bars" id="revenueChart"></div>
+              <div class="admin-chart-x" id="revenueChartX"></div>
+            </div>
+          </div>
+
+          <!-- Recent orders -->
+          <div class="admin-section-card">
+            <div class="admin-section-head">
+              <h3><i class="fas fa-list" style="margin-right:8px;color:var(--ag-blue-600);"></i>Recent Orders</h3>
+              <button class="ag-btn ag-btn-ghost" style="font-size:12px;padding:5px 12px;" onclick="viewData('imports')">View All</button>
+            </div>
+            <div class="admin-order-list" id="recentOrdersList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================== CUSTOMER TABLE ===================== -->
+      <div class="admin-section-card ag-reveal" style="margin-bottom:24px;">
+        <div class="admin-section-head">
+          <h3><i class="fas fa-users" style="margin-right:8px;color:var(--ag-blue-600);"></i>Customer Management</h3>
+          <button class="ag-btn ag-btn-primary" style="font-size:12.5px;padding:8px 14px;" onclick="openModal('users')">
+            <i class="fas fa-user-plus"></i> Add Customer
+          </button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="admin-customer-table">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Imports</th>
+                <th>Total Value</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="customerTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===================== CLIENT MESSAGES ===================== -->
+      <section class="admin-section-card ag-reveal" style="padding:22px;margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;">
+          <div>
+            <h3 style="margin:0 0 4px;font-size:16px;font-weight:700;color:var(--ag-text-900);">
+              <i class="fas fa-comments" style="color:var(--ag-blue-600);margin-right:8px;"></i>Client Messages
+            </h3>
+            <p style="margin:0;color:var(--ag-text-600);font-size:13px;">Private 1-to-1 encrypted conversations with clients.</p>
+          </div>
+          <span class="ag-badge ag-badge-success"><i class="fas fa-lock" style="margin-right:5px;"></i>Encrypted · 1:1</span>
+        </div>
+        <div class="chat-panel">
+          <div>
+            <div class="ag-field" style="margin-bottom:12px;">
+              <label for="adminChatClientSelect">Conversation with</label>
+              <select id="adminChatClientSelect" class="ag-select"></select>
+            </div>
+            <div class="chat-messages" id="adminChatMessages"></div>
+          </div>
+          <form id="adminChatForm" style="display:flex;flex-direction:column;gap:10px;">
+            <div class="ag-field" style="margin-bottom:0;">
+              <label for="adminChatInput">Message to client</label>
+              <input id="adminChatInput" type="text" class="ag-input" placeholder="Type message to client…" autocomplete="off">
+            </div>
+            <button id="adminChatSendBtn" type="submit" class="ag-btn ag-btn-primary" style="width:100%;">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+            <p style="font-size:12px;color:var(--ag-text-400);line-height:1.4;margin:0;">Reply to tracking, payment, and import queries.</p>
+          </form>
+        </div>
+      </section>
+
+      <!-- ===================== MANAGEMENT CARDS ===================== -->
+      <section class="ag-reveal" style="margin-bottom:24px;">
+        <div style="margin-bottom:16px;">
+          <h3 style="font-size:16px;font-weight:700;color:var(--ag-text-900);margin:0;">
+            <i class="fas fa-cogs" style="color:var(--ag-blue-600);margin-right:8px;"></i>Data Management
+          </h3>
+        </div>
+        <div class="admin-card-grid">
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon blue"><i class="fas fa-file-import"></i></div>
+            <div class="admin-mgmt-label">Imports</div>
+            <div class="admin-mgmt-desc">Vehicle import records</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-primary" style="font-size:12px;padding:7px 12px;" onclick="openModal('imports')"><i class="fas fa-plus"></i> Add</button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('imports')"><i class="fas fa-list"></i> View</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon green"><i class="fas fa-users-cog"></i></div>
+            <div class="admin-mgmt-label">Staff</div>
+            <div class="admin-mgmt-desc">Import specialists</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-primary" style="font-size:12px;padding:7px 12px;" onclick="openModal('staff')"><i class="fas fa-plus"></i> Add</button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('staff')"><i class="fas fa-list"></i> View</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon amber"><i class="fas fa-car"></i></div>
+            <div class="admin-mgmt-label">Vehicles</div>
+            <div class="admin-mgmt-desc">Vehicle inventory</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-primary" style="font-size:12px;padding:7px 12px;" onclick="openModal('vehicles')"><i class="fas fa-plus"></i> Add</button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('vehicles')"><i class="fas fa-list"></i> View</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon purple"><i class="fas fa-blender"></i></div>
+            <div class="admin-mgmt-label">Appliances</div>
+            <div class="admin-mgmt-desc">Shop catalog &amp; orders</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-primary" style="font-size:12px;padding:7px 12px;" onclick="openModal('appliances')"><i class="fas fa-plus"></i> Add</button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('appliances')"><i class="fas fa-list"></i> View</button>
+              <button class="ag-btn ag-btn-ghost" style="font-size:12px;padding:5px 12px;" onclick="viewData('applianceOrders')"><i class="fas fa-receipt"></i> Orders</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon rose"><i class="fas fa-wallet"></i></div>
+            <div class="admin-mgmt-label">Finance</div>
+            <div class="admin-mgmt-desc">Fees &amp; payments</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-primary" style="font-size:12px;padding:7px 12px;" onclick="openModal('finance')"><i class="fas fa-plus"></i> Add</button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('finance')"><i class="fas fa-list"></i> View</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon teal"><i class="fas fa-handshake"></i></div>
+            <div class="admin-mgmt-label">Partners</div>
+            <div class="admin-mgmt-desc">Shipping &amp; customs</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-primary" style="font-size:12px;padding:7px 12px;" onclick="openModal('partners')"><i class="fas fa-plus"></i> Add</button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('partners')"><i class="fas fa-list"></i> View</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon navy"><i class="fas fa-user"></i></div>
+            <div class="admin-mgmt-label">Users</div>
+            <div class="admin-mgmt-desc">Customer accounts</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-primary" style="font-size:12px;padding:7px 12px;" onclick="openModal('users')"><i class="fas fa-plus"></i> Add</button>
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('users')"><i class="fas fa-list"></i> View</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon indigo"><i class="fas fa-chart-pie"></i></div>
+            <div class="admin-mgmt-label">Reports</div>
+            <div class="admin-mgmt-desc">Import analytics</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('reports')"><i class="fas fa-chart-bar"></i> View</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon cyan"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="admin-mgmt-label">Tracking</div>
+            <div class="admin-mgmt-desc">Real-time status</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-primary" style="font-size:12px;padding:7px 12px;" onclick="window.location.href='tracking.html'"><i class="fas fa-external-link-alt"></i> Open</button>
+            </div>
+          </div>
+
+          <div class="admin-mgmt-card">
+            <div class="admin-mgmt-icon lime"><i class="fas fa-cog"></i></div>
+            <div class="admin-mgmt-label">Settings</div>
+            <div class="admin-mgmt-desc">Platform config</div>
+            <div class="admin-mgmt-btns">
+              <button class="ag-btn ag-btn-secondary" style="font-size:12px;padding:7px 12px;" onclick="viewData('settings')"><i class="fas fa-sliders-h"></i> Config</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div><!-- /.admin-content -->
+
+    <footer style="text-align:center;padding:20px;color:var(--ag-text-400);font-size:12px;">
+      © 2026 Asan Global Vehicle Import Services — Admin Panel
+    </footer>
+  </main>
+</div>
+
+<!-- ===================== ADD/EDIT MODAL ===================== -->
+<div id="dataModal" class="ag-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="ag-modal" style="width:min(560px,94vw);max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h3 id="modalTitle" style="margin:0;font-size:18px;color:var(--ag-text-900);">Add Data</h3>
+      <button class="ag-btn ag-btn-ghost" onclick="closeModal()" style="padding:8px 12px;" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="modalBody" class="ag-modal-form"></div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="ag-btn ag-btn-primary" style="flex:1;" onclick="saveData()"><i class="fas fa-save"></i> Save</button>
+      <button class="ag-btn ag-btn-secondary" style="flex:1;" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== VIEW MODAL ===================== -->
+<div id="viewModal" class="ag-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="viewModalTitle">
+  <div class="ag-modal" style="width:min(720px,94vw);max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h3 id="viewModalTitle" style="margin:0;font-size:18px;color:var(--ag-text-900);">View Data</h3>
+      <button class="ag-btn ag-btn-ghost" onclick="closeViewModal()" style="padding:8px 12px;" aria-label="Close"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="viewModalBody"></div>
+  </div>
+</div>
+
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script>
+'use strict';
+const escapeHtml = v => window.securityUtils?.escapeHtml ? window.securityUtils.escapeHtml(v) : String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+/* ================================================================  AUTH  */
+const currentUser = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
+if (!currentUser || currentUser.role !== 'admin') window.location.href = 'login.html';
+
+document.getElementById('adminName').textContent  = currentUser.name || 'Admin';
+document.getElementById('adminAvatar').textContent = (currentUser.name||'A').charAt(0).toUpperCase();
+
+/* ================================================================  DATA INIT  */
+function initData(){
+  if(!localStorage.getItem('asan_imports')){
+    localStorage.setItem('asan_imports', JSON.stringify([
+      {id:1,tracking:'ASAN-IMP-001-2024',origin:'Japan',destination:'Ghana',status:'Customs Clearance',vehicleType:'SUV',make:'Toyota',model:'Land Cruiser',year:2024,vin:'JTDKN3DU5A0123456',customer:'Kwame Asante',value:'$85,000',assignedStaff:'Maria Garcia',importFee:'$3,500',customsFee:'$2,800'},
+      {id:2,tracking:'ASAN-IMP-002-2024',origin:'Germany',destination:'Ghana',status:'Delivered',vehicleType:'Sedan',make:'Mercedes-Benz',model:'S-Class',year:2024,vin:'WDD2228651A0987654',customer:'Sarah Johnson',value:'$115,000',assignedStaff:'James Wilson',importFee:'$5,200',customsFee:'$4,100'},
+      {id:3,tracking:'ASAN-IMP-003-2024',origin:'South Korea',destination:'Ghana',status:'In Transit',vehicleType:'Electric',make:'Hyundai',model:'Ioniq 5',year:2024,vin:'KMHLC8AE4RA123456',customer:'Mike Chen',value:'$52,000',assignedStaff:'Emily Brown',importFee:'$2,800',customsFee:'$1,900'},
+      {id:4,tracking:'ASAN-IMP-004-2024',origin:'USA',destination:'Ghana',status:'Processing',vehicleType:'Truck',make:'Ford',model:'F-150',year:2024,vin:'1FTEW1EP4KF123456',customer:'Ahmed Al-Rashid',value:'$65,000',assignedStaff:'David Lee',importFee:'$3,200',customsFee:'$2,500'},
+      {id:5,tracking:'ASAN-IMP-005-2024',origin:'UK',destination:'Ghana',status:'Shipped',vehicleType:'Luxury',make:'Rolls-Royce',model:'Phantom',year:2024,vin:'SCA668S55HU123456',customer:'William Thompson',value:'$450,000',assignedStaff:'Sophie Martin',importFee:'$12,500',customsFee:'$8,900'}
+    ]));
+  }
+  if(!localStorage.getItem('asan_staff')){
+    localStorage.setItem('asan_staff', JSON.stringify([
+      {id:1,name:'Maria Garcia',email:'maria@asan.com',role:'Import Specialist',department:'Customer Service',phone:'+233-24-001-0101',activeImports:3,status:'Active'},
+      {id:2,name:'James Wilson',email:'james@asan.com',role:'Customs Broker',department:'Compliance',phone:'+233-24-001-0102',activeImports:5,status:'Active'},
+      {id:3,name:'Emily Brown',email:'emily@asan.com',role:'Documentation Officer',department:'Documentation',phone:'+233-24-001-0103',activeImports:2,status:'Active'},
+      {id:4,name:'David Lee',email:'david@asan.com',role:'Logistics Coordinator',department:'Operations',phone:'+233-24-001-0104',activeImports:4,status:'Active'},
+      {id:5,name:'Sophie Martin',email:'sophie@asan.com',role:'Senior Import Manager',department:'Management',phone:'+233-24-001-0105',activeImports:6,status:'Active'}
+    ]));
+  }
+  if(!localStorage.getItem('asan_finance')){
+    localStorage.setItem('asan_finance', JSON.stringify([
+      {id:1,type:'Import Service Fee',amount:'$3,500',client:'Kwame Asante',tracking:'ASAN-IMP-001-2024',status:'Paid',date:'2024-01-15'},
+      {id:2,type:'Import Service Fee',amount:'$5,200',client:'Sarah Johnson',tracking:'ASAN-IMP-002-2024',status:'Paid',date:'2024-01-18'},
+      {id:3,type:'Customs Fee',amount:'$2,800',client:'Kwame Asante',tracking:'ASAN-IMP-001-2024',status:'Pending',date:'2024-01-20'},
+      {id:4,type:'Documentation Fee',amount:'$1,200',client:'William Thompson',tracking:'ASAN-IMP-005-2024',status:'Paid',date:'2024-01-22'},
+      {id:5,type:'Import Service Fee',amount:'$12,500',client:'William Thompson',tracking:'ASAN-IMP-005-2024',status:'Pending',date:'2024-01-25'}
+    ]));
+  }
+  if(!localStorage.getItem('asan_vehicles')){
+    localStorage.setItem('asan_vehicles', JSON.stringify([
+      {id:1,make:'Toyota',model:'Land Cruiser',year:2024,type:'SUV',price:'$85,000',status:'Customs Clearance',tracking:'ASAN-IMP-001-2024',origin:'Tokyo',destination:'Tema Port'},
+      {id:2,make:'Mercedes-Benz',model:'S-Class',year:2024,type:'Sedan',price:'$115,000',status:'Delivered',tracking:'ASAN-IMP-002-2024',origin:'Hamburg',destination:'Tema Port'},
+      {id:3,make:'BMW',model:'X5',year:2024,type:'SUV',price:'$72,000',status:'In Transit',tracking:'ASAN-IMP-006-2024',origin:'Munich',destination:'Tema Port'},
+      {id:4,make:'Tesla',model:'Model S',year:2024,type:'Electric',price:'$89,000',status:'Processing',tracking:'ASAN-IMP-007-2024',origin:'Los Angeles',destination:'Tema Port'},
+      {id:5,make:'Porsche',model:'911',year:2024,type:'Sports',price:'$125,000',status:'Shipped',tracking:'ASAN-IMP-008-2024',origin:'Stuttgart',destination:'Tema Port'}
+    ]));
+  }
+  if(!localStorage.getItem('asan_partners')){
+    localStorage.setItem('asan_partners', JSON.stringify([
+      {id:1,name:'Maersk Line',type:'Shipping Partner',contact:'info@maersk.com',routes:['Asia-Pacific','Trans-Atlantic'],rating:4.8},
+      {id:2,name:'Hapag-Lloyd',type:'Shipping Partner',contact:'sales@hapag-lloyd.com',routes:['Europe-Middle East','Asia-Europe'],rating:4.7},
+      {id:3,name:'Customs Solutions Inc',type:'Customs Broker',contact:'support@customssolutions.com',regions:['West Africa','Europe'],rating:4.9},
+      {id:4,name:'Global Insurance Partners',type:'Insurance Provider',contact:'claims@globalins.com',coverage:['Marine','Cargo','Liability'],rating:4.6}
+    ]));
+  }
+}
+initData();
+
+/* ================================================================  KPI UPDATE  */
+function updateKPIs(){
+  const imports = JSON.parse(localStorage.getItem('asan_imports')||'[]');
+  const users   = JSON.parse(localStorage.getItem('asan_users')||'[]');
+  const finance = JSON.parse(localStorage.getItem('asan_finance')||'[]');
+  const staff   = JSON.parse(localStorage.getItem('asan_staff')||'[]');
+
+  const delivered = imports.filter(i=>i.status==='Delivered').length;
+  const pending   = imports.filter(i=>i.status!=='Delivered').length;
+  const revenue   = finance.filter(f=>f.status==='Paid').reduce((s,f)=>{
+    return s + (parseFloat((f.amount||'0').replace(/[^0-9.]/g,''))||0);
+  },0);
+
+  animCount(document.getElementById('kpiImports'),   imports.length);
+  animCount(document.getElementById('kpiDelivered'), delivered);
+  animCount(document.getElementById('kpiPending'),   pending);
+  animCount(document.getElementById('kpiUsers'),     users.length);
+  animCount(document.getElementById('kpiStaff'),     staff.filter(s=>s.status==='Active').length);
+
+  const rEl = document.getElementById('kpiRevenue');
+  rEl.textContent = revenue >= 1000 ? '$' + Math.round(revenue/1000) + 'K' : '$' + revenue.toLocaleString();
+
+  document.getElementById('metaTotal').textContent     = imports.length;
+  document.getElementById('metaDelivered').textContent = delivered;
+  document.getElementById('metaRevenue').textContent   = revenue >= 1000 ? '$' + Math.round(revenue/1000) + 'K' : '$' + revenue.toLocaleString();
+  document.getElementById('metaCustomers').textContent = users.length;
+
+  document.getElementById('kpiImportsTrend').textContent   = imports.length + ' total';
+  document.getElementById('kpiDeliveredTrend').textContent = delivered + ' done';
+}
+
+function animCount(el, target){
+  if(!el) return;
+  let cur=0; const step=Math.max(1,Math.ceil(target/24));
+  const tick=()=>{ cur=Math.min(cur+step,target); el.textContent=cur; if(cur<target) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+}
+</script>
+
+<script>
+/* ================================================================  SHIPMENT TABLE  */
+const STATUS_CSS_MAP = {
+  'Pending':'st-pending','Payment Confirmed':'st-processing','Documentation':'st-processing',
+  'Processing':'st-processing','Purchased':'st-processing','Packed':'st-processing',
+  'Ready for Shipment':'st-processing','Shipped':'st-processing',
+  'In Transit':'st-transit','Customs Clearance':'st-customs',
+  'Arrived in Ghana':'st-arrived','Out for Delivery':'st-arrived','Delivered':'st-delivered'
+};
+
+const ALL_STATUSES_LIST = ['Pending','Payment Confirmed','Processing','Purchased','Packed',
+  'Ready for Shipment','Shipped','In Transit','Customs Clearance','Arrived in Ghana','Out for Delivery','Delivered'];
+
+function stBadge(s){
+  const cls = STATUS_CSS_MAP[s]||'st-pending';
+  return `<span class="st-badge ${cls}"><span class="dot"></span>${escapeHtml(s||'Pending')}</span>`;
+}
+
+function renderShipmentTable(filter=''){
+  const imports = JSON.parse(localStorage.getItem('asan_imports')||'[]');
+  const tbody   = document.getElementById('shipmentTableBody');
+  const src = filter ? imports.filter(i=>
+    (i.tracking||'').toLowerCase().includes(filter) ||
+    (i.customer||'').toLowerCase().includes(filter) ||
+    (i.make||'').toLowerCase().includes(filter) ||
+    (i.status||'').toLowerCase().includes(filter)
+  ) : imports;
+
+  if(!src.length){
+    tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--ag-text-400);">No shipments found.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = src.map(i=>`
+    <tr>
+      <td><strong style="font-family:monospace;font-size:12px;color:var(--ag-blue-600);">${escapeHtml(i.tracking||'—')}</strong></td>
+      <td>
+        <strong>${escapeHtml(i.make||'')} ${escapeHtml(i.model||'')}</strong>
+        <br><small style="color:var(--ag-text-400);">${escapeHtml(i.year||'')} · ${escapeHtml(i.vehicleType||'')}</small>
+      </td>
+      <td>${escapeHtml(i.customer||'—')}</td>
+      <td style="font-size:12px;color:var(--ag-text-600);">${escapeHtml(i.origin||'—')} → ${escapeHtml(i.destination||'—')}</td>
+      <td>
+        <select class="status-select" onchange="updateImportStatus(${i.id}, this.value)" aria-label="Update status">
+          ${ALL_STATUSES_LIST.map(s=>`<option value="${escapeHtml(s)}"${i.status===s?' selected':''}>${escapeHtml(s)}</option>`).join('')}
+        </select>
+      </td>
+      <td style="font-weight:700;color:var(--ag-navy-800);">${escapeHtml(i.value||'—')}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="ag-btn ag-btn-ghost" style="font-size:11.5px;padding:5px 10px;" onclick="editItem('imports',${i.id})" title="Edit"><i class="fas fa-edit"></i></button>
+          <button class="ag-btn ag-btn-danger" style="font-size:11.5px;padding:5px 10px;" onclick="deleteItem('imports',${i.id})" title="Delete"><i class="fas fa-trash"></i></button>
+          <a href="tracking.html?tracking=${escapeHtml(i.tracking)}" class="ag-btn ag-btn-secondary" style="font-size:11.5px;padding:5px 10px;" title="Track" target="_blank"><i class="fas fa-location-dot"></i></a>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function updateImportStatus(id, newStatus){
+  const imports = JSON.parse(localStorage.getItem('asan_imports')||'[]');
+  const idx = imports.findIndex(i=>i.id===id);
+  if(idx===-1) return;
+  imports[idx].status = newStatus;
+  localStorage.setItem('asan_imports', JSON.stringify(imports));
+  updateKPIs();
+  renderRecentOrders();
+  showNotification(`Status updated to "${newStatus}"`);
+}
+
+function refreshShipmentTable(){ renderShipmentTable(); showNotification('Table refreshed'); }
+
+/* ================================================================  REVENUE CHART  */
+function renderRevenueChart(){
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul'];
+  const values = [3200, 5800, 4100, 7600, 6200, 9400, 8100];
+  const max = Math.max(...values);
+  const chart = document.getElementById('revenueChart');
+  const xAxis = document.getElementById('revenueChartX');
+  chart.innerHTML = values.map((v,i)=>`
+    <div class="admin-chart-bar-col">
+      <div class="admin-chart-bar-wrap">
+        <div class="admin-chart-bar" data-target="${Math.round((v/max)*100)}" data-label="$${v.toLocaleString()}" style="height:4px;"></div>
+      </div>
+      <span class="admin-chart-bar-label">${months[i]}</span>
+    </div>`).join('');
+  xAxis.innerHTML = `<span style="font-size:11px;color:var(--ag-text-400);">$0</span><span style="font-size:11px;color:var(--ag-text-400);">$${Math.round(max/1000)}K</span>`;
+  setTimeout(()=>{
+    chart.querySelectorAll('.admin-chart-bar').forEach(bar=>{
+      bar.style.height = bar.dataset.target + '%';
+    });
+  }, 200);
+}
+
+/* ================================================================  RECENT ORDERS  */
+const ICON_MAP = {
+  'In Transit':'transit','Customs Clearance':'customs','Arrived in Ghana':'arrived',
+  'Delivered':'done','Out for Delivery':'arrived'
+};
+const ICON_FA  = {
+  'In Transit':'fa-route','Customs Clearance':'fa-stamp','Arrived in Ghana':'fa-anchor',
+  'Delivered':'fa-check-circle','Out for Delivery':'fa-truck','Processing':'fa-cogs',
+  'Shipped':'fa-ship','Pending':'fa-clock'
+};
+
+function renderRecentOrders(){
+  const imports = JSON.parse(localStorage.getItem('asan_imports')||'[]');
+  const list = document.getElementById('recentOrdersList');
+  const src = imports.slice(0,6);
+  if(!src.length){ list.innerHTML=`<div style="padding:24px;text-align:center;color:var(--ag-text-400);">No orders yet.</div>`; return; }
+  list.innerHTML = src.map(i=>{
+    const iconCls = ICON_MAP[i.status]||'proc';
+    const iconFa  = ICON_FA[i.status]||'fa-car';
+    return `<div class="admin-order-item">
+      <div class="admin-order-left">
+        <div class="admin-order-icon ${iconCls}"><i class="fas ${iconFa}"></i></div>
+        <div>
+          <div class="admin-order-name">${escapeHtml(i.make||'')} ${escapeHtml(i.model||'')}</div>
+          <div class="admin-order-ref">${escapeHtml(i.tracking||'—')} · ${escapeHtml(i.customer||'—')}</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div class="admin-order-amount">${escapeHtml(i.value||'—')}</div>
+        ${stBadge(i.status)}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ================================================================  CUSTOMER TABLE  */
+function renderCustomerTable(){
+  const users   = JSON.parse(localStorage.getItem('asan_users')||'[]');
+  const imports = JSON.parse(localStorage.getItem('asan_imports')||'[]');
+  const tbody   = document.getElementById('customerTableBody');
+  if(!users.length){
+    tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--ag-text-400);">No customers yet. Add users via the Users management card.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = users.filter(u=>u.role!=='admin').map(u=>{
+    const mine = imports.filter(i=>(i.customer||'').toLowerCase().includes((u.name||'').toLowerCase()));
+    const totalVal = mine.reduce((s,i)=>s+(parseFloat((i.value||'0').replace(/[^0-9.]/g,''))||0),0);
+    const initials = (u.name||'U').split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase();
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="admin-customer-avatar">${escapeHtml(initials)}</div>
+          <div><strong>${escapeHtml(u.name||'—')}</strong></div>
+        </div>
+      </td>
+      <td style="font-size:12.5px;color:var(--ag-text-600);">${escapeHtml(u.email||'—')}</td>
+      <td><span class="ag-badge ag-badge-info" style="font-size:11px;">${escapeHtml(u.role||'customer')}</span></td>
+      <td style="font-weight:700;">${mine.length}</td>
+      <td style="font-weight:700;color:var(--ag-navy-800);">${totalVal>0?'$'+totalVal.toLocaleString():'$0'}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="ag-btn ag-btn-ghost" style="font-size:11.5px;padding:5px 10px;" onclick="editItem('users',${u.id})"><i class="fas fa-edit"></i></button>
+          <button class="ag-btn ag-btn-danger" style="font-size:11.5px;padding:5px 10px;" onclick="deleteItem('users',${u.id})"><i class="fas fa-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+/* ================================================================  SEARCH  */
+document.getElementById('adminSearch').addEventListener('input', function(){
+  renderShipmentTable(this.value.toLowerCase().trim());
+});
+</script>
+
+<script>
+/* ================================================================  CRUD FORMS  */
+let currentDataType = '', editingId = null, currentApplianceImageData = '';
+
+function fld(label, inputHtml){ return `<div class="ag-field"><label>${label}</label>${inputHtml}</div>`; }
+
+function openModal(type){
+  currentDataType=type; editingId=null; currentApplianceImageData='';
+  document.getElementById('modalTitle').textContent = `Add ${type.charAt(0).toUpperCase()+type.slice(1)}`;
+  document.getElementById('modalBody').innerHTML = getFormHTML(type);
+  document.getElementById('dataModal').classList.add('ag-open');
+  if(type==='appliances') bindApplianceImageInput();
+}
+function closeModal(){ document.getElementById('dataModal').classList.remove('ag-open'); currentDataType=''; editingId=null; }
+function closeViewModal(){ document.getElementById('viewModal').classList.remove('ag-open'); }
+
+function getFormHTML(type){
+  const staffOptions = JSON.parse(localStorage.getItem('asan_staff')||'[]').map(s=>`<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)} — ${escapeHtml(s.role)}</option>`).join('');
+  const statusOpts = ALL_STATUSES_LIST.map(s=>`<option>${s}</option>`).join('');
+  const forms = {
+    imports:`${fld('Tracking Number','<input type="text" id="importTracking" class="ag-input" placeholder="e.g. ASAN-IMP-001-2024">')}
+      ${fld('Origin','<input type="text" id="importOrigin" class="ag-input" placeholder="e.g. Japan">')}
+      ${fld('Destination','<input type="text" id="importDestination" class="ag-input" placeholder="e.g. Ghana">')}
+      ${fld('Vehicle Type',`<select id="importVehicleType" class="ag-select"><option>SUV</option><option>Sedan</option><option>Truck</option><option>Electric</option><option>Luxury</option><option>Sports</option><option>Motorcycle</option></select>`)}
+      ${fld('Make','<input type="text" id="importMake" class="ag-input" placeholder="e.g. Toyota">')}
+      ${fld('Model','<input type="text" id="importModel" class="ag-input" placeholder="e.g. Land Cruiser">')}
+      ${fld('Year','<input type="number" id="importYear" class="ag-input" placeholder="2024" min="2000" max="2030">')}
+      ${fld('VIN','<input type="text" id="importVin" class="ag-input" placeholder="e.g. JTDKN3DU5A0123456" maxlength="17">')}
+      ${fld('Customer Name','<input type="text" id="importCustomer" class="ag-input" placeholder="e.g. Kwame Asante">')}
+      ${fld('Vehicle Value','<input type="text" id="importValue" class="ag-input" placeholder="e.g. $85,000">')}
+      ${fld('Assigned Staff',`<select id="importStaff" class="ag-select">${staffOptions}</select>`)}
+      ${fld('Import Fee','<input type="text" id="importFee" class="ag-input" placeholder="e.g. $3,500">')}
+      ${fld('Customs Fee','<input type="text" id="importCustomsFee" class="ag-input" placeholder="e.g. $2,800">')}
+      ${fld('Status',`<select id="importStatus" class="ag-select">${statusOpts}</select>`)}`,
+    staff:`${fld('Name','<input type="text" id="staffName" class="ag-input">')}
+      ${fld('Email','<input type="email" id="staffEmail" class="ag-input">')}
+      ${fld('Role',`<select id="staffRole" class="ag-select"><option>Import Specialist</option><option>Customs Broker</option><option>Documentation Officer</option><option>Logistics Coordinator</option><option>Senior Import Manager</option></select>`)}
+      ${fld('Department',`<select id="staffDepartment" class="ag-select"><option>Customer Service</option><option>Compliance</option><option>Documentation</option><option>Operations</option><option>Management</option></select>`)}
+      ${fld('Phone','<input type="text" id="staffPhone" class="ag-input" placeholder="+233-24-000-0000">')}
+      ${fld('Status',`<select id="staffStatus" class="ag-select"><option>Active</option><option>On Leave</option><option>Inactive</option></select>`)}`,
+    vehicles:`${fld('Make','<input type="text" id="vehicleMake" class="ag-input">')}
+      ${fld('Model','<input type="text" id="vehicleModel" class="ag-input">')}
+      ${fld('Year','<input type="number" id="vehicleYear" class="ag-input" min="2000" max="2030">')}
+      ${fld('Type',`<select id="vehicleType" class="ag-select"><option>SUV</option><option>Sedan</option><option>Truck</option><option>Electric</option><option>Luxury</option><option>Sports</option><option>Motorcycle</option></select>`)}
+      ${fld('Price','<input type="text" id="vehiclePrice" class="ag-input" placeholder="$85,000">')}
+      ${fld('Status',`<select id="vehicleStatus" class="ag-select">${statusOpts}</select>`)}
+      ${fld('Tracking Number','<input type="text" id="vehicleTracking" class="ag-input">')}
+      ${fld('Origin','<input type="text" id="vehicleOrigin" class="ag-input">')}
+      ${fld('Destination','<input type="text" id="vehicleDestination" class="ag-input">')}`,
+    finance:`${fld('Type',`<select id="financeType" class="ag-select"><option>Import Service Fee</option><option>Customs Fee</option><option>Documentation Fee</option><option>Insurance Payment</option><option>Storage Fee</option><option>Payment</option></select>`)}
+      ${fld('Amount','<input type="text" id="financeAmount" class="ag-input" placeholder="$3,500">')}
+      ${fld('Client Name','<input type="text" id="financeClient" class="ag-input">')}
+      ${fld('Tracking Number','<input type="text" id="financeTracking" class="ag-input">')}
+      ${fld('Status',`<select id="financeStatus" class="ag-select"><option>Paid</option><option>Pending</option><option>Overdue</option></select>`)}
+      ${fld('Date','<input type="date" id="financeDate" class="ag-input">')}`,
+    partners:`${fld('Partner Name','<input type="text" id="partnerName" class="ag-input">')}
+      ${fld('Type',`<select id="partnerType" class="ag-select"><option>Shipping Partner</option><option>Customs Broker</option><option>Insurance Provider</option><option>Warehouse Partner</option><option>Transport Partner</option></select>`)}
+      ${fld('Contact Email','<input type="email" id="partnerContact" class="ag-input">')}
+      ${fld('Routes/Regions','<input type="text" id="partnerRoutes" class="ag-input" placeholder="Asia-Pacific, Trans-Atlantic">')}
+      ${fld('Rating',`<select id="partnerRating" class="ag-select"><option value="5.0">5.0 — Excellent</option><option value="4.5">4.5 — Very Good</option><option value="4.0">4.0 — Good</option><option value="3.5">3.5 — Average</option></select>`)}`,
+    users:`${fld('Name','<input type="text" id="uName" class="ag-input">')}
+      ${fld('Email','<input type="email" id="uEmail" class="ag-input">')}
+      ${fld('Password','<input type="password" id="uPassword" class="ag-input">')}
+      ${fld('Role',`<select id="uRole" class="ag-select"><option value="customer">Customer</option><option value="staff">Staff</option><option value="admin">Admin</option></select>`)}`,
+    appliances:`${fld('Name','<input type="text" id="apName" class="ag-input" placeholder="e.g. Double-Door Refrigerator">')}
+      ${fld('Category',`<select id="apCategory" class="ag-select"><option>Refrigerators</option><option>Washing Machines</option><option>Air Conditioners</option><option>Televisions</option><option>Microwaves</option><option>Cookers</option><option>Water Heaters</option><option>Other</option></select>`)}
+      ${fld('Price ($)','<input type="number" id="apPrice" class="ag-input" placeholder="850" min="0" step="0.01">')}
+      ${fld('Stock Status',`<select id="apStock" class="ag-select"><option>In Stock</option><option>Pre-Order</option><option>Out of Stock</option></select>`)}
+      ${fld('Description','<textarea id="apDescription" class="ag-textarea" rows="3"></textarea>')}
+      ${fld('Photo','<input type="file" id="apImage" class="ag-input" accept="image/*"><img id="apImagePreview" alt="" style="display:none;margin-top:10px;max-width:160px;border-radius:var(--ag-radius-md);border:1px solid var(--ag-border);">')}`
+  };
+  return forms[type] || '<p style="color:var(--ag-text-600);">No form available.</p>';
+}
+</script>
+
+<script>
+/* ================================================================  SAVE DATA  */
+async function resizeImageToDataUrl(file,maxDim,quality){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader(); reader.onerror=reject;
+    reader.onload=ev=>{
+      const img=new Image(); img.onerror=reject;
+      img.onload=()=>{
+        let{width,height}=img;
+        if(width>maxDim||height>maxDim){
+          if(width>height){height=Math.round(height*maxDim/width);width=maxDim;}
+          else{width=Math.round(width*maxDim/height);height=maxDim;}
+        }
+        const c=document.createElement('canvas'); c.width=width; c.height=height;
+        c.getContext('2d').drawImage(img,0,0,width,height);
+        resolve(c.toDataURL('image/jpeg',quality));
+      };
+      img.src=ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function bindApplianceImageInput(){
+  const input=document.getElementById('apImage'); if(!input) return;
+  input.addEventListener('change',async e=>{
+    const file=e.target.files[0]; if(!file) return;
+    try{
+      const dataUrl=await resizeImageToDataUrl(file,800,.82);
+      currentApplianceImageData=dataUrl;
+      const preview=document.getElementById('apImagePreview');
+      preview.src=dataUrl; preview.style.display='block';
+    }catch{ showNotification('Could not read that image.'); }
+  });
+}
+
+function collectFormData(){
+  const n={id:Date.now()};
+  switch(currentDataType){
+    case 'imports':
+      n.tracking=document.getElementById('importTracking').value;
+      n.origin=document.getElementById('importOrigin').value;
+      n.destination=document.getElementById('importDestination').value;
+      n.vehicleType=document.getElementById('importVehicleType').value;
+      n.make=document.getElementById('importMake').value;
+      n.model=document.getElementById('importModel').value;
+      n.year=document.getElementById('importYear').value;
+      n.vin=document.getElementById('importVin').value;
+      n.customer=document.getElementById('importCustomer').value;
+      n.value=document.getElementById('importValue').value;
+      n.assignedStaff=document.getElementById('importStaff').value;
+      n.importFee=document.getElementById('importFee').value;
+      n.customsFee=document.getElementById('importCustomsFee').value;
+      n.status=document.getElementById('importStatus').value;
+      break;
+    case 'staff':
+      n.name=document.getElementById('staffName').value;
+      n.email=document.getElementById('staffEmail').value;
+      n.role=document.getElementById('staffRole').value;
+      n.department=document.getElementById('staffDepartment').value;
+      n.phone=document.getElementById('staffPhone').value;
+      n.activeImports=0;
+      n.status=document.getElementById('staffStatus').value;
+      break;
+    case 'vehicles':
+      n.make=document.getElementById('vehicleMake').value;
+      n.model=document.getElementById('vehicleModel').value;
+      n.year=document.getElementById('vehicleYear').value;
+      n.type=document.getElementById('vehicleType').value;
+      n.price=document.getElementById('vehiclePrice').value;
+      n.status=document.getElementById('vehicleStatus').value;
+      n.tracking=document.getElementById('vehicleTracking').value;
+      n.origin=document.getElementById('vehicleOrigin').value;
+      n.destination=document.getElementById('vehicleDestination').value;
+      break;
+    case 'finance':
+      n.type=document.getElementById('financeType').value;
+      n.amount=document.getElementById('financeAmount').value;
+      n.client=document.getElementById('financeClient').value;
+      n.tracking=document.getElementById('financeTracking').value;
+      n.status=document.getElementById('financeStatus').value;
+      n.date=document.getElementById('financeDate').value;
+      break;
+    case 'partners':
+      n.name=document.getElementById('partnerName').value;
+      n.type=document.getElementById('partnerType').value;
+      n.contact=document.getElementById('partnerContact').value;
+      n.routes=document.getElementById('partnerRoutes').value.split(',').map(r=>r.trim());
+      n.rating=document.getElementById('partnerRating').value;
+      break;
+    case 'users':
+      n.name=document.getElementById('uName').value;
+      n.email=document.getElementById('uEmail').value;
+      n.password=document.getElementById('uPassword').value;
+      n.role=document.getElementById('uRole').value;
+      break;
+    case 'appliances':
+      n.name=document.getElementById('apName').value;
+      n.category=document.getElementById('apCategory').value;
+      n.price=parseFloat(document.getElementById('apPrice').value)||0;
+      n.stock=document.getElementById('apStock').value;
+      n.description=document.getElementById('apDescription').value;
+      n.image=currentApplianceImageData||'';
+      break;
+  }
+  return n;
+}
+
+function saveData(){
+  const key=`asan_${currentDataType}`;
+  if(editingId){
+    let data=JSON.parse(localStorage.getItem(key)||'[]');
+    const idx=data.findIndex(i=>i.id===editingId);
+    if(idx!==-1){
+      const updated=collectFormData(); updated.id=editingId;
+      if(currentDataType==='appliances'&&!updated.image) updated.image=data[idx].image||'';
+      data[idx]=updated;
+      localStorage.setItem(key,JSON.stringify(data));
+      showNotification('Updated successfully!');
+    }
+  } else {
+    let data=JSON.parse(localStorage.getItem(key)||'[]');
+    data.push(collectFormData());
+    localStorage.setItem(key,JSON.stringify(data));
+    showNotification('Added successfully!');
+  }
+  closeModal();
+  updateKPIs();
+  renderShipmentTable();
+  renderCustomerTable();
+  renderRecentOrders();
+}
+
+/* ================================================================  VIEW + EDIT + DELETE  */
+function viewData(type){
+  const keyOverrides={reports:'asan_imports',applianceOrders:'asan_appliance_orders'};
+  const key=keyOverrides[type]||`asan_${type}`;
+  const data=JSON.parse(localStorage.getItem(key)||'[]');
+  const titles={applianceOrders:'Appliance Orders'};
+  document.getElementById('viewModalTitle').textContent=`View ${titles[type]||(type.charAt(0).toUpperCase()+type.slice(1))}`;
+
+  if(type==='settings'){
+    document.getElementById('viewModalBody').innerHTML=`<div class="ag-alert ag-alert-info"><i class="fas fa-info-circle"></i> Settings management coming in the next update.</div>`;
+    document.getElementById('viewModal').classList.add('ag-open'); return;
+  }
+  if(type==='reports'){
+    const delivered=data.filter(s=>s.status==='Delivered').length;
+    const transit  =data.filter(s=>s.status==='In Transit').length;
+    const customs  =data.filter(s=>s.status==='Customs Clearance').length;
+    document.getElementById('viewModalBody').innerHTML=`
+      <div class="report-stats">
+        <div class="report-stat blue"><h3>${data.length}</h3><p>Total Imports</p></div>
+        <div class="report-stat green"><h3>${delivered}</h3><p>Delivered</p></div>
+        <div class="report-stat orange"><h3>${transit}</h3><p>In Transit</p></div>
+        <div class="report-stat teal"><h3>${customs}</h3><p>Customs</p></div>
+      </div>
+      <div class="data-list">${data.map(s=>`<div class="data-item">
+        <h4>${escapeHtml(s.tracking||'—')}</h4>
+        <p><strong>Route:</strong> ${escapeHtml(s.origin||'—')} → ${escapeHtml(s.destination||'—')}</p>
+        <p><strong>Status:</strong> ${escapeHtml(s.status||'—')}</p>
+        <p><strong>Vehicle:</strong> ${escapeHtml(s.make||'')} ${escapeHtml(s.model||'')} ${escapeHtml(String(s.year||''))}</p>
+        <p><strong>Customer:</strong> ${escapeHtml(s.customer||'—')}</p>
+      </div>`).join('')}</div>`;
+  } else {
+    document.getElementById('viewModalBody').innerHTML=`<div class="data-list">${
+      !data.length
+        ? `<div class="ag-empty"><i class="fas fa-inbox"></i><p>No records found.</p></div>`
+        : data.map(item=>`<div class="data-item">
+          <h4>${escapeHtml(item.name||item.tracking||item.type||item.make||item.email||String(item.id))}</h4>
+          ${Object.entries(item).filter(([k])=>!['id','name','tracking','type','make','email','image'].includes(k)).map(([k,v])=>{
+            const sv=Array.isArray(v)?v.join(', '):String(v??'');
+            return `<p><strong>${escapeHtml(k.charAt(0).toUpperCase()+k.slice(1))}:</strong> ${escapeHtml(sv)}</p>`;
+          }).join('')}
+          <div class="actions">
+            <button class="ag-btn ag-btn-secondary" style="padding:6px 12px;font-size:12px;" onclick="editItem('${type}',${item.id})"><i class="fas fa-edit"></i> Edit</button>
+            <button class="ag-btn ag-btn-danger" style="padding:6px 12px;font-size:12px;" onclick="deleteItem('${type}',${item.id})"><i class="fas fa-trash"></i> Delete</button>
+          </div>
+        </div>`).join('')
+    }</div>`;
+  }
+  document.getElementById('viewModal').classList.add('ag-open');
+}
+
+function editItem(type,id){
+  closeViewModal();
+  currentDataType=type; editingId=id; currentApplianceImageData='';
+  const data=JSON.parse(localStorage.getItem(`asan_${type}`)||'[]');
+  const item=data.find(i=>i.id===id); if(!item) return;
+  document.getElementById('modalTitle').textContent=`Edit ${type.charAt(0).toUpperCase()+type.slice(1)}`;
+  document.getElementById('modalBody').innerHTML=getFormHTML(type);
+  document.getElementById('dataModal').classList.add('ag-open');
+  if(type==='appliances') bindApplianceImageInput();
+  setTimeout(()=>{
+    switch(type){
+      case 'imports': document.getElementById('importTracking').value=item.tracking||''; document.getElementById('importOrigin').value=item.origin||''; document.getElementById('importDestination').value=item.destination||''; document.getElementById('importVehicleType').value=item.vehicleType||''; document.getElementById('importMake').value=item.make||''; document.getElementById('importModel').value=item.model||''; document.getElementById('importYear').value=item.year||''; document.getElementById('importVin').value=item.vin||''; document.getElementById('importCustomer').value=item.customer||''; document.getElementById('importValue').value=item.value||''; document.getElementById('importStaff').value=item.assignedStaff||''; document.getElementById('importFee').value=item.importFee||''; document.getElementById('importCustomsFee').value=item.customsFee||''; document.getElementById('importStatus').value=item.status||''; break;
+      case 'staff': document.getElementById('staffName').value=item.name||''; document.getElementById('staffEmail').value=item.email||''; document.getElementById('staffRole').value=item.role||''; document.getElementById('staffDepartment').value=item.department||''; document.getElementById('staffPhone').value=item.phone||''; document.getElementById('staffStatus').value=item.status||''; break;
+      case 'vehicles': document.getElementById('vehicleMake').value=item.make||''; document.getElementById('vehicleModel').value=item.model||''; document.getElementById('vehicleYear').value=item.year||''; document.getElementById('vehicleType').value=item.type||''; document.getElementById('vehiclePrice').value=item.price||''; document.getElementById('vehicleStatus').value=item.status||''; document.getElementById('vehicleTracking').value=item.tracking||''; document.getElementById('vehicleOrigin').value=item.origin||''; document.getElementById('vehicleDestination').value=item.destination||''; break;
+      case 'finance': document.getElementById('financeType').value=item.type||''; document.getElementById('financeAmount').value=item.amount||''; document.getElementById('financeClient').value=item.client||''; document.getElementById('financeTracking').value=item.tracking||''; document.getElementById('financeStatus').value=item.status||''; document.getElementById('financeDate').value=item.date||''; break;
+      case 'partners': document.getElementById('partnerName').value=item.name||''; document.getElementById('partnerType').value=item.type||''; document.getElementById('partnerContact').value=item.contact||''; document.getElementById('partnerRoutes').value=Array.isArray(item.routes)?item.routes.join(', '):(item.routes||''); document.getElementById('partnerRating').value=item.rating||''; break;
+      case 'appliances': document.getElementById('apName').value=item.name||''; document.getElementById('apCategory').value=item.category||''; document.getElementById('apPrice').value=item.price||''; document.getElementById('apStock').value=item.stock||''; document.getElementById('apDescription').value=item.description||''; currentApplianceImageData=item.image||''; if(item.image){const p=document.getElementById('apImagePreview');p.src=item.image;p.style.display='block';} break;
+    }
+  },80);
+}
+
+function deleteItem(type,id){
+  if(!confirm('Are you sure you want to delete this item?')) return;
+  const key=`asan_${type}`;
+  let data=JSON.parse(localStorage.getItem(key)||'[]');
+  data=data.filter(i=>i.id!==id);
+  localStorage.setItem(key,JSON.stringify(data));
+  showNotification('Deleted successfully!');
+  updateKPIs(); renderShipmentTable(); renderCustomerTable(); renderRecentOrders();
+  if(document.getElementById('viewModal').classList.contains('ag-open')) viewData(type);
+}
+
+/* ================================================================  NOTIFICATIONS  */
+function showNotification(msg, type='success'){
+  const icons={success:'fa-check-circle',error:'fa-exclamation-circle',info:'fa-info-circle'};
+  const colors={success:'var(--ag-success)',error:'var(--ag-danger)',info:'var(--ag-blue-500)'};
+  const n=document.createElement('div'); n.className='notification-badge';
+  n.style.borderLeftColor=colors[type];
+  n.innerHTML=`<i class="fas ${icons[type]||'fa-check-circle'}" style="color:${colors[type]};"></i><span>${escapeHtml(msg)}</span>`;
+  document.body.appendChild(n);
+  setTimeout(()=>n.remove(),3000);
+}
+
+/* ================================================================  LOGOUT  */
+function logout(){
+  localStorage.removeItem('asan_current_user');
+  window.location.href='login.html';
+}
+
+/* ================================================================  MODAL CLOSE ON BACKDROP  */
+document.getElementById('dataModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('viewModal').addEventListener('click',function(e){if(e.target===this)closeViewModal();});
+
+/* ================================================================  INIT  */
+document.addEventListener('DOMContentLoaded',function(){
+  updateKPIs();
+  renderShipmentTable();
+  renderCustomerTable();
+  renderRecentOrders();
+  renderRevenueChart();
+});
+
+/* ================================================================  LIVE NOTIF SIMULATION  */
+const liveNotifs=['New import request received from Accra','Customs clearance approved for ASAN-IMP-001-2024','Payment received from Kwame Asante','Staff assignment updated for ASAN-IMP-003-2024','Vehicle documentation completed','Partner Maersk Line confirmed schedule','Import status updated: Customs Clearance'];
+setInterval(()=>{ if(Math.random()>.78) showNotification(liveNotifs[Math.floor(Math.random()*liveNotifs.length)],'info'); },35000);
+</script>
+
+<script src="admin-chat.js"></script>
+<script>try{ window.AdminChat?.init?.(); }catch(e){}</script>
+</body>
+</html>

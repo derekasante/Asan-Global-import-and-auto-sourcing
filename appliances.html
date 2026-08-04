@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asan Global | Home Appliances Shop</title>
+<meta name="description" content="Asan Global — import and buy premium home appliances. Refrigerators, air conditioners, washing machines, TVs and more.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="design-system.css">
+<style>
+/* ===================================================================
+   Appliances Shop — Professional Shopping Experience
+   =================================================================== */
+
+/* ---- Top bar ---- */
+.apl-topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: #fff; padding: 0 28px;
+  border-bottom: 1px solid var(--ag-border);
+  box-shadow: 0 1px 0 var(--ag-border);
+  position: sticky; top: 0; z-index: 900; height: 66px;
+}
+.apl-topbar-left  { display: flex; align-items: center; gap: 16px; }
+.apl-topbar-right { display: flex; align-items: center; gap: 12px; }
+
+.apl-topbar .eyebrow { color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: 0.14em; font-size: 10.5px; font-weight: 700; margin: 0 0 1px; }
+.apl-topbar h1 { margin: 0; font-size: 20px; font-weight: 700; color: var(--ag-text-900); }
+
+.apl-topbar-search {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--ag-surface-muted); border: 1.5px solid var(--ag-border);
+  border-radius: var(--ag-radius-pill); padding: 9px 16px;
+  width: min(320px, 36vw); transition: border-color var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+}
+.apl-topbar-search:focus-within {
+  border-color: var(--ag-blue-500); background: #fff;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.10);
+}
+.apl-topbar-search i { color: var(--ag-text-400); font-size: 13px; }
+.apl-topbar-search input {
+  border: none; outline: none; background: transparent;
+  font-family: var(--ag-font); font-size: 13.5px; color: var(--ag-text-900); width: 100%;
+}
+.apl-topbar-search input::placeholder { color: var(--ag-text-400); }
+
+.apl-icon-btn {
+  position: relative; border: none; background: var(--ag-surface-muted);
+  color: var(--ag-text-600); width: 40px; height: 40px;
+  border-radius: 50%; cursor: pointer; font-size: 15px;
+  display: grid; place-items: center;
+  transition: background var(--ag-transition-fast), color var(--ag-transition-fast);
+}
+.apl-icon-btn:hover { background: var(--ag-blue-100); color: var(--ag-blue-600); }
+
+.apl-cart-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  color: #fff; border: none; border-radius: var(--ag-radius-pill);
+  padding: 10px 18px; cursor: pointer; font-family: var(--ag-font);
+  font-size: 13.5px; font-weight: 700;
+  transition: transform var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+  box-shadow: 0 6px 16px rgba(37,99,235,0.28);
+}
+.apl-cart-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(37,99,235,0.36); }
+
+.apl-notif-dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--ag-danger); border: 2px solid #fff; display: none; }
+.ag-avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); color: #fff; font-weight: 700; font-size: 15px; flex-shrink: 0; }
+
+.cart-count-badge {
+  background: #fff; color: var(--ag-blue-600); border-radius: 50%;
+  width: 20px; height: 20px; display: inline-flex; align-items: center;
+  justify-content: center; font-size: 11px; font-weight: 800; margin-left: 2px;
+}
+</style>
+
+<style>
+/* ---- Hero ---- */
+.apl-hero {
+  background: linear-gradient(135deg, var(--ag-navy-950) 0%, var(--ag-navy-800) 45%, var(--ag-blue-600) 100%);
+  color: #fff; padding: 44px 32px 40px; margin: 24px 24px 0;
+  border-radius: var(--ag-radius-lg); box-shadow: var(--ag-shadow-lg);
+  display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center;
+  position: relative; overflow: hidden;
+}
+.apl-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.apl-hero-blob {
+  position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.22; pointer-events: none;
+}
+.apl-hero-blob-1 { width: 300px; height: 300px; background: #00b7ff; top: -80px; right: 120px; }
+.apl-hero-blob-2 { width: 200px; height: 200px; background: #ffd54f; bottom: -50px; right: 20px; opacity: 0.12; }
+
+.apl-hero-content { position: relative; z-index: 1; }
+.apl-kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.22);
+  border-radius: var(--ag-radius-pill); padding: 7px 14px;
+  font-size: 12px; font-weight: 700; color: var(--ag-gold-400);
+  letter-spacing: 0.05em; margin-bottom: 14px;
+}
+.apl-kicker .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ag-gold-400); }
+.apl-hero h2 { font-size: clamp(1.6rem, 2.8vw, 2.4rem); font-weight: 800; line-height: 1.12; margin: 0 0 10px; }
+.apl-hero p { font-size: 14.5px; color: rgba(255,255,255,0.78); line-height: 1.7; max-width: 520px; margin: 0 0 20px; }
+.apl-hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.apl-hero-stats {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr; gap: 14px;
+}
+.apl-hero-stat {
+  background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.16);
+  border-radius: var(--ag-radius-md); padding: 16px 22px; text-align: center;
+  backdrop-filter: blur(8px); min-width: 120px;
+}
+.apl-hero-stat strong { display: block; font-size: 1.6rem; font-weight: 800; color: #fff; line-height: 1; }
+.apl-hero-stat span { font-size: 11.5px; color: rgba(255,255,255,0.6); margin-top: 4px; display: block; }
+
+/* ---- Main layout ---- */
+.apl-layout { display: grid; grid-template-columns: 260px 1fr; gap: 24px; padding: 24px; align-items: start; }
+
+/* ---- Sidebar filters ---- */
+.apl-sidebar {
+  background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg);
+  padding: 22px; box-shadow: var(--ag-shadow-sm); position: sticky; top: 90px;
+}
+.apl-sidebar-title { font-size: 13px; font-weight: 700; color: var(--ag-text-600); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.apl-sidebar-clear { font-size: 12px; font-weight: 600; color: var(--ag-blue-600); background: none; border: none; cursor: pointer; padding: 0; transition: opacity var(--ag-transition-fast); }
+.apl-sidebar-clear:hover { opacity: 0.7; }
+
+.apl-sidebar-section { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--ag-border); }
+.apl-sidebar-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+.apl-sidebar-section h4 { font-size: 13px; font-weight: 700; color: var(--ag-text-900); margin-bottom: 12px; }
+
+.apl-cat-btn {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 12px; border: none; border-radius: var(--ag-radius-sm);
+  background: transparent; cursor: pointer; font-family: var(--ag-font);
+  font-size: 13.5px; color: var(--ag-text-600); font-weight: 500;
+  transition: all var(--ag-transition-fast); text-align: left;
+}
+.apl-cat-btn:hover { background: var(--ag-surface-muted); color: var(--ag-text-900); }
+.apl-cat-btn.active { background: var(--ag-blue-100); color: var(--ag-blue-600); font-weight: 700; }
+.apl-cat-btn .apl-cat-count { margin-left: auto; font-size: 11px; background: var(--ag-surface-muted); border-radius: 99px; padding: 2px 8px; color: var(--ag-text-400); }
+.apl-cat-btn.active .apl-cat-count { background: rgba(37,99,235,0.15); color: var(--ag-blue-600); }
+
+.apl-price-row { display: flex; gap: 10px; }
+.apl-price-input {
+  flex: 1; padding: 9px 10px; border: 1.5px solid var(--ag-border); border-radius: var(--ag-radius-sm);
+  font-family: var(--ag-font); font-size: 13px; color: var(--ag-text-900); background: var(--ag-surface);
+  transition: border-color var(--ag-transition-fast);
+}
+.apl-price-input:focus { border-color: var(--ag-blue-500); outline: none; }
+
+.apl-stock-options { display: flex; flex-direction: column; gap: 8px; }
+.apl-stock-opt { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13.5px; color: var(--ag-text-600); }
+.apl-stock-opt input { accent-color: var(--ag-blue-600); width: 15px; height: 15px; }
+</style>
+
+<style>
+/* ---- Toolbar (results + sort) ---- */
+.apl-toolbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  flex-wrap: wrap; margin-bottom: 18px;
+}
+.apl-results-count { font-size: 13.5px; color: var(--ag-text-600); }
+.apl-results-count strong { color: var(--ag-text-900); }
+.apl-toolbar-right { display: flex; align-items: center; gap: 10px; }
+
+.apl-sort-select {
+  padding: 9px 32px 9px 12px; border: 1.5px solid var(--ag-border); border-radius: var(--ag-radius-sm);
+  font-family: var(--ag-font); font-size: 13px; color: var(--ag-text-900); background: #fff;
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center;
+}
+.apl-sort-select:focus { outline: none; border-color: var(--ag-blue-500); }
+
+.apl-view-toggle { display: flex; gap: 4px; }
+.apl-view-btn {
+  width: 34px; height: 34px; border: 1.5px solid var(--ag-border); background: #fff;
+  border-radius: var(--ag-radius-sm); cursor: pointer; display: grid; place-items: center;
+  color: var(--ag-text-400); font-size: 13px;
+  transition: all var(--ag-transition-fast);
+}
+.apl-view-btn.active, .apl-view-btn:hover { background: var(--ag-blue-600); border-color: var(--ag-blue-600); color: #fff; }
+
+/* ---- Product grid ---- */
+.apl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+.apl-grid.list-view { grid-template-columns: 1fr; }
+
+.apl-card {
+  background: #fff; border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg);
+  overflow: hidden; display: flex; flex-direction: column;
+  transition: transform var(--ag-transition), box-shadow var(--ag-transition);
+  position: relative;
+}
+.apl-card:hover { transform: translateY(-5px); box-shadow: var(--ag-shadow-md); }
+
+/* List-view card layout */
+.apl-grid.list-view .apl-card { flex-direction: row; }
+.apl-grid.list-view .apl-card-img { width: 180px; flex-shrink: 0; aspect-ratio: auto; height: 180px; }
+.apl-grid.list-view .apl-card-body { flex: 1; }
+
+.apl-card-badge {
+  position: absolute; top: 12px; left: 12px; z-index: 1;
+  padding: 4px 10px; border-radius: var(--ag-radius-pill);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+}
+.apl-card-badge.badge-new { background: #2563eb; color: #fff; }
+.apl-card-badge.badge-sale { background: #dc2626; color: #fff; }
+.apl-card-badge.badge-popular { background: #f59e0b; color: #fff; }
+
+.apl-card-wishlist {
+  position: absolute; top: 10px; right: 10px; z-index: 1;
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,0.9); backdrop-filter: blur(4px);
+  color: var(--ag-text-400); cursor: pointer; display: grid; place-items: center; font-size: 13px;
+  transition: all var(--ag-transition-fast); box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.apl-card-wishlist:hover { color: #ef4444; background: #fff; }
+.apl-card-wishlist.active { color: #ef4444; background: #fff; }
+
+.apl-card-img {
+  width: 100%; aspect-ratio: 16/11; background: var(--ag-surface-muted);
+  display: grid; place-items: center; overflow: hidden;
+  color: var(--ag-text-400); font-size: 52px; position: relative;
+}
+.apl-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+.apl-card:hover .apl-card-img img { transform: scale(1.04); }
+.apl-card-img .apl-icon-placeholder { opacity: 0.4; }
+
+.apl-card-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+.apl-card-cat { font-size: 10.5px; font-weight: 700; color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: 0.06em; }
+.apl-card-name { font-size: 15.5px; font-weight: 700; color: var(--ag-text-900); margin: 0; line-height: 1.3; }
+.apl-card-desc { font-size: 13px; color: var(--ag-text-600); line-height: 1.55; margin: 0; flex: 1; }
+
+/* Star rating */
+.apl-rating { display: flex; align-items: center; gap: 6px; }
+.apl-stars { color: #f59e0b; font-size: 12px; letter-spacing: 1px; }
+.apl-rating-count { font-size: 12px; color: var(--ag-text-400); }
+
+.apl-card-footer { display: flex; align-items: flex-end; justify-content: space-between; margin-top: 4px; gap: 10px; flex-wrap: wrap; }
+.apl-price-group { display: flex; flex-direction: column; gap: 1px; }
+.apl-card-price { font-size: 20px; font-weight: 800; color: var(--ag-navy-800); line-height: 1; }
+.apl-card-price-old { font-size: 13px; color: var(--ag-text-400); text-decoration: line-through; }
+.apl-card-price-save { font-size: 11px; font-weight: 700; color: #16a34a; }
+
+.apl-add-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  color: #fff; border: none; border-radius: var(--ag-radius-pill);
+  padding: 10px 16px; cursor: pointer; font-family: var(--ag-font);
+  font-size: 12.5px; font-weight: 700; white-space: nowrap;
+  transition: transform var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+  box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+}
+.apl-add-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(37,99,235,0.35); }
+.apl-add-btn:active { transform: scale(0.97); }
+
+/* Quick-view link */
+.apl-quick-view {
+  display: block; text-align: center; padding: 10px;
+  font-size: 12.5px; font-weight: 600; color: var(--ag-blue-600);
+  border-top: 1px solid var(--ag-border); background: var(--ag-surface-muted);
+  cursor: pointer; transition: background var(--ag-transition-fast);
+  text-decoration: none;
+}
+.apl-quick-view:hover { background: var(--ag-blue-100); }
+</style>
+
+<style>
+/* ---- Cart drawer ---- */
+.apl-cart-backdrop {
+  position: fixed; inset: 0; background: rgba(7,18,36,0.5);
+  z-index: 1400; opacity: 0; pointer-events: none;
+  transition: opacity var(--ag-transition);
+}
+.apl-cart-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.apl-cart-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100vw);
+  background: #fff; z-index: 1500; display: flex; flex-direction: column;
+  box-shadow: -20px 0 60px rgba(7,18,36,0.18);
+  transform: translateX(100%); transition: transform var(--ag-transition);
+}
+.apl-cart-drawer.open { transform: translateX(0); }
+
+.cart-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 24px; border-bottom: 1px solid var(--ag-border);
+  background: linear-gradient(135deg, var(--ag-navy-900), var(--ag-blue-600));
+  color: #fff;
+}
+.cart-header h3 { margin: 0; font-size: 17px; font-weight: 700; }
+.cart-header .cart-item-total { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+.cart-close {
+  background: rgba(255,255,255,0.15); border: none; color: #fff;
+  width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+  display: grid; place-items: center; font-size: 14px;
+  transition: background var(--ag-transition-fast);
+}
+.cart-close:hover { background: rgba(255,255,255,0.28); }
+
+.cart-items { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+.cart-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--ag-surface-muted); border: 1px solid var(--ag-border);
+  border-radius: var(--ag-radius-md); padding: 12px 14px;
+}
+.cart-item-thumb {
+  width: 60px; height: 60px; border-radius: var(--ag-radius-sm);
+  background: #fff; border: 1px solid var(--ag-border); display: grid; place-items: center;
+  font-size: 24px; color: var(--ag-text-400); flex-shrink: 0; overflow: hidden;
+}
+.cart-item-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-size: 14px; font-weight: 700; color: var(--ag-text-900); margin: 0 0 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-item-cat  { font-size: 11.5px; color: var(--ag-text-400); margin-bottom: 8px; }
+.cart-item-row  { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+.qty-control { display: flex; align-items: center; gap: 0; border: 1.5px solid var(--ag-border); border-radius: var(--ag-radius-sm); overflow: hidden; }
+.qty-btn {
+  width: 28px; height: 28px; border: none; background: var(--ag-surface-muted);
+  cursor: pointer; font-size: 14px; color: var(--ag-text-600); display: grid; place-items: center;
+  transition: background var(--ag-transition-fast);
+}
+.qty-btn:hover { background: var(--ag-blue-100); color: var(--ag-blue-600); }
+.qty-val { width: 32px; text-align: center; font-size: 13px; font-weight: 700; color: var(--ag-text-900); background: #fff; border: none; outline: none; }
+
+.cart-item-price { font-size: 15px; font-weight: 800; color: var(--ag-navy-800); }
+.cart-item-remove { background: none; border: none; color: var(--ag-text-400); cursor: pointer; font-size: 13px; padding: 4px; transition: color var(--ag-transition-fast); }
+.cart-item-remove:hover { color: var(--ag-danger); }
+
+.cart-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--ag-text-400); text-align: center; padding: 40px; }
+.cart-empty i { font-size: 52px; opacity: 0.3; }
+.cart-empty p { font-size: 14px; line-height: 1.6; }
+
+.cart-footer {
+  padding: 18px 24px; border-top: 1px solid var(--ag-border);
+  background: var(--ag-surface-muted);
+}
+.cart-summary-row { display: flex; justify-content: space-between; font-size: 13.5px; color: var(--ag-text-600); margin-bottom: 8px; }
+.cart-summary-row.total { font-size: 17px; font-weight: 800; color: var(--ag-text-900); padding-top: 10px; border-top: 2px solid var(--ag-blue-600); margin-bottom: 16px; }
+.cart-summary-row.total span:last-child { color: var(--ag-blue-600); }
+
+.cart-checkout-btn {
+  width: 100%; padding: 15px; border: none; border-radius: var(--ag-radius-pill);
+  background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-700));
+  color: #fff; font-family: var(--ag-font); font-size: 15px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: transform var(--ag-transition-fast), box-shadow var(--ag-transition-fast);
+  box-shadow: 0 8px 20px rgba(37,99,235,0.30);
+}
+.cart-checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(37,99,235,0.38); }
+</style>
+
+<style>
+/* ---- Quick-view modal ---- */
+.apl-qv-modal {
+  position: fixed; inset: 0; background: rgba(7,18,36,0.55);
+  z-index: 1600; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity var(--ag-transition);
+}
+.apl-qv-modal.open { opacity: 1; pointer-events: auto; }
+.apl-qv-inner {
+  background: #fff; border-radius: var(--ag-radius-lg);
+  width: min(720px, 94vw); max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--ag-shadow-lg);
+  transform: translateY(16px) scale(0.98); transition: transform var(--ag-transition);
+}
+.apl-qv-modal.open .apl-qv-inner { transform: translateY(0) scale(1); }
+.apl-qv-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.apl-qv-img {
+  background: var(--ag-surface-muted); display: grid; place-items: center;
+  font-size: 80px; color: var(--ag-text-400); min-height: 300px; overflow: hidden;
+  border-radius: var(--ag-radius-lg) 0 0 var(--ag-radius-lg);
+}
+.apl-qv-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.apl-qv-body { padding: 30px 28px; display: flex; flex-direction: column; gap: 14px; }
+.apl-qv-close {
+  position: absolute; top: 14px; right: 14px;
+  background: #fff; border: 1.5px solid var(--ag-border); border-radius: 50%;
+  width: 36px; height: 36px; display: grid; place-items: center;
+  cursor: pointer; font-size: 14px; color: var(--ag-text-600);
+  transition: all var(--ag-transition-fast); box-shadow: var(--ag-shadow-sm);
+}
+.apl-qv-close:hover { background: var(--ag-danger); border-color: var(--ag-danger); color: #fff; }
+.apl-qv-inner { position: relative; }
+
+/* ---- Order modal ---- */
+.apl-order-modal {
+  position: fixed; inset: 0; background: rgba(7,18,36,0.55);
+  z-index: 1700; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity var(--ag-transition);
+}
+.apl-order-modal.open { opacity: 1; pointer-events: auto; }
+.apl-order-inner {
+  background: #fff; border-radius: var(--ag-radius-lg);
+  width: min(520px, 94vw); max-height: 90vh; overflow-y: auto;
+  padding: 28px; box-shadow: var(--ag-shadow-lg);
+  transform: translateY(16px) scale(0.98); transition: transform var(--ag-transition);
+  position: relative;
+}
+.apl-order-modal.open .apl-order-inner { transform: translateY(0) scale(1); }
+
+.apl-order-summary {
+  background: var(--ag-surface-muted); border: 1px solid var(--ag-border);
+  border-radius: var(--ag-radius-md); padding: 14px 16px; margin-bottom: 18px;
+  display: flex; gap: 14px; align-items: center;
+}
+.apl-order-summary-img {
+  width: 64px; height: 64px; border-radius: var(--ag-radius-sm); overflow: hidden;
+  background: #fff; border: 1px solid var(--ag-border); display: grid; place-items: center;
+  flex-shrink: 0; font-size: 26px; color: var(--ag-text-400);
+}
+.apl-order-summary-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.fee-breakdown {
+  background: var(--ag-surface-muted); border: 1px solid var(--ag-border);
+  border-radius: var(--ag-radius-md); padding: 14px 16px; margin: 4px 0 16px;
+}
+.fee-row { display: flex; justify-content: space-between; font-size: 13.5px; color: var(--ag-text-600); padding: 5px 0; }
+.fee-row.total { font-weight: 800; font-size: 15px; color: var(--ag-blue-600); border-top: 2px solid var(--ag-blue-600); margin-top: 6px; padding-top: 12px; }
+
+/* ---- Notification panel ---- */
+/* (inherits from design-system.css .notification-panel) */
+
+/* ---- Toast ---- */
+.apl-toast-region {
+  position: fixed; bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 10px; z-index: 3000;
+}
+@keyframes toast-in { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+.apl-toast {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--ag-navy-900); color: #fff;
+  padding: 13px 18px; border-radius: var(--ag-radius-md); box-shadow: var(--ag-shadow-lg);
+  font-size: 13.5px; min-width: 260px; animation: toast-in 0.28s ease;
+}
+.apl-toast.success { border-left: 4px solid #16a34a; }
+.apl-toast.error   { border-left: 4px solid var(--ag-danger); }
+.apl-toast.info    { border-left: 4px solid var(--ag-blue-500); }
+.apl-toast i { font-size: 16px; }
+.apl-toast.success i { color: #4ade80; }
+.apl-toast.error   i { color: #f87171; }
+.apl-toast.info    i { color: #60a5fa; }
+
+/* ---- Responsive ---- */
+@media (max-width: 960px) {
+  .apl-layout { grid-template-columns: 1fr; }
+  .apl-sidebar { position: static; display: none; }
+  .apl-sidebar.mobile-open { display: block; }
+}
+@media (max-width: 640px) {
+  .apl-hero { grid-template-columns: 1fr; margin: 12px; }
+  .apl-hero-stats { grid-template-columns: repeat(3, 1fr); }
+  .apl-layout { padding: 12px; }
+  .apl-topbar { padding: 0 16px; }
+  .apl-topbar-search { display: none; }
+  .apl-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .apl-qv-grid { grid-template-columns: 1fr; }
+  .apl-qv-img { border-radius: var(--ag-radius-lg) var(--ag-radius-lg) 0 0; min-height: 200px; }
+}
+</style>
+
+</head>
+<body data-ag-page="appliances">
+<div class="ag-app-shell">
+  <div id="ag-sidebar-mount"></div>
+  <div class="ag-sidebar-backdrop" id="ag-sidebar-backdrop"></div>
+
+  <main class="ag-main">
+
+    <!-- ===================== TOP BAR ===================== -->
+    <header class="apl-topbar">
+      <div class="apl-topbar-left">
+        <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
+        <div>
+          <p class="eyebrow">Import &amp; Buy</p>
+          <h1>Home Appliances</h1>
+        </div>
+      </div>
+
+      <!-- Inline search bar -->
+      <div class="apl-topbar-search" role="search">
+        <i class="fas fa-search"></i>
+        <input type="search" id="topSearch" placeholder="Search appliances…" autocomplete="off" aria-label="Search appliances">
+      </div>
+
+      <div class="apl-topbar-right">
+        <!-- Filter toggle (mobile) -->
+        <button class="apl-icon-btn" id="filterToggleBtn" aria-label="Filters" title="Filters" style="display:none;">
+          <i class="fas fa-sliders"></i>
+        </button>
+        <!-- Notifications -->
+        <button class="apl-icon-btn" onclick="showNotifications()" aria-label="Notifications" title="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="apl-notif-dot" id="notificationBadge"></span>
+        </button>
+        <!-- Cart -->
+        <button class="apl-cart-btn" onclick="openCart()" aria-label="Open cart">
+          <i class="fas fa-shopping-cart"></i>
+          Cart
+          <span class="cart-count-badge" id="cartCountBadge">0</span>
+        </button>
+        <div class="ag-avatar" id="userAvatar" title="Account">U</div>
+      </div>
+    </header>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="apl-hero" style="margin:24px 24px 0;">
+      <div class="apl-hero-blob apl-hero-blob-1"></div>
+      <div class="apl-hero-blob apl-hero-blob-2"></div>
+      <div class="apl-hero-content">
+        <div class="apl-kicker"><span class="dot"></span> Premium Appliances</div>
+        <h2>Import &amp; Buy<br>Home Appliances</h2>
+        <p>Browse refrigerators, air conditioners, washing machines, TVs and more — sourced from trusted international suppliers. Request to buy or import any item and our team confirms pricing and delivery.</p>
+        <div class="apl-hero-cta">
+          <button class="ag-btn ag-btn-primary" onclick="scrollToCatalog()">
+            <i class="fas fa-shopping-bag"></i> Shop Now
+          </button>
+          <a class="ag-btn ag-btn-ghost" href="price.html" style="color:#fff;border-color:rgba(255,255,255,0.35);">
+            <i class="fas fa-tag"></i> View Pricing
+          </a>
+        </div>
+      </div>
+      <div class="apl-hero-stats">
+        <div class="apl-hero-stat"><strong id="heroTotalItems">0</strong><span>Products</span></div>
+        <div class="apl-hero-stat"><strong>150+</strong><span>Countries</span></div>
+        <div class="apl-hero-stat"><strong>24/7</strong><span>Support</span></div>
+      </div>
+    </section>
+
+    <!-- ===================== MAIN LAYOUT ===================== -->
+    <div class="apl-layout" id="shopLayout">
+
+      <!-- ---- Sidebar ---- -->
+      <aside class="apl-sidebar" id="shopSidebar">
+        <div class="apl-sidebar-title">
+          <span><i class="fas fa-sliders" style="margin-right:7px;color:var(--ag-blue-600);"></i>Filters</span>
+          <button class="apl-sidebar-clear" onclick="clearFilters()">Clear all</button>
+        </div>
+
+        <!-- Categories -->
+        <div class="apl-sidebar-section">
+          <h4>Category</h4>
+          <div id="categoryList"></div>
+        </div>
+
+        <!-- Price range -->
+        <div class="apl-sidebar-section">
+          <h4>Price Range (USD)</h4>
+          <div class="apl-price-row">
+            <input type="number" class="apl-price-input" id="priceMin" placeholder="Min" min="0">
+            <input type="number" class="apl-price-input" id="priceMax" placeholder="Max" min="0">
+          </div>
+          <button class="ag-btn ag-btn-secondary" style="width:100%;margin-top:10px;font-size:13px;padding:9px 12px;" onclick="applyPriceFilter()">Apply</button>
+        </div>
+
+        <!-- Stock status -->
+        <div class="apl-sidebar-section">
+          <h4>Availability</h4>
+          <div class="apl-stock-options">
+            <label class="apl-stock-opt"><input type="checkbox" id="stockAll" checked onchange="stockFilterChange('all')"> All items</label>
+            <label class="apl-stock-opt"><input type="checkbox" id="stockIn" onchange="stockFilterChange('in')"> <span class="ag-badge ag-badge-success" style="font-size:11px;padding:3px 9px;">In Stock</span></label>
+            <label class="apl-stock-opt"><input type="checkbox" id="stockPre" onchange="stockFilterChange('pre')"> <span class="ag-badge ag-badge-warning" style="font-size:11px;padding:3px 9px;">Pre-Order</span></label>
+            <label class="apl-stock-opt"><input type="checkbox" id="stockOut" onchange="stockFilterChange('out')"> <span class="ag-badge ag-badge-danger" style="font-size:11px;padding:3px 9px;">Out of Stock</span></label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ---- Product area ---- -->
+      <div id="catalogArea">
+        <!-- Toolbar -->
+        <div class="apl-toolbar">
+          <p class="apl-results-count" id="resultsCount"><strong>0</strong> products</p>
+          <div class="apl-toolbar-right">
+            <select class="apl-sort-select" id="sortSelect" onchange="renderCatalog()" aria-label="Sort products">
+              <option value="default">Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="name-asc">Name: A–Z</option>
+              <option value="rating-desc">Top Rated</option>
+            </select>
+            <div class="apl-view-toggle" role="group" aria-label="View layout">
+              <button class="apl-view-btn active" id="viewGrid" onclick="setView('grid')" title="Grid view" aria-pressed="true"><i class="fas fa-grip"></i></button>
+              <button class="apl-view-btn" id="viewList" onclick="setView('list')" title="List view" aria-pressed="false"><i class="fas fa-list"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="apl-grid" id="applianceGrid"></div>
+      </div>
+    </div>
+
+    <footer style="text-align:center;padding:24px;color:var(--ag-text-400);font-size:12px;margin-top:8px;">
+      © 2026 Asan Global Vehicle Import Services &mdash; All prices in USD. Final pricing confirmed by our team.
+    </footer>
+  </main>
+</div>
+
+<!-- ===================== CART DRAWER ===================== -->
+<div class="apl-cart-backdrop" id="cartBackdrop" onclick="closeCart()"></div>
+<div class="apl-cart-drawer" id="cartDrawer" role="dialog" aria-label="Shopping cart" aria-modal="true">
+  <div class="cart-header">
+    <div>
+      <h3><i class="fas fa-shopping-cart" style="margin-right:8px;"></i>Your Cart</h3>
+      <p class="cart-item-total" id="cartHeaderCount">0 items</p>
+    </div>
+    <button class="cart-close" onclick="closeCart()" aria-label="Close cart"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cart-items" id="cartItemsContainer"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-summary-row"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+    <div class="cart-summary-row"><span>Shipping</span><span style="color:var(--ag-success);font-weight:600;">TBD by team</span></div>
+    <div class="cart-summary-row total"><span>Estimated Total</span><span id="cartTotal">$0.00</span></div>
+    <button class="cart-checkout-btn" onclick="checkoutCart()">
+      <i class="fas fa-paper-plane"></i> Submit Import Request
+    </button>
+  </div>
+</div>
+
+<!-- ===================== QUICK VIEW MODAL ===================== -->
+<div class="apl-qv-modal" id="qvModal" onclick="handleQvBackdropClick(event)" role="dialog" aria-modal="true" aria-label="Product quick view">
+  <div class="apl-qv-inner">
+    <button class="apl-qv-close" onclick="closeQv()" aria-label="Close"><i class="fas fa-times"></i></button>
+    <div class="apl-qv-grid">
+      <div class="apl-qv-img" id="qvImg"></div>
+      <div class="apl-qv-body" id="qvBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ORDER MODAL ===================== -->
+<div class="apl-order-modal" id="orderModal" onclick="handleOrderBackdropClick(event)" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+  <div class="apl-order-inner">
+    <button class="apl-qv-close" onclick="closeOrderModal()" aria-label="Close" style="position:absolute;top:14px;right:14px;"><i class="fas fa-times"></i></button>
+    <h3 id="orderModalTitle" style="margin:0 0 16px;font-size:18px;color:var(--ag-text-900);padding-right:32px;">Import Request</h3>
+
+    <div class="apl-order-summary" id="orderSummary"></div>
+
+    <form id="orderForm">
+      <div class="ag-field">
+        <label for="orderQty">Quantity</label>
+        <input type="number" id="orderQty" class="ag-input" min="1" value="1" required>
+      </div>
+      <div class="ag-field">
+        <label for="orderMode">Request Type</label>
+        <select id="orderMode" class="ag-select" required>
+          <option value="Buy Locally">Buy Locally (already in stock)</option>
+          <option value="Import">Import from Overseas Supplier</option>
+        </select>
+      </div>
+      <div class="ag-field">
+        <label for="orderDestination">Delivery Destination</label>
+        <input type="text" id="orderDestination" class="ag-input" placeholder="e.g. Accra, Ghana" required>
+      </div>
+      <div class="ag-field">
+        <label for="orderNotes">Notes (optional)</label>
+        <textarea id="orderNotes" class="ag-textarea" rows="3" placeholder="Color preference, warranty questions, delivery timing…"></textarea>
+      </div>
+      <div class="fee-breakdown">
+        <div class="fee-row"><span>Unit Price:</span><span id="orderUnitPrice">$0.00</span></div>
+        <div class="fee-row"><span>Quantity:</span><span id="orderQtyDisplay">1</span></div>
+        <div class="fee-row total"><span>Estimated Total:</span><span id="orderTotalPrice">$0.00</span></div>
+      </div>
+      <button type="submit" class="ag-btn ag-btn-primary" style="width:100%;"><i class="fas fa-paper-plane"></i> Submit Request</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== NOTIFICATION PANEL ===================== -->
+<aside class="notification-panel" id="notificationPanel" aria-label="Notifications">
+  <div class="notification-panel-header">
+    <h3>Notifications</h3>
+    <span class="notif-count" id="notifCountBadge">0</span>
+    <span class="close-notif" onclick="hideNotifications()"><i class="fas fa-times"></i></span>
+  </div>
+  <div class="notification-panel-actions">
+    <button class="mark-all-read" onclick="markAllAsRead()"><i class="fas fa-check-double"></i> Mark All Read</button>
+    <button class="clear-all" onclick="clearAllNotifications()"><i class="fas fa-trash"></i> Clear All</button>
+  </div>
+  <div class="notification-list" id="notificationList"></div>
+</aside>
+
+<!-- Toast region -->
+<div class="apl-toast-region" id="toastRegion"></div>
+
+<script src="sidebar.js"></script>
+<script src="security-utils.js"></script>
+<script>
+'use strict';
+const esc = v => window.securityUtils?.escapeHtml ? window.securityUtils.escapeHtml(v) : String(v ?? '');
+
+/* ================================================================
+   AUTH
+================================================================ */
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('asan_current_user') || 'null');
+  if (!user) { window.location.href = 'login.html'; return null; }
+  return user;
+}
+
+/* ================================================================
+   CATALOG DATA
+================================================================ */
+const SEED = [
+  { id:1,  name:'Samsung Double-Door Refrigerator', category:'Refrigerators',    price:850,  originalPrice:999,  rating:4.8, reviews:124, description:'Energy-efficient double-door refrigerator with digital inverter compressor and spacious 350L capacity.', stock:'In Stock',   badge:'popular', image:'' },
+  { id:2,  name:'LG Front-Load Washing Machine',    category:'Washing Machines',  price:620,  originalPrice:720,  rating:4.6, reviews:87,  description:'8kg front-load washing machine with AI direct drive, 6-motion technology and steam care function.', stock:'In Stock',   badge:'sale',    image:'' },
+  { id:3,  name:'Midea 1.5HP Split-Unit AC',        category:'Air Conditioners',  price:540,  originalPrice:null, rating:4.5, reviews:63,  description:'Inverter split-unit air conditioner with R32 refrigerant, WiFi control and 5-star energy rating.', stock:'Pre-Order', badge:'new',     image:'' },
+  { id:4,  name:'Samsung 55" 4K Smart TV',          category:'Televisions',       price:480,  originalPrice:599,  rating:4.7, reviews:211, description:'55-inch Crystal UHD 4K Smart TV with PurColor display, HDR10+ and built-in streaming apps.', stock:'In Stock',   badge:'sale',    image:'' },
+  { id:5,  name:'Panasonic Microwave Oven 25L',     category:'Microwaves',        price:130,  originalPrice:null, rating:4.3, reviews:45,  description:'25-litre microwave oven with grill function, auto cook menus and child safety lock.', stock:'In Stock',   badge:'',        image:'' },
+  { id:6,  name:'Ariston Electric Water Heater',    category:'Water Heaters',     price:210,  originalPrice:null, rating:4.4, reviews:38,  description:'30-litre instant electric water heater with stainless inner tank, ideal for home installation.', stock:'In Stock',   badge:'',        image:'' },
+  { id:7,  name:'Hisense Side-by-Side Refrigerator',category:'Refrigerators',    price:1200, originalPrice:1450, rating:4.5, reviews:56,  description:'Large 560L side-by-side refrigerator with water & ice dispenser, multi-flow cooling system.', stock:'Pre-Order', badge:'new',     image:'' },
+  { id:8,  name:'Bosch Top-Load Washing Machine',   category:'Washing Machines',  price:480,  originalPrice:null, rating:4.4, reviews:72,  description:'7kg top-load washing machine with ActiveWater technology, 15 wash programs and fast 30-min cycle.', stock:'In Stock',   badge:'',        image:'' },
+  { id:9,  name:'Gree 2HP Ceiling Cassette AC',     category:'Air Conditioners',  price:820,  originalPrice:null, rating:4.6, reviews:29,  description:'2HP ceiling cassette split AC unit, ideal for offices. 4-way airflow distribution with auto-swing.', stock:'In Stock',   badge:'',        image:'' },
+  { id:10, name:'LG OLED 65" 4K TV',               category:'Televisions',       price:1350, originalPrice:1599, rating:4.9, reviews:98,  description:'65-inch OLED evo TV with α9 AI processor 4K, Dolby Vision IQ and self-lit pixels for perfect blacks.', stock:'Pre-Order', badge:'popular', image:'' },
+  { id:11, name:'Bruhm Gas & Electric Cooker',      category:'Cookers',           price:340,  originalPrice:null, rating:4.3, reviews:51,  description:'60cm freestanding gas & electric cooker, 4-gas burners plus electric oven with auto-ignition.', stock:'In Stock',   badge:'',        image:'' },
+  { id:12, name:'Haier 9kg Washer-Dryer Combo',     category:'Washing Machines',  price:890,  originalPrice:1050, rating:4.5, reviews:33,  description:'9kg washer dryer combo with ABT drum technology, i-Refresh steam function and LED display.', stock:'In Stock',   badge:'new',     image:'' }
+];
+
+function seedAppliancesIfEmpty() {
+  if (localStorage.getItem('asan_appliances') !== null) return;
+  localStorage.setItem('asan_appliances', JSON.stringify(SEED));
+}
+
+function getAppliances() {
+  try { return JSON.parse(localStorage.getItem('asan_appliances') || '[]'); } catch { return []; }
+}
+
+const ICONS = {
+  'Refrigerators':'fa-snowflake','Washing Machines':'fa-soap','Air Conditioners':'fa-wind',
+  'Televisions':'fa-tv','Microwaves':'fa-utensils','Cookers':'fa-fire-burner',
+  'Water Heaters':'fa-hot-tub-person'
+};
+function getIcon(cat) { return ICONS[cat] || 'fa-blender'; }
+
+function fmtPrice(v) {
+  return '$' + (parseFloat(v)||0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function starsHtml(rating) {
+  const full  = Math.floor(rating);
+  const half  = rating - full >= 0.5 ? 1 : 0;
+  const empty = 5 - full - half;
+  return '<i class="fas fa-star"></i>'.repeat(full) +
+    (half ? '<i class="fas fa-star-half-stroke"></i>' : '') +
+    '<i class="far fa-star"></i>'.repeat(empty);
+}
+
+/* ================================================================
+   FILTERS & STATE
+================================================================ */
+let activeCategory = 'All';
+let activeStock    = 'all'; // all | in | pre | out
+let priceMin = 0, priceMax = Infinity;
+let searchQuery = '';
+let currentView = 'grid';
+let wishlist = JSON.parse(localStorage.getItem('asan_wishlist') || '[]');
+
+function getFiltered() {
+  let items = getAppliances();
+  if (activeCategory !== 'All') items = items.filter(i => i.category === activeCategory);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    items = items.filter(i => (i.name||'').toLowerCase().includes(q) || (i.category||'').toLowerCase().includes(q) || (i.description||'').toLowerCase().includes(q));
+  }
+  if (activeStock !== 'all') {
+    const map = { in:'In Stock', pre:'Pre-Order', out:'Out of Stock' };
+    items = items.filter(i => i.stock === map[activeStock]);
+  }
+  items = items.filter(i => {
+    const p = parseFloat(i.price)||0;
+    return p >= priceMin && p <= priceMax;
+  });
+  const sort = document.getElementById('sortSelect')?.value || 'default';
+  if (sort === 'price-asc')   items = [...items].sort((a,b) => a.price - b.price);
+  if (sort === 'price-desc')  items = [...items].sort((a,b) => b.price - a.price);
+  if (sort === 'name-asc')    items = [...items].sort((a,b) => (a.name||'').localeCompare(b.name||''));
+  if (sort === 'rating-desc') items = [...items].sort((a,b) => (b.rating||0) - (a.rating||0));
+  return items;
+}
+
+function clearFilters() {
+  activeCategory = 'All'; activeStock = 'all'; priceMin = 0; priceMax = Infinity;
+  document.getElementById('priceMin').value = '';
+  document.getElementById('priceMax').value = '';
+  document.getElementById('stockAll').checked = true;
+  document.getElementById('stockIn').checked  = false;
+  document.getElementById('stockPre').checked = false;
+  document.getElementById('stockOut').checked = false;
+  renderCategoryList(); renderCatalog();
+}
+
+function applyPriceFilter() {
+  const minV = parseFloat(document.getElementById('priceMin').value);
+  const maxV = parseFloat(document.getElementById('priceMax').value);
+  priceMin = isNaN(minV) ? 0 : minV;
+  priceMax = isNaN(maxV) ? Infinity : maxV;
+  renderCatalog();
+}
+
+function stockFilterChange(type) {
+  if (type === 'all') {
+    activeStock = 'all';
+    document.getElementById('stockIn').checked  = false;
+    document.getElementById('stockPre').checked = false;
+    document.getElementById('stockOut').checked = false;
+  } else {
+    activeStock = type;
+    document.getElementById('stockAll').checked = false;
+  }
+  renderCatalog();
+}
+
+document.getElementById('topSearch').addEventListener('input', function() {
+  searchQuery = this.value.trim();
+  renderCatalog();
+});
+</script>
+
+<script>
+/* ================================================================
+   RENDER — Category sidebar
+================================================================ */
+function renderCategoryList() {
+  const items = getAppliances();
+  const cats  = ['All', ...new Set(items.map(i => i.category).filter(Boolean))];
+  const all   = items.length;
+  const list  = document.getElementById('categoryList');
+  list.innerHTML = cats.map(cat => {
+    const count = cat === 'All' ? all : items.filter(i => i.category === cat).length;
+    return `<button class="apl-cat-btn${cat === activeCategory ? ' active':''}" data-cat="${esc(cat)}" onclick="setCat('${esc(cat)}')">
+      <i class="fas ${cat === 'All' ? 'fa-border-all' : getIcon(cat)}" style="width:16px;text-align:center;"></i>
+      ${esc(cat)}
+      <span class="apl-cat-count">${count}</span>
+    </button>`;
+  }).join('');
+}
+
+function setCat(cat) {
+  activeCategory = cat;
+  renderCategoryList();
+  renderCatalog();
+}
+
+/* ================================================================
+   RENDER — Product grid
+================================================================ */
+function setView(v) {
+  currentView = v;
+  const grid = document.getElementById('applianceGrid');
+  grid.classList.toggle('list-view', v === 'list');
+  document.getElementById('viewGrid').classList.toggle('active', v === 'grid');
+  document.getElementById('viewList').classList.toggle('active', v === 'list');
+  document.getElementById('viewGrid').setAttribute('aria-pressed', String(v === 'grid'));
+  document.getElementById('viewList').setAttribute('aria-pressed', String(v === 'list'));
+}
+
+function badgeHtml(badge) {
+  if (!badge) return '';
+  const map = { new:'badge-new', sale:'badge-sale', popular:'badge-popular' };
+  const labels = { new:'New', sale:'Sale', popular:'Popular' };
+  return `<span class="apl-card-badge ${map[badge]||''}">${labels[badge]||''}</span>`;
+}
+
+function stockBadgeHtml(stock) {
+  const map = { 'In Stock':'ag-badge-success', 'Pre-Order':'ag-badge-warning', 'Out of Stock':'ag-badge-danger' };
+  return `<span class="ag-badge ${map[stock]||'ag-badge-neutral'}" style="font-size:11px;padding:4px 10px;">${esc(stock||'In Stock')}</span>`;
+}
+
+function renderCatalog() {
+  const items  = getFiltered();
+  const grid   = document.getElementById('applianceGrid');
+  const count  = document.getElementById('resultsCount');
+  const heroN  = document.getElementById('heroTotalItems');
+
+  const total  = getAppliances().length;
+  if (heroN) heroN.textContent = total;
+
+  count.innerHTML = `<strong>${items.length}</strong> product${items.length !== 1 ? 's' : ''}`;
+
+  if (items.length === 0) {
+    grid.innerHTML = `<div class="ag-empty" style="grid-column:1/-1;">
+      <i class="fas fa-box-open"></i>
+      <h4>No products found</h4>
+      <p>Try adjusting your filters or search query.</p>
+      <button class="ag-btn ag-btn-secondary" style="margin-top:8px;" onclick="clearFilters()">Clear Filters</button>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(item => {
+    const inWish = wishlist.includes(item.id);
+    const save   = item.originalPrice ? Math.round((1 - item.price/item.originalPrice)*100) : 0;
+    const disabled = item.stock === 'Out of Stock';
+
+    return `<article class="apl-card" data-id="${item.id}">
+      ${badgeHtml(item.badge)}
+      <button class="apl-card-wishlist${inWish ? ' active':''}" onclick="toggleWishlist(${item.id}, event)" aria-label="${inWish?'Remove from':'Add to'} wishlist">
+        <i class="${inWish?'fas':'far'} fa-heart"></i>
+      </button>
+      <div class="apl-card-img">
+        ${item.image
+          ? `<img src="${esc(item.image)}" alt="${esc(item.name)}" loading="lazy">`
+          : `<i class="fas ${getIcon(item.category)} apl-icon-placeholder"></i>`}
+      </div>
+      <div class="apl-card-body">
+        <span class="apl-card-cat">${esc(item.category||'Appliance')}</span>
+        <h3 class="apl-card-name">${esc(item.name)}</h3>
+        <p class="apl-card-desc">${esc(item.description||'')}</p>
+        <div class="apl-rating">
+          <span class="apl-stars">${starsHtml(item.rating||4)}</span>
+          <span class="apl-rating-count">${(item.rating||4).toFixed(1)} (${item.reviews||0})</span>
+        </div>
+        <div class="apl-card-footer">
+          <div class="apl-price-group">
+            <span class="apl-card-price">${fmtPrice(item.price)}</span>
+            ${item.originalPrice ? `<span class="apl-card-price-old">${fmtPrice(item.originalPrice)}</span>` : ''}
+            ${save > 0 ? `<span class="apl-card-price-save">Save ${save}%</span>` : ''}
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+            ${stockBadgeHtml(item.stock)}
+            <button class="apl-add-btn" onclick="addToCart(${item.id})" ${disabled?'disabled style="opacity:0.5;cursor:not-allowed;"':''}>
+              <i class="fas fa-cart-plus"></i> Add
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="apl-quick-view" onclick="openQv(${item.id})">
+        <i class="fas fa-eye" style="margin-right:6px;"></i>Quick View
+      </button>
+    </article>`;
+  }).join('');
+}
+
+function scrollToCatalog() {
+  document.getElementById('catalogArea')?.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* ================================================================
+   WISHLIST
+================================================================ */
+function toggleWishlist(id, e) {
+  e.stopPropagation();
+  const idx = wishlist.indexOf(id);
+  if (idx === -1) { wishlist.push(id); showToast('Added to wishlist', 'info', 'fas fa-heart'); }
+  else { wishlist.splice(idx,1); showToast('Removed from wishlist', 'info', 'far fa-heart'); }
+  localStorage.setItem('asan_wishlist', JSON.stringify(wishlist));
+  renderCatalog();
+}
+</script>
+
+<script>
+/* ================================================================
+   CART
+================================================================ */
+let cart = JSON.parse(localStorage.getItem('asan_cart') || '[]');
+
+function saveCart() { localStorage.setItem('asan_cart', JSON.stringify(cart)); }
+
+function addToCart(id) {
+  const item = getAppliances().find(i => i.id === id);
+  if (!item || item.stock === 'Out of Stock') return;
+  const existing = cart.find(c => c.id === id);
+  if (existing) { existing.qty += 1; }
+  else { cart.push({ id: item.id, name: item.name, category: item.category, price: item.price, image: item.image, qty: 1 }); }
+  saveCart();
+  updateCartBadge();
+  showToast(`${item.name} added to cart`, 'success', 'fas fa-check-circle');
+  renderCartItems();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(c => c.id !== id);
+  saveCart();
+  updateCartBadge();
+  renderCartItems();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(c => c.id === id);
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  saveCart();
+  updateCartBadge();
+  renderCartItems();
+}
+
+function updateCartBadge() {
+  const total = cart.reduce((s,c) => s + c.qty, 0);
+  document.getElementById('cartCountBadge').textContent = total;
+  document.getElementById('cartHeaderCount').textContent = `${total} item${total !== 1 ? 's' : ''}`;
+}
+
+function openCart()  { document.getElementById('cartDrawer').classList.add('open');   document.getElementById('cartBackdrop').classList.add('open');  renderCartItems(); document.body.style.overflow = 'hidden'; }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartBackdrop').classList.remove('open'); document.body.style.overflow = ''; }
+
+function renderCartItems() {
+  const container = document.getElementById('cartItemsContainer');
+  const footer    = document.getElementById('cartFooter');
+
+  if (cart.length === 0) {
+    container.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-cart"></i><p>Your cart is empty.<br>Browse our catalog and add items.</p><button class="ag-btn ag-btn-primary" style="margin-top:8px;" onclick="closeCart()"><i class="fas fa-shopping-bag"></i> Browse Now</button></div>`;
+    footer.style.display = 'none';
+    return;
+  }
+
+  const subtotal = cart.reduce((s,c) => s + c.price * c.qty, 0);
+  container.innerHTML = cart.map(c => `
+    <div class="cart-item">
+      <div class="cart-item-thumb">
+        ${c.image ? `<img src="${esc(c.image)}" alt="${esc(c.name)}">` : `<i class="fas ${getIcon(c.category)}"></i>`}
+      </div>
+      <div class="cart-item-info">
+        <p class="cart-item-name">${esc(c.name)}</p>
+        <p class="cart-item-cat">${esc(c.category||'Appliance')}</p>
+        <div class="cart-item-row">
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty(${c.id},-1)" aria-label="Decrease">−</button>
+            <input type="number" class="qty-val" value="${c.qty}" min="1" onchange="setQty(${c.id}, this.value)" aria-label="Quantity">
+            <button class="qty-btn" onclick="changeQty(${c.id},1)" aria-label="Increase">+</button>
+          </div>
+          <span class="cart-item-price">${fmtPrice(c.price * c.qty)}</span>
+          <button class="cart-item-remove" onclick="removeFromCart(${c.id})" aria-label="Remove"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('cartSubtotal').textContent = fmtPrice(subtotal);
+  document.getElementById('cartTotal').textContent    = fmtPrice(subtotal);
+  footer.style.display = '';
+}
+
+function setQty(id, val) {
+  const item = cart.find(c => c.id === id);
+  if (!item) return;
+  const q = Math.max(1, parseInt(val) || 1);
+  item.qty = q;
+  saveCart(); updateCartBadge(); renderCartItems();
+}
+
+function checkoutCart() {
+  const user = checkAuth();
+  if (!user) return;
+  if (cart.length === 0) return;
+  const tracking = 'ASAN-APL-' + Date.now().toString().slice(-6) + '-' + (Math.floor(Math.random()*9000)+1000);
+  const total = cart.reduce((s,c) => s + c.price * c.qty, 0);
+  const orders = JSON.parse(localStorage.getItem('asan_appliance_orders') || '[]');
+  cart.forEach(c => {
+    orders.push({
+      id: Date.now() + Math.random(), tracking, applianceId: c.id, applianceName: c.name,
+      applianceImage: c.image||'', category: c.category||'', quantity: c.qty,
+      unitPrice: c.price, totalCost: c.price * c.qty,
+      mode: 'Buy / Import', destination: '', notes: '',
+      customer: user.name, customerEmail: user.email,
+      status: 'Pending', createdAt: new Date().toISOString()
+    });
+  });
+  localStorage.setItem('asan_appliance_orders', JSON.stringify(orders));
+
+  const notifs = JSON.parse(localStorage.getItem('asan_notifications_' + user.email) || '[]');
+  notifs.unshift({ id: Date.now(), title: 'Cart Request Submitted', message: `Your order for ${cart.length} item(s) has been submitted. Tracking: ${tracking}. Total: ${fmtPrice(total)}`, type: 'success', read: false, timestamp: new Date().toISOString() });
+  localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifs));
+
+  cart = [];
+  saveCart(); updateCartBadge(); closeCart();
+  showToast(`Request submitted! Tracking: ${tracking}`, 'success', 'fas fa-check-circle');
+}
+
+/* ================================================================
+   QUICK VIEW
+================================================================ */
+function openQv(id) {
+  const item = getAppliances().find(i => i.id === id);
+  if (!item) return;
+  const modal = document.getElementById('qvModal');
+  document.getElementById('qvImg').innerHTML = item.image
+    ? `<img src="${esc(item.image)}" alt="${esc(item.name)}">`
+    : `<i class="fas ${getIcon(item.category)}"></i>`;
+  const save = item.originalPrice ? Math.round((1 - item.price/item.originalPrice)*100) : 0;
+  document.getElementById('qvBody').innerHTML = `
+    <span style="font-size:11px;font-weight:700;color:var(--ag-blue-600);text-transform:uppercase;letter-spacing:.06em;">${esc(item.category||'Appliance')}</span>
+    <h2 style="font-size:22px;font-weight:800;color:var(--ag-text-900);margin:6px 0;">${esc(item.name)}</h2>
+    <div class="apl-rating"><span class="apl-stars">${starsHtml(item.rating||4)}</span><span class="apl-rating-count">${(item.rating||4).toFixed(1)} (${item.reviews||0} reviews)</span></div>
+    <p style="font-size:14px;color:var(--ag-text-600);line-height:1.7;">${esc(item.description||'')}</p>
+    <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:4px 0;">
+      <span style="font-size:26px;font-weight:800;color:var(--ag-navy-800);">${fmtPrice(item.price)}</span>
+      ${item.originalPrice ? `<span style="font-size:15px;color:var(--ag-text-400);text-decoration:line-through;">${fmtPrice(item.originalPrice)}</span>` : ''}
+      ${save > 0 ? `<span style="font-size:12px;font-weight:700;color:#16a34a;background:#dcfce7;padding:3px 10px;border-radius:99px;">Save ${save}%</span>` : ''}
+    </div>
+    ${stockBadgeHtml(item.stock)}
+    <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+      <button class="apl-add-btn" style="flex:1;justify-content:center;padding:13px;" onclick="addToCart(${item.id});closeQv();" ${item.stock==='Out of Stock'?'disabled style="opacity:0.5;cursor:not-allowed;"':''}>
+        <i class="fas fa-cart-plus"></i> Add to Cart
+      </button>
+      <button class="ag-btn ag-btn-secondary" style="flex:1;" onclick="closeQv();openOrderModal(${item.id});">
+        <i class="fas fa-paper-plane"></i> Import Request
+      </button>
+    </div>`;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQv() {
+  document.getElementById('qvModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleQvBackdropClick(e) { if (e.target === e.currentTarget) closeQv(); }
+</script>
+
+<script>
+/* ================================================================
+   ORDER MODAL (single-item import request)
+================================================================ */
+let selectedAppliance = null;
+
+function openOrderModal(id) {
+  const user = checkAuth();
+  if (!user) return;
+  const item = getAppliances().find(i => i.id === id);
+  if (!item) return;
+  selectedAppliance = item;
+  document.getElementById('orderSummary').innerHTML = `
+    <div class="apl-order-summary-img">
+      ${item.image ? `<img src="${esc(item.image)}" alt="${esc(item.name)}">` : `<i class="fas ${getIcon(item.category)}"></i>`}
+    </div>
+    <div><h4 style="margin:0 0 4px;font-size:14.5px;color:var(--ag-text-900);">${esc(item.name)}</h4><p style="margin:0;font-size:13px;color:var(--ag-text-600);">${esc(item.category||'Appliance')} &middot; ${fmtPrice(item.price)} / unit</p></div>`;
+  document.getElementById('orderQty').value = 1;
+  document.getElementById('orderMode').value = 'Buy Locally';
+  document.getElementById('orderDestination').value = '';
+  document.getElementById('orderNotes').value = '';
+  updateOrderTotals();
+  document.getElementById('orderModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOrderModal() {
+  document.getElementById('orderModal').classList.remove('open');
+  selectedAppliance = null;
+  document.body.style.overflow = '';
+}
+
+function handleOrderBackdropClick(e) { if (e.target === e.currentTarget) closeOrderModal(); }
+
+function updateOrderTotals() {
+  if (!selectedAppliance) return;
+  const qty  = parseInt(document.getElementById('orderQty').value) || 1;
+  const unit = parseFloat(selectedAppliance.price) || 0;
+  document.getElementById('orderUnitPrice').textContent  = fmtPrice(unit);
+  document.getElementById('orderQtyDisplay').textContent = qty;
+  document.getElementById('orderTotalPrice').textContent = fmtPrice(unit * qty);
+}
+
+document.getElementById('orderQty').addEventListener('input', updateOrderTotals);
+
+document.getElementById('orderForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const user = checkAuth();
+  if (!user || !selectedAppliance) return;
+  const qty   = parseInt(document.getElementById('orderQty').value) || 1;
+  const unit  = parseFloat(selectedAppliance.price) || 0;
+  const total = unit * qty;
+  const tracking = 'ASAN-APL-' + Date.now().toString().slice(-6) + '-' + (Math.floor(Math.random()*9000)+1000);
+
+  const orders = JSON.parse(localStorage.getItem('asan_appliance_orders') || '[]');
+  orders.push({
+    id: Date.now(), tracking,
+    applianceId: selectedAppliance.id, applianceName: selectedAppliance.name,
+    applianceImage: selectedAppliance.image||'', category: selectedAppliance.category||'',
+    quantity: qty, unitPrice: unit, totalCost: total,
+    mode: document.getElementById('orderMode').value,
+    destination: document.getElementById('orderDestination').value,
+    notes: document.getElementById('orderNotes').value,
+    customer: user.name, customerEmail: user.email,
+    status: 'Pending', createdAt: new Date().toISOString()
+  });
+  localStorage.setItem('asan_appliance_orders', JSON.stringify(orders));
+
+  const notifs = JSON.parse(localStorage.getItem('asan_notifications_' + user.email) || '[]');
+  notifs.unshift({ id: Date.now(), title: 'Import Request Submitted', message: `${qty}× ${selectedAppliance.name} · Tracking: ${tracking}`, type: 'success', read: false, timestamp: new Date().toISOString() });
+  localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifs));
+
+  closeOrderModal();
+  showToast(`Request submitted! Tracking: ${tracking}`, 'success', 'fas fa-check-circle');
+});
+
+/* ================================================================
+   TOAST
+================================================================ */
+function showToast(msg, type = 'info', iconClass = 'fas fa-info-circle') {
+  const region = document.getElementById('toastRegion');
+  const toast  = document.createElement('div');
+  toast.className = `apl-toast ${type}`;
+  toast.innerHTML = `<i class="${iconClass}"></i><span>${esc(msg)}</span>`;
+  region.appendChild(toast);
+  setTimeout(() => {
+    toast.style.transition = 'opacity 0.3s, transform 0.3s';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(8px)';
+    setTimeout(() => toast.remove(), 320);
+  }, 3200);
+}
+
+/* ================================================================
+   NOTIFICATIONS
+================================================================ */
+let notifications = [];
+
+function initNotifications() {
+  const user = checkAuth();
+  if (!user) return;
+  notifications = JSON.parse(localStorage.getItem('asan_notifications_' + user.email) || '[]');
+  updateNotifBadge();
+}
+
+function showNotifications() {
+  document.getElementById('notificationPanel').classList.toggle('active');
+  renderNotifList();
+  notifications.forEach(n => n.read = true);
+  const user = checkAuth();
+  if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+  updateNotifBadge();
+}
+
+function hideNotifications() { document.getElementById('notificationPanel').classList.remove('active'); }
+
+function updateNotifBadge() {
+  const unread = notifications.filter(n => !n.read).length;
+  const dot    = document.getElementById('notificationBadge');
+  const badge  = document.getElementById('notifCountBadge');
+  dot.style.display = unread > 0 ? 'block' : 'none';
+  if (badge) badge.textContent = unread;
+}
+
+function renderNotifList() {
+  const list = document.getElementById('notificationList');
+  if (!list) return;
+  if (notifications.length === 0) {
+    list.innerHTML = `<div class="ag-empty"><i class="fas fa-bell"></i><h4>No Notifications</h4><p>You're all caught up!</p></div>`;
+    return;
+  }
+  list.innerHTML = notifications.map(n => {
+    const icons = { success:'fa-check', warning:'fa-exclamation-triangle', info:'fa-info-circle' };
+    const icon  = icons[n.type] || 'fa-info-circle';
+    const ago   = getTimeAgo(new Date(n.timestamp));
+    return `<div class="notification-item${n.read?'':' unread'}" onclick="markNotifRead(${n.id})">
+      <div class="notif-icon ${n.type||'info'}"><i class="fas ${icon}"></i></div>
+      <div class="notif-content">
+        <h5>${esc(n.title)}</h5>
+        <p>${esc(n.message)}</p>
+        <div class="notif-meta"><i class="fas fa-clock"></i> ${ago}</div>
+      </div>
+      ${!n.read ? '<div class="unread-dot"></div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function markNotifRead(id) {
+  const n = notifications.find(x => x.id === id);
+  if (n) { n.read = true; const user = checkAuth(); if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications)); updateNotifBadge(); renderNotifList(); }
+}
+
+function markAllAsRead() {
+  notifications.forEach(n => n.read = true);
+  const user = checkAuth();
+  if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+  updateNotifBadge(); renderNotifList();
+}
+
+function clearAllNotifications() {
+  if (!confirm('Clear all notifications?')) return;
+  notifications = [];
+  const user = checkAuth();
+  if (user) localStorage.setItem('asan_notifications_' + user.email, JSON.stringify(notifications));
+  updateNotifBadge(); renderNotifList();
+}
+
+function getTimeAgo(date) {
+  const s = Math.floor((Date.now() - date) / 1000);
+  if (s < 60)     return 'Just now';
+  if (s < 3600)   return Math.floor(s/60) + ' min ago';
+  if (s < 86400)  return Math.floor(s/3600) + ' hours ago';
+  if (s < 604800) return Math.floor(s/86400) + ' days ago';
+  return date.toLocaleDateString();
+}
+
+/* ================================================================
+   RESPONSIVE — filter toggle (mobile)
+================================================================ */
+const filterToggle = document.getElementById('filterToggleBtn');
+function syncFilterBtn() {
+  filterToggle.style.display = window.innerWidth <= 960 ? 'grid' : 'none';
+}
+filterToggle.addEventListener('click', () => {
+  document.getElementById('shopSidebar').classList.toggle('mobile-open');
+});
+window.addEventListener('resize', syncFilterBtn);
+
+/* ================================================================
+   INIT
+================================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+  const user = checkAuth();
+  if (!user) return;
+  document.getElementById('userAvatar').textContent = (user.name||'U').charAt(0).toUpperCase();
+  document.getElementById('userAvatar').setAttribute('title', user.name || 'Account');
+  seedAppliancesIfEmpty();
+  renderCategoryList();
+  renderCatalog();
+  updateCartBadge();
+  initNotifications();
+  syncFilterBtn();
+
+  window.addEventListener('storage', e => {
+    if (e.key === 'asan_appliances') { renderCategoryList(); renderCatalog(); }
+  });
+});
+</script>
+</body>
+</html>

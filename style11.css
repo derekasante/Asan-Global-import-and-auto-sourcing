@@ -1,0 +1,61 @@
+.schedule-form{
+
+background:white;
+
+padding:30px;
+
+margin-top:30px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.form-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:20px;
+
+margin:25px 0;
+
+}
+
+.form-grid input{
+
+padding:15px;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+font-size:15px;
+
+}
+
+.save-btn{
+
+padding:15px 35px;
+
+background:#0057d8;
+
+color:white;
+
+border:none;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-size:16px;
+
+}
+
+.save-btn:hover{
+
+background:#0041aa;
+
+}

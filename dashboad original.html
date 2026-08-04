@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asan Global Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+display:flex;
+background:#eef4fb;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#003b73;
+color:white;
+position:fixed;
+padding:25px;
+}
+
+.sidebar h2{
+margin-bottom:40px;
+}
+
+.sidebar ul{
+list-style:none;
+}
+
+.sidebar ul li{
+margin:20px 0;
+}
+
+.sidebar ul li a{
+color:white;
+text-decoration:none;
+display:block;
+padding:12px;
+border-radius:8px;
+transition:.3s;
+}
+
+.sidebar ul li a:hover{
+background:#00bfff;
+}
+
+/* Main */
+
+.main{
+margin-left:250px;
+width:100%;
+}
+
+/* Header */
+
+.topbar{
+background:white;
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.user{
+font-weight:600;
+}
+
+/* Cards */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:25px;
+padding:40px;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card i{
+font-size:45px;
+color:#0099ff;
+margin-bottom:15px;
+}
+
+.card h2{
+margin-bottom:10px;
+}
+
+/* Shipment Table */
+
+.section{
+padding:0 40px 40px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+th{
+background:#0059b3;
+color:white;
+padding:15px;
+}
+
+td{
+padding:15px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
+
+.status{
+padding:6px 15px;
+border-radius:20px;
+color:white;
+}
+
+.transit{
+background:orange;
+}
+
+.delivered{
+background:green;
+}
+
+.pending{
+background:red;
+}
+
+/* Banner */
+
+.banner{
+margin:40px;
+padding:40px;
+background:linear-gradient(120deg,#0077ff,#00bfff);
+border-radius:20px;
+color:white;
+}
+
+.banner h1{
+margin-bottom:15px;
+font-size:40px;
+}
+
+.banner p{
+font-size:18px;
+}
+
+/* Footer */
+
+footer{
+text-align:center;
+padding:30px;
+color:#777;
+}
+
+@media(max-width:900px){
+
+.sidebar{
+width:200px;
+}
+
+.main{
+margin-left:200px;
+}
+
+}
+
+@media(max-width:700px){
+
+.sidebar{
+display:none;
+}
+
+.main{
+margin-left:0;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2><i class="fas fa-ship"></i> Asan Global</h2>
+
+<ul>
+
+<li><a href="index5.html"><i class="fas fa-home"></i> Dashboard</a></li>
+
+<li><a href="#"><i class="fas fa-box"></i> Shipments</a></li>
+
+<li><a href="tracking.html"><i class="fas fa-map-marker-alt"></i> Tracking</a></li>
+
+<li><a href="#"><i class="fas fa-credit-card"></i> Payments</a></li>
+
+<li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+
+<li><a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+
+</ul>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+
+<h2>Shipping Dashboard</h2>
+
+<div class="user">
+Welcome, Customer
+</div>
+
+</div>
+
+<div class="banner">
+
+<h1>Welcome to Asan Global</h1><h4>import & auto sourcing</h4>
+
+<p>
+
+Track all your international shipments from one dashboard.
+
+</p>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+
+<i class="fas fa-box"></i>
+
+<h2>25</h2>
+
+<p>Total Shipments</p>
+
+</div>
+
+<div class="card">
+
+<i class="fas fa-ship"></i>
+
+<h2>12</h2>
+
+<p>In Transit</p>
+
+</div>
+
+<div class="card">
+
+<i class="fas fa-check-circle"></i>
+
+<h2>13</h2>
+
+<p>Delivered</p>
+
+</div>
+
+<div class="card">
+
+<i class="fas fa-globe"></i>
+
+<h2>56</h2>
+
+<p>Countries Served</p>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h2 style="margin-bottom:20px;">Recent Shipments</h2>
+
+<table>
+
+<tr>
+
+<th>Tracking ID</th>
+
+<th>Destination</th>
+
+<th>Status</th>
+
+<th>Estimated Arrival</th>
+
+</tr>
+
+<tr>
+
+<td>AG12045</td>
+
+<td>London</td>
+
+<td><span class="status transit">In Transit</span></td>
+
+<td>22 Jun 2026</td>
+
+</tr>
+
+<tr>
+
+<td>AG12046</td>
+
+<td>Dubai</td>
+
+<td><span class="status delivered">Delivered</span></td>
+
+<td>Delivered</td>
+
+</tr>
+
+<tr>
+
+<td>AG12047</td>
+
+<td>New York</td>
+
+<td><span class="status pending">Pending</span></td>
+
+<td>25 Jun 2026</td>
+
+</tr>
+
+<tr>
+
+<td>AG12048</td>
+
+<td>Tokyo</td>
+
+<td><span class="status transit">In Transit</span></td>
+
+<td>29 Jun 2026</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<footer>
+
+© 2026 Asan Global Shipping Services
+
+</footer>
+
+</div>
+
+</body>
+</html>

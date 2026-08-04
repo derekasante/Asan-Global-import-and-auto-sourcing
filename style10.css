@@ -1,0 +1,109 @@
+.timeline{
+
+background:white;
+
+padding:30px;
+
+border-radius:20px;
+
+margin-bottom:30px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.step{
+
+padding:18px;
+
+margin:12px 0;
+
+background:#f3f7ff;
+
+border-left:6px solid #ddd;
+
+border-radius:10px;
+
+font-size:17px;
+
+}
+
+.done{
+
+border-color:green;
+
+}
+
+.active{
+
+border-color:#0057d8;
+
+font-weight:bold;
+
+}
+
+.map-box{
+
+background:white;
+
+padding:25px;
+
+border-radius:20px;
+
+margin-bottom:30px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.map-box img{
+
+width:100%;
+
+border-radius:15px;
+
+height:420px;
+
+object-fit:cover;
+
+}
+
+.history{
+
+background:white;
+
+padding:25px;
+
+border-radius:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+}
+
+.history table{
+
+width:100%;
+
+margin-top:20px;
+
+border-collapse:collapse;
+
+}
+
+.history th{
+
+background:#0057d8;
+
+color:white;
+
+padding:15px;
+
+}
+
+.history td{
+
+padding:15px;
+
+border-bottom:1px solid #ddd;
+
+}
