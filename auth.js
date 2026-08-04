@@ -22,7 +22,8 @@
   // Lazy-create the Supabase client (loaded from CDN in the page).
   function client() {
     if (window._asanSupabase) return window._asanSupabase;
-    if (!window.supabase) {
+    // The Supabase v2 UMD build exposes window.supabase.createClient.
+    if (!window.supabase || typeof window.supabase.createClient !== 'function') {
       throw new Error('[auth.js] Supabase JS library not loaded.');
     }
     window._asanSupabase = window.supabase.createClient(cfg.url, cfg.anonKey, {
@@ -106,7 +107,9 @@
         password,
         options: {
           data: { full_name: fullName },
-          emailRedirectTo: window.location.origin + '/login.html',
+          // A relative URL preserves a GitHub Pages project base path, e.g.
+          // https://account.github.io/project/login.html (not /login.html).
+          emailRedirectTo: new URL('login.html', window.location.href).href,
         },
       });
       if (error) {
