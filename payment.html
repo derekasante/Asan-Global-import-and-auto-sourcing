@@ -3,12 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment | Asan Global</title>
-<meta name="description" content="Secure payment for your Asan Global shipment invoice — multiple methods, provider-agnostic checkout.">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Asan Global | Payment Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="design-system.css">
-<link rel="stylesheet" href="payments.css">
+<style>
+.pay-topbar {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: rgba(255,255,255,0.96); backdrop-filter: blur(10px);
+  padding: 18px 28px; border-bottom: 1px solid var(--ag-border);
+  box-shadow: var(--ag-shadow-sm); position: sticky; top: 0; z-index: 900;
+}
+.pay-topbar .title-group { display: flex; align-items: center; gap: 14px; }
+.pay-topbar h1 { margin: 0; font-size: 22px; color: var(--ag-text-900); }
+.pay-topbar .eyebrow { color: var(--ag-blue-600); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px; font-weight: 700; margin: 0 0 2px; }
+.pay-topbar-actions { display: flex; align-items: center; gap: 14px; }
+.ag-avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); color: #fff; font-weight: 700; font-size: 16px; }
+
+.pay-content { padding: 28px; max-width: 1400px; margin: 0 auto; }
+.pay-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; margin-bottom: 24px; }
+.pay-stat-icon { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; color: #fff; font-size: 18px; margin-bottom: 14px; }
+.pay-stat-icon.blue  { background: linear-gradient(135deg, var(--ag-blue-600), var(--ag-navy-800)); }
+.pay-stat-icon.green { background: linear-gradient(135deg, #16a34a, #15803d); }
+.pay-stat-icon.orange{ background: linear-gradient(135deg, #f59e0b, #d97706); }
+.pay-stat-icon.purple{ background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.pay-stat h2 { font-size: 28px; margin: 0 0 4px; color: var(--ag-text-900); }
+.pay-stat p  { margin: 0; color: var(--ag-text-600); font-size: 13.5px; }
+
+.pay-methods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-top: 4px; }
+.pay-method-card {
+  border: 1.5px solid var(--ag-border); border-radius: var(--ag-radius-md);
+  padding: 22px 16px; text-align: center; cursor: pointer;
+  transition: border-color var(--ag-transition), transform var(--ag-transition), box-shadow var(--ag-transition);
+  background: var(--ag-surface);
+}
+.pay-method-card:hover { border-color: var(--ag-blue-500); transform: translateY(-3px); box-shadow: var(--ag-shadow-md); }
+.pay-method-card i { font-size: 36px; margin-bottom: 10px; display: block; }
+.pay-method-card h4 { font-size: 14px; font-weight: 600; color: var(--ag-text-900); margin: 0 0 4px; }
+.pay-method-card p  { font-size: 12px; color: var(--ag-text-400); margin: 0; }
+
+.pay-form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 20px; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.panel-head h4 { margin: 0; font-size: 16px; color: var(--ag-text-900); }
+.pay-form-actions { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+
+@media (max-width: 1100px) { .pay-grid-4 { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 640px)  { .pay-grid-4 { grid-template-columns: 1fr; } .pay-content { padding: 16px; } .pay-form-grid { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body data-ag-page="payment">
 <div class="ag-app-shell">
@@ -20,112 +61,137 @@
       <div class="title-group">
         <button class="ag-hamburger" data-ag-sidebar-toggle aria-label="Open menu"><i class="fas fa-bars"></i></button>
         <div>
-          <p class="eyebrow">Transactions &amp; billing</p>
+          <p class="eyebrow">Transactions & billing</p>
           <h1>Payment Center</h1>
         </div>
       </div>
       <div class="pay-topbar-actions">
-        <a href="payment-history.html" class="ag-btn ag-btn-ghost" style="font-size:13px;"><i class="fas fa-clock-rotate-left"></i> History</a>
-        <div class="pay-avatar" id="userAvatar">U</div>
+        <div class="ag-avatar" id="userAvatar">U</div>
       </div>
     </header>
 
     <div class="pay-content">
-      <!-- Provider note -->
-      <div class="pay-provider-note">
-        <i class="fas fa-info-circle"></i>
-        <div>
-          <strong>Provider-agnostic checkout.</strong> No live payment gateway is connected yet — charges run through the
-          <code>demo</code> provider (<code>AsanPayments.registerProvider()</code> is the future seam for Hubtel,
-          Paystack, Flutterwave, Stripe or PayPal). No real money moves.
-        </div>
-      </div>
-
-      <!-- Stats -->
-      <section class="pay-grid-4 ag-reveal" style="margin-bottom:24px;">
+      <!-- KPI Cards -->
+      <section class="pay-grid-4 ag-reveal">
         <article class="ag-card ag-card--interactive pay-stat">
           <div class="pay-stat-icon blue"><i class="fas fa-money-bill-wave"></i></div>
-          <h2 id="totalOutstanding">$0</h2>
-          <p>Outstanding</p>
+          <h2 id="totalPayments">$0</h2>
+          <p>Total Payments</p>
         </article>
         <article class="ag-card ag-card--interactive pay-stat">
           <div class="pay-stat-icon orange"><i class="fas fa-clock"></i></div>
-          <h2 id="pendingInvoices">0</h2>
-          <p>Pending Invoices</p>
+          <h2 id="pendingPayments">$0</h2>
+          <p>Pending</p>
         </article>
         <article class="ag-card ag-card--interactive pay-stat">
           <div class="pay-stat-icon green"><i class="fas fa-check-circle"></i></div>
-          <h2 id="paidInvoices">0</h2>
-          <p>Paid Invoices</p>
+          <h2 id="completedPayments">$0</h2>
+          <p>Completed</p>
         </article>
         <article class="ag-card ag-card--interactive pay-stat">
-          <div class="pay-stat-icon purple"><i class="fas fa-credit-card"></i></div>
-          <h2 id="providerName">—</h2>
-          <p>Active Provider</p>
+          <div class="pay-stat-icon purple"><i class="fas fa-file-invoice-dollar"></i></div>
+          <h2 id="totalTransactions">0</h2>
+          <p>Transactions</p>
         </article>
       </section>
 
-      <!-- Make a Payment -->
+      <!-- Payment Methods -->
       <section class="ag-card ag-reveal" style="margin-bottom:24px;">
-        <div class="pay-panel-head">
-          <h4><i class="fas fa-lock"></i>Make a Payment</h4>
-          <span class="ag-badge ag-badge-neutral" id="chargeModeBadge">Demo provider</span>
+        <div class="panel-head">
+          <h4>Accepted Payment Methods</h4>
         </div>
+        <div class="pay-methods-grid">
+          <div class="pay-method-card">
+            <i class="fab fa-cc-visa" style="color:#1a1f71;"></i>
+            <h4>Visa</h4><p>Credit &amp; Debit</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fab fa-cc-mastercard" style="color:#eb001b;"></i>
+            <h4>Mastercard</h4><p>Credit &amp; Debit</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fab fa-paypal" style="color:#00457c;"></i>
+            <h4>PayPal</h4><p>Secure Online</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fab fa-stripe" style="color:#635bff;"></i>
+            <h4>Stripe</h4><p>Global Payments</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fas fa-mobile-alt ag-icon-brand"></i>
+            <h4>Mobile Money</h4><p>MTN / Vodafone</p>
+          </div>
+          <div class="pay-method-card">
+            <i class="fas fa-university ag-icon-brand"></i>
+            <h4>Bank Transfer</h4><p>Direct Transfer</p>
+          </div>
+        </div>
+      </section>
 
+      <!-- Payment Form -->
+      <section class="ag-card ag-reveal" style="margin-bottom:24px;">
+        <div class="panel-head">
+          <h4>Make a Payment</h4>
+        </div>
         <form id="paymentForm">
           <div class="pay-form-grid">
             <div class="ag-field">
-              <label for="invoiceSelect">Invoice</label>
-              <select id="invoiceSelect" class="ag-select" required>
-                <option value="">Select Invoice</option>
+              <label for="importSelect">Import Tracking Number</label>
+              <select id="importSelect" class="ag-select" required>
+                <option value="">Select Import</option>
               </select>
             </div>
             <div class="ag-field">
               <label for="paymentMethod">Payment Method</label>
-              <select id="paymentMethod" class="ag-select" required></select>
+              <select id="paymentMethod" class="ag-select" required>
+                <option value="Visa">Visa</option>
+                <option value="Mastercard">Mastercard</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Stripe">Stripe</option>
+                <option value="Mobile Money">Mobile Money</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+              </select>
             </div>
             <div class="ag-field">
-              <label for="amount">Amount (USD)</label>
-              <input type="number" id="amount" class="ag-input" placeholder="0.00" min="1" step="0.01" required>
+              <label for="amount">Amount ($)</label>
+              <input type="number" id="amount" class="ag-input" placeholder="Enter amount" min="1" required>
             </div>
             <div class="ag-field">
               <label for="payerName">Payer Name</label>
-              <input type="text" id="payerName" class="ag-input" placeholder="Your full name" required>
+              <input type="text" id="payerName" class="ag-input" placeholder="Enter your name" required>
+            </div>
+            <div class="ag-field">
+              <label for="reference">Reference</label>
+              <input type="text" id="reference" class="ag-input" placeholder="Payment reference" required>
+            </div>
+            <div class="ag-field">
+              <label for="cardNumber">Card Number / Account</label>
+              <input type="text" id="cardNumber" class="ag-input" placeholder="**** **** **** ****">
             </div>
           </div>
-
-          <!-- Method-specific fields (placeholder interface for future gateways) -->
-          <div id="methodDetails" style="margin-top:6px;">
-            <div class="ag-field" data-method="mobile_money">
-              <label for="mobileNumber">Mobile Money Number</label>
-              <input type="tel" id="mobileNumber" class="ag-input" placeholder="e.g. 024 535 7611">
-            </div>
-            <div class="ag-field" data-method="card" style="display:none;">
-              <label for="cardRef">Card Details</label>
-              <input type="text" id="cardRef" class="ag-input" placeholder="Provided by payment gateway at checkout">
-              <span class="ck-form-hint" style="font-size:11.5px;color:var(--ag-text-400);margin-top:4px;">
-                <i class="fas fa-info-circle"></i> Card fields are handled by the gateway's hosted checkout when a real provider is connected.
-              </span>
-            </div>
-          </div>
-
           <div class="pay-form-actions">
-            <button type="submit" class="ag-btn ag-btn-primary" id="payBtn"><i class="fas fa-lock"></i> Pay Now</button>
+            <button type="submit" class="ag-btn ag-btn-primary"><i class="fas fa-paper-plane"></i> Submit Payment</button>
             <button type="reset" class="ag-btn ag-btn-secondary"><i class="fas fa-times"></i> Clear</button>
           </div>
         </form>
       </section>
 
-      <!-- Recent Transactions -->
+      <!-- Transactions Table -->
       <section class="ag-card ag-reveal">
-        <div class="pay-panel-head">
-          <h4><i class="fas fa-receipt"></i>Recent Payments</h4>
-          <a href="payment-history.html" class="ag-btn ag-btn-ghost" style="font-size:12.5px;padding:6px 14px;">View All</a>
+        <div class="panel-head">
+          <h4>Recent Transactions</h4>
+          <span class="ag-badge ag-badge-info">Live</span>
         </div>
         <div class="ag-table-wrap">
           <table class="ag-table">
             <thead>
-              <tr><th>Date</th><th>Invoice</th><th>Tracking</th><th>Method</th><th>Amount</th><th>Status</th></tr>
+              <tr>
+                <th>Date</th>
+                <th>Tracking ID</th>
+                <th>Method</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
             </thead>
             <tbody id="transactionsTable"></tbody>
           </table>
@@ -139,237 +205,99 @@
   </main>
 </div>
 
-<!-- Toast region -->
-<div id="payToastRegion" style="position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:10px;z-index:3000;"></div>
-
 <script src="sidebar.js"></script>
-<script src="security-utils.js"></script>
-<script src="payments.js"></script>
 <script>
-'use strict';
-const esc = v => window.AsanPayments?.esc ? window.AsanPayments.esc(v) : String(v ?? '');
-const P = () => window.AsanPayments;
-
-/* ================================================================
-   AUTH
-================================================================ */
-(function () {
-  const user = P()?.currentUser();
-  if (!user) { window.location.href = 'login.html'; return; }
-  const avatarEl = document.getElementById('userAvatar');
-  if (avatarEl) avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
-})();
-
-/* ================================================================
-   TOAST
-================================================================ */
-function toast(msg, type = 'info') {
-  const icons = { info: 'fa-info-circle', success: 'fa-check-circle', error: 'fa-exclamation-circle' };
-  const colors = { info: 'var(--ag-blue-500)', success: '#16a34a', error: 'var(--ag-danger)' };
-  const region = document.getElementById('payToastRegion');
-  const t = document.createElement('div');
-  t.style.cssText = `display:flex;align-items:center;gap:10px;background:var(--ag-navy-900);color:#fff;padding:13px 18px;border-radius:12px;box-shadow:var(--ag-shadow-lg);font-size:13.5px;min-width:260px;border-left:4px solid ${colors[type]};`;
-  t.innerHTML = `<i class="fas ${icons[type]}" style="color:${colors[type]};font-size:15px;"></i><span>${esc(msg)}</span>`;
-  region.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(8px)'; t.style.transition = '.3s'; setTimeout(() => t.remove(), 320); }, 3500);
+function checkAuth() {
+  const user = JSON.parse(localStorage.getItem('asan_current_user'));
+  if (!user) { window.location.href = 'login.html'; return false; }
+  return user;
 }
 
-/* ================================================================
-   LOAD DATA
-================================================================ */
-function loadStats() {
-  const invoices = P().getInvoices().filter(i => {
-    const u = P().currentUser();
-    if (P().isAdmin()) return true;
-    return i.customer === u.name;
+function getStatusBadge(status) {
+  if (status === 'Paid') return 'ag-badge-success';
+  if (status === 'Pending') return 'ag-badge-warning';
+  return 'ag-badge-danger';
+}
+
+function loadPaymentData() {
+  const user = checkAuth();
+  if (!user) return;
+
+  document.getElementById('userAvatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+  const finance = JSON.parse(localStorage.getItem('asan_finance') || '[]');
+  const imports = JSON.parse(localStorage.getItem('asan_imports') || '[]');
+
+  const userFinance = user.role === 'admin' ? finance : finance.filter(f => f.customer === user.name);
+  const userImports = user.role === 'admin' ? imports : imports.filter(imp => imp.customer === user.name);
+
+  const totalPayments    = userFinance.reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+  const pendingPayments  = userFinance.filter(f => f.status === 'Pending').reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+  const completedPayments= userFinance.filter(f => f.status === 'Paid').reduce((sum, f) => sum + parseFloat(f.amount || 0), 0);
+
+  document.getElementById('totalPayments').textContent     = '$' + totalPayments.toLocaleString();
+  document.getElementById('pendingPayments').textContent   = '$' + pendingPayments.toLocaleString();
+  document.getElementById('completedPayments').textContent = '$' + completedPayments.toLocaleString();
+  document.getElementById('totalTransactions').textContent = userFinance.length;
+
+  const importSelect = document.getElementById('importSelect');
+  importSelect.innerHTML = '<option value="">Select Import</option>';
+  userImports.forEach(imp => {
+    const totalCost = parseFloat(imp.importFee || 0) + parseFloat(imp.customsFee || 0);
+    importSelect.innerHTML += `<option value="${imp.tracking}">${imp.tracking} - ${imp.make} ${imp.model} ($${totalCost})</option>`;
   });
-  const outstanding = invoices.filter(i => i.status === 'pending' || i.status === 'overdue').reduce((s, i) => s + (i.amount_due || 0), 0);
-  const pendingCount = invoices.filter(i => i.status === 'pending' || i.status === 'overdue').length;
-  const paidCount = invoices.filter(i => i.status === 'paid').length;
-  const provider = P().getProvider();
 
-  document.getElementById('totalOutstanding').textContent = P().money(outstanding);
-  document.getElementById('pendingInvoices').textContent = pendingCount;
-  document.getElementById('paidInvoices').textContent = paidCount;
-  document.getElementById('providerName').textContent = provider ? provider.name || '—' : '—';
-  document.getElementById('chargeModeBadge').textContent = provider ? provider.name : 'Demo provider';
-}
-
-function loadInvoiceSelect() {
-  const sel = document.getElementById('invoiceSelect');
-  const u = P().currentUser();
-  const invoices = P().getInvoices()
-    .filter(i => (P().isAdmin() || i.customer === u.name) && (i.status === 'pending' || i.status === 'overdue'))
-    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-  sel.innerHTML = '<option value="">Select Invoice</option>' + invoices.map(i => `
-    <option value="${esc(i.id)}">${esc(i.number)} · ${esc(i.customer)} · ${P().money(i.amount_due)}</option>`).join('');
-}
-
-function loadMethods() {
-  const sel = document.getElementById('paymentMethod');
-  sel.innerHTML = P().METHODS.map(m => `<option value="${m.key}">${m.label}</option>`).join('');
-}
-
-function loadTransactions() {
   const tbody = document.getElementById('transactionsTable');
-  const u = P().currentUser();
-  let payments = P().getPayments();
-  if (!P().isAdmin()) payments = payments.filter(p => p.customer === u.name);
-
-  if (!payments.length) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="ag-empty"><i class="fas fa-inbox"></i>No payments yet.</div></td></tr>`;
-    return;
+  if (userFinance.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="ag-empty"><i class="fas fa-inbox"></i>No transactions yet.</div></td></tr>`;
+  } else {
+    tbody.innerHTML = userFinance.slice(0, 10).map(f => {
+      const badgeClass = getStatusBadge(f.status);
+      return `<tr>
+        <td>${f.date || new Date().toLocaleDateString()}</td>
+        <td>${f.tracking || 'N/A'}</td>
+        <td>${f.method || 'N/A'}</td>
+        <td>$${parseFloat(f.amount || 0).toLocaleString()}</td>
+        <td><span class="ag-badge ${badgeClass}">${f.status || 'Pending'}</span></td>
+      </tr>`;
+    }).join('');
   }
-  const statusBadge = (p) => {
-    const cls = p.status === 'succeeded' ? 'ag-badge-success' : p.status === 'pending' ? 'ag-badge-warning' : 'ag-badge-danger';
-    return `<span class="ag-badge ${cls}">${esc(p.status)}</span>`;
-  };
-  tbody.innerHTML = payments.slice(0, 8).map(p => `
-    <tr>
-      <td>${P().fmtDate(p.created_at)}</td>
-      <td><strong>${esc(p.invoice_number || '—')}</strong></td>
-      <td style="font-size:12.5px;">${esc(p.tracking || '—')}</td>
-      <td>${esc(p.method_label || p.method || '—')}</td>
-      <td><strong>${P().money(p.amount)}</strong></td>
-      <td>${statusBadge(p)}</td>
-    </tr>`).join('');
 }
 
-function setAmountFromInvoice() {
-  const id = document.getElementById('invoiceSelect').value;
-  if (!id) { document.getElementById('amount').value = ''; return; }
-  const inv = P().getInvoice(id);
-  if (inv) document.getElementById('amount').value = (inv.amount_due || inv.total || 0).toFixed(2);
-}
-
-/* ================================================================
-   METHOD-SPECIFIC FIELDS
-================================================================ */
-function updateMethodFields() {
-  const method = document.getElementById('paymentMethod').value;
-  document.querySelectorAll('#methodDetails .ag-field').forEach(f => {
-    f.style.display = f.dataset.method === method ? '' : 'none';
-  });
-}
-
-/* ================================================================
-   SUBMIT — provider-agnostic charge
-================================================================ */
-document.getElementById('paymentForm').addEventListener('submit', async function (e) {
+document.getElementById('paymentForm').addEventListener('submit', function(e) {
   e.preventDefault();
-
-  const invoiceId = document.getElementById('invoiceSelect').value;
-  const method = document.getElementById('paymentMethod').value;
-  const amount = parseFloat(document.getElementById('amount').value);
-  const payer = document.getElementById('payerName').value.trim();
-
-  if (!invoiceId) return toast('Please select an invoice.', 'error');
-  if (!amount || amount <= 0) return toast('Please enter a valid amount.', 'error');
-  if (!payer) return toast('Please enter the payer name.', 'error');
-
-  const invoice = P().getInvoice(invoiceId);
-  if (!invoice) return toast('Invoice not found.', 'error');
-
-  const btn = document.getElementById('payBtn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="ag-spinner sm" style="border-color:#fff3;border-top-color:#fff;"></span> Processing…';
-
-  try {
-    const result = await P().charge({
-      invoice,
-      method,
-      details: {
-        mobileNumber: document.getElementById('mobileNumber')?.value.trim() || '',
-        cardRef: document.getElementById('cardRef')?.value.trim() || '',
-      },
-      user: P().currentUser(),
-    });
-
-    if (result && result.status === 'succeeded') {
-      /* Record the local payment + mark invoice paid (or reduce amount_due). */
-      P().addPayment({
-        id: result.reference || 'PY-' + Date.now(),
-        reference: result.reference || 'PY-' + Date.now(),
-        invoice_id: invoice.id,
-        invoice_number: invoice.number,
-        tracking: invoice.tracking,
-        customer: invoice.customer,
-        method,
-        method_label: P().METHODS.find(m => m.key === method)?.label || method,
-        provider: P().getProvider().name,
-        amount,
-        currency: 'USD',
-        status: 'succeeded',
-        message: result.message || 'Payment completed',
-        created_at: new Date().toISOString(),
-      });
-
-      const updated = Object.assign({}, invoice, {
-        amount_paid: (invoice.amount_paid || 0) + amount,
-        amount_due: Math.max(0, (invoice.amount_due || 0) - amount),
-        status: invoice.amount_due <= amount ? 'paid' : 'partial',
-      });
-      P().upsertInvoice(updated);
-
-      toast('Payment recorded (demo gateway — no real money moved).', 'success');
-
-      /* Redirect to success page */
-      const qs = new URLSearchParams({
-        reference: result.reference || 'PY-' + Date.now(),
-        invoice: invoice.id,
-        amount: amount.toFixed(2),
-      });
-      window.location.href = 'payment-success.html?' + qs.toString();
-    } else if (result && result.redirectUrl) {
-      /* Real gateways may return a hosted checkout URL. */
-      window.location.href = result.redirectUrl;
-    } else {
-      toast('Payment failed. Please try again.', 'error');
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fas fa-lock"></i> Pay Now';
-    }
-  } catch (err) {
-    toast('Payment error: ' + (err.message || 'unknown'), 'error');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-lock"></i> Pay Now';
-  }
+  const user = JSON.parse(localStorage.getItem('asan_current_user'));
+  const finance = JSON.parse(localStorage.getItem('asan_finance') || '[]');
+  const newPayment = {
+    id: Date.now(),
+    tracking: document.getElementById('importSelect').value,
+    method:   document.getElementById('paymentMethod').value,
+    amount:   document.getElementById('amount').value,
+    payer:    document.getElementById('payerName').value,
+    reference:document.getElementById('reference').value,
+    cardNumber:document.getElementById('cardNumber').value,
+    customer: user.name,
+    status: 'Pending',
+    date: new Date().toLocaleDateString()
+  };
+  finance.push(newPayment);
+  localStorage.setItem('asan_finance', JSON.stringify(finance));
+  alert('Payment submitted successfully!');
+  this.reset();
+  loadPaymentData();
 });
 
-/* ================================================================
-   EVENTS + INIT
-================================================================ */
-document.getElementById('invoiceSelect').addEventListener('change', setAmountFromInvoice);
-document.getElementById('paymentMethod').addEventListener('change', updateMethodFields);
+function logout() {
+  localStorage.removeItem('asan_current_user');
+  window.location.href = 'login.html';
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadMethods();
-  updateMethodFields();
-  loadInvoiceSelect();
-  loadStats();
-  loadTransactions();
-
-  /* Pre-select invoice from URL (?invoice=ID) */
-  const params = new URLSearchParams(window.location.search);
-  const invId = params.get('invoice');
-  if (invId) {
-    const sel = document.getElementById('invoiceSelect');
-    sel.value = invId;
-    if (sel.value !== invId) {
-      // Not in the pending list — try to allow any existing invoice for the user.
-      const inv = P().getInvoice(invId);
-      if (inv) {
-        const u = P().currentUser();
-        if (P().isAdmin() || inv.customer === u.name) {
-          sel.insertAdjacentHTML('beforeend', `<option value="${esc(inv.id)}" selected>${esc(inv.number)} · ${esc(inv.customer)} · ${P().money(inv.amount_due)}</option>`);
-          sel.value = invId;
-        }
-      }
-    }
-    setAmountFromInvoice();
-  }
+window.addEventListener('storage', function(e) {
+  if (e.key === 'asan_finance' || e.key === 'asan_imports') loadPaymentData();
 });
+
+document.addEventListener('DOMContentLoaded', loadPaymentData);
+setInterval(loadPaymentData, 30000);
 </script>
 </body>
 </html>
-

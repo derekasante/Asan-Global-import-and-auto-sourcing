@@ -261,57 +261,18 @@
   }
 
 
-  var API_BASE = "http://localhost:5000";
-
-  function postJSON(url, payload) {
-    return fetch(API_BASE + url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }).then(function (resp) {
-      return resp.json().then(function (json) {
-        if (!resp.ok || json.success === false) {
-          var e = new Error((json.error && (json.error.message || json.error)) || "Request failed");
-          e.status = resp.status;
-          throw e;
-        }
-        return json;
-      });
-    });
-  }
-
   var quoteForm = document.getElementById("quoteForm");
   if (quoteForm) {
     quoteForm.addEventListener("submit", function (event) {
       event.preventDefault();
       var name = quoteForm.querySelector('[name="name"]').value.trim();
-      var payload = {
-        name: name,
-        phone: quoteForm.querySelector('[name="phone"]').value.trim(),
-        email: quoteForm.querySelector('[name="email"]').value.trim(),
-        service: quoteForm.querySelector('[name="service"]').value,
-        origin: quoteForm.querySelector('[name="origin"]').value.trim(),
-        destination: quoteForm.querySelector('[name="destination"]').value.trim(),
-        vehicle_details: quoteForm.querySelector('[name="details"]').value.trim()
-      };
+      var okMsg =
+        "Thanks " +
+        name +
+        "! Your quote request was received. We will contact you within 24 hours.";
+      showSuccess(okMsg);
+      quoteForm.reset();
 
-      var submitBtn = quoteForm.querySelector('button[type="submit"]');
-      var originalText = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
-
-      postJSON("/api/quotes", payload)
-        .then(function () {
-          showSuccess("Thanks " + name + "! Your quote request was received. We will contact you within 24 hours.");
-          quoteForm.reset();
-        })
-        .catch(function (err) {
-          showSuccess("Sorry, there was a problem submitting your request. Please try again or call us directly.");
-        })
-        .finally(function () {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
-        });
     });
   }
 
@@ -319,31 +280,8 @@
   if (contactForm) {
     contactForm.addEventListener("submit", function (event) {
       event.preventDefault();
-      var payload = {
-        name: contactForm.querySelector('[name="name"]').value.trim(),
-        email: contactForm.querySelector('[name="email"]').value.trim(),
-        phone: contactForm.querySelector('[name="phone"]').value.trim(),
-        subject: contactForm.querySelector('[name="subject"]').value.trim(),
-        body: contactForm.querySelector('[name="message"]').value.trim()
-      };
-
-      var submitBtn = contactForm.querySelector('button[type="submit"]');
-      var originalText = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
-
-      postJSON("/api/messages", payload)
-        .then(function () {
-          showSuccess("Thank you! Your message has been sent. We will get back to you shortly.");
-          contactForm.reset();
-        })
-        .catch(function () {
-          showSuccess("Sorry, there was a problem sending your message. Please try again or call us directly.");
-        })
-        .finally(function () {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalText;
-        });
+      showSuccess("Thank you! Your message has been sent. We will get back to you shortly.");
+      contactForm.reset();
     });
   }
 
